@@ -4,9 +4,6 @@ Chart = typeof(Chart) === 'function' ? Chart : window.Chart;
 var helpers = Chart.helpers;
 var isArray = helpers.isArray;
 
-var horizontalKeyword = 'horizontal';
-var verticalKeyword=  'vertica';
-
 // Take the zoom namespace of Chart
 Chart.Annotation = Chart.Annotation || {};
 
@@ -15,54 +12,19 @@ var defaultOptions = Chart.Annotation.defaults = {
 	annotations: [] // default to no annotations
 };
 
-var LineAnnotation = Chart.Element.extend({
-
-	draw: function(ctx) {
-		var view = this._view;
-
-		// Canvas setup
-		ctx.lineWidth = view.borderWidth;
-		ctx.strokeStyle = view.borderColor;
-
-		// Draw
-		ctx.beginPath();
-		ctx.moveTo(view.x1, view.y1);
-		ctx.lineTo(view.x2, view.y2);
-		ctx.stroke();
-	}
-});
-
-function lineUpdate(obj, options, chartInstance) {
-	var model = obj._model = obj._model || {};
-
-	var scale = chartInstance.scales[options.scaleID];
-	var pixel = scale ? scale.getPixelForValue(options.value) : NaN;
-	var chartArea = chartInstance.chartArea;
-
-	if (!isNaN(pixel)) {
-		if (options.mode == horizontalKeyword) {
-			model.x1 = chartArea.left;
-			model.x2 = chartArea.right;
-			model.y1 = model.y2 = pixel;
-		} else {
-			model.y1 = chartArea.top;
-			model.y2 = chartArea.bottom;
-			model.x1 = model.x2 = pixel;
-		}
-	}
-
-	model.borderColor = options.borderColor;
-	model.borderWidth = options.borderWidth;
-}
+var lineAnnotation = require('./line.js')(Chart);
+var boxAnnotation = require('./box.js')(Chart);
 
 // Map of all types
 var annotationTypes = Chart.Annotation.annotationTypes = {
-	line: LineAnnotation
+	line: lineAnnotation.Constructor,
+	box: boxAnnotation.Constructor
 };
 
 // Map of all update functions
 var updateFunctions = Chart.Annotation.updateFunctions = {
-	line: lineUpdate,
+	line: lineAnnotation.update,
+	box: boxAnnotation.update
 };
 
 // Chartjs Zoom Plugin
@@ -115,4 +77,5 @@ var AnnotationPlugin = Chart.PluginBase.extend({
 	}
 });
 
+module.exports = AnnotationPlugin;
 Chart.pluginService.register(new AnnotationPlugin());
