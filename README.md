@@ -16,9 +16,10 @@ To configure the annotations plugin, you can simply add new config options to yo
 			type: 'line',
 			mode: 'horizontal',
 			scaleID: 'y-axis-1',
-			value: '25',
+			value: 25,
 			borderColor: 'red',
-			borderWidth: 2
+			borderWidth: 2,
+            label: 'Super Important Data'
 		}]
 	}
 }
@@ -43,7 +44,10 @@ Vertical or horizontal lines are supported.
 	borderColor: 'red',
 
 	// Line width
-	borderWidth: 2
+	borderWidth: 2, 
+    
+    //Label
+    label: 'This is a Custom Label'
 }
 ```
 
