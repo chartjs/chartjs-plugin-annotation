@@ -13,8 +13,9 @@
 // Box Annotation implementation
 module.exports = function(Chart) {
 	var BoxAnnotation = Chart.Element.extend({
-		draw: function(ctx) {
+		draw: function(chartInstance, options) {
 			var view = this._view;
+            var ctx = chartInstance.chart.ctx;
 
 			// Canvas setup
 			ctx.lineWidth = view.borderWidth;
@@ -151,11 +152,13 @@ var AnnotationPlugin = Chart.PluginBase.extend({
 	afterDraw: function(chartInstance, easingDecimal) {
 		// If we have annotations, draw them
 		var annotationObjects = chartInstance._annotationObjects;
+        var annotationOpts = chartInstance.options.annotation;
+
 		if (isArray(annotationObjects)) {
 			var ctx = chartInstance.chart.ctx;
-
 			annotationObjects.forEach(function(obj) {
-				obj.transition(easingDecimal).draw(ctx);
+                var opts = annotationOpts.annotations[obj._index];
+				obj.transition(easingDecimal).draw(chartInstance, opts);
 			});
 		}
 	}
@@ -172,9 +175,12 @@ module.exports = function(Chart) {
 
 	var LineAnnotation = Chart.Element.extend({
 
-		draw: function(ctx) {
+		draw: function(chartInstance, options) {
 			var view = this._view;
-
+            var ctx = chartInstance.chart.ctx;
+            var scale = chartInstance.scales[options.scaleID];
+            var pixel = scale ? scale.getPixelForValue(options.value) : NaN;
+            var chartArea = chartInstance.chartArea;
 			// Canvas setup
 			ctx.lineWidth = view.borderWidth;
 			ctx.strokeStyle = view.borderColor;
@@ -184,10 +190,16 @@ module.exports = function(Chart) {
 			ctx.moveTo(view.x1, view.y1);
 			ctx.lineTo(view.x2, view.y2);
 			ctx.stroke();
+            
+            ctx.fillText(options.label ? options.label : 'test', chartArea.left, pixel+5);
+
+            console.info(ctx);
+
 		}
 	});
 
 	function lineUpdate(obj, options, chartInstance) {
+        console.info(chartInstance.chart.ctx);
 		var model = obj._model = obj._model || {};
 
 		var scale = chartInstance.scales[options.scaleID];
@@ -199,15 +211,18 @@ module.exports = function(Chart) {
 				model.x1 = chartArea.left;
 				model.x2 = chartArea.right;
 				model.y1 = model.y2 = pixel;
+
 			} else {
 				model.y1 = chartArea.top;
 				model.y2 = chartArea.bottom;
 				model.x1 = model.x2 = pixel;
 			}
+
 		}
 
 		model.borderColor = options.borderColor;
 		model.borderWidth = options.borderWidth;
+
 	}
 
 
