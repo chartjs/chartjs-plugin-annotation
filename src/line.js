@@ -22,14 +22,10 @@ module.exports = function(Chart) {
 			ctx.stroke();
             
             ctx.fillText(options.label ? options.label : '', chartArea.left, pixel+5);
-
-            console.info(ctx);
-
 		}
 	});
 
 	function lineUpdate(obj, options, chartInstance) {
-        console.info(chartInstance.chart.ctx);
 		var model = obj._model = obj._model || {};
 
 		var scale = chartInstance.scales[options.scaleID];
@@ -47,9 +43,7 @@ module.exports = function(Chart) {
 				model.y2 = chartArea.bottom;
 				model.x1 = model.x2 = pixel;
 			}
-
 		}
-
 		model.borderColor = options.borderColor;
 		model.borderWidth = options.borderWidth;
 
