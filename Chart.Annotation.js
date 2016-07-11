@@ -149,7 +149,7 @@ var AnnotationPlugin = Chart.PluginBase.extend({
 		}
 	},
 
-	afterDraw: function(chartInstance, easingDecimal) {
+	beforeDraw: function(chartInstance, easingDecimal) {
 		// If we have annotations, draw them
 		var annotationObjects = chartInstance._annotationObjects;
         var annotationOpts = chartInstance.options.annotation;
@@ -191,7 +191,16 @@ module.exports = function(Chart) {
 			ctx.lineTo(view.x2, view.y2);
 			ctx.stroke();
             
-            ctx.fillText(options.label ? options.label : '', chartArea.left, pixel+5);
+            ctx.fillStyle = 'white';
+            ctx.fillRect((chartArea.right/2), pixel-5, 35, 15);
+            
+            ctx.fillStyle = view.borderColor;
+            ctx.strokeRect((chartArea.right/2), pixel-5, 35, 15);
+            
+            
+            ctx.fillStyle = 'black';
+            ctx.textAlign = 'left';
+            ctx.fillText(options.label ? options.label : '', (chartArea.right/2)+5, pixel-5);
 		}
 	});
 

@@ -64,7 +64,7 @@ var AnnotationPlugin = Chart.PluginBase.extend({
 		}
 	},
 
-	afterDraw: function(chartInstance, easingDecimal) {
+	beforeDraw: function(chartInstance, easingDecimal) {
 		// If we have annotations, draw them
 		var annotationObjects = chartInstance._annotationObjects;
         var annotationOpts = chartInstance.options.annotation;
