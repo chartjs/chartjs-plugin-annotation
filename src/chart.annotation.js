@@ -27,7 +27,7 @@ var updateFunctions = Chart.Annotation.updateFunctions = {
 	box: boxAnnotation.update
 };
 
-// Chartjs Zoom Plugin
+// Chartjs Plugin hooks.
 var AnnotationPlugin = Chart.PluginBase.extend({
 	beforeInit: function(chartInstance) {
 		var options = chartInstance.options;
