@@ -1,8 +1,9 @@
 // Box Annotation implementation
 module.exports = function(Chart) {
 	var BoxAnnotation = Chart.Element.extend({
-		draw: function(ctx) {
+		draw: function(chartInstance, options) {
 			var view = this._view;
+            var ctx = chartInstance.chart.ctx;
 
 			// Canvas setup
 			ctx.lineWidth = view.borderWidth;

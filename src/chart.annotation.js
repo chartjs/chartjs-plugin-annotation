@@ -27,7 +27,7 @@ var updateFunctions = Chart.Annotation.updateFunctions = {
 	box: boxAnnotation.update
 };
 
-// Chartjs Zoom Plugin
+// Chartjs Plugin hooks.
 var AnnotationPlugin = Chart.PluginBase.extend({
 	beforeInit: function(chartInstance) {
 		var options = chartInstance.options;
@@ -64,14 +64,16 @@ var AnnotationPlugin = Chart.PluginBase.extend({
 		}
 	},
 
-	afterDraw: function(chartInstance, easingDecimal) {
+	beforeDatasetsDraw: function(chartInstance, easingDecimal) {
 		// If we have annotations, draw them
 		var annotationObjects = chartInstance._annotationObjects;
+        var annotationOpts = chartInstance.options.annotation;
+
 		if (isArray(annotationObjects)) {
 			var ctx = chartInstance.chart.ctx;
-
 			annotationObjects.forEach(function(obj) {
-				obj.transition(easingDecimal).draw(ctx);
+                var opts = annotationOpts.annotations[obj._index];
+				obj.transition(easingDecimal).draw(chartInstance, opts);
 			});
 		}
 	}
