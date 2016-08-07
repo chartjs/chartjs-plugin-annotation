@@ -15,7 +15,7 @@ To configure the annotations plugin, you can simply add new config options to yo
 		annotations: [{
 			type: 'line',
 			mode: 'horizontal',
-			scaleID: 'y-axis-1',
+			scaleID: 'y-axis-0',
 			value: '25',
 			borderColor: 'red',
 			borderWidth: 2
@@ -34,7 +34,7 @@ Vertical or horizontal lines are supported.
 	mode: 'horizontal',
 
 	// ID of the scale to bind onto
-	scaleID: 'y-axis-1',
+	scaleID: 'y-axis-0',
 
 	// Data value to draw the line at
 	value: 25,
@@ -43,7 +43,15 @@ Vertical or horizontal lines are supported.
 	borderColor: 'red',
 
 	// Line width
-	borderWidth: 2
+	borderWidth: 2,
+
+	// Line dash
+	// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash
+	borderDash: [2, 2],
+
+	// Line Dash Offset
+	// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset
+	borderDashOffset: 5
 }
 ```
 
@@ -57,10 +65,10 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 	type: 'box',
 
 	// ID of the X scale to bind onto
-	xScaleID: 'x-axis-1',
+	xScaleID: 'x-axis-0',
 
 	// ID of the Y scale to bind onto
-	scaleID: 'y-axis-1',
+	scaleID: 'y-axis-0',
 
 	// Left edge of the box. in units along the x axis
 	xMin: 25,
@@ -94,7 +102,7 @@ The following features still need to be done:
 
 To download a zip, go to the Chart.Annotation.js on Github
 
-To install via npm / bower:
+To install via npm:
 
 ```bash
 npm install Chart.Annotation.js --save

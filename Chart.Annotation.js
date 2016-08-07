@@ -179,6 +179,11 @@ module.exports = function(Chart) {
 			ctx.lineWidth = view.borderWidth;
 			ctx.strokeStyle = view.borderColor;
 
+			if (ctx.setLineDash) {
+				ctx.setLineDash(view.borderDash);
+			}
+			ctx.lineDashOffset = view.borderDashOffset;
+
 			// Draw
 			ctx.beginPath();
 			ctx.moveTo(view.x1, view.y1);
@@ -208,6 +213,8 @@ module.exports = function(Chart) {
 
 		model.borderColor = options.borderColor;
 		model.borderWidth = options.borderWidth;
+		model.borderDash = options.borderDash || [];
+		model.borderDashOffset = options.borderDashOffset || 0;
 	}
 
 
