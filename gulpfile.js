@@ -54,7 +54,7 @@ function buildTask() {
 /*
  *  Usage : gulp bump
  *  Prompts: Version increment to bump
- *  Output: - New version number written into package.json & bower.json
+ *  Output: - New version number written into package.json
  */
 function bumpTask(complete) {
   util.log('Current version:', util.colors.cyan(package.version));
@@ -70,14 +70,12 @@ function bumpTask(complete) {
     var increment = res.version.split(' ')[0],
       newVersion = semver.inc(package.version, increment);
 
-    // Set the new versions into the bower/package object
+    // Set the new versions into the package object
     package.version = newVersion;
-    bower.version = newVersion;
 
     // Write these to their own files, then build the output
     fs.writeFileSync('package.json', JSON.stringify(package, null, 2));
-    fs.writeFileSync('bower.json', JSON.stringify(bower, null, 2));
-
+    
     complete();
   });
 }
