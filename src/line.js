@@ -9,6 +9,7 @@ module.exports = function(Chart) {
 			var view = this._view;
 
 			// Canvas setup
+			ctx.save();
 			ctx.lineWidth = view.borderWidth;
 			ctx.strokeStyle = view.borderColor;
 
@@ -22,6 +23,7 @@ module.exports = function(Chart) {
 			ctx.moveTo(view.x1, view.y1);
 			ctx.lineTo(view.x2, view.y2);
 			ctx.stroke();
+			ctx.restore();
 		}
 	});
 
