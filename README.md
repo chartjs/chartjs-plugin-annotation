@@ -68,7 +68,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 	xScaleID: 'x-axis-0',
 
 	// ID of the Y scale to bind onto
-	scaleID: 'y-axis-0',
+	yScaleID: 'y-axis-0',
 
 	// Left edge of the box. in units along the x axis
 	xMin: 25,
