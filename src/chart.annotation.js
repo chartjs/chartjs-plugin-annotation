@@ -9,6 +9,7 @@ Chart.Annotation = Chart.Annotation || {};
 
 // Default options if none are provided
 var defaultOptions = Chart.Annotation.defaults = {
+	drawTime: "afterDraw", // defaults to drawing after draw
 	annotations: [] // default to no annotations
 };
 
@@ -27,11 +28,17 @@ var updateFunctions = Chart.Annotation.updateFunctions = {
 	box: boxAnnotation.update
 };
 
+var drawTimeOptions = Chart.Annotation.drawTimeOptions = {
+	afterDraw: "afterDraw",
+	afterDatasetsDraw: "afterDatasetsDraw",
+	beforeDatasetsDraw: "beforeDatasetsDraw",
+};
+
 // Chartjs Zoom Plugin
 var AnnotationPlugin = Chart.PluginBase.extend({
 	beforeInit: function(chartInstance) {
 		var options = chartInstance.options;
-		options.annotation = helpers.configMerge(options.annotation, Chart.Annotation.defaults);
+		options.annotation = helpers.configMerge(Chart.Annotation.defaults, options.annotation);
 
 		var annotationConfigs = options.annotation.annotations;
 		if (isArray(annotationConfigs)) {
@@ -48,7 +55,7 @@ var AnnotationPlugin = Chart.PluginBase.extend({
 		}
 	},
 	afterScaleUpdate: function(chartInstance) {
-		// Once scales are ready, update 
+		// Once scales are ready, update
 		var annotationObjects = chartInstance._annotationObjects;
 		var annotationOpts = chartInstance.options.annotation;
 
@@ -65,6 +72,31 @@ var AnnotationPlugin = Chart.PluginBase.extend({
 	},
 
 	afterDraw: function(chartInstance, easingDecimal) {
+		this.drawAnnotations(
+			Chart.Annotation.drawTimeOptions.afterDraw,
+			chartInstance,
+			easingDecimal
+		);
+	},
+	afterDatasetsDraw: function(chartInstance, easingDecimal) {
+		this.drawAnnotations(
+			Chart.Annotation.drawTimeOptions.afterDatasetsDraw,
+			chartInstance,
+			easingDecimal
+		);
+	},
+	beforeDatasetsDraw: function(chartInstance, easingDecimal) {
+		this.drawAnnotations(
+			Chart.Annotation.drawTimeOptions.beforeDatasetsDraw,
+			chartInstance,
+			easingDecimal
+		);
+	},
+	drawAnnotations: function(drawTime, chartInstance, easingDecimal) {
+		var annotationOpts = chartInstance.options.annotation;
+		if (annotationOpts.drawTime != drawTime) {
+			return;
+		}
 		// If we have annotations, draw them
 		var annotationObjects = chartInstance._annotationObjects;
 		if (isArray(annotationObjects)) {

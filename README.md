@@ -19,7 +19,13 @@ To configure the annotations plugin, you can simply add new config options to yo
 			value: '25',
 			borderColor: 'red',
 			borderWidth: 2
-		}]
+		}],
+		// Defines when the annotations are drawn.
+		// This allows positioning of the annotation relative to the other
+		// elements of the graph.
+		// Should be one of: afterDraw, afterDatasetsDraw, beforeDatasetsDraw
+		// See http://www.chartjs.org/docs/#advanced-usage-creating-plugins
+		drawTime: "afterDraw" // (default)
 	}
 }
 ```
@@ -56,7 +62,7 @@ Vertical or horizontal lines are supported.
 ```
 
 ### Box Annotations
-Box annotations are supported. If one of the axes is not specified, the box will take the entire chart dimension. 
+Box annotations are supported. If one of the axes is not specified, the box will take the entire chart dimension.
 
 The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges
 
