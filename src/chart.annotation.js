@@ -45,7 +45,8 @@ function drawAnnotations(drawTime, chartInstance, easingDecimal) {
 		var ctx = chartInstance.chart.ctx;
 
 		annotationObjects.forEach(function(obj) {
-			obj.transition(easingDecimal).draw(ctx);
+			var opts = annotationOpts.annotations[obj._index];
+			obj.transition(easingDecimal).draw(ctx, opts);
 		});
 	}
 }
@@ -55,12 +56,27 @@ var annotationPlugin = {
 	beforeInit: function(chartInstance) {
 		var options = chartInstance.options;
 		options.annotation = helpers.configMerge(Chart.Annotation.defaults, options.annotation);
-
+		var defaultLabelOptions = {
+			backgroundColor: 'rgba(0,0,0,0.8)',
+			fontFamily: options.defaultFontFamily,
+			fontSize: options.defaultFontSize,
+			fontStyle: "bold",
+			fontColor: "#fff",
+			xPadding: 6,
+			yPadding: 6,
+			cornerRadius: 6,
+			position: "center",
+			xAdjust: 0,
+			yAdjust: 0,
+			enabled: false,
+			content: null
+		};
 		var annotationConfigs = options.annotation.annotations;
 		if (isArray(annotationConfigs)) {
 			var annotationObjects = chartInstance._annotationObjects = [];
 
 			annotationConfigs.forEach(function(configuration, i) {
+				configuration.label = helpers.configMerge(defaultLabelOptions, configuration.label);
 				var Constructor = annotationTypes[configuration.type];
 				if (Constructor) {
 					annotationObjects.push(new Constructor({
