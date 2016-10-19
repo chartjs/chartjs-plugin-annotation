@@ -259,6 +259,11 @@ module.exports = function(Chart) {
 				ctx.fill();
 
 				// Draw the text
+				ctx.font = helpers.fontString(
+					view.labelFontSize,
+					view.labelFontStyle,
+					view.labelFontFamily
+				);
 				ctx.fillStyle = view.labelFontColor;
 				ctx.textAlign = 'left';
 				ctx.textBaseline = 'top';
