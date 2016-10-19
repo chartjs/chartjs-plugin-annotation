@@ -45,8 +45,7 @@ function drawAnnotations(drawTime, chartInstance, easingDecimal) {
 		var ctx = chartInstance.chart.ctx;
 
 		annotationObjects.forEach(function(obj) {
-			var opts = annotationOpts.annotations[obj._index];
-			obj.transition(easingDecimal).draw(ctx, opts);
+			obj.transition(easingDecimal).draw(ctx);
 		});
 	}
 }
