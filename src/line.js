@@ -47,7 +47,7 @@ module.exports = function(Chart) {
 				model.y1 = chartArea.top;
 				model.y2 = chartArea.bottom;
 				model.x1 = pixel;
-		        model.x2 = endPixel;
+				model.x2 = endPixel;
 			}
 		}
 
