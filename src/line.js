@@ -32,17 +32,22 @@ module.exports = function(Chart) {
 
 		var scale = chartInstance.scales[options.scaleID];
 		var pixel = scale ? scale.getPixelForValue(options.value) : NaN;
+		var endPixel = scale && isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : NaN;
+		if (isNaN(endPixel))
+		    endPixel = pixel;
 		var chartArea = chartInstance.chartArea;
 
 		if (!isNaN(pixel)) {
 			if (options.mode == horizontalKeyword) {
 				model.x1 = chartArea.left;
 				model.x2 = chartArea.right;
-				model.y1 = model.y2 = pixel;
+				model.y1 = pixel;
+				model.y2 = endPixel;
 			} else {
 				model.y1 = chartArea.top;
 				model.y2 = chartArea.bottom;
-				model.x1 = model.x2 = pixel;
+				model.x1 = pixel;
+		        model.x2 = endPixel;
 			}
 		}
 
