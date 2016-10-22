@@ -45,6 +45,9 @@ Vertical or horizontal lines are supported.
 	// Data value to draw the line at
 	value: 25,
 
+	// Optional value at which the line draw should end
+	endValue: 26,
+
 	// Line color
 	borderColor: 'red',
 
