@@ -114,8 +114,10 @@ To download a zip, go to the Chart.Annotation.js on Github
 To install via npm:
 
 ```bash
-npm install Chart.Annotation.js --save
+npm install chartjs-plugin-annotation --save
 ```
+
+Prior to v0.2.0 this plugin was known as Chart.Annotation.js. You can still install this old version via NPM.
 
 ## Documentation
 
