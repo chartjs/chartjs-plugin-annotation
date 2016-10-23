@@ -1,7 +1,7 @@
 /*!
- * Chart.Annotation.js
+ * chartjs-plugin-annotation.js
  * http://chartjs.org/
- * Version: 0.1.1
+ * Version: 0.2.0
  *
  * Copyright 2016 Evert Timberg
  * Released under the MIT license
@@ -118,8 +118,24 @@ var drawTimeOptions = Chart.Annotation.drawTimeOptions = {
 	beforeDatasetsDraw: "beforeDatasetsDraw",
 };
 
+function drawAnnotations(drawTime, chartInstance, easingDecimal) {
+	var annotationOpts = chartInstance.options.annotation;
+	if (annotationOpts.drawTime != drawTime) {
+		return;
+	}
+	// If we have annotations, draw them
+	var annotationObjects = chartInstance._annotationObjects;
+	if (isArray(annotationObjects)) {
+		var ctx = chartInstance.chart.ctx;
+
+		annotationObjects.forEach(function(obj) {
+			obj.transition(easingDecimal).draw(ctx);
+		});
+	}
+}
+
 // Chartjs Zoom Plugin
-var AnnotationPlugin = Chart.PluginBase.extend({
+var annotationPlugin = {
 	beforeInit: function(chartInstance) {
 		var options = chartInstance.options;
 		options.annotation = helpers.configMerge(Chart.Annotation.defaults, options.annotation);
@@ -156,45 +172,30 @@ var AnnotationPlugin = Chart.PluginBase.extend({
 	},
 
 	afterDraw: function(chartInstance, easingDecimal) {
-		this.drawAnnotations(
+		drawAnnotations(
 			Chart.Annotation.drawTimeOptions.afterDraw,
 			chartInstance,
 			easingDecimal
 		);
 	},
 	afterDatasetsDraw: function(chartInstance, easingDecimal) {
-		this.drawAnnotations(
+		drawAnnotations(
 			Chart.Annotation.drawTimeOptions.afterDatasetsDraw,
 			chartInstance,
 			easingDecimal
 		);
 	},
 	beforeDatasetsDraw: function(chartInstance, easingDecimal) {
-		this.drawAnnotations(
+		drawAnnotations(
 			Chart.Annotation.drawTimeOptions.beforeDatasetsDraw,
 			chartInstance,
 			easingDecimal
 		);
-	},
-	drawAnnotations: function(drawTime, chartInstance, easingDecimal) {
-		var annotationOpts = chartInstance.options.annotation;
-		if (annotationOpts.drawTime != drawTime) {
-			return;
-		}
-		// If we have annotations, draw them
-		var annotationObjects = chartInstance._annotationObjects;
-		if (isArray(annotationObjects)) {
-			var ctx = chartInstance.chart.ctx;
-
-			annotationObjects.forEach(function(obj) {
-				obj.transition(easingDecimal).draw(ctx);
-			});
-		}
 	}
-});
+};
 
-module.exports = AnnotationPlugin;
-Chart.pluginService.register(new AnnotationPlugin());
+module.exports = annotationPlugin;
+Chart.pluginService.register(annotationPlugin);
 
 },{"./box.js":2,"./line.js":4,"chart.js":1}],4:[function(require,module,exports){
 // Line Annotation implementation
@@ -226,22 +227,31 @@ module.exports = function(Chart) {
 		}
 	});
 
+	function isValid(num) {
+		return !isNaN(num) && isFinite(num);
+	}
+
 	function lineUpdate(obj, options, chartInstance) {
 		var model = obj._model = obj._model || {};
 
 		var scale = chartInstance.scales[options.scaleID];
 		var pixel = scale ? scale.getPixelForValue(options.value) : NaN;
+		var endPixel = scale && isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : NaN;
+		if (isNaN(endPixel))
+		    endPixel = pixel;
 		var chartArea = chartInstance.chartArea;
 
 		if (!isNaN(pixel)) {
 			if (options.mode == horizontalKeyword) {
 				model.x1 = chartArea.left;
 				model.x2 = chartArea.right;
-				model.y1 = model.y2 = pixel;
+				model.y1 = pixel;
+				model.y2 = endPixel;
 			} else {
 				model.y1 = chartArea.top;
 				model.y2 = chartArea.bottom;
-				model.x1 = model.x2 = pixel;
+				model.x1 = pixel;
+				model.x2 = endPixel;
 			}
 		}
 

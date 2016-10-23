@@ -34,8 +34,24 @@ var drawTimeOptions = Chart.Annotation.drawTimeOptions = {
 	beforeDatasetsDraw: "beforeDatasetsDraw",
 };
 
+function drawAnnotations(drawTime, chartInstance, easingDecimal) {
+	var annotationOpts = chartInstance.options.annotation;
+	if (annotationOpts.drawTime != drawTime) {
+		return;
+	}
+	// If we have annotations, draw them
+	var annotationObjects = chartInstance._annotationObjects;
+	if (isArray(annotationObjects)) {
+		var ctx = chartInstance.chart.ctx;
+
+		annotationObjects.forEach(function(obj) {
+			obj.transition(easingDecimal).draw(ctx);
+		});
+	}
+}
+
 // Chartjs Zoom Plugin
-var AnnotationPlugin = Chart.PluginBase.extend({
+var annotationPlugin = {
 	beforeInit: function(chartInstance) {
 		var options = chartInstance.options;
 		options.annotation = helpers.configMerge(Chart.Annotation.defaults, options.annotation);
@@ -72,42 +88,27 @@ var AnnotationPlugin = Chart.PluginBase.extend({
 	},
 
 	afterDraw: function(chartInstance, easingDecimal) {
-		this.drawAnnotations(
+		drawAnnotations(
 			Chart.Annotation.drawTimeOptions.afterDraw,
 			chartInstance,
 			easingDecimal
 		);
 	},
 	afterDatasetsDraw: function(chartInstance, easingDecimal) {
-		this.drawAnnotations(
+		drawAnnotations(
 			Chart.Annotation.drawTimeOptions.afterDatasetsDraw,
 			chartInstance,
 			easingDecimal
 		);
 	},
 	beforeDatasetsDraw: function(chartInstance, easingDecimal) {
-		this.drawAnnotations(
+		drawAnnotations(
 			Chart.Annotation.drawTimeOptions.beforeDatasetsDraw,
 			chartInstance,
 			easingDecimal
 		);
-	},
-	drawAnnotations: function(drawTime, chartInstance, easingDecimal) {
-		var annotationOpts = chartInstance.options.annotation;
-		if (annotationOpts.drawTime != drawTime) {
-			return;
-		}
-		// If we have annotations, draw them
-		var annotationObjects = chartInstance._annotationObjects;
-		if (isArray(annotationObjects)) {
-			var ctx = chartInstance.chart.ctx;
-
-			annotationObjects.forEach(function(obj) {
-				obj.transition(easingDecimal).draw(ctx);
-			});
-		}
 	}
-});
+};
 
-module.exports = AnnotationPlugin;
-Chart.pluginService.register(new AnnotationPlugin());
+module.exports = annotationPlugin;
+Chart.pluginService.register(annotationPlugin);

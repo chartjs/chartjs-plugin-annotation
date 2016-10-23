@@ -19,7 +19,7 @@ var srcDir = './src/';
 var outDir = './';
 
 var header = "/*!\n\
- * Chart.Annotation.js\n\
+ * chartjs-plugin-annotation.js\n\
  * http://chartjs.org/\n\
  * Version: {{ version }}\n\
  *\n\
@@ -37,14 +37,14 @@ function buildTask() {
     .ignore('chart.js')
     .ignore('hammerjs')
     .bundle()
-    .pipe(source('Chart.Annotation.js'))
+    .pipe(source('chartjs-plugin-annotation.js'))
     .pipe(insert.prepend(header))
     .pipe(streamify(replace('{{ version }}', package.version)))
     .pipe(gulp.dest(outDir))
     .pipe(streamify(uglify({
       preserveComments: 'some'
     })))
-    .pipe(streamify(concat('Chart.Annotation.min.js')))
+    .pipe(streamify(concat('chartjs-plugin-annotation.min.js')))
     .pipe(gulp.dest(outDir));
 
   return nonBundled;

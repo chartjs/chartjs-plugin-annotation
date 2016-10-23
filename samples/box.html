@@ -4,7 +4,7 @@
 <head>
     <title>Scatter Chart</title>
     <script src="../node_modules/chart.js/dist/Chart.bundle.js"></script>
-    <script src="../Chart.Annotation.js"></script>
+    <script src="../chartjs-plugin-annotation.js"></script>
     <style>
     canvas {
         -moz-user-select: none;
@@ -127,7 +127,7 @@
                         }]
                     },
                     annotation: {
-                        drawTime: "beforeDatasetsDraw",
+                        drawTime: "afterDraw",
                         annotations: [{
                             type: 'box',
                             xScaleID: 'x-axis-1',

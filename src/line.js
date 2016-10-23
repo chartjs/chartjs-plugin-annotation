@@ -27,6 +27,10 @@ module.exports = function(Chart) {
 		}
 	});
 
+	function isValid(num) {
+		return !isNaN(num) && isFinite(num);
+	}
+
 	function lineUpdate(obj, options, chartInstance) {
 		var model = obj._model = obj._model || {};
 

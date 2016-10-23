@@ -1,4 +1,4 @@
-# Chart.Annotation.js
+# chartjs-plugin-annotation.js
 
 An annotation plugin for Chart.js >= 2.1.3
 
@@ -123,7 +123,7 @@ You can find documentation for Chart.js at [www.chartjs.org/docs](http://www.cha
 
 ## Contributing
 
-Before submitting an issue or a pull request to the project, please take a moment to look over the [contributing guidelines](https://github.com/chartjs/Chart.Annotation.js/blob/master/CONTRIBUTING.md) first.
+Before submitting an issue or a pull request to the project, please take a moment to look over the [contributing guidelines](https://github.com/chartjs/chartjs-plugin-annotation.js/blob/master/CONTRIBUTING.md) first.
 
 ## License
 
