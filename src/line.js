@@ -35,8 +35,8 @@ module.exports = function(Chart) {
 				// Draw the tooltip
 				helpers.drawRoundedRectangle(
 					ctx,
-					view.labelX - view.labelXPadding, // x
-					view.labelY - view.labelYPadding, // y
+					view.labelX, // x
+					view.labelY, // y
 					view.labelWidth, // width
 					view.labelHeight, // height
 					view.labelCornerRadius // radius
@@ -50,12 +50,12 @@ module.exports = function(Chart) {
 					view.labelFontFamily
 				);
 				ctx.fillStyle = view.labelFontColor;
-				ctx.textAlign = 'left';
-				ctx.textBaseline = 'top';
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'middle';
 				ctx.fillText(
 					view.labelContent,
-					view.labelX,
-					view.labelY
+					view.labelX + (view.labelWidth / 2),
+					view.labelY + (view.labelHeight / 2)
 				);
 			}
 		}
@@ -65,27 +65,62 @@ module.exports = function(Chart) {
 		return !isNaN(num) && isFinite(num);
 	}
 
-	function calculateLabelPosition(view, width, height) {
-		var ret = {
-			x: ((view.x1 + view.x2 - width) / 2),
-			y: ((view.y1 + view.y2 - height) / 2)
+	function calculateLabelPosition(view, width, height, padWidth, padHeight) {
+		// Describe the line in slope-intercept form (y = mx + b).
+		// Note that the axes are rotated 90° CCW, which causes the
+		// x- and y-axes to be swapped.
+		var m = (view.x2 - view.x1) / (view.y2 - view.y1);
+		var b = view.x1 || 0;
+
+		var fy = function(y) {
+			// Coordinates are relative to the origin of the canvas
+			return m * (y - view.y1) + b;
 		};
-		switch (view.labelPosition) {
-		case "top":
-			ret.y = view.y1 > view.y2 ? view.y2 : view.y1;
+		var fx = function(x) {
+			return ((x - b) / m) + view.y1;
+		};
+
+		var ret = {}, xa = 0, ya = 0;
+
+		switch (true) {
+			// top align
+			case view.mode == verticalKeyword && view.labelPosition == "top":
+				ya = padHeight + view.labelYAdjust;
+				xa = (width / 2) + view.labelXAdjust;
+				ret.y = view.y1 + ya;
+				ret.x = (isFinite(m) ? fy(ret.y) : view.x1) - xa;
 			break;
-		case "left":
-			ret.x = view.x1 > view.x2 ? view.x1 : view.x2;
+			
+			// bottom align
+			case view.mode == verticalKeyword && view.labelPosition == "bottom":
+				ya = height + padHeight + view.labelYAdjust;
+				xa = (width / 2) + view.labelXAdjust;
+				ret.y = view.y2 - ya;
+				ret.x = (isFinite(m) ? fy(ret.y) : view.x1) - xa;
 			break;
-		case "bottom":
-			ret.y = view.y1 > view.y2 ? view.y1 : view.y2;
+			
+			// left align
+			case view.mode == horizontalKeyword && view.labelPosition == "left":
+				xa = padWidth + view.labelXAdjust;
+				ya = -(height / 2) + view.labelYAdjust;
+				ret.x = view.x1 + xa;
+				ret.y = fx(ret.x) + ya;
 			break;
-		case "right":
-			ret.x = view.x1 > view.x2 ? view.x2 : view.x1;
+			
+			// right align
+			case view.mode == horizontalKeyword && view.labelPosition == "right":
+				xa = width + padWidth + view.labelXAdjust;
+				ya = -(height / 2) + view.labelYAdjust;
+				ret.x = view.x2 - xa;
+				ret.y = fx(ret.x) + ya;
 			break;
+
+			// center align
+			default:
+				ret.x = ((view.x1 + view.x2 - width) / 2) + view.labelXAdjust;
+				ret.y = ((view.y1 + view.y2 - height) / 2) + view.labelYAdjust;
 		}
-		ret.x += view.labelXAdjust;
-		ret.y += view.labelYAdjust;
+
 		return ret;
 	}
 
@@ -114,6 +149,8 @@ module.exports = function(Chart) {
 			}
 		}
 
+		model.mode = options.mode;
+
 		// Figure out the label:
 		model.labelBackgroundColor = options.label.backgroundColor;
 		model.labelFontFamily = options.label.fontFamily;
@@ -129,21 +166,14 @@ module.exports = function(Chart) {
 		model.labelEnabled = options.label.enabled;
 		model.labelContent = options.label.content;
 
-		ctx.font = helpers.fontString(
-			model.labelFontSize,
-			model.labelFontStyle,
-			model.labelFontFamily
-		);
-		var text = ctx.measureText(model.labelContent);
-		var position = calculateLabelPosition(
-			model,
-			text.width,
-			model.labelFontSize
-		);
-		model.labelX = position.x;
-		model.labelY = position.y;
-		model.labelWidth = text.width + (2 * model.labelXPadding);
-		model.labelHeight = model.labelFontSize + (2 * model.labelYPadding)
+		ctx.font = helpers.fontString(model.labelFontSize, model.labelFontStyle, model.labelFontFamily);
+		var textWidth = ctx.measureText(model.labelContent).width;
+		var textHeight = ctx.measureText('M').width;
+		var labelPosition = calculateLabelPosition(model, textWidth, textHeight, model.labelXPadding, model.labelYPadding);
+		model.labelX = labelPosition.x - model.labelXPadding;
+		model.labelY = labelPosition.y - model.labelYPadding;
+		model.labelWidth = textWidth + (2 * model.labelXPadding);
+		model.labelHeight = textHeight + (2 * model.labelYPadding);
 
 		model.borderColor = options.borderColor;
 		model.borderWidth = options.borderWidth;
