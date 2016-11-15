@@ -13,7 +13,8 @@ var gulp = require('gulp'),
   browserify = require('browserify'),
   streamify = require('gulp-streamify'),
   source = require('vinyl-source-stream'),
-  merge = require('merge-stream');
+  merge = require('merge-stream'),
+  watch = require('gulp-watch');
 
 var srcDir = './src/';
 var outDir = './';
@@ -31,6 +32,7 @@ var header = "/*!\n\
 gulp.task('build', buildTask);
 gulp.task('bump', bumpTask);
 gulp.task('jshint', jshintTask);
+gulp.task('watch', watchTask);
 
 function buildTask() {
   var nonBundled = browserify('./src/chart.annotation.js')
@@ -85,4 +87,9 @@ function jshintTask() {
     .pipe(jshint('config.jshintrc'))
     .pipe(jshint.reporter('jshint-stylish'))
     .pipe(jshint.reporter('fail'));
+}
+
+function watchTask() {
+  buildTask();
+  gulp.watch('src/*.js', ['jshint', 'build']);
 }

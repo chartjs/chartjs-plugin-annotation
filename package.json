@@ -18,8 +18,10 @@
     "gulp-streamify": "^1.0.2",
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
+    "gulp-watch": "^4.3.10",
     "inquirer": "^1.0.2",
     "jshint": "^2.9.2",
+    "jshint-stylish": "^2.2.1",
     "merge-stream": "^1.0.0",
     "semver": "^5.1.0",
     "vinyl-source-stream": "^1.1.0"
