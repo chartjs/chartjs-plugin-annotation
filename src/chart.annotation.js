@@ -8,7 +8,7 @@ var isArray = helpers.isArray;
 Chart.Annotation = Chart.Annotation || {};
 
 // Default options if none are provided
-var defaultOptions = Chart.Annotation.defaults = {
+Chart.Annotation.defaults = {
 	drawTime: "afterDraw", // defaults to drawing after draw
 	annotations: [] // default to no annotations
 };
@@ -17,18 +17,18 @@ var lineAnnotation = require('./line.js')(Chart);
 var boxAnnotation = require('./box.js')(Chart);
 
 // Map of all types
-var annotationTypes = Chart.Annotation.annotationTypes = {
+Chart.Annotation.annotationTypes = {
 	line: lineAnnotation.Constructor,
 	box: boxAnnotation.Constructor
 };
 
 // Map of all update functions
-var updateFunctions = Chart.Annotation.updateFunctions = {
+Chart.Annotation.updateFunctions = {
 	line: lineAnnotation.update,
 	box: boxAnnotation.update
 };
 
-var drawTimeOptions = Chart.Annotation.drawTimeOptions = {
+Chart.Annotation.drawTimeOptions = {
 	afterDraw: "afterDraw",
 	afterDatasetsDraw: "afterDatasetsDraw",
 	beforeDatasetsDraw: "beforeDatasetsDraw",
@@ -76,7 +76,7 @@ var annotationPlugin = {
 
 			annotationConfigs.forEach(function(configuration, i) {
 				configuration.label = helpers.configMerge(defaultLabelOptions, configuration.label);
-				var Constructor = annotationTypes[configuration.type];
+				var Constructor = Chart.Annotation.annotationTypes[configuration.type];
 				if (Constructor) {
 					annotationObjects.push(new Constructor({
 						_index: i
@@ -91,9 +91,9 @@ var annotationPlugin = {
 		var annotationOpts = chartInstance.options.annotation;
 
 		if (isArray(annotationObjects)) {
-			annotationObjects.forEach(function(annotationObject, i) {
+			annotationObjects.forEach(function(annotationObject) {
 				var opts = annotationOpts.annotations[annotationObject._index];
-				var updateFunction = updateFunctions[opts.type];
+				var updateFunction = Chart.Annotation.updateFunctions[opts.type];
 
 				if (updateFunction) {
 					updateFunction(annotationObject, opts, chartInstance);

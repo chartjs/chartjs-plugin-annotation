@@ -13,7 +13,7 @@ module.exports = function(Chart) {
 			var width = view.right - view.left,
 				height = view.bottom - view.top;
 			ctx.fillRect(view.left, view.top, width, height);
-			ctx.strokeRect(view.left, view.top, width, height)
+			ctx.strokeRect(view.left, view.top, width, height);
 		}
 	});
 
@@ -67,4 +67,4 @@ module.exports = function(Chart) {
 		Constructor: BoxAnnotation,
 		update: boxUpdate
 	};
-}
+};
