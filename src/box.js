@@ -64,7 +64,7 @@ module.exports = function(Chart) {
 
 
 	return {
-		Constructor: BoxAnnotation,
+		class: BoxAnnotation,
 		update: boxUpdate
 	};
 };

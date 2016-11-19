@@ -183,7 +183,7 @@ module.exports = function(Chart) {
 
 
 	return {
-		Constructor: LineAnnotation,
+		class: LineAnnotation,
 		update: lineUpdate
 	};
 };
