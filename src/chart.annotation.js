@@ -84,16 +84,21 @@ function buildAnnotations(configs) {
 		});
 }
 
+function setup(chartInstance) {
+	var config = chartInstance.options.annotation;
+	config = initConfig(config || {});
+	if (helpers.isArray(config.annotations)) {
+		chartInstance.annotations = buildAnnotations(config.annotations);
+		return true;
+	}
+}
+
 // Chartjs Zoom Plugin
 var annotationPlugin = {
-	beforeInit: function(chartInstance) {
-		var config = chartInstance.options.annotation;
-		config = initConfig(config || {});
-		if (helpers.isArray(config.annotations)) {
-			chartInstance.annotations = buildAnnotations(config.annotations);
-		}
+	beforeInit: setup,
+	afterUpdate: function(chartInstance) {
+		setup(chartInstance) && updateAnnotations(chartInstance);
 	},
-	afterScaleUpdate: updateAnnotations,
 	afterDraw: function(chartInstance, easingDecimal) {
 		var config = chartInstance.options.annotation;
 		if (config.drawTime == Chart.Annotation.drawTimeOptions.AFTER) {
