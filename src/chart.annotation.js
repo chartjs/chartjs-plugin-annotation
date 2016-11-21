@@ -2,126 +2,116 @@
 var Chart = require('chart.js');
 Chart = typeof(Chart) === 'function' ? Chart : window.Chart;
 var helpers = Chart.helpers;
-var isArray = helpers.isArray;
 
-// Take the zoom namespace of Chart
+// Configure plugin namespace
 Chart.Annotation = Chart.Annotation || {};
 
-// Default options if none are provided
-Chart.Annotation.defaults = {
-	drawTime: "afterDraw", // defaults to drawing after draw
-	annotations: [] // default to no annotations
-};
-
-var lineAnnotation = require('./line.js')(Chart);
-var boxAnnotation = require('./box.js')(Chart);
-
-// Map of all types
-Chart.Annotation.annotationTypes = {
-	line: lineAnnotation.Constructor,
-	box: boxAnnotation.Constructor
-};
-
-// Map of all update functions
-Chart.Annotation.updateFunctions = {
-	line: lineAnnotation.update,
-	box: boxAnnotation.update
-};
+var DRAW_AFTER = 'afterDraw';
+var DRAW_AFTER_DATASETS = 'afterDatasetsDraw';
+var DRAW_BEFORE_DATASETS = 'beforeDatasetsDraw';
 
 Chart.Annotation.drawTimeOptions = {
-	afterDraw: "afterDraw",
-	afterDatasetsDraw: "afterDatasetsDraw",
-	beforeDatasetsDraw: "beforeDatasetsDraw",
+	afterDraw: DRAW_AFTER,
+	afterDatasetsDraw: DRAW_AFTER_DATASETS,
+	beforeDatasetsDraw: DRAW_BEFORE_DATASETS
 };
 
-function drawAnnotations(drawTime, chartInstance, easingDecimal) {
-	var annotationOpts = chartInstance.options.annotation;
-	if (annotationOpts.drawTime != drawTime) {
-		return;
-	}
-	// If we have annotations, draw them
-	var annotationObjects = chartInstance._annotationObjects;
-	if (isArray(annotationObjects)) {
-		var ctx = chartInstance.chart.ctx;
+var annotationTypes =
+Chart.Annotation.types = {
+	line: require('./line.js')(Chart),
+	box: require('./box.js')(Chart)
+};
 
-		annotationObjects.forEach(function(obj) {
-			obj.transition(easingDecimal).draw(ctx);
+// Default plugin options
+var annotationDefaults =
+Chart.Annotation.defaults = {
+	drawTime: DRAW_AFTER,
+	annotations: []
+};
+
+// Default annotation label options
+var labelDefaults =
+Chart.Annotation.labelDefaults = {
+	backgroundColor: 'rgba(0,0,0,0.8)',
+	fontFamily: Chart.defaults.global.defaultFontFamily,
+	fontSize: Chart.defaults.global.defaultFontSize,
+	fontStyle: 'bold',
+	fontColor: '#fff',
+	xPadding: 6,
+	yPadding: 6,
+	cornerRadius: 6,
+	position: 'center',
+	xAdjust: 0,
+	yAdjust: 0,
+	enabled: false,
+	content: null
+};
+
+function drawAnnotations(chartInstance, easingDecimal) {
+	if (helpers.isArray(chartInstance.annotations)) {
+		chartInstance.annotations.forEach(function(annotation) {
+			annotation.transition(easingDecimal)
+				.draw(chartInstance.chart.ctx);
 		});
 	}
 }
 
-// Chartjs Zoom Plugin
+function initConfig(config) {
+	config = helpers.configMerge(annotationDefaults, config);
+	if (helpers.isArray(config.annotations)) {
+		config.annotations.forEach(function(annotation) {
+			annotation.label = helpers.configMerge(labelDefaults, annotation.label);
+		});
+	}
+	return config;
+}
+
+function buildAnnotations(configs) {
+	return configs
+		.filter(function(config) {
+			return !!annotationTypes[config.type];
+		})
+		.map(function(config, i) {
+			var annotation = annotationTypes[config.type];
+			return new annotation({
+				_index: i,
+				config: config
+			});
+		});
+}
+
 var annotationPlugin = {
-	beforeInit: function(chartInstance) {
-		var options = chartInstance.options;
-		options.annotation = helpers.configMerge(Chart.Annotation.defaults, options.annotation);
-		var defaultLabelOptions = {
-			backgroundColor: 'rgba(0,0,0,0.8)',
-			fontFamily: options.defaultFontFamily,
-			fontSize: options.defaultFontSize,
-			fontStyle: "bold",
-			fontColor: "#fff",
-			xPadding: 6,
-			yPadding: 6,
-			cornerRadius: 6,
-			position: "center",
-			xAdjust: 0,
-			yAdjust: 0,
-			enabled: false,
-			content: null
-		};
-		var annotationConfigs = options.annotation.annotations;
-		if (isArray(annotationConfigs)) {
-			var annotationObjects = chartInstance._annotationObjects = [];
+	afterUpdate: function(chartInstance) {
+		// Build the configuration with all the defaults set
+		var config = chartInstance.options.annotation;
+		config = initConfig(config || {});
 
-			annotationConfigs.forEach(function(configuration, i) {
-				configuration.label = helpers.configMerge(defaultLabelOptions, configuration.label);
-				var Constructor = Chart.Annotation.annotationTypes[configuration.type];
-				if (Constructor) {
-					annotationObjects.push(new Constructor({
-						_index: i
-					}));
-				}
+		if (helpers.isArray(config.annotations)) {
+			chartInstance.annotations = buildAnnotations(config.annotations);
+			chartInstance.annotations._config = config;
+
+			chartInstance.annotations.forEach(function(annotation) {
+				annotation.configure(annotation.config, chartInstance);
 			});
 		}
 	},
-	afterScaleUpdate: function(chartInstance) {
-		// Once scales are ready, update
-		var annotationObjects = chartInstance._annotationObjects;
-		var annotationOpts = chartInstance.options.annotation;
-
-		if (isArray(annotationObjects)) {
-			annotationObjects.forEach(function(annotationObject) {
-				var opts = annotationOpts.annotations[annotationObject._index];
-				var updateFunction = Chart.Annotation.updateFunctions[opts.type];
-
-				if (updateFunction) {
-					updateFunction(annotationObject, opts, chartInstance);
-				}
-			});
-		}
-	},
-
 	afterDraw: function(chartInstance, easingDecimal) {
-		drawAnnotations(
-			Chart.Annotation.drawTimeOptions.afterDraw,
-			chartInstance,
-			easingDecimal
-		);
+		var config = chartInstance.annotations._config;
+		if (config.drawTime == DRAW_AFTER) {
+			drawAnnotations(chartInstance, easingDecimal);
+		}
 	},
 	afterDatasetsDraw: function(chartInstance, easingDecimal) {
-		drawAnnotations(
-			Chart.Annotation.drawTimeOptions.afterDatasetsDraw,
-			chartInstance,
-			easingDecimal
-		);
+		var config = chartInstance.annotations._config;
+		if (config.drawTime == DRAW_AFTER_DATASETS) {
+			drawAnnotations(chartInstance, easingDecimal);
+		}
 	},
 	beforeDatasetsDraw: function(chartInstance, easingDecimal) {
-		drawAnnotations(
-			Chart.Annotation.drawTimeOptions.beforeDatasetsDraw,
-			chartInstance,
-			easingDecimal
-		);
+		var config = chartInstance.annotations._config;
+		if (config.drawTime == DRAW_BEFORE_DATASETS) {
+			drawAnnotations(chartInstance, easingDecimal);
+		}
 	}
 };
 

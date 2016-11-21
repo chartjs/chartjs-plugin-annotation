@@ -13,6 +13,45 @@
 // Box Annotation implementation
 module.exports = function(Chart) {
 	var BoxAnnotation = Chart.Element.extend({
+		configure: function(options, chartInstance) {
+			var model = this._model = this._model || {};
+
+			var xScale = chartInstance.scales[options.xScaleID];
+			var yScale = chartInstance.scales[options.yScaleID];
+			var chartArea = chartInstance.chartArea;
+
+			var left = chartArea.left, 
+				top = chartArea.top, 
+				right = chartArea.right, 
+				bottom = chartArea.bottom;
+
+			var min,max;
+
+			if (xScale) {
+				min = isValid(options.xMin) ? xScale.getPixelForValue(options.xMin) : chartArea.left;
+				max = isValid(options.xMax) ? xScale.getPixelForValue(options.xMax) : chartArea.right;
+				left = Math.min(min, max);
+				right = Math.max(min, max);
+			}
+
+			if (yScale) {
+				min = isValid(options.yMin) ? yScale.getPixelForValue(options.yMin) : chartArea.bottom;
+				max = isValid(options.yMax) ? yScale.getPixelForValue(options.yMax) : chartArea.top;
+				top = Math.min(min, max);
+				bottom = Math.max(min, max);
+			}
+
+			// Ensure model has rect coordinates
+			model.left = left;
+			model.top = top;
+			model.right = right;
+			model.bottom = bottom;
+
+			// Stylistic options
+			model.borderColor = options.borderColor;
+			model.borderWidth = options.borderWidth;
+			model.backgroundColor = options.backgroundColor;
+		},
 		draw: function(ctx) {
 			var view = this._view;
 
@@ -33,52 +72,7 @@ module.exports = function(Chart) {
 		return !isNaN(num) && isFinite(num);
 	}
 
-	// Function that updates a box annotation
-	function boxUpdate(obj, options, chartInstance) {
-		var model = obj._model = obj._model || {};
-
-		var xScale = chartInstance.scales[options.xScaleID];
-		var yScale = chartInstance.scales[options.yScaleID];
-		var chartArea = chartInstance.chartArea;
-
-		var left = chartArea.left, 
-			top = chartArea.top, 
-			right = chartArea.right, 
-			bottom = chartArea.bottom;
-
-		var min,max;
-
-		if (xScale) {
-			min = isValid(options.xMin) ? xScale.getPixelForValue(options.xMin) : chartArea.left;
-			max = isValid(options.xMax) ? xScale.getPixelForValue(options.xMax) : chartArea.right;
-			left = Math.min(min, max);
-			right = Math.max(min, max);
-		}
-
-		if (yScale) {
-			min = isValid(options.yMin) ? yScale.getPixelForValue(options.yMin) : chartArea.bottom;
-			max = isValid(options.yMax) ? yScale.getPixelForValue(options.yMax) : chartArea.top;
-			top = Math.min(min, max);
-			bottom = Math.max(min, max);
-		}
-
-		// Ensure model has rect coordinates
-		model.left = left;
-		model.top = top;
-		model.right = right;
-		model.bottom = bottom;
-
-		// Stylistic options
-		model.borderColor = options.borderColor;
-		model.borderWidth = options.borderWidth;
-		model.backgroundColor = options.backgroundColor;
-	}
-
-
-	return {
-		Constructor: BoxAnnotation,
-		update: boxUpdate
-	};
+	return BoxAnnotation;
 };
 
 },{}],3:[function(require,module,exports){
@@ -86,126 +80,116 @@ module.exports = function(Chart) {
 var Chart = require('chart.js');
 Chart = typeof(Chart) === 'function' ? Chart : window.Chart;
 var helpers = Chart.helpers;
-var isArray = helpers.isArray;
 
-// Take the zoom namespace of Chart
+// Configure plugin namespace
 Chart.Annotation = Chart.Annotation || {};
 
-// Default options if none are provided
-Chart.Annotation.defaults = {
-	drawTime: "afterDraw", // defaults to drawing after draw
-	annotations: [] // default to no annotations
-};
-
-var lineAnnotation = require('./line.js')(Chart);
-var boxAnnotation = require('./box.js')(Chart);
-
-// Map of all types
-Chart.Annotation.annotationTypes = {
-	line: lineAnnotation.Constructor,
-	box: boxAnnotation.Constructor
-};
-
-// Map of all update functions
-Chart.Annotation.updateFunctions = {
-	line: lineAnnotation.update,
-	box: boxAnnotation.update
-};
+var DRAW_AFTER = 'afterDraw';
+var DRAW_AFTER_DATASETS = 'afterDatasetsDraw';
+var DRAW_BEFORE_DATASETS = 'beforeDatasetsDraw';
 
 Chart.Annotation.drawTimeOptions = {
-	afterDraw: "afterDraw",
-	afterDatasetsDraw: "afterDatasetsDraw",
-	beforeDatasetsDraw: "beforeDatasetsDraw",
+	afterDraw: DRAW_AFTER,
+	afterDatasetsDraw: DRAW_AFTER_DATASETS,
+	beforeDatasetsDraw: DRAW_BEFORE_DATASETS
 };
 
-function drawAnnotations(drawTime, chartInstance, easingDecimal) {
-	var annotationOpts = chartInstance.options.annotation;
-	if (annotationOpts.drawTime != drawTime) {
-		return;
-	}
-	// If we have annotations, draw them
-	var annotationObjects = chartInstance._annotationObjects;
-	if (isArray(annotationObjects)) {
-		var ctx = chartInstance.chart.ctx;
+var annotationTypes =
+Chart.Annotation.types = {
+	line: require('./line.js')(Chart),
+	box: require('./box.js')(Chart)
+};
 
-		annotationObjects.forEach(function(obj) {
-			obj.transition(easingDecimal).draw(ctx);
+// Default plugin options
+var annotationDefaults =
+Chart.Annotation.defaults = {
+	drawTime: DRAW_AFTER,
+	annotations: []
+};
+
+// Default annotation label options
+var labelDefaults =
+Chart.Annotation.labelDefaults = {
+	backgroundColor: 'rgba(0,0,0,0.8)',
+	fontFamily: Chart.defaults.global.defaultFontFamily,
+	fontSize: Chart.defaults.global.defaultFontSize,
+	fontStyle: 'bold',
+	fontColor: '#fff',
+	xPadding: 6,
+	yPadding: 6,
+	cornerRadius: 6,
+	position: 'center',
+	xAdjust: 0,
+	yAdjust: 0,
+	enabled: false,
+	content: null
+};
+
+function drawAnnotations(chartInstance, easingDecimal) {
+	if (helpers.isArray(chartInstance.annotations)) {
+		chartInstance.annotations.forEach(function(annotation) {
+			annotation.transition(easingDecimal)
+				.draw(chartInstance.chart.ctx);
 		});
 	}
 }
 
-// Chartjs Zoom Plugin
+function initConfig(config) {
+	config = helpers.configMerge(annotationDefaults, config);
+	if (helpers.isArray(config.annotations)) {
+		config.annotations.forEach(function(annotation) {
+			annotation.label = helpers.configMerge(labelDefaults, annotation.label);
+		});
+	}
+	return config;
+}
+
+function buildAnnotations(configs) {
+	return configs
+		.filter(function(config) {
+			return !!annotationTypes[config.type];
+		})
+		.map(function(config, i) {
+			var annotation = annotationTypes[config.type];
+			return new annotation({
+				_index: i,
+				config: config
+			});
+		});
+}
+
 var annotationPlugin = {
-	beforeInit: function(chartInstance) {
-		var options = chartInstance.options;
-		options.annotation = helpers.configMerge(Chart.Annotation.defaults, options.annotation);
-		var defaultLabelOptions = {
-			backgroundColor: 'rgba(0,0,0,0.8)',
-			fontFamily: options.defaultFontFamily,
-			fontSize: options.defaultFontSize,
-			fontStyle: "bold",
-			fontColor: "#fff",
-			xPadding: 6,
-			yPadding: 6,
-			cornerRadius: 6,
-			position: "center",
-			xAdjust: 0,
-			yAdjust: 0,
-			enabled: false,
-			content: null
-		};
-		var annotationConfigs = options.annotation.annotations;
-		if (isArray(annotationConfigs)) {
-			var annotationObjects = chartInstance._annotationObjects = [];
+	afterUpdate: function(chartInstance) {
+		// Build the configuration with all the defaults set
+		var config = chartInstance.options.annotation;
+		config = initConfig(config || {});
 
-			annotationConfigs.forEach(function(configuration, i) {
-				configuration.label = helpers.configMerge(defaultLabelOptions, configuration.label);
-				var Constructor = Chart.Annotation.annotationTypes[configuration.type];
-				if (Constructor) {
-					annotationObjects.push(new Constructor({
-						_index: i
-					}));
-				}
+		if (helpers.isArray(config.annotations)) {
+			chartInstance.annotations = buildAnnotations(config.annotations);
+			chartInstance.annotations._config = config;
+
+			chartInstance.annotations.forEach(function(annotation) {
+				annotation.configure(annotation.config, chartInstance);
 			});
 		}
 	},
-	afterScaleUpdate: function(chartInstance) {
-		// Once scales are ready, update
-		var annotationObjects = chartInstance._annotationObjects;
-		var annotationOpts = chartInstance.options.annotation;
-
-		if (isArray(annotationObjects)) {
-			annotationObjects.forEach(function(annotationObject) {
-				var opts = annotationOpts.annotations[annotationObject._index];
-				var updateFunction = Chart.Annotation.updateFunctions[opts.type];
-
-				if (updateFunction) {
-					updateFunction(annotationObject, opts, chartInstance);
-				}
-			});
-		}
-	},
-
 	afterDraw: function(chartInstance, easingDecimal) {
-		drawAnnotations(
-			Chart.Annotation.drawTimeOptions.afterDraw,
-			chartInstance,
-			easingDecimal
-		);
+		var config = chartInstance.annotations._config;
+		if (config.drawTime == DRAW_AFTER) {
+			drawAnnotations(chartInstance, easingDecimal);
+		}
 	},
 	afterDatasetsDraw: function(chartInstance, easingDecimal) {
-		drawAnnotations(
-			Chart.Annotation.drawTimeOptions.afterDatasetsDraw,
-			chartInstance,
-			easingDecimal
-		);
+		var config = chartInstance.annotations._config;
+		if (config.drawTime == DRAW_AFTER_DATASETS) {
+			drawAnnotations(chartInstance, easingDecimal);
+		}
 	},
 	beforeDatasetsDraw: function(chartInstance, easingDecimal) {
-		drawAnnotations(
-			Chart.Annotation.drawTimeOptions.beforeDatasetsDraw,
-			chartInstance,
-			easingDecimal
-		);
+		var config = chartInstance.annotations._config;
+		if (config.drawTime == DRAW_BEFORE_DATASETS) {
+			drawAnnotations(chartInstance, easingDecimal);
+		}
 	}
 };
 
@@ -224,7 +208,62 @@ module.exports = function(Chart) {
 	var verticalKeyword = 'vertical';
 
 	var LineAnnotation = Chart.Element.extend({
+		configure: function(options, chartInstance) {
+			var model = this._model = helpers.clone(this._model) || {};
 
+			var scale = chartInstance.scales[options.scaleID];
+			var pixel = scale ? scale.getPixelForValue(options.value) : NaN;
+			var endPixel = scale && isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : NaN;
+			if (isNaN(endPixel))
+			    endPixel = pixel;
+			var chartArea = chartInstance.chartArea;
+			var ctx = chartInstance.chart.ctx;
+
+			if (!isNaN(pixel)) {
+				if (options.mode == horizontalKeyword) {
+					model.x1 = chartArea.left;
+					model.x2 = chartArea.right;
+					model.y1 = pixel;
+					model.y2 = endPixel;
+				} else {
+					model.y1 = chartArea.top;
+					model.y2 = chartArea.bottom;
+					model.x1 = pixel;
+					model.x2 = endPixel;
+				}
+			}
+
+			model.mode = options.mode;
+
+			// Figure out the label:
+			model.labelBackgroundColor = options.label.backgroundColor;
+			model.labelFontFamily = options.label.fontFamily;
+			model.labelFontSize = options.label.fontSize;
+			model.labelFontStyle = options.label.fontStyle;
+			model.labelFontColor = options.label.fontColor;
+			model.labelXPadding = options.label.xPadding;
+			model.labelYPadding = options.label.yPadding;
+			model.labelCornerRadius = options.label.cornerRadius;
+			model.labelPosition = options.label.position;
+			model.labelXAdjust = options.label.xAdjust;
+			model.labelYAdjust = options.label.yAdjust;
+			model.labelEnabled = options.label.enabled;
+			model.labelContent = options.label.content;
+
+			ctx.font = helpers.fontString(model.labelFontSize, model.labelFontStyle, model.labelFontFamily);
+			var textWidth = ctx.measureText(model.labelContent).width;
+			var textHeight = ctx.measureText('M').width;
+			var labelPosition = calculateLabelPosition(model, textWidth, textHeight, model.labelXPadding, model.labelYPadding);
+			model.labelX = labelPosition.x - model.labelXPadding;
+			model.labelY = labelPosition.y - model.labelYPadding;
+			model.labelWidth = textWidth + (2 * model.labelXPadding);
+			model.labelHeight = textHeight + (2 * model.labelYPadding);
+
+			model.borderColor = options.borderColor;
+			model.borderWidth = options.borderWidth;
+			model.borderDash = options.borderDash || [];
+			model.borderDashOffset = options.borderDashOffset || 0;
+		},
 		draw: function(ctx) {
 			var view = this._view;
 
@@ -339,68 +378,7 @@ module.exports = function(Chart) {
 		return ret;
 	}
 
-	function lineUpdate(obj, options, chartInstance) {
-		var model = obj._model = helpers.clone(obj._model) || {};
-
-		var scale = chartInstance.scales[options.scaleID];
-		var pixel = scale ? scale.getPixelForValue(options.value) : NaN;
-		var endPixel = scale && isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : NaN;
-		if (isNaN(endPixel))
-		    endPixel = pixel;
-		var chartArea = chartInstance.chartArea;
-		var ctx = chartInstance.chart.ctx;
-
-		if (!isNaN(pixel)) {
-			if (options.mode == horizontalKeyword) {
-				model.x1 = chartArea.left;
-				model.x2 = chartArea.right;
-				model.y1 = pixel;
-				model.y2 = endPixel;
-			} else {
-				model.y1 = chartArea.top;
-				model.y2 = chartArea.bottom;
-				model.x1 = pixel;
-				model.x2 = endPixel;
-			}
-		}
-
-		model.mode = options.mode;
-
-		// Figure out the label:
-		model.labelBackgroundColor = options.label.backgroundColor;
-		model.labelFontFamily = options.label.fontFamily;
-		model.labelFontSize = options.label.fontSize;
-		model.labelFontStyle = options.label.fontStyle;
-		model.labelFontColor = options.label.fontColor;
-		model.labelXPadding = options.label.xPadding;
-		model.labelYPadding = options.label.yPadding;
-		model.labelCornerRadius = options.label.cornerRadius;
-		model.labelPosition = options.label.position;
-		model.labelXAdjust = options.label.xAdjust;
-		model.labelYAdjust = options.label.yAdjust;
-		model.labelEnabled = options.label.enabled;
-		model.labelContent = options.label.content;
-
-		ctx.font = helpers.fontString(model.labelFontSize, model.labelFontStyle, model.labelFontFamily);
-		var textWidth = ctx.measureText(model.labelContent).width;
-		var textHeight = ctx.measureText('M').width;
-		var labelPosition = calculateLabelPosition(model, textWidth, textHeight, model.labelXPadding, model.labelYPadding);
-		model.labelX = labelPosition.x - model.labelXPadding;
-		model.labelY = labelPosition.y - model.labelYPadding;
-		model.labelWidth = textWidth + (2 * model.labelXPadding);
-		model.labelHeight = textHeight + (2 * model.labelYPadding);
-
-		model.borderColor = options.borderColor;
-		model.borderWidth = options.borderWidth;
-		model.borderDash = options.borderDash || [];
-		model.borderDashOffset = options.borderDashOffset || 0;
-	}
-
-
-	return {
-		Constructor: LineAnnotation,
-		update: lineUpdate
-	};
+	return LineAnnotation;
 };
 
 },{"chart.js":1}]},{},[3]);
