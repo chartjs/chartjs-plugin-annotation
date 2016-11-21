@@ -6,24 +6,31 @@ var helpers = Chart.helpers;
 // Configure plugin namespace
 Chart.Annotation = Chart.Annotation || {};
 
+var DRAW_AFTER = 'afterDraw';
+var DRAW_AFTER_DATASETS = 'afterDatasetsDraw';
+var DRAW_BEFORE_DATASETS = 'beforeDatasetsDraw';
+
 Chart.Annotation.drawTimeOptions = {
-	AFTER: 'afterDraw',
-	AFTER_DATASETS: 'afterDatasetsDraw',
-	BEFORE_DATASETS: 'beforeDatasetsDraw',
+	afterDraw: DRAW_AFTER,
+	afterDatasetsDraw: DRAW_AFTER_DATASETS,
+	beforeDatasetsDraw: DRAW_BEFORE_DATASETS
 };
 
+var annotationTypes =
 Chart.Annotation.types = {
 	line: require('./line.js')(Chart),
 	box: require('./box.js')(Chart)
 };
 
 // Default plugin options
+var annotationDefaults =
 Chart.Annotation.defaults = {
-	drawTime: Chart.Annotation.drawTimeOptions.AFTER,
+	drawTime: DRAW_AFTER,
 	annotations: []
 };
 
 // Default annotation label options
+var labelDefaults =
 Chart.Annotation.labelDefaults = {
 	backgroundColor: 'rgba(0,0,0,0.8)',
 	fontFamily: Chart.defaults.global.defaultFontFamily,
@@ -49,22 +56,11 @@ function drawAnnotations(chartInstance, easingDecimal) {
 	}
 }
 
-function updateAnnotations(chartInstance) {
-	if (helpers.isArray(chartInstance.annotations)) {
-		chartInstance.annotations.forEach(function(annotation) {
-			var type = Chart.Annotation.types[annotation.config.type];
-			if (type) {
-				type.update(annotation, annotation.config, chartInstance);
-			}
-		});
-	}
-}
-
 function initConfig(config) {
-	config = helpers.configMerge(Chart.Annotation.defaults, config);
+	config = helpers.configMerge(annotationDefaults, config);
 	if (helpers.isArray(config.annotations)) {
 		config.annotations.forEach(function(annotation) {
-			annotation.label = helpers.configMerge(Chart.Annotation.labelDefaults, annotation.label);
+			annotation.label = helpers.configMerge(labelDefaults, annotation.label);
 		});
 	}
 	return config;
@@ -73,47 +69,47 @@ function initConfig(config) {
 function buildAnnotations(configs) {
 	return configs
 		.filter(function(config) {
-			return !!Chart.Annotation.types[config.type];
+			return !!annotationTypes[config.type];
 		})
 		.map(function(config, i) {
-			var annotation = Chart.Annotation.types[config.type];
-			return new annotation.class({
+			var annotation = annotationTypes[config.type];
+			return new annotation({
 				_index: i,
 				config: config
 			});
 		});
 }
 
-function setup(chartInstance) {
-	var config = chartInstance.options.annotation;
-	config = initConfig(config || {});
-	if (helpers.isArray(config.annotations)) {
-		chartInstance.annotations = buildAnnotations(config.annotations);
-		return true;
-	}
-}
-
-// Chartjs Zoom Plugin
 var annotationPlugin = {
-	beforeInit: setup,
 	afterUpdate: function(chartInstance) {
-		setup(chartInstance) && updateAnnotations(chartInstance);
+		// Build the configuration with all the defaults set
+		var config = chartInstance.options.annotation;
+		config = initConfig(config || {});
+
+		if (helpers.isArray(config.annotations)) {
+			chartInstance.annotations = buildAnnotations(config.annotations);
+			chartInstance.annotations._config = config;
+
+			chartInstance.annotations.forEach(function(annotation) {
+				annotation.configure(annotation.config, chartInstance);
+			});
+		}
 	},
 	afterDraw: function(chartInstance, easingDecimal) {
-		var config = chartInstance.options.annotation;
-		if (config.drawTime == Chart.Annotation.drawTimeOptions.AFTER) {
+		var config = chartInstance.annotations._config;
+		if (config.drawTime == DRAW_AFTER) {
 			drawAnnotations(chartInstance, easingDecimal);
 		}
 	},
 	afterDatasetsDraw: function(chartInstance, easingDecimal) {
-		var config = chartInstance.options.annotation;
-		if (config.drawTime == Chart.Annotation.drawTimeOptions.AFTER_DATASETS) {
+		var config = chartInstance.annotations._config;
+		if (config.drawTime == DRAW_AFTER_DATASETS) {
 			drawAnnotations(chartInstance, easingDecimal);
 		}
 	},
 	beforeDatasetsDraw: function(chartInstance, easingDecimal) {
-		var config = chartInstance.options.annotation;
-		if (config.drawTime == Chart.Annotation.drawTimeOptions.BEFORE_DATASETS) {
+		var config = chartInstance.annotations._config;
+		if (config.drawTime == DRAW_BEFORE_DATASETS) {
 			drawAnnotations(chartInstance, easingDecimal);
 		}
 	}
