@@ -9,7 +9,62 @@ module.exports = function(Chart) {
 	var verticalKeyword = 'vertical';
 
 	var LineAnnotation = Chart.Element.extend({
+		configure: function(options, chartInstance) {
+			var model = this._model = helpers.clone(this._model) || {};
 
+			var scale = chartInstance.scales[options.scaleID];
+			var pixel = scale ? scale.getPixelForValue(options.value) : NaN;
+			var endPixel = scale && isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : NaN;
+			if (isNaN(endPixel))
+			    endPixel = pixel;
+			var chartArea = chartInstance.chartArea;
+			var ctx = chartInstance.chart.ctx;
+
+			if (!isNaN(pixel)) {
+				if (options.mode == horizontalKeyword) {
+					model.x1 = chartArea.left;
+					model.x2 = chartArea.right;
+					model.y1 = pixel;
+					model.y2 = endPixel;
+				} else {
+					model.y1 = chartArea.top;
+					model.y2 = chartArea.bottom;
+					model.x1 = pixel;
+					model.x2 = endPixel;
+				}
+			}
+
+			model.mode = options.mode;
+
+			// Figure out the label:
+			model.labelBackgroundColor = options.label.backgroundColor;
+			model.labelFontFamily = options.label.fontFamily;
+			model.labelFontSize = options.label.fontSize;
+			model.labelFontStyle = options.label.fontStyle;
+			model.labelFontColor = options.label.fontColor;
+			model.labelXPadding = options.label.xPadding;
+			model.labelYPadding = options.label.yPadding;
+			model.labelCornerRadius = options.label.cornerRadius;
+			model.labelPosition = options.label.position;
+			model.labelXAdjust = options.label.xAdjust;
+			model.labelYAdjust = options.label.yAdjust;
+			model.labelEnabled = options.label.enabled;
+			model.labelContent = options.label.content;
+
+			ctx.font = helpers.fontString(model.labelFontSize, model.labelFontStyle, model.labelFontFamily);
+			var textWidth = ctx.measureText(model.labelContent).width;
+			var textHeight = ctx.measureText('M').width;
+			var labelPosition = calculateLabelPosition(model, textWidth, textHeight, model.labelXPadding, model.labelYPadding);
+			model.labelX = labelPosition.x - model.labelXPadding;
+			model.labelY = labelPosition.y - model.labelYPadding;
+			model.labelWidth = textWidth + (2 * model.labelXPadding);
+			model.labelHeight = textHeight + (2 * model.labelYPadding);
+
+			model.borderColor = options.borderColor;
+			model.borderWidth = options.borderWidth;
+			model.borderDash = options.borderDash || [];
+			model.borderDashOffset = options.borderDashOffset || 0;
+		},
 		draw: function(ctx) {
 			var view = this._view;
 
@@ -124,66 +179,5 @@ module.exports = function(Chart) {
 		return ret;
 	}
 
-	function lineUpdate(obj, options, chartInstance) {
-		var model = obj._model = helpers.clone(obj._model) || {};
-
-		var scale = chartInstance.scales[options.scaleID];
-		var pixel = scale ? scale.getPixelForValue(options.value) : NaN;
-		var endPixel = scale && isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : NaN;
-		if (isNaN(endPixel))
-		    endPixel = pixel;
-		var chartArea = chartInstance.chartArea;
-		var ctx = chartInstance.chart.ctx;
-
-		if (!isNaN(pixel)) {
-			if (options.mode == horizontalKeyword) {
-				model.x1 = chartArea.left;
-				model.x2 = chartArea.right;
-				model.y1 = pixel;
-				model.y2 = endPixel;
-			} else {
-				model.y1 = chartArea.top;
-				model.y2 = chartArea.bottom;
-				model.x1 = pixel;
-				model.x2 = endPixel;
-			}
-		}
-
-		model.mode = options.mode;
-
-		// Figure out the label:
-		model.labelBackgroundColor = options.label.backgroundColor;
-		model.labelFontFamily = options.label.fontFamily;
-		model.labelFontSize = options.label.fontSize;
-		model.labelFontStyle = options.label.fontStyle;
-		model.labelFontColor = options.label.fontColor;
-		model.labelXPadding = options.label.xPadding;
-		model.labelYPadding = options.label.yPadding;
-		model.labelCornerRadius = options.label.cornerRadius;
-		model.labelPosition = options.label.position;
-		model.labelXAdjust = options.label.xAdjust;
-		model.labelYAdjust = options.label.yAdjust;
-		model.labelEnabled = options.label.enabled;
-		model.labelContent = options.label.content;
-
-		ctx.font = helpers.fontString(model.labelFontSize, model.labelFontStyle, model.labelFontFamily);
-		var textWidth = ctx.measureText(model.labelContent).width;
-		var textHeight = ctx.measureText('M').width;
-		var labelPosition = calculateLabelPosition(model, textWidth, textHeight, model.labelXPadding, model.labelYPadding);
-		model.labelX = labelPosition.x - model.labelXPadding;
-		model.labelY = labelPosition.y - model.labelYPadding;
-		model.labelWidth = textWidth + (2 * model.labelXPadding);
-		model.labelHeight = textHeight + (2 * model.labelYPadding);
-
-		model.borderColor = options.borderColor;
-		model.borderWidth = options.borderWidth;
-		model.borderDash = options.borderDash || [];
-		model.borderDashOffset = options.borderDashOffset || 0;
-	}
-
-
-	return {
-		class: LineAnnotation,
-		update: lineUpdate
-	};
+	return LineAnnotation;
 };
