@@ -1,7 +1,7 @@
 // Get the chart variable
 var Chart = require('chart.js');
 Chart = typeof(Chart) === 'function' ? Chart : window.Chart;
-var helpers = Chart.helpers;
+var chartHelpers = Chart.helpers;
 
 // Line Annotation implementation
 module.exports = function(Chart) {
@@ -10,7 +10,7 @@ module.exports = function(Chart) {
 
 	var LineAnnotation = Chart.Element.extend({
 		configure: function(options, chartInstance) {
-			var model = this._model = helpers.clone(this._model) || {};
+			var model = this._model = chartHelpers.clone(this._model) || {};
 
 			var scale = chartInstance.scales[options.scaleID];
 			var pixel = scale ? scale.getPixelForValue(options.value) : NaN;
@@ -59,7 +59,7 @@ module.exports = function(Chart) {
 			model.labelEnabled = options.label.enabled;
 			model.labelContent = options.label.content;
 
-			ctx.font = helpers.fontString(model.labelFontSize, model.labelFontStyle, model.labelFontFamily);
+			ctx.font = chartHelpers.fontString(model.labelFontSize, model.labelFontStyle, model.labelFontFamily);
 			var textWidth = ctx.measureText(model.labelContent).width;
 			var textHeight = ctx.measureText('M').width;
 			var labelPosition = calculateLabelPosition(model, textWidth, textHeight, model.labelXPadding, model.labelYPadding);
@@ -104,7 +104,7 @@ module.exports = function(Chart) {
 
 				ctx.fillStyle = view.labelBackgroundColor;
 				// Draw the tooltip
-				helpers.drawRoundedRectangle(
+				chartHelpers.drawRoundedRectangle(
 					ctx,
 					view.labelX, // x
 					view.labelY, // y
@@ -115,7 +115,7 @@ module.exports = function(Chart) {
 				ctx.fill();
 
 				// Draw the text
-				ctx.font = helpers.fontString(
+				ctx.font = chartHelpers.fontString(
 					view.labelFontSize,
 					view.labelFontStyle,
 					view.labelFontFamily
