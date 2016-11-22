@@ -18,8 +18,8 @@ Chart.Annotation.drawTimeOptions = {
 
 var annotationTypes =
 Chart.Annotation.types = {
-	line: require('./line.js')(Chart),
-	box: require('./box.js')(Chart)
+	line: require('./types/line.js')(Chart),
+	box: require('./types/box.js')(Chart)
 };
 
 // Default plugin options
