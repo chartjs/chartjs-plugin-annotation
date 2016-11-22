@@ -10,10 +10,31 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 
 },{}],2:[function(require,module,exports){
+function isValid(num) {
+	return !isNaN(num) && isFinite(num);
+}
+
+function decorate(obj, prop, func) {
+	var prefix = '$';
+	if (!obj[prefix + prop]) {
+		obj[prefix + prop] = obj[prop].bind(obj);
+		obj[prop] = function() {
+			return func(obj[prefix + prop]);
+		};
+	}
+}
+
+module.exports = {
+	isValid: isValid,
+	decorate: decorate
+};
+
+},{}],3:[function(require,module,exports){
 // Get the chart variable
 var Chart = require('chart.js');
 Chart = typeof(Chart) === 'function' ? Chart : window.Chart;
-var helpers = Chart.helpers;
+var chartHelpers = Chart.helpers;
+var helpers = require('./helpers.js');
 
 // Configure plugin namespace
 Chart.Annotation = Chart.Annotation || {};
@@ -59,8 +80,8 @@ Chart.Annotation.labelDefaults = {
 	content: null
 };
 
-function drawAnnotations(chartInstance, easingDecimal) {
-	if (helpers.isArray(chartInstance.annotations)) {
+function draw(chartInstance, easingDecimal) {
+	if (chartHelpers.isArray(chartInstance.annotations)) {
 		chartInstance.annotations.forEach(function(annotation) {
 			annotation.transition(easingDecimal)
 				.draw(chartInstance.chart.ctx);
@@ -69,39 +90,95 @@ function drawAnnotations(chartInstance, easingDecimal) {
 }
 
 function initConfig(config) {
-	config = helpers.configMerge(annotationDefaults, config);
-	if (helpers.isArray(config.annotations)) {
+	config = chartHelpers.configMerge(annotationDefaults, config);
+	if (chartHelpers.isArray(config.annotations)) {
 		config.annotations.forEach(function(annotation) {
-			annotation.label = helpers.configMerge(labelDefaults, annotation.label);
+			annotation.label = chartHelpers.configMerge(labelDefaults, annotation.label);
 		});
 	}
 	return config;
 }
 
-function buildAnnotations(configs) {
+function build(configs, chartInstance) {
 	return configs
 		.filter(function(config) {
 			return !!annotationTypes[config.type];
 		})
 		.map(function(config, i) {
 			var annotation = annotationTypes[config.type];
-			return new annotation({
+			var annotationObject = new annotation({
 				_index: i,
 				config: config
 			});
+
+			// Set the data range for this annotation
+			annotationObject.setRanges(config, chartInstance);
+
+			return annotationObject;
 		});
 }
 
+function getScaleLimits(scaleId, annotations, scaleMin, scaleMax) {
+	var ranges = annotations.filter(function(annotation) {
+		return !!annotation._model.ranges[scaleId];
+	}).map(function(annotation) {
+		return annotation._model.ranges[scaleId];
+	});
+
+	var min = ranges.map(function(range) {
+		return Number(range.min);
+	}).reduce(function(a, b) {
+		return isFinite(b) && !isNaN(b) && b < a ? b : a;
+	}, scaleMin);
+
+	var max = ranges.map(function(range) {
+		return Number(range.max);
+	}).reduce(function(a, b) {
+		return isFinite(b) && !isNaN(b) && b > a ? b : a;
+	}, scaleMax);
+
+	return {
+		min: min,
+		max: max
+	};
+}
+
 var annotationPlugin = {
-	afterUpdate: function(chartInstance) {
+	beforeInit: function(chartInstance) {
+		// Decorate Chart.Controller.buildScales() so we can decorate each scale
+		// instance's determineDataLimits() method
+		helpers.decorate(chartInstance, 'buildScales', function(previous) {
+			previous();
+
+			// Decorate Chart.Scale.determineDataLimits() so we can
+			// check the annotation values and adjust the scale range
+			Object.keys(chartInstance.scales).forEach(function(scaleId) {
+				var scale = chartInstance.scales[scaleId];
+
+				helpers.decorate(scale, 'determineDataLimits', function(previous) {
+					previous();
+
+					if (chartInstance.annotations) {
+						var range = getScaleLimits(scaleId, chartInstance.annotations, scale.min, scale.max);
+						scale.min = range.min;
+						scale.max = range.max;
+					}
+				});
+			});
+		});
+	},
+	beforeUpdate: function(chartInstance) {
 		// Build the configuration with all the defaults set
 		var config = chartInstance.options.annotation;
 		config = initConfig(config || {});
 
-		if (helpers.isArray(config.annotations)) {
-			chartInstance.annotations = buildAnnotations(config.annotations);
+		if (chartHelpers.isArray(config.annotations)) {
+			chartInstance.annotations = build(config.annotations, chartInstance);
 			chartInstance.annotations._config = config;
-
+		}
+	},
+	afterScaleUpdate: function(chartInstance) {
+		if (chartHelpers.isArray(chartInstance.annotations)) {
 			chartInstance.annotations.forEach(function(annotation) {
 				annotation.configure(annotation.config, chartInstance);
 			});
@@ -110,19 +187,19 @@ var annotationPlugin = {
 	afterDraw: function(chartInstance, easingDecimal) {
 		var config = chartInstance.annotations._config;
 		if (config.drawTime == DRAW_AFTER) {
-			drawAnnotations(chartInstance, easingDecimal);
+			draw(chartInstance, easingDecimal);
 		}
 	},
 	afterDatasetsDraw: function(chartInstance, easingDecimal) {
 		var config = chartInstance.annotations._config;
 		if (config.drawTime == DRAW_AFTER_DATASETS) {
-			drawAnnotations(chartInstance, easingDecimal);
+			draw(chartInstance, easingDecimal);
 		}
 	},
 	beforeDatasetsDraw: function(chartInstance, easingDecimal) {
 		var config = chartInstance.annotations._config;
 		if (config.drawTime == DRAW_BEFORE_DATASETS) {
-			drawAnnotations(chartInstance, easingDecimal);
+			draw(chartInstance, easingDecimal);
 		}
 	}
 };
@@ -130,10 +207,40 @@ var annotationPlugin = {
 module.exports = annotationPlugin;
 Chart.pluginService.register(annotationPlugin);
 
-},{"./types/box.js":3,"./types/line.js":4,"chart.js":1}],3:[function(require,module,exports){
+},{"./helpers.js":2,"./types/box.js":4,"./types/line.js":5,"chart.js":1}],4:[function(require,module,exports){
+var helpers = require('../helpers.js');
+
 // Box Annotation implementation
 module.exports = function(Chart) {
 	var BoxAnnotation = Chart.Element.extend({
+		setRanges: function(options, chartInstance) {
+			var model = this._model = this._model || {};
+
+			var xScale = chartInstance.scales[options.xScaleID];
+			var yScale = chartInstance.scales[options.yScaleID];
+
+			model.ranges = {};
+
+			if (xScale) {
+				min = helpers.isValid(options.xMin) ? options.xMin : xScale.getPixelForValue(chartArea.left);
+				max = helpers.isValid(options.xMax) ? options.xMax : xScale.getPixelForValue(chartArea.right);
+
+				model.ranges[options.xScaleID] = {
+					min: Math.min(min, max),
+					max: Math.max(min, max)
+				};
+			}
+
+			if (yScale) {
+				min = helpers.isValid(options.yMin) ? options.yMin : yScale.getPixelForValue(chartArea.bottom);
+				max = helpers.isValid(options.yMax) ? options.yMax : yScale.getPixelForValue(chartArea.top);
+
+				model.ranges[options.yScaleID] = {
+					min: Math.min(min, max),
+					max: Math.max(min, max)
+				};
+			}
+		},
 		configure: function(options, chartInstance) {
 			var model = this._model = this._model || {};
 
@@ -154,18 +261,18 @@ module.exports = function(Chart) {
 				right = chartArea.right, 
 				bottom = chartArea.bottom;
 
-			var min,max;
+			var min, max;
 
 			if (xScale) {
-				min = isValid(options.xMin) ? xScale.getPixelForValue(options.xMin) : chartArea.left;
-				max = isValid(options.xMax) ? xScale.getPixelForValue(options.xMax) : chartArea.right;
+				min = helpers.isValid(options.xMin) ? xScale.getPixelForValue(options.xMin) : chartArea.left;
+				max = helpers.isValid(options.xMax) ? xScale.getPixelForValue(options.xMax) : chartArea.right;
 				left = Math.min(min, max);
 				right = Math.max(min, max);
 			}
 
 			if (yScale) {
-				min = isValid(options.yMin) ? yScale.getPixelForValue(options.yMin) : chartArea.bottom;
-				max = isValid(options.yMax) ? yScale.getPixelForValue(options.yMax) : chartArea.top;
+				min = helpers.isValid(options.yMin) ? yScale.getPixelForValue(options.yMin) : chartArea.bottom;
+				max = helpers.isValid(options.yMax) ? yScale.getPixelForValue(options.yMax) : chartArea.top;
 				top = Math.min(min, max);
 				bottom = Math.max(min, max);
 			}
@@ -202,18 +309,15 @@ module.exports = function(Chart) {
 		}
 	});
 
-	function isValid(num) {
-		return !isNaN(num) && isFinite(num);
-	}
-
 	return BoxAnnotation;
 };
 
-},{}],4:[function(require,module,exports){
+},{"../helpers.js":2}],5:[function(require,module,exports){
 // Get the chart variable
 var Chart = require('chart.js');
 Chart = typeof(Chart) === 'function' ? Chart : window.Chart;
-var helpers = Chart.helpers;
+var chartHelpers = Chart.helpers;
+var helpers = require('../helpers.js');
 
 // Line Annotation implementation
 module.exports = function(Chart) {
@@ -221,14 +325,25 @@ module.exports = function(Chart) {
 	var verticalKeyword = 'vertical';
 
 	var LineAnnotation = Chart.Element.extend({
+		setRanges: function(options) {
+			var model = this._model = chartHelpers.clone(this._model) || {};
+
+			model.ranges = {};
+			model.ranges[options.scaleID] = {
+				min: options.value,
+				max: options.endValue || options.value
+			};
+		},
 		configure: function(options, chartInstance) {
-			var model = this._model = helpers.clone(this._model) || {};
+			var model = this._model = chartHelpers.clone(this._model) || {};
 
 			var scale = chartInstance.scales[options.scaleID];
-			var pixel = scale ? scale.getPixelForValue(options.value) : NaN;
-			var endPixel = scale && isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : NaN;
-			if (isNaN(endPixel))
-			    endPixel = pixel;
+			var pixel, endPixel;
+			if (scale) {
+				pixel = helpers.isValid(options.value) ? scale.getPixelForValue(options.value) : NaN;
+				endPixel = helpers.isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : pixel;
+			}
+
 			var chartArea = chartInstance.chartArea;
 			var ctx = chartInstance.chart.ctx;
 
@@ -271,7 +386,7 @@ module.exports = function(Chart) {
 			model.labelEnabled = options.label.enabled;
 			model.labelContent = options.label.content;
 
-			ctx.font = helpers.fontString(model.labelFontSize, model.labelFontStyle, model.labelFontFamily);
+			ctx.font = chartHelpers.fontString(model.labelFontSize, model.labelFontStyle, model.labelFontFamily);
 			var textWidth = ctx.measureText(model.labelContent).width;
 			var textHeight = ctx.measureText('M').width;
 			var labelPosition = calculateLabelPosition(model, textWidth, textHeight, model.labelXPadding, model.labelYPadding);
@@ -316,7 +431,7 @@ module.exports = function(Chart) {
 
 				ctx.fillStyle = view.labelBackgroundColor;
 				// Draw the tooltip
-				helpers.drawRoundedRectangle(
+				chartHelpers.drawRoundedRectangle(
 					ctx,
 					view.labelX, // x
 					view.labelY, // y
@@ -327,7 +442,7 @@ module.exports = function(Chart) {
 				ctx.fill();
 
 				// Draw the text
-				ctx.font = helpers.fontString(
+				ctx.font = chartHelpers.fontString(
 					view.labelFontSize,
 					view.labelFontStyle,
 					view.labelFontFamily
@@ -343,10 +458,6 @@ module.exports = function(Chart) {
 			}
 		}
 	});
-
-	function isValid(num) {
-		return !isNaN(num) && isFinite(num);
-	}
 
 	function calculateLabelPosition(view, width, height, padWidth, padHeight) {
 		// Describe the line in slope-intercept form (y = mx + b).
@@ -410,4 +521,4 @@ module.exports = function(Chart) {
 	return LineAnnotation;
 };
 
-},{"chart.js":1}]},{},[2]);
+},{"../helpers.js":2,"chart.js":1}]},{},[3]);

@@ -1,8 +1,36 @@
-var helpers = require('../helpers');
+var helpers = require('../helpers.js');
 
 // Box Annotation implementation
 module.exports = function(Chart) {
 	var BoxAnnotation = Chart.Element.extend({
+		setRanges: function(options, chartInstance) {
+			var model = this._model = this._model || {};
+
+			var xScale = chartInstance.scales[options.xScaleID];
+			var yScale = chartInstance.scales[options.yScaleID];
+
+			model.ranges = {};
+
+			if (xScale) {
+				min = helpers.isValid(options.xMin) ? options.xMin : xScale.getPixelForValue(chartArea.left);
+				max = helpers.isValid(options.xMax) ? options.xMax : xScale.getPixelForValue(chartArea.right);
+
+				model.ranges[options.xScaleID] = {
+					min: Math.min(min, max),
+					max: Math.max(min, max)
+				};
+			}
+
+			if (yScale) {
+				min = helpers.isValid(options.yMin) ? options.yMin : yScale.getPixelForValue(chartArea.bottom);
+				max = helpers.isValid(options.yMax) ? options.yMax : yScale.getPixelForValue(chartArea.top);
+
+				model.ranges[options.yScaleID] = {
+					min: Math.min(min, max),
+					max: Math.max(min, max)
+				};
+			}
+		},
 		configure: function(options, chartInstance) {
 			var model = this._model = this._model || {};
 
@@ -23,7 +51,7 @@ module.exports = function(Chart) {
 				right = chartArea.right, 
 				bottom = chartArea.bottom;
 
-			var min,max;
+			var min, max;
 
 			if (xScale) {
 				min = helpers.isValid(options.xMin) ? xScale.getPixelForValue(options.xMin) : chartArea.left;

@@ -2,7 +2,7 @@
 var Chart = require('chart.js');
 Chart = typeof(Chart) === 'function' ? Chart : window.Chart;
 var chartHelpers = Chart.helpers;
-var helpers = require('../helpers');
+var helpers = require('../helpers.js');
 
 // Line Annotation implementation
 module.exports = function(Chart) {
@@ -10,14 +10,25 @@ module.exports = function(Chart) {
 	var verticalKeyword = 'vertical';
 
 	var LineAnnotation = Chart.Element.extend({
+		setRanges: function(options) {
+			var model = this._model = chartHelpers.clone(this._model) || {};
+
+			model.ranges = {};
+			model.ranges[options.scaleID] = {
+				min: options.value,
+				max: options.endValue || options.value
+			};
+		},
 		configure: function(options, chartInstance) {
 			var model = this._model = chartHelpers.clone(this._model) || {};
 
 			var scale = chartInstance.scales[options.scaleID];
-			var pixel = scale ? scale.getPixelForValue(options.value) : NaN;
-			var endPixel = scale && helpers.isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : NaN;
-			if (isNaN(endPixel))
-			    endPixel = pixel;
+			var pixel, endPixel;
+			if (scale) {
+				pixel = helpers.isValid(options.value) ? scale.getPixelForValue(options.value) : NaN;
+				endPixel = helpers.isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : pixel;
+			}
+
 			var chartArea = chartInstance.chartArea;
 			var ctx = chartInstance.chart.ctx;
 

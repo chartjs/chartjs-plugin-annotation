@@ -93,7 +93,7 @@
             type: 'line',
             mode: 'horizontal',
             scaleID: 'y-axis-1',
-            value: randomScalingFactor(),
+            value: randomScalingFactor() + 50,
             borderColor: randomColor(0.75),
             borderWidth: 5
         }];
@@ -109,6 +109,7 @@
                     },
                     scales: {
                         xAxes: [{
+                            id: 'x-axis-1',
                             position: 'top',
                             gridLines: {
                                 zeroLineColor: "rgba(0,255,0,1)"
@@ -123,6 +124,7 @@
                             }
                         }],
                         yAxes: [{
+                            id: 'y-axis-1',
                             position: 'right',
                             gridLines: {
                                 zeroLineColor: "rgba(0,255,0,1)"
@@ -149,7 +151,7 @@
                 type: 'line',
                 mode: 'horizontal',
                 scaleID: 'y-axis-1',
-                value: randomScalingFactor(),
+                value: randomScalingFactor() * 3,
                 borderColor: randomColor(0.75),
                 borderWidth: 5
             });
