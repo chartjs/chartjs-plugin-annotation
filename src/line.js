@@ -20,6 +20,14 @@ module.exports = function(Chart) {
 			var chartArea = chartInstance.chartArea;
 			var ctx = chartInstance.chart.ctx;
 
+			// clip annotations to the chart area
+			model.clip = {
+				x1: chartArea.left,
+				x2: chartArea.right,
+				y1: chartArea.top,
+				y2: chartArea.bottom
+			};
+
 			if (!isNaN(pixel)) {
 				if (options.mode == horizontalKeyword) {
 					model.x1 = chartArea.left;
@@ -70,6 +78,10 @@ module.exports = function(Chart) {
 
 			// Canvas setup
 			ctx.save();
+			ctx.beginPath();
+			ctx.rect(view.clip.x1, view.clip.y1, view.clip.x2 - view.clip.x1, view.clip.y2 - view.clip.y1);
+			ctx.clip();
+
 			ctx.lineWidth = view.borderWidth;
 			ctx.strokeStyle = view.borderColor;
 
@@ -86,6 +98,10 @@ module.exports = function(Chart) {
 			ctx.restore();
 
 			if (view.labelEnabled && view.labelContent) {
+				ctx.beginPath();
+				ctx.rect(view.clip.x1, view.clip.y1, view.clip.x2 - view.clip.x1, view.clip.y2 - view.clip.y1);
+				ctx.clip();
+
 				ctx.fillStyle = view.labelBackgroundColor;
 				// Draw the tooltip
 				helpers.drawRoundedRectangle(
