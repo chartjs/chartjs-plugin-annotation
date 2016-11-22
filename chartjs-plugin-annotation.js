@@ -10,72 +10,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 
 },{}],2:[function(require,module,exports){
-// Box Annotation implementation
-module.exports = function(Chart) {
-	var BoxAnnotation = Chart.Element.extend({
-		configure: function(options, chartInstance) {
-			var model = this._model = this._model || {};
-
-			var xScale = chartInstance.scales[options.xScaleID];
-			var yScale = chartInstance.scales[options.yScaleID];
-			var chartArea = chartInstance.chartArea;
-
-			var left = chartArea.left, 
-				top = chartArea.top, 
-				right = chartArea.right, 
-				bottom = chartArea.bottom;
-
-			var min,max;
-
-			if (xScale) {
-				min = isValid(options.xMin) ? xScale.getPixelForValue(options.xMin) : chartArea.left;
-				max = isValid(options.xMax) ? xScale.getPixelForValue(options.xMax) : chartArea.right;
-				left = Math.min(min, max);
-				right = Math.max(min, max);
-			}
-
-			if (yScale) {
-				min = isValid(options.yMin) ? yScale.getPixelForValue(options.yMin) : chartArea.bottom;
-				max = isValid(options.yMax) ? yScale.getPixelForValue(options.yMax) : chartArea.top;
-				top = Math.min(min, max);
-				bottom = Math.max(min, max);
-			}
-
-			// Ensure model has rect coordinates
-			model.left = left;
-			model.top = top;
-			model.right = right;
-			model.bottom = bottom;
-
-			// Stylistic options
-			model.borderColor = options.borderColor;
-			model.borderWidth = options.borderWidth;
-			model.backgroundColor = options.backgroundColor;
-		},
-		draw: function(ctx) {
-			var view = this._view;
-
-			// Canvas setup
-			ctx.lineWidth = view.borderWidth;
-			ctx.strokeStyle = view.borderColor;
-			ctx.fillStyle = view.backgroundColor;
-
-			// Draw
-			var width = view.right - view.left,
-				height = view.bottom - view.top;
-			ctx.fillRect(view.left, view.top, width, height);
-			ctx.strokeRect(view.left, view.top, width, height);
-		}
-	});
-
-	function isValid(num) {
-		return !isNaN(num) && isFinite(num);
-	}
-
-	return BoxAnnotation;
-};
-
-},{}],3:[function(require,module,exports){
 // Get the chart variable
 var Chart = require('chart.js');
 Chart = typeof(Chart) === 'function' ? Chart : window.Chart;
@@ -96,8 +30,8 @@ Chart.Annotation.drawTimeOptions = {
 
 var annotationTypes =
 Chart.Annotation.types = {
-	line: require('./line.js')(Chart),
-	box: require('./box.js')(Chart)
+	line: require('./types/line.js')(Chart),
+	box: require('./types/box.js')(Chart)
 };
 
 // Default plugin options
@@ -196,7 +130,86 @@ var annotationPlugin = {
 module.exports = annotationPlugin;
 Chart.pluginService.register(annotationPlugin);
 
-},{"./box.js":2,"./line.js":4,"chart.js":1}],4:[function(require,module,exports){
+},{"./types/box.js":3,"./types/line.js":4,"chart.js":1}],3:[function(require,module,exports){
+// Box Annotation implementation
+module.exports = function(Chart) {
+	var BoxAnnotation = Chart.Element.extend({
+		configure: function(options, chartInstance) {
+			var model = this._model = this._model || {};
+
+			var xScale = chartInstance.scales[options.xScaleID];
+			var yScale = chartInstance.scales[options.yScaleID];
+			var chartArea = chartInstance.chartArea;
+
+			// clip annotations to the chart area
+			model.clip = {
+				x1: chartArea.left,
+				x2: chartArea.right,
+				y1: chartArea.top,
+				y2: chartArea.bottom
+			};
+
+			var left = chartArea.left, 
+				top = chartArea.top, 
+				right = chartArea.right, 
+				bottom = chartArea.bottom;
+
+			var min,max;
+
+			if (xScale) {
+				min = isValid(options.xMin) ? xScale.getPixelForValue(options.xMin) : chartArea.left;
+				max = isValid(options.xMax) ? xScale.getPixelForValue(options.xMax) : chartArea.right;
+				left = Math.min(min, max);
+				right = Math.max(min, max);
+			}
+
+			if (yScale) {
+				min = isValid(options.yMin) ? yScale.getPixelForValue(options.yMin) : chartArea.bottom;
+				max = isValid(options.yMax) ? yScale.getPixelForValue(options.yMax) : chartArea.top;
+				top = Math.min(min, max);
+				bottom = Math.max(min, max);
+			}
+
+			// Ensure model has rect coordinates
+			model.left = left;
+			model.top = top;
+			model.right = right;
+			model.bottom = bottom;
+
+			// Stylistic options
+			model.borderColor = options.borderColor;
+			model.borderWidth = options.borderWidth;
+			model.backgroundColor = options.backgroundColor;
+		},
+		draw: function(ctx) {
+			var view = this._view;
+
+			// Canvas setup
+			ctx.save();
+			ctx.beginPath();
+			ctx.rect(view.clip.x1, view.clip.y1, view.clip.x2 - view.clip.x1, view.clip.y2 - view.clip.y1);
+			ctx.clip();
+
+			ctx.lineWidth = view.borderWidth;
+			ctx.strokeStyle = view.borderColor;
+			ctx.fillStyle = view.backgroundColor;
+
+			// Draw
+			var width = view.right - view.left,
+				height = view.bottom - view.top;
+			ctx.fillRect(view.left, view.top, width, height);
+			ctx.strokeRect(view.left, view.top, width, height);
+		}
+	});
+
+	function isValid(num) {
+		return !isNaN(num) && isFinite(num);
+	}
+
+	return BoxAnnotation;
+};
+
+},{}],4:[function(require,module,exports){
 // Get the chart variable
 var Chart = require('chart.js');
 Chart = typeof(Chart) === 'function' ? Chart : window.Chart;
@@ -218,6 +231,14 @@ module.exports = function(Chart) {
 			    endPixel = pixel;
 			var chartArea = chartInstance.chartArea;
 			var ctx = chartInstance.chart.ctx;
+
+			// clip annotations to the chart area
+			model.clip = {
+				x1: chartArea.left,
+				x2: chartArea.right,
+				y1: chartArea.top,
+				y2: chartArea.bottom
+			};
 
 			if (!isNaN(pixel)) {
 				if (options.mode == horizontalKeyword) {
@@ -269,6 +290,10 @@ module.exports = function(Chart) {
 
 			// Canvas setup
 			ctx.save();
+			ctx.beginPath();
+			ctx.rect(view.clip.x1, view.clip.y1, view.clip.x2 - view.clip.x1, view.clip.y2 - view.clip.y1);
+			ctx.clip();
+
 			ctx.lineWidth = view.borderWidth;
 			ctx.strokeStyle = view.borderColor;
 
@@ -285,6 +310,10 @@ module.exports = function(Chart) {
 			ctx.restore();
 
 			if (view.labelEnabled && view.labelContent) {
+				ctx.beginPath();
+				ctx.rect(view.clip.x1, view.clip.y1, view.clip.x2 - view.clip.x1, view.clip.y2 - view.clip.y1);
+				ctx.clip();
+
 				ctx.fillStyle = view.labelBackgroundColor;
 				// Draw the tooltip
 				helpers.drawRoundedRectangle(
@@ -381,4 +410,4 @@ module.exports = function(Chart) {
 	return LineAnnotation;
 };
 
-},{"chart.js":1}]},{},[3]);
+},{"chart.js":1}]},{},[2]);
