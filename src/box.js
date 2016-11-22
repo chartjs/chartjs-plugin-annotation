@@ -8,6 +8,14 @@ module.exports = function(Chart) {
 			var yScale = chartInstance.scales[options.yScaleID];
 			var chartArea = chartInstance.chartArea;
 
+			// clip annotations to the chart area
+			model.clip = {
+				x1: chartArea.left,
+				x2: chartArea.right,
+				y1: chartArea.top,
+				y2: chartArea.bottom
+			};
+
 			var left = chartArea.left, 
 				top = chartArea.top, 
 				right = chartArea.right, 
@@ -44,6 +52,11 @@ module.exports = function(Chart) {
 			var view = this._view;
 
 			// Canvas setup
+			ctx.save();
+			ctx.beginPath();
+			ctx.rect(view.clip.x1, view.clip.y1, view.clip.x2 - view.clip.x1, view.clip.y2 - view.clip.y1);
+			ctx.clip();
+
 			ctx.lineWidth = view.borderWidth;
 			ctx.strokeStyle = view.borderColor;
 			ctx.fillStyle = view.backgroundColor;
