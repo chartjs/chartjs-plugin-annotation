@@ -1,3 +1,5 @@
+var helpers = require('../helpers');
+
 // Box Annotation implementation
 module.exports = function(Chart) {
 	var BoxAnnotation = Chart.Element.extend({
@@ -24,15 +26,15 @@ module.exports = function(Chart) {
 			var min,max;
 
 			if (xScale) {
-				min = isValid(options.xMin) ? xScale.getPixelForValue(options.xMin) : chartArea.left;
-				max = isValid(options.xMax) ? xScale.getPixelForValue(options.xMax) : chartArea.right;
+				min = helpers.isValid(options.xMin) ? xScale.getPixelForValue(options.xMin) : chartArea.left;
+				max = helpers.isValid(options.xMax) ? xScale.getPixelForValue(options.xMax) : chartArea.right;
 				left = Math.min(min, max);
 				right = Math.max(min, max);
 			}
 
 			if (yScale) {
-				min = isValid(options.yMin) ? yScale.getPixelForValue(options.yMin) : chartArea.bottom;
-				max = isValid(options.yMax) ? yScale.getPixelForValue(options.yMax) : chartArea.top;
+				min = helpers.isValid(options.yMin) ? yScale.getPixelForValue(options.yMin) : chartArea.bottom;
+				max = helpers.isValid(options.yMax) ? yScale.getPixelForValue(options.yMax) : chartArea.top;
 				top = Math.min(min, max);
 				bottom = Math.max(min, max);
 			}
@@ -68,10 +70,6 @@ module.exports = function(Chart) {
 			ctx.strokeRect(view.left, view.top, width, height);
 		}
 	});
-
-	function isValid(num) {
-		return !isNaN(num) && isFinite(num);
-	}
 
 	return BoxAnnotation;
 };

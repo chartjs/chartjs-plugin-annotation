@@ -2,6 +2,7 @@
 var Chart = require('chart.js');
 Chart = typeof(Chart) === 'function' ? Chart : window.Chart;
 var chartHelpers = Chart.helpers;
+var helpers = require('../helpers');
 
 // Line Annotation implementation
 module.exports = function(Chart) {
@@ -14,7 +15,7 @@ module.exports = function(Chart) {
 
 			var scale = chartInstance.scales[options.scaleID];
 			var pixel = scale ? scale.getPixelForValue(options.value) : NaN;
-			var endPixel = scale && isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : NaN;
+			var endPixel = scale && helpers.isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : NaN;
 			if (isNaN(endPixel))
 			    endPixel = pixel;
 			var chartArea = chartInstance.chartArea;
@@ -131,10 +132,6 @@ module.exports = function(Chart) {
 			}
 		}
 	});
-
-	function isValid(num) {
-		return !isNaN(num) && isFinite(num);
-	}
 
 	function calculateLabelPosition(view, width, height, padWidth, padHeight) {
 		// Describe the line in slope-intercept form (y = mx + b).

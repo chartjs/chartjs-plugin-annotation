@@ -1,7 +1,7 @@
 // Get the chart variable
 var Chart = require('chart.js');
 Chart = typeof(Chart) === 'function' ? Chart : window.Chart;
-var helpers = Chart.helpers;
+var chartHelpers = Chart.helpers;
 
 // Configure plugin namespace
 Chart.Annotation = Chart.Annotation || {};
@@ -48,7 +48,7 @@ Chart.Annotation.labelDefaults = {
 };
 
 function drawAnnotations(chartInstance, easingDecimal) {
-	if (helpers.isArray(chartInstance.annotations)) {
+	if (chartHelpers.isArray(chartInstance.annotations)) {
 		chartInstance.annotations.forEach(function(annotation) {
 			annotation.transition(easingDecimal)
 				.draw(chartInstance.chart.ctx);
@@ -57,10 +57,10 @@ function drawAnnotations(chartInstance, easingDecimal) {
 }
 
 function initConfig(config) {
-	config = helpers.configMerge(annotationDefaults, config);
-	if (helpers.isArray(config.annotations)) {
+	config = chartHelpers.configMerge(annotationDefaults, config);
+	if (chartHelpers.isArray(config.annotations)) {
 		config.annotations.forEach(function(annotation) {
-			annotation.label = helpers.configMerge(labelDefaults, annotation.label);
+			annotation.label = chartHelpers.configMerge(labelDefaults, annotation.label);
 		});
 	}
 	return config;
@@ -86,7 +86,7 @@ var annotationPlugin = {
 		var config = chartInstance.options.annotation;
 		config = initConfig(config || {});
 
-		if (helpers.isArray(config.annotations)) {
+		if (chartHelpers.isArray(config.annotations)) {
 			chartInstance.annotations = buildAnnotations(config.annotations);
 			chartInstance.annotations._config = config;
 
