@@ -1,7 +1,7 @@
 {
   "name": "chartjs-plugin-annotation",
   "description": "Annotations for Chart.js",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "license": "MIT",
   "main": "chartjs-plugin-annotation.js",
   "repository": {

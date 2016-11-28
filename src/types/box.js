@@ -8,6 +8,7 @@ module.exports = function(Chart) {
 
 			var xScale = chartInstance.scales[options.xScaleID];
 			var yScale = chartInstance.scales[options.yScaleID];
+			var chartArea = chartInstance.chartArea;
 
 			model.ranges = {};
 

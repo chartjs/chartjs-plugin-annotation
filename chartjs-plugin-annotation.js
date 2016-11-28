@@ -1,7 +1,7 @@
 /*!
  * chartjs-plugin-annotation.js
  * http://chartjs.org/
- * Version: 0.4.1
+ * Version: 0.4.2
  *
  * Copyright 2016 Evert Timberg
  * Released under the MIT license
@@ -218,6 +218,7 @@ module.exports = function(Chart) {
 
 			var xScale = chartInstance.scales[options.xScaleID];
 			var yScale = chartInstance.scales[options.yScaleID];
+			var chartArea = chartInstance.chartArea;
 
 			model.ranges = {};
 
