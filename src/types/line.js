@@ -1,7 +1,8 @@
 // Get the chart variable
 var Chart = require('chart.js');
 Chart = typeof(Chart) === 'function' ? Chart : window.Chart;
-var helpers = Chart.helpers;
+var chartHelpers = Chart.helpers;
+var helpers = require('../helpers.js');
 
 // Line Annotation implementation
 module.exports = function(Chart) {
@@ -9,14 +10,25 @@ module.exports = function(Chart) {
 	var verticalKeyword = 'vertical';
 
 	var LineAnnotation = Chart.Element.extend({
+		setRanges: function(options) {
+			var model = this._model = chartHelpers.clone(this._model) || {};
+
+			model.ranges = {};
+			model.ranges[options.scaleID] = {
+				min: options.value,
+				max: options.endValue || options.value
+			};
+		},
 		configure: function(options, chartInstance) {
-			var model = this._model = helpers.clone(this._model) || {};
+			var model = this._model = chartHelpers.clone(this._model) || {};
 
 			var scale = chartInstance.scales[options.scaleID];
-			var pixel = scale ? scale.getPixelForValue(options.value) : NaN;
-			var endPixel = scale && isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : NaN;
-			if (isNaN(endPixel))
-			    endPixel = pixel;
+			var pixel, endPixel;
+			if (scale) {
+				pixel = helpers.isValid(options.value) ? scale.getPixelForValue(options.value) : NaN;
+				endPixel = helpers.isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : pixel;
+			}
+
 			var chartArea = chartInstance.chartArea;
 			var ctx = chartInstance.chart.ctx;
 
@@ -59,7 +71,7 @@ module.exports = function(Chart) {
 			model.labelEnabled = options.label.enabled;
 			model.labelContent = options.label.content;
 
-			ctx.font = helpers.fontString(model.labelFontSize, model.labelFontStyle, model.labelFontFamily);
+			ctx.font = chartHelpers.fontString(model.labelFontSize, model.labelFontStyle, model.labelFontFamily);
 			var textWidth = ctx.measureText(model.labelContent).width;
 			var textHeight = ctx.measureText('M').width;
 			var labelPosition = calculateLabelPosition(model, textWidth, textHeight, model.labelXPadding, model.labelYPadding);
@@ -104,7 +116,7 @@ module.exports = function(Chart) {
 
 				ctx.fillStyle = view.labelBackgroundColor;
 				// Draw the tooltip
-				helpers.drawRoundedRectangle(
+				chartHelpers.drawRoundedRectangle(
 					ctx,
 					view.labelX, // x
 					view.labelY, // y
@@ -115,7 +127,7 @@ module.exports = function(Chart) {
 				ctx.fill();
 
 				// Draw the text
-				ctx.font = helpers.fontString(
+				ctx.font = chartHelpers.fontString(
 					view.labelFontSize,
 					view.labelFontStyle,
 					view.labelFontFamily
@@ -131,10 +143,6 @@ module.exports = function(Chart) {
 			}
 		}
 	});
-
-	function isValid(num) {
-		return !isNaN(num) && isFinite(num);
-	}
 
 	function calculateLabelPosition(view, width, height, padWidth, padHeight) {
 		// Describe the line in slope-intercept form (y = mx + b).
