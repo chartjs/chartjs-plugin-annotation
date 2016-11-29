@@ -33,8 +33,11 @@ module.exports = function(Chart) {
 				endPixel = helpers.isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : pixel;
 			}
 
+			if (isNaN(pixel)) {
+				return;
+			}
+
 			var chartArea = chartInstance.chartArea;
-			var ctx = chartInstance.chart.ctx;
 
 			// clip annotations to the chart area
 			model.clip = {
@@ -44,18 +47,16 @@ module.exports = function(Chart) {
 				y2: chartArea.bottom
 			};
 
-			if (!isNaN(pixel)) {
-				if (options.mode == horizontalKeyword) {
-					model.x1 = chartArea.left;
-					model.x2 = chartArea.right;
-					model.y1 = pixel;
-					model.y2 = endPixel;
-				} else {
-					model.y1 = chartArea.top;
-					model.y2 = chartArea.bottom;
-					model.x1 = pixel;
-					model.x2 = endPixel;
-				}
+			if (this.options.mode == horizontalKeyword) {
+				model.x1 = chartArea.left;
+				model.x2 = chartArea.right;
+				model.y1 = pixel;
+				model.y2 = endPixel;
+			} else {
+				model.y1 = chartArea.top;
+				model.y2 = chartArea.bottom;
+				model.x1 = pixel;
+				model.x2 = endPixel;
 			}
 
 			model.mode = options.mode;
@@ -92,6 +93,10 @@ module.exports = function(Chart) {
 		draw: function() {
 			var view = this._view;
 			var ctx = this.ctx;
+			
+			if (!view.clip) {
+				return;
+			}
 
 			// Canvas setup
 			ctx.save();
