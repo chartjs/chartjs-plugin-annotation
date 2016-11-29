@@ -10,17 +10,21 @@ module.exports = function(Chart) {
 	var verticalKeyword = 'vertical';
 
 	var LineAnnotation = Chart.Element.extend({
-		setRanges: function(options) {
+		setRanges: function() {
 			var model = this._model = chartHelpers.clone(this._model) || {};
+			var options = this.options;
 
+			// Set the data range for this annotation
 			model.ranges = {};
 			model.ranges[options.scaleID] = {
 				min: options.value,
 				max: options.endValue || options.value
 			};
 		},
-		configure: function(options, chartInstance) {
+		configure: function() {
 			var model = this._model = chartHelpers.clone(this._model) || {};
+			var options = this.options;
+			var chartInstance = this.chartInstance;
 
 			var scale = chartInstance.scales[options.scaleID];
 			var pixel, endPixel;
@@ -85,8 +89,9 @@ module.exports = function(Chart) {
 			model.borderDash = options.borderDash || [];
 			model.borderDashOffset = options.borderDashOffset || 0;
 		},
-		draw: function(ctx) {
+		draw: function() {
 			var view = this._view;
+			var ctx = this.ctx;
 
 			// Canvas setup
 			ctx.save();

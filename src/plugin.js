@@ -76,11 +76,13 @@ function build(configs, chartInstance) {
 			var annotation = annotationTypes[config.type];
 			var annotationObject = new annotation({
 				_index: i,
-				config: config
+				options: config,
+				chartInstance: chartInstance,
+				ctx: chartInstance.chart.ctx
 			});
 
 			// Set the data range for this annotation
-			annotationObject.setRanges(config, chartInstance);
+			annotationObject.setRanges();
 
 			return annotationObject;
 		});
@@ -152,7 +154,7 @@ var annotationPlugin = {
 	afterScaleUpdate: function(chartInstance) {
 		if (chartHelpers.isArray(chartInstance.annotations)) {
 			chartInstance.annotations.forEach(function(annotation) {
-				annotation.configure(annotation.config, chartInstance);
+				annotation.configure();
 			});
 		}
 	},
