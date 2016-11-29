@@ -128,8 +128,12 @@ var annotationPlugin = {
 
 					if (chartInstance.annotations) {
 						var range = getScaleLimits(scaleId, chartInstance.annotations, scale.min, scale.max);
-						scale.min = range.min;
-						scale.max = range.max;
+						if (typeof scale.options.ticks.min === 'undefined' && typeof scale.options.ticks.suggestedMin === 'undefined') {
+							scale.min = range.min;
+						}
+						if (typeof scale.options.ticks.max === 'undefined' && typeof scale.options.ticks.suggestedMax === 'undefined') {
+							scale.max = range.max;
+						}
 					}
 				});
 			});
