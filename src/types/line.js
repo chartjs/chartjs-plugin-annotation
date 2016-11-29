@@ -1,16 +1,15 @@
 // Get the chart variable
-var Chart = require('chart.js');
-Chart = typeof(Chart) === 'function' ? Chart : window.Chart;
-var chartHelpers = Chart.helpers;
 var helpers = require('../helpers.js');
 
 // Line Annotation implementation
 module.exports = function(Chart) {
+	var chartHelpers = Chart.helpers;
+
 	var horizontalKeyword = 'horizontal';
 	var verticalKeyword = 'vertical';
 
-	var LineAnnotation = Chart.Element.extend({
-		setRanges: function() {
+	var LineAnnotation = Chart.Annotation.Element.extend({
+		setDataLimits: function() {
 			var model = this._model = chartHelpers.clone(this._model) || {};
 			var options = this.options;
 
@@ -59,6 +58,7 @@ module.exports = function(Chart) {
 				model.x2 = endPixel;
 			}
 
+			model.line = new LineFunction(model);
 			model.mode = options.mode;
 
 			// Figure out the label:
@@ -89,6 +89,25 @@ module.exports = function(Chart) {
 			model.borderWidth = options.borderWidth;
 			model.borderDash = options.borderDash || [];
 			model.borderDashOffset = options.borderDashOffset || 0;
+		},
+		inRange: function(mouseX, mouseY) {
+			var model = this._model || {};
+			return (model.line && model.line.intersects(mouseX, mouseY, this.getHeight()));
+		},
+		getCenterPoint: function() {
+			return {
+				x: (this._view.x2 + this._view.x1) / 2,
+				y: (this._view.y2 + this._view.y1) / 2
+			};
+		},
+		getWidth: function() {
+			return Math.abs(this._view.right - this._view.left);
+		},
+		getHeight: function() {
+			return this._view.borderWidth || 1;
+		},
+		getArea: function() {
+			return Math.sqrt(Math.pow(this.getWidth(), 2) + Math.pow(this.getHeight(), 2));
 		},
 		draw: function() {
 			var view = this._view;
@@ -154,21 +173,38 @@ module.exports = function(Chart) {
 		}
 	});
 
-	function calculateLabelPosition(view, width, height, padWidth, padHeight) {
+	function LineFunction(view) {
 		// Describe the line in slope-intercept form (y = mx + b).
 		// Note that the axes are rotated 90° CCW, which causes the
 		// x- and y-axes to be swapped.
 		var m = (view.x2 - view.x1) / (view.y2 - view.y1);
 		var b = view.x1 || 0;
 
-		var fy = function(y) {
+		this.m = m;
+		this.b = b;
+
+		this.getX = function(y) {
 			// Coordinates are relative to the origin of the canvas
 			return m * (y - view.y1) + b;
 		};
-		var fx = function(x) {
+
+		this.getY = function(x) {
 			return ((x - b) / m) + view.y1;
 		};
 
+		this.intersects = function(x, y, epsilon) {
+			epsilon = epsilon || 0.001;
+			var dy = this.getY(x),
+				dx = this.getX(y);
+			return (
+				(!isFinite(dy) || Math.abs(y - dy) < epsilon) && 
+				(!isFinite(dx) || Math.abs(x - dx) < epsilon)
+			);
+		};
+	}
+
+	function calculateLabelPosition(view, width, height, padWidth, padHeight) {
+		var line = view.line;
 		var ret = {}, xa = 0, ya = 0;
 
 		switch (true) {
@@ -177,7 +213,7 @@ module.exports = function(Chart) {
 				ya = padHeight + view.labelYAdjust;
 				xa = (width / 2) + view.labelXAdjust;
 				ret.y = view.y1 + ya;
-				ret.x = (isFinite(m) ? fy(ret.y) : view.x1) - xa;
+				ret.x = (isFinite(line.m) ? line.getY(ret.y) : view.x1) - xa;
 			break;
 			
 			// bottom align
@@ -185,7 +221,7 @@ module.exports = function(Chart) {
 				ya = height + padHeight + view.labelYAdjust;
 				xa = (width / 2) + view.labelXAdjust;
 				ret.y = view.y2 - ya;
-				ret.x = (isFinite(m) ? fy(ret.y) : view.x1) - xa;
+				ret.x = (isFinite(line.m) ? line.getX(ret.y) : view.x1) - xa;
 			break;
 			
 			// left align
@@ -193,7 +229,7 @@ module.exports = function(Chart) {
 				xa = padWidth + view.labelXAdjust;
 				ya = -(height / 2) + view.labelYAdjust;
 				ret.x = view.x1 + xa;
-				ret.y = fx(ret.x) + ya;
+				ret.y = line.getY(ret.x) + ya;
 			break;
 			
 			// right align
@@ -201,7 +237,7 @@ module.exports = function(Chart) {
 				xa = width + padWidth + view.labelXAdjust;
 				ya = -(height / 2) + view.labelYAdjust;
 				ret.x = view.x2 - xa;
-				ret.y = fx(ret.x) + ya;
+				ret.y = line.getY(ret.x) + ya;
 			break;
 
 			// center align

@@ -17,6 +17,8 @@ Chart.Annotation.drawTimeOptions = {
 	beforeDatasetsDraw: DRAW_BEFORE_DATASETS
 };
 
+Chart.Annotation.Element = require('./element.js')(Chart);
+
 var annotationTypes =
 Chart.Annotation.types = {
 	line: require('./types/line.js')(Chart),
@@ -27,6 +29,7 @@ Chart.Annotation.types = {
 var annotationDefaults =
 Chart.Annotation.defaults = {
 	drawTime: DRAW_AFTER,
+	events: [],
 	annotations: []
 };
 
@@ -51,8 +54,7 @@ Chart.Annotation.labelDefaults = {
 function draw(chartInstance, easingDecimal) {
 	if (chartHelpers.isArray(chartInstance.annotations)) {
 		chartInstance.annotations.forEach(function(annotation) {
-			annotation.transition(easingDecimal)
-				.draw(chartInstance.chart.ctx);
+			annotation.transition(easingDecimal).draw();
 		});
 	}
 }
@@ -80,41 +82,27 @@ function build(configs, chartInstance) {
 				chartInstance: chartInstance,
 				ctx: chartInstance.chart.ctx
 			});
-
-			// Set the data range for this annotation
-			annotationObject.setRanges();
-
+			annotationObject.initialize();
 			return annotationObject;
 		});
 }
 
-function getScaleLimits(scaleId, annotations, scaleMin, scaleMax) {
-	var ranges = annotations.filter(function(annotation) {
-		return !!annotation._model.ranges[scaleId];
-	}).map(function(annotation) {
-		return annotation._model.ranges[scaleId];
-	});
-
-	var min = ranges.map(function(range) {
-		return Number(range.min);
-	}).reduce(function(a, b) {
-		return isFinite(b) && !isNaN(b) && b < a ? b : a;
-	}, scaleMin);
-
-	var max = ranges.map(function(range) {
-		return Number(range.max);
-	}).reduce(function(a, b) {
-		return isFinite(b) && !isNaN(b) && b > a ? b : a;
-	}, scaleMax);
-
-	return {
-		min: min,
-		max: max
-	};
+function eventDispatcher(e) {
+	var position = chartHelpers.getRelativePosition(e, this.chart);
+	var element = helpers.getNearestItems(this.annotations, position);
+	var eventHandlerName = helpers.getEventHandlerName(e.type);
+	var options = (element || {}).options;
+	if (element && options[eventHandlerName]) {
+		e.stopImmediatePropagation();
+		e.preventDefault();
+		options[eventHandlerName].call(element, e);
+	}
 }
 
 var annotationPlugin = {
 	beforeInit: function(chartInstance) {
+		chartInstance.annotations = [];
+
 		// Decorate Chart.Controller.buildScales() so we can decorate each scale
 		// instance's determineDataLimits() method
 		helpers.decorate(chartInstance, 'buildScales', function(previous) {
@@ -129,7 +117,7 @@ var annotationPlugin = {
 					previous();
 
 					if (chartInstance.annotations) {
-						var range = getScaleLimits(scaleId, chartInstance.annotations, scale.min, scale.max);
+						var range = helpers.getScaleLimits(scaleId, chartInstance.annotations, scale.min, scale.max);
 						if (typeof scale.options.ticks.min === 'undefined' && typeof scale.options.ticks.suggestedMin === 'undefined') {
 							scale.min = range.min;
 						}
@@ -140,6 +128,23 @@ var annotationPlugin = {
 				});
 			});
 		});
+
+		// Detect and intercept events that happen on an annotation element
+		var config = chartInstance.options.annotation || {};
+		if (config.events) {
+			chartInstance._annotationEventHandler = eventDispatcher.bind(chartInstance);
+			config.events.forEach(function(eventName) {
+				chartHelpers.addEvent(chartInstance.chart.canvas, eventName, chartInstance._annotationEventHandler);
+			});
+		}
+	},
+	destroy: function(chartInstance) {
+		var config = chartInstance.annotations._config;
+		if (config.events.length > 0) {
+			config.events.forEach(function(eventName) {
+				chartHelpers.removeEvent(chartInstance.chart.canvas, eventName, chartInstance._annotationEventHandler);
+			});
+		}
 	},
 	beforeUpdate: function(chartInstance) {
 		// Build the configuration with all the defaults set
@@ -147,6 +152,9 @@ var annotationPlugin = {
 		config = initConfig(config || {});
 
 		if (chartHelpers.isArray(config.annotations)) {
+			chartInstance.annotations.forEach(function(annotation) {
+				annotation.destroy(chartInstance);
+			});
 			chartInstance.annotations = build(config.annotations, chartInstance);
 			chartInstance.annotations._config = config;
 		}

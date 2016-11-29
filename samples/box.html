@@ -128,6 +128,7 @@
                     },
                     annotation: {
                         drawTime: "afterDraw",
+                        events: ['dblclick'],
                         annotations: [{
                             type: 'box',
                             xScaleID: 'x-axis-1',
@@ -138,7 +139,10 @@
                             yMax: 20,
                             backgroundColor: 'rgba(101, 33, 171, 0.5)',
                             borderColor: 'rgb(101, 33, 171)',
-                            borderWidth: 1
+                            borderWidth: 1,
+                            onDblclick: function(e) {
+                                console.log('Box', e.type, this);
+                            }
                         }]
                     }
                 }

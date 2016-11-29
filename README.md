@@ -18,14 +18,28 @@ To configure the annotations plugin, you can simply add new config options to yo
 			scaleID: 'y-axis-0',
 			value: '25',
 			borderColor: 'red',
-			borderWidth: 2
+			borderWidth: 2,
+
+			// Fires when the user clicks this annotation on the chart
+			// (be sure to enable the event in the events array below).
+			onClick: function(e) {
+				// `this` is bound to the annotation element
+			}
 		}],
+
 		// Defines when the annotations are drawn.
 		// This allows positioning of the annotation relative to the other
 		// elements of the graph.
+		//
 		// Should be one of: afterDraw, afterDatasetsDraw, beforeDatasetsDraw
 		// See http://www.chartjs.org/docs/#advanced-usage-creating-plugins
-		drawTime: "afterDraw" // (default)
+		drawTime: 'afterDraw', // (default)
+
+		// Mouse events to enable on each annotation.
+		// Similar to the `events` common chart configuration option
+		// http://www.chartjs.org/docs/#chart-configuration-common-chart-configuration
+		// Should be an array of: mousemove, mousedown, mouseup, click, dblclick, contextmenu, wheel
+		events: ['click']
 	}
 }
 ```
@@ -36,6 +50,7 @@ Vertical or horizontal lines are supported.
 ```javascript
 {
 	type: 'line',
+
 	// set to 'vertical' to draw a vertical line
 	mode: 'horizontal',
 
@@ -105,7 +120,17 @@ Vertical or horizontal lines are supported.
 
 		// Text to display in label - default is null
 		content: "Test label"
-	}
+	},
+
+	// Mouse event handlers - be sure to enable the corresponding events in the
+	// annotation events array or the event handler will not be called.
+	onMousemove: function(e) {},
+	onMousedown: function(e) {},
+	onMouseup: function(e) {},
+	onClick: function(e) {},
+	onDblclick: function(e) {},
+	onContextmenu: function(e) {},
+	onWheel: function(e) {}
 }
 ```
 
@@ -143,12 +168,24 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 	borderWidth: 2,
 
 	// Fill color
-	backgroundColor: 'green'
+	backgroundColor: 'green',
+
+	// Mouse event handlers - be sure to enable the corresponding events in the
+	// annotation events array or the event handler will not be called.
+	onMousemove: function(e) {},
+	onMousedown: function(e) {},
+	onMouseup: function(e) {},
+	onClick: function(e) {},
+	onDblclick: function(e) {},
+	onContextmenu: function(e) {},
+	onWheel: function(e) {}
 }
 ```
 
 ## To-do Items
+
 The following features still need to be done:
+
 * Point Annotations
 * Text annotations
 
