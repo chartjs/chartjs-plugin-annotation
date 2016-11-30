@@ -2,14 +2,17 @@ var helpers = require('../helpers.js');
 
 // Box Annotation implementation
 module.exports = function(Chart) {
-	var BoxAnnotation = Chart.Element.extend({
-		setRanges: function(options, chartInstance) {
+	var BoxAnnotation = Chart.Annotation.Element.extend({
+		setDataLimits: function() {
 			var model = this._model = this._model || {};
+			var options = this.options;
+			var chartInstance = this.chartInstance;
 
 			var xScale = chartInstance.scales[options.xScaleID];
 			var yScale = chartInstance.scales[options.yScaleID];
 			var chartArea = chartInstance.chartArea;
 
+			// Set the data range for this annotation
 			model.ranges = {};
 
 			if (xScale) {
@@ -32,8 +35,10 @@ module.exports = function(Chart) {
 				};
 			}
 		},
-		configure: function(options, chartInstance) {
+		configure: function() {
 			var model = this._model = this._model || {};
+			var options = this.options;
+			var chartInstance = this.chartInstance;
 
 			var xScale = chartInstance.scales[options.xScaleID];
 			var yScale = chartInstance.scales[options.yScaleID];
@@ -79,8 +84,31 @@ module.exports = function(Chart) {
 			model.borderWidth = options.borderWidth;
 			model.backgroundColor = options.backgroundColor;
 		},
-		draw: function(ctx) {
+		inRange: function(mouseX, mouseY) {
+			return this._view &&
+				mouseX >= this._view.left && 
+				mouseX <= this._view.right && 
+				mouseY >= this._view.top && 
+				mouseY <= this._view.bottom;
+		},
+		getCenterPoint: function() {
+			return {
+				x: (this._view.right + this._view.left) / 2,
+				y: (this._view.bottom + this._view.top) / 2
+			};
+		},
+		getWidth: function() {
+			return Math.abs(this._view.right - this._view.left);
+		},
+		getHeight: function() {
+			return Math.abs(this._view.bottom - this._view.top);
+		},
+		getArea: function() {
+			return this.getWidth() * this.getHeight();
+		},
+		draw: function() {
 			var view = this._view;
+			var ctx = this.ctx;
 
 			// Canvas setup
 			ctx.save();

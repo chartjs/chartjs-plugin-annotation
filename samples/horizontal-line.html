@@ -127,14 +127,22 @@
                         }]
                     },
                     annotation: {
+                        events: ['click'],
                         annotations: [{
                             type: 'line',
                             mode: 'horizontal',
                             scaleID: 'y-axis-1',
                             value: 120,
                             borderColor: 'black',
-                            borderWidth: 5
+                            borderWidth: 5,
+                            onClick: function(e) {
+                                // The annotation is is bound to the `this` variable
+                                alert('Annotation ' + e.type);
+                            }
                         }]
+                    },
+                    onClick: function(e, annotation) {
+                        alert('Chart ' + e.type);
                     }
                 }
             });
