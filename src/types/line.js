@@ -24,6 +24,7 @@ module.exports = function(Chart) {
 			var model = this._model = chartHelpers.clone(this._model) || {};
 			var options = this.options;
 			var chartInstance = this.chartInstance;
+			var ctx = this.ctx;
 
 			var scale = chartInstance.scales[options.scaleID];
 			var pixel, endPixel;

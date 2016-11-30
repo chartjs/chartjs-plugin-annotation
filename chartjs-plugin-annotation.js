@@ -1,7 +1,7 @@
 /*!
  * chartjs-plugin-annotation.js
  * http://chartjs.org/
- * Version: 0.5.0
+ * Version: 0.5.1
  *
  * Copyright 2016 Evert Timberg
  * Released under the MIT license
@@ -469,6 +469,7 @@ module.exports = function(Chart) {
 			var model = this._model = chartHelpers.clone(this._model) || {};
 			var options = this.options;
 			var chartInstance = this.chartInstance;
+			var ctx = this.ctx;
 
 			var scale = chartInstance.scales[options.scaleID];
 			var pixel, endPixel;
