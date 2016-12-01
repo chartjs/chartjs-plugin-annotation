@@ -7,6 +7,10 @@ var helpers = require('./helpers.js');
 // Configure plugin namespace
 Chart.Annotation = Chart.Annotation || {};
 
+Chart.Annotation.dblClickSpeed = 350; // ms
+
+var events = require('./events.js')(Chart);
+
 var DRAW_AFTER = 'afterDraw';
 var DRAW_AFTER_DATASETS = 'afterDatasetsDraw';
 var DRAW_BEFORE_DATASETS = 'beforeDatasetsDraw';
@@ -87,18 +91,6 @@ function build(configs, chartInstance) {
 		});
 }
 
-function eventDispatcher(e) {
-	var position = chartHelpers.getRelativePosition(e, this.chart);
-	var element = helpers.getNearestItems(this.annotations, position);
-	var eventHandlerName = helpers.getEventHandlerName(e.type);
-	var options = (element || {}).options;
-	if (element && options[eventHandlerName]) {
-		e.stopImmediatePropagation();
-		e.preventDefault();
-		options[eventHandlerName].call(element, e);
-	}
-}
-
 var annotationPlugin = {
 	beforeInit: function(chartInstance) {
 		chartInstance.annotations = [];
@@ -131,20 +123,20 @@ var annotationPlugin = {
 
 		// Detect and intercept events that happen on an annotation element
 		var config = chartInstance.options.annotation || {};
-		if (config.events) {
-			chartInstance._annotationEventHandler = eventDispatcher.bind(chartInstance);
-			config.events.forEach(function(eventName) {
+		var watchFor = config.events || [];
+		if (watchFor) {
+			chartInstance._annotationEventHandler = events.dispatcher.bind(chartInstance);
+			events.collapseHoverEvents(watchFor).forEach(function(eventName) {
 				chartHelpers.addEvent(chartInstance.chart.canvas, eventName, chartInstance._annotationEventHandler);
 			});
 		}
 	},
 	destroy: function(chartInstance) {
 		var config = chartInstance.annotations._config;
-		if (config.events.length > 0) {
-			config.events.forEach(function(eventName) {
-				chartHelpers.removeEvent(chartInstance.chart.canvas, eventName, chartInstance._annotationEventHandler);
-			});
-		}
+		var events = config.events || [];
+		events.forEach(function(eventName) {
+			chartHelpers.removeEvent(chartInstance.chart.canvas, eventName, chartInstance._annotationEventHandler);
+		});
 	},
 	beforeUpdate: function(chartInstance) {
 		// Build the configuration with all the defaults set

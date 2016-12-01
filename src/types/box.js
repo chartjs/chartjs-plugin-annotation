@@ -4,7 +4,7 @@ var helpers = require('../helpers.js');
 module.exports = function(Chart) {
 	var BoxAnnotation = Chart.Annotation.Element.extend({
 		setDataLimits: function() {
-			var model = this._model = this._model || {};
+			var model = this._model;
 			var options = this.options;
 			var chartInstance = this.chartInstance;
 
@@ -36,7 +36,7 @@ module.exports = function(Chart) {
 			}
 		},
 		configure: function() {
-			var model = this._model = this._model || {};
+			var model = this._model;
 			var options = this.options;
 			var chartInstance = this.chartInstance;
 
@@ -85,23 +85,27 @@ module.exports = function(Chart) {
 			model.backgroundColor = options.backgroundColor;
 		},
 		inRange: function(mouseX, mouseY) {
-			return this._view &&
-				mouseX >= this._view.left && 
-				mouseX <= this._view.right && 
-				mouseY >= this._view.top && 
-				mouseY <= this._view.bottom;
+			var model = this._model;
+			return model &&
+				mouseX >= model.left && 
+				mouseX <= model.right && 
+				mouseY >= model.top && 
+				mouseY <= model.bottom;
 		},
 		getCenterPoint: function() {
+			var model = this._model;
 			return {
-				x: (this._view.right + this._view.left) / 2,
-				y: (this._view.bottom + this._view.top) / 2
+				x: (model.right + model.left) / 2,
+				y: (model.bottom + model.top) / 2
 			};
 		},
 		getWidth: function() {
-			return Math.abs(this._view.right - this._view.left);
+			var model = this._model;
+			return Math.abs(model.right - model.left);
 		},
 		getHeight: function() {
-			return Math.abs(this._view.bottom - this._view.top);
+			var model = this._model;
+			return Math.abs(model.bottom - model.top);
 		},
 		getArea: function() {
 			return this.getWidth() * this.getHeight();

@@ -36,9 +36,8 @@ To configure the annotations plugin, you can simply add new config options to yo
 		drawTime: 'afterDraw', // (default)
 
 		// Mouse events to enable on each annotation.
-		// Similar to the `events` common chart configuration option
-		// http://www.chartjs.org/docs/#chart-configuration-common-chart-configuration
-		// Should be an array of: mousemove, mousedown, mouseup, click, dblclick, contextmenu, wheel
+		// Should be an array of one or more browser-supported mouse events
+		// See https://developer.mozilla.org/en-US/docs/Web/Events
 		events: ['click']
 	}
 }
@@ -124,6 +123,12 @@ Vertical or horizontal lines are supported.
 
 	// Mouse event handlers - be sure to enable the corresponding events in the
 	// annotation events array or the event handler will not be called.
+	// See https://developer.mozilla.org/en-US/docs/Web/Events for a list of
+	// supported mouse events.
+	onMouseenter: function(e) {},
+	onMouseover: function(e) {},
+	onMouseleave: function(e) {},
+	onMouseout: function(e) {},
 	onMousemove: function(e) {},
 	onMousedown: function(e) {},
 	onMouseup: function(e) {},
@@ -172,6 +177,12 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 
 	// Mouse event handlers - be sure to enable the corresponding events in the
 	// annotation events array or the event handler will not be called.
+	// See https://developer.mozilla.org/en-US/docs/Web/Events for a list of
+	// supported mouse events.
+	onMouseenter: function(e) {},
+	onMouseover: function(e) {},
+	onMouseleave: function(e) {},
+	onMouseout: function(e) {},
 	onMousemove: function(e) {},
 	onMousedown: function(e) {},
 	onMouseup: function(e) {},
