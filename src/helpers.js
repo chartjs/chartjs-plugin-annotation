@@ -16,10 +16,6 @@ function decorate(obj, prop, func) {
 	}
 }
 
-function getEventHandlerName(eventName) {
-	return 'on' + eventName[0].toUpperCase() + eventName.substring(1);
-}
-
 function getScaleLimits(scaleId, annotations, scaleMin, scaleMax) {
 	var ranges = annotations.filter(function(annotation) {
 		return !!annotation._model.ranges[scaleId];
@@ -78,7 +74,6 @@ function getNearestItems(annotations, position) {
 module.exports = {
 	isValid: isValid,
 	decorate: decorate,
-	getEventHandlerName: getEventHandlerName,
 	getScaleLimits: getScaleLimits,
 	getNearestItems: getNearestItems
 };

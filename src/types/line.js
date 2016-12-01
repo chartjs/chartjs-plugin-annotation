@@ -10,7 +10,7 @@ module.exports = function(Chart) {
 
 	var LineAnnotation = Chart.Annotation.Element.extend({
 		setDataLimits: function() {
-			var model = this._model = chartHelpers.clone(this._model) || {};
+			var model = this._model;
 			var options = this.options;
 
 			// Set the data range for this annotation
@@ -21,7 +21,7 @@ module.exports = function(Chart) {
 			};
 		},
 		configure: function() {
-			var model = this._model = chartHelpers.clone(this._model) || {};
+			var model = this._model;
 			var options = this.options;
 			var chartInstance = this.chartInstance;
 			var ctx = this.ctx;
@@ -92,20 +92,20 @@ module.exports = function(Chart) {
 			model.borderDashOffset = options.borderDashOffset || 0;
 		},
 		inRange: function(mouseX, mouseY) {
-			var model = this._model || {};
+			var model = this._model;
 			return (model.line && model.line.intersects(mouseX, mouseY, this.getHeight()));
 		},
 		getCenterPoint: function() {
 			return {
-				x: (this._view.x2 + this._view.x1) / 2,
-				y: (this._view.y2 + this._view.y1) / 2
+				x: (this._model.x2 + this._model.x1) / 2,
+				y: (this._model.y2 + this._model.y1) / 2
 			};
 		},
 		getWidth: function() {
-			return Math.abs(this._view.right - this._view.left);
+			return Math.abs(this._model.right - this._model.left);
 		},
 		getHeight: function() {
-			return this._view.borderWidth || 1;
+			return this._model.borderWidth || 1;
 		},
 		getArea: function() {
 			return Math.sqrt(Math.pow(this.getWidth(), 2) + Math.pow(this.getHeight(), 2));
