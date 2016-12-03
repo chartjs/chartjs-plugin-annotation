@@ -116,8 +116,9 @@ module.exports = function(Chart) {
 				return;
 			}
 
-			// Canvas setup
 			ctx.save();
+
+			// Canvas setup
 			ctx.beginPath();
 			ctx.rect(view.clip.x1, view.clip.y1, view.clip.x2 - view.clip.x1, view.clip.y2 - view.clip.y1);
 			ctx.clip();
@@ -135,7 +136,6 @@ module.exports = function(Chart) {
 			ctx.moveTo(view.x1, view.y1);
 			ctx.lineTo(view.x2, view.y2);
 			ctx.stroke();
-			ctx.restore();
 
 			if (view.labelEnabled && view.labelContent) {
 				ctx.beginPath();
@@ -169,6 +169,8 @@ module.exports = function(Chart) {
 					view.labelY + (view.labelHeight / 2)
 				);
 			}
+
+			ctx.restore();
 		}
 	});
 

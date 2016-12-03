@@ -114,8 +114,9 @@ module.exports = function(Chart) {
 			var view = this._view;
 			var ctx = this.chartInstance.chart.ctx;
 
-			// Canvas setup
 			ctx.save();
+
+			// Canvas setup
 			ctx.beginPath();
 			ctx.rect(view.clip.x1, view.clip.y1, view.clip.x2 - view.clip.x1, view.clip.y2 - view.clip.y1);
 			ctx.clip();
@@ -129,6 +130,8 @@ module.exports = function(Chart) {
 				height = view.bottom - view.top;
 			ctx.fillRect(view.left, view.top, width, height);
 			ctx.strokeRect(view.left, view.top, width, height);
+
+			ctx.restore();
 		}
 	});
 
