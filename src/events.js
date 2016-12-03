@@ -1,49 +1,6 @@
-var helpers = require('./helpers.js');
-
 module.exports = function(Chart) {
 	var chartHelpers = Chart.helpers;
-
-	var dblClickSpeed = Chart.Annotation.dblClickSpeed || 350; // ms
-
-	function getEventHandlerName(eventName) {
-		return 'on' + eventName[0].toUpperCase() + eventName.substring(1);
-	}
-
-	function createMouseEvent(type, previousEvent) {
-		try {
-			return new MouseEvent(type, previousEvent);
-		} catch (exception) {
-			try {
-				var m = document.createEvent('MouseEvent');
-				m.initMouseEvent(
-					type,
-					previousEvent.canBubble,
-					previousEvent.cancelable,
-					previousEvent.view,
-					previousEvent.detail,
-					previousEvent.screenX,
-					previousEvent.screenY,
-					previousEvent.clientX,
-					previousEvent.clientY,
-					previousEvent.ctrlKey,
-					previousEvent.altKey,
-					previousEvent.shiftKey,
-					previousEvent.metaKey,
-					previousEvent.button,
-					previousEvent.relatedTarget
-				);
-				return m;
-			} catch (exception2) {
-				var e = document.createEvent('Event');
-				e.initEvent(
-					type,
-					previousEvent.canBubble,
-					previousEvent.cancelable
-				);
-				return e;
-			}
-		}
-	}
+	var helpers = require('./helpers.js')(Chart);
 
 	function collapseHoverEvents(events) {
 		var hover = false;
@@ -67,11 +24,14 @@ module.exports = function(Chart) {
 	}
 
 	function dispatcher(e) {
+		var ns = this.annotation;
+		var elements = helpers.elements(this);
 		var position = chartHelpers.getRelativePosition(e, this.chart);
-		var element = helpers.getNearestItems(this.annotations, position);
-		var events = collapseHoverEvents(this.options.annotation.events);
+		var element = helpers.getNearestItems(elements, position);
+		var events = collapseHoverEvents(ns.options.events);
+		var dblClickSpeed = ns.options.dblClickSpeed;
 		var eventHandlers = [];
-		var eventHandlerName = getEventHandlerName(e.type);
+		var eventHandlerName = helpers.getEventHandlerName(e.type);
 		var options = (element || {}).options;
 
 		// Detect hover events
@@ -79,8 +39,8 @@ module.exports = function(Chart) {
 			if (element && !element.hovering) {
 				// hover started
 				['mouseenter', 'mouseover'].forEach(function(eventName) {
-					var eventHandlerName = getEventHandlerName(eventName);
-					var hoverEvent = createMouseEvent(eventName, e); // recreate the event to match the handler
+					var eventHandlerName = helpers.getEventHandlerName(eventName);
+					var hoverEvent = helpers.createMouseEvent(eventName, e); // recreate the event to match the handler
 					element.hovering = true;
 					if (typeof options[eventHandlerName] === 'function') {
 						eventHandlers.push([ options[eventHandlerName], hoverEvent, element ]);
@@ -88,13 +48,13 @@ module.exports = function(Chart) {
 				});
 			} else if (!element) {
 				// hover ended
-				this.annotations.forEach(function(element) {
+				elements.forEach(function(element) {
 					if (element.hovering) {
 						element.hovering = false;
 						var options = element.options;
 						['mouseout', 'mouseleave'].forEach(function(eventName) {
-							var eventHandlerName = getEventHandlerName(eventName);
-							var hoverEvent = createMouseEvent(eventName, e); // recreate the event to match the handler
+							var eventHandlerName = helpers.getEventHandlerName(eventName);
+							var hoverEvent = helpers.createMouseEvent(eventName, e); // recreate the event to match the handler
 							if (typeof options[eventHandlerName] === 'function') {
 								eventHandlers.push([ options[eventHandlerName], hoverEvent, element ]);
 							}

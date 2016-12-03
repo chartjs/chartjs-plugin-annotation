@@ -35,7 +35,7 @@ gulp.task('jshint', jshintTask);
 gulp.task('watch', watchTask);
 
 function buildTask() {
-  var nonBundled = browserify('./src/plugin.js')
+  var nonBundled = browserify('./src/index.js')
     .ignore('chart.js')
     .ignore('hammerjs')
     .bundle()

@@ -1,6 +1,6 @@
 # chartjs-plugin-annotation.js
 
-An annotation plugin for Chart.js >= 2.1.3
+An annotation plugin for Chart.js >= 2.4.0
 
 Currently draws lines and boxes on the chart area.
 
@@ -13,6 +13,7 @@ To configure the annotations plugin, you can simply add new config options to yo
 {
 	annotation: {
 		annotations: [{
+			id: 'a-line-1', // optional
 			type: 'line',
 			mode: 'horizontal',
 			scaleID: 'y-axis-0',
@@ -38,7 +39,13 @@ To configure the annotations plugin, you can simply add new config options to yo
 		// Mouse events to enable on each annotation.
 		// Should be an array of one or more browser-supported mouse events
 		// See https://developer.mozilla.org/en-US/docs/Web/Events
-		events: ['click']
+		events: ['click'],
+
+		// Double-click speed in ms used to distinguish single-clicks from 
+		// double-clicks whenever you need to capture both. When listening for
+		// both click and dblclick, click events will be delayed by this
+		// amount.
+		dblClickSpeed: 350 // ms (default)
 	}
 }
 ```
@@ -49,6 +56,9 @@ Vertical or horizontal lines are supported.
 ```javascript
 {
 	type: 'line',
+
+	// optional annotation ID (must be unique)
+	id: 'a-line-1',
 
 	// set to 'vertical' to draw a vertical line
 	mode: 'horizontal',
@@ -147,6 +157,9 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 ```javascript
 {
 	type: 'box',
+
+	// optional annotation ID (must be unique)
+	id: 'a-box-1',
 
 	// ID of the X scale to bind onto
 	xScaleID: 'x-axis-0',

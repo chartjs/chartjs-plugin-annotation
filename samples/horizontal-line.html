@@ -134,32 +134,52 @@
                             scaleID: 'y-axis-1',
                             value: 120,
                             borderColor: 'rgba(255, 0, 0, 0.5)',
-                            borderWidth: 2,
+                            borderWidth: 4,
+                            label: {
+                                enabled: false,
+                                content: 'Test label'
+                            },
                             onClick: function(e) {
-                                this._model.borderColor = 'rgba(255, 0, 0, 1.0)';
-                                this.chartInstance.render(0);
-                                setTimeout((function() {
-                                    this._model.borderColor = 'rgba(255, 0, 0, 0.5)';
-                                    this.chartInstance.render(0);
-                                }).bind(this), 500);
+                                var element = this;
+                                element.options.borderColor = 'rgba(255, 0, 0, 1.0)';
+                                element.options.label.enabled = true;
+                                element.options.label.content = e.type;
+                                element.chartInstance.update();
+                                setTimeout(function() {
+                                    element.options.borderColor = 'rgba(255, 0, 0, 0.5)';
+                                    element.chartInstance.update();
+                                }, 500);
                             },
                             onDblclick: function(e) {
-                                this._model.borderColor = 'rgba(0, 255, 0, 1.0)';
-                                this.chartInstance.render(0);
-                                setTimeout((function() {
-                                    this._model.borderColor = 'rgba(255, 0, 0, 0.5)';
-                                    this.chartInstance.render(0);
-                                }).bind(this), 500);
+                                var element = this;
+                                element.options.borderColor = 'rgba(0, 255, 0, 1.0)';
+                                element.options.label.enabled = true;
+                                element.options.label.content = e.type;
+                                element.chartInstance.update();
+                                setTimeout(function() {
+                                    element.options.borderColor = 'rgba(255, 0, 0, 0.5)';
+                                    element.chartInstance.update();
+                                }, 500);
                             },
                             onMouseover: function(e) {
-                                this._model.borderWidth = 7;
-                                this.chartInstance.render(0);
-                                this.chartInstance.chart.canvas.style.cursor = 'pointer';
+                                var element = this;
+                                element.options.borderWidth = 7;
+                                element.options.label.enabled = true;
+                                element.options.label.content = e.type;
+                                element.chartInstance.update();
+                                element.chartInstance.chart.canvas.style.cursor = 'pointer';
                             },
                             onMouseout: function(e) {
-                                this._model.borderWidth = 5;
-                                this.chartInstance.render(0);
-                                this.chartInstance.chart.canvas.style.cursor = 'initial';
+                                var element = this;
+                                element.options.borderWidth = 4;
+                                element.options.label.enabled = true;
+                                element.options.label.content = e.type;
+                                element.chartInstance.update();
+                                setTimeout(function() {
+                                    element.options.label.enabled = false;
+                                    element.chartInstance.update();
+                                }, 500);
+                                element.chartInstance.chart.canvas.style.cursor = 'initial';
                             }
                         }]
                     }
