@@ -1,7 +1,7 @@
 /*!
  * chartjs-plugin-annotation.js
  * http://chartjs.org/
- * Version: 0.5.1
+ * Version: 0.5.2
  *
  * Copyright 2016 Evert Timberg
  * Released under the MIT license
@@ -11,9 +11,131 @@
 
 },{}],2:[function(require,module,exports){
 module.exports = function(Chart) {
+	var chartHelpers = Chart.helpers;
+
+	var helpers = require('./helpers.js')(Chart);
+	var events = require('./events.js')(Chart);
+
+	var annotationTypes = Chart.Annotation.types;
+
+	function setAfterDataLimitsHook(axisOptions) {
+		helpers.decorate(axisOptions, 'afterDataLimits', function(previous, scale) {
+			if (previous) previous(scale);
+			helpers.adjustScaleRange(scale);
+		});
+	}
+
+	return {
+		beforeInit: function(chartInstance) {
+			var chartOptions = chartInstance.options;
+
+			// Initialize chart instance plugin namespace
+			var ns = chartInstance.annotation = {
+				elements: {},
+				options: helpers.initConfig(chartOptions.annotation || {}),
+				onDestroy: [],
+				firstRun: true
+			};
+
+			ns[ns.options.drawTime] = function(easingDecimal) {
+				helpers.elements(chartInstance).forEach(function(element) {
+					element.transition(easingDecimal).draw();
+				});
+			};
+
+			// Add the annotation scale adjuster to each scale's afterDataLimits hook
+			chartInstance.ensureScalesHaveIDs();
+			chartHelpers.each(chartOptions.scales.xAxes, setAfterDataLimitsHook);
+			chartHelpers.each(chartOptions.scales.yAxes, setAfterDataLimitsHook);
+		},
+		beforeUpdate: function(chartInstance) {
+			var ns = chartInstance.annotation;
+
+			if (!ns.firstRun) {
+				ns.options = helpers.initConfig(chartInstance.options.annotation || {});
+			} else {
+				ns.firstRun = false;
+			}
+
+			var elementIds = [];
+
+			// Add new elements, or update existing ones
+			ns.options.annotations.forEach(function(annotation) {
+				var id = annotation.id || helpers.objectId();
+				
+				// No element with that ID exists, and it's a valid annotation type
+				if (!ns.elements[id] && annotationTypes[annotation.type]) {
+					var cls = annotationTypes[annotation.type];
+					var element = new cls({
+						id: id,
+						options: annotation,
+						chartInstance: chartInstance,
+					});
+					element.initialize();
+					ns.elements[id] = element;
+					annotation.id = id;
+					elementIds.push(id);
+				} else if (ns.elements[id]) {
+					// Nothing to do for update, since the element config references
+					// the same object that exists in the chart annotation config
+					elementIds.push(id);
+				}
+			});
+
+			// Delete removed elements
+			Object.keys(ns.elements).forEach(function(id) {
+				if (elementIds.indexOf(id) === -1) {
+					ns.elements[id].destroy();
+					delete ns.elements[id];
+				}
+			});
+		},
+		afterScaleUpdate: function(chartInstance) {
+			helpers.elements(chartInstance).forEach(function(element) {
+				element.configure();
+			});
+		},
+		beforeDatasetsDraw: function(chartInstance, easingDecimal) {
+			(chartInstance.annotation.beforeDatasetsDraw || helpers.noop)(easingDecimal);
+		},
+		afterDatasetsDraw: function(chartInstance, easingDecimal) {
+			(chartInstance.annotation.afterDatasetsDraw || helpers.noop)(easingDecimal);
+		},
+		afterDraw: function(chartInstance, easingDecimal) {
+			(chartInstance.annotation.afterDraw || helpers.noop)(easingDecimal);
+		},
+		afterInit: function(chartInstance) {
+			// Detect and intercept events that happen on an annotation element
+			var watchFor = chartInstance.annotation.options.events;
+			if (watchFor.length > 0) {
+				var canvas = chartInstance.chart.canvas;
+				var eventHandler = events.dispatcher.bind(chartInstance);
+				events.collapseHoverEvents(watchFor).forEach(function(eventName) {
+					chartHelpers.addEvent(canvas, eventName, eventHandler);
+					chartInstance.annotation.onDestroy.push(function() {
+						chartHelpers.removeEvent(canvas, eventName, eventHandler);
+					});
+				});
+			}
+		},
+		destroy: function(chartInstance) {
+			var deregisterers = chartInstance.annotation.onDestroy;
+			while (deregisterers.length > 0) {
+				deregisterers.pop()();
+			}
+		}
+	};
+};
+
+},{"./events.js":4,"./helpers.js":5}],3:[function(require,module,exports){
+module.exports = function(Chart) {
+	var chartHelpers = Chart.helpers;
+	
 	var AnnotationElement = Chart.Element.extend({
 		initialize: function() {
 			this.hidden = false;
+			this.hovering = false;
+			this._model = chartHelpers.clone(this._model) || {};
 			this.setDataLimits();
 		},
 		destroy: function() {},
@@ -30,10 +152,129 @@ module.exports = function(Chart) {
 	return AnnotationElement;
 };
 
-},{}],3:[function(require,module,exports){
-var Chart = require('chart.js');
-Chart = typeof(Chart) === 'function' ? Chart : window.Chart;
-var chartHelpers = Chart.helpers;
+},{}],4:[function(require,module,exports){
+module.exports = function(Chart) {
+	var chartHelpers = Chart.helpers;
+	var helpers = require('./helpers.js')(Chart);
+
+	function collapseHoverEvents(events) {
+		var hover = false;
+		var filteredEvents = events.filter(function(eventName) {
+			switch (eventName) {
+				case 'mouseenter':
+				case 'mouseover':
+				case 'mouseout':
+				case 'mouseleave':
+					hover = true;
+					return false;
+
+				default:
+					return true;
+			}
+		});
+		if (hover && filteredEvents.indexOf('mousemove') === -1) {
+			filteredEvents.push('mousemove');
+		}
+		return filteredEvents;
+	}
+
+	function dispatcher(e) {
+		var ns = this.annotation;
+		var elements = helpers.elements(this);
+		var position = chartHelpers.getRelativePosition(e, this.chart);
+		var element = helpers.getNearestItems(elements, position);
+		var events = collapseHoverEvents(ns.options.events);
+		var dblClickSpeed = ns.options.dblClickSpeed;
+		var eventHandlers = [];
+		var eventHandlerName = helpers.getEventHandlerName(e.type);
+		var options = (element || {}).options;
+
+		// Detect hover events
+		if (e.type === 'mousemove') {
+			if (element && !element.hovering) {
+				// hover started
+				['mouseenter', 'mouseover'].forEach(function(eventName) {
+					var eventHandlerName = helpers.getEventHandlerName(eventName);
+					var hoverEvent = helpers.createMouseEvent(eventName, e); // recreate the event to match the handler
+					element.hovering = true;
+					if (typeof options[eventHandlerName] === 'function') {
+						eventHandlers.push([ options[eventHandlerName], hoverEvent, element ]);
+					}
+				});
+			} else if (!element) {
+				// hover ended
+				elements.forEach(function(element) {
+					if (element.hovering) {
+						element.hovering = false;
+						var options = element.options;
+						['mouseout', 'mouseleave'].forEach(function(eventName) {
+							var eventHandlerName = helpers.getEventHandlerName(eventName);
+							var hoverEvent = helpers.createMouseEvent(eventName, e); // recreate the event to match the handler
+							if (typeof options[eventHandlerName] === 'function') {
+								eventHandlers.push([ options[eventHandlerName], hoverEvent, element ]);
+							}
+						});
+					}
+				});
+			}
+		}
+
+		// Suppress duplicate click events during a double click
+		// 1. click -> 2. click -> 3. dblclick
+		//
+		// 1: wait dblClickSpeed ms, then fire click
+		// 2: cancel (1) if it is waiting then wait dblClickSpeed ms then fire click, else fire click immediately
+		// 3: cancel (1) or (2) if waiting, then fire dblclick 
+		if (element && events.indexOf('dblclick') > -1 && typeof options.onDblclick === 'function') {
+			if (e.type === 'click' && typeof options.onClick === 'function') {
+				clearTimeout(element.clickTimeout);
+				element.clickTimeout = setTimeout(function() {
+					delete element.clickTimeout;
+					options.onClick.call(element, e);
+				}, dblClickSpeed);
+				e.stopImmediatePropagation();
+				e.preventDefault();
+				return;
+			} else if (e.type === 'dblclick' && element.clickTimeout) {
+				clearTimeout(element.clickTimeout);
+				delete element.clickTimeout;
+			}
+		}
+
+		// Dispatch the event to the usual handler, but only if we haven't substituted it
+		if (element && typeof options[eventHandlerName] === 'function' && eventHandlers.length === 0) {
+			eventHandlers.push([ options[eventHandlerName], e, element ]);
+		}
+
+		if (eventHandlers.length > 0) {
+			e.stopImmediatePropagation();
+			e.preventDefault();
+			eventHandlers.forEach(function(eventHandler) {
+				// [handler, event, element]
+				eventHandler[0].call(eventHandler[2], eventHandler[1]);
+			});
+		}
+	}
+
+	return {
+		dispatcher: dispatcher,
+		collapseHoverEvents: collapseHoverEvents
+	};
+};
+
+},{"./helpers.js":5}],5:[function(require,module,exports){
+function noop() {}
+
+function elements(chartInstance) {
+	var elements = chartInstance.annotation.elements;
+	return Object.keys(elements).map(function(id) {
+		return elements[id];
+	});
+}
+
+function objectId() {
+	return Math.random().toString(36).substr(2, 6);
+}
 
 function isValid(num) {
 	return !isNaN(num) && isFinite(num);
@@ -42,118 +283,186 @@ function isValid(num) {
 function decorate(obj, prop, func) {
 	var prefix = '$';
 	if (!obj[prefix + prop]) {
-		obj[prefix + prop] = obj[prop].bind(obj);
-		obj[prop] = function() {
-			return func(obj[prefix + prop]);
-		};
+		if (obj[prop]) {
+			obj[prefix + prop] = obj[prop].bind(obj);
+			obj[prop] = function() {
+				var args = [ obj[prefix + prop] ].concat(Array.prototype.slice.call(arguments));
+				return func.apply(obj, args);
+			};
+		} else {
+			obj[prop] = function() {
+				var args = [ undefined ].concat(Array.prototype.slice.call(arguments));
+				return func.apply(obj, args);
+			};
+		}
 	}
+}
+
+function callEach(fns, method) {
+	fns.forEach(function(fn) {
+		(method ? fn[method] : fn)();
+	});
 }
 
 function getEventHandlerName(eventName) {
 	return 'on' + eventName[0].toUpperCase() + eventName.substring(1);
 }
 
-function getScaleLimits(scaleId, annotations, scaleMin, scaleMax) {
-	var ranges = annotations.filter(function(annotation) {
-		return !!annotation._model.ranges[scaleId];
-	}).map(function(annotation) {
-		return annotation._model.ranges[scaleId];
-	});
+function createMouseEvent(type, previousEvent) {
+	try {
+		return new MouseEvent(type, previousEvent);
+	} catch (exception) {
+		try {
+			var m = document.createEvent('MouseEvent');
+			m.initMouseEvent(
+				type,
+				previousEvent.canBubble,
+				previousEvent.cancelable,
+				previousEvent.view,
+				previousEvent.detail,
+				previousEvent.screenX,
+				previousEvent.screenY,
+				previousEvent.clientX,
+				previousEvent.clientY,
+				previousEvent.ctrlKey,
+				previousEvent.altKey,
+				previousEvent.shiftKey,
+				previousEvent.metaKey,
+				previousEvent.button,
+				previousEvent.relatedTarget
+			);
+			return m;
+		} catch (exception2) {
+			var e = document.createEvent('Event');
+			e.initEvent(
+				type,
+				previousEvent.canBubble,
+				previousEvent.cancelable
+			);
+			return e;
+		}
+	}
+}
 
-	var min = ranges.map(function(range) {
-		return Number(range.min);
-	}).reduce(function(a, b) {
-		return isFinite(b) && !isNaN(b) && b < a ? b : a;
-	}, scaleMin);
+module.exports = function(Chart) {
+	var chartHelpers = Chart.helpers;
 
-	var max = ranges.map(function(range) {
-		return Number(range.max);
-	}).reduce(function(a, b) {
-		return isFinite(b) && !isNaN(b) && b > a ? b : a;
-	}, scaleMax);
+	function initConfig(config) {
+		config = chartHelpers.configMerge(Chart.Annotation.defaults, config);
+		if (chartHelpers.isArray(config.annotations)) {
+			config.annotations.forEach(function(annotation) {
+				annotation.label = chartHelpers.configMerge(Chart.Annotation.labelDefaults, annotation.label);
+			});
+		}
+		return config;
+	}
+
+	function getScaleLimits(scaleId, annotations, scaleMin, scaleMax) {
+		var ranges = annotations.filter(function(annotation) {
+			return !!annotation._model.ranges[scaleId];
+		}).map(function(annotation) {
+			return annotation._model.ranges[scaleId];
+		});
+
+		var min = ranges.map(function(range) {
+			return Number(range.min);
+		}).reduce(function(a, b) {
+			return isFinite(b) && !isNaN(b) && b < a ? b : a;
+		}, scaleMin);
+
+		var max = ranges.map(function(range) {
+			return Number(range.max);
+		}).reduce(function(a, b) {
+			return isFinite(b) && !isNaN(b) && b > a ? b : a;
+		}, scaleMax);
+
+		return {
+			min: min,
+			max: max
+		};
+	}
+
+	function adjustScaleRange(scale) {
+		// Adjust the scale range to include annotation values
+		var range = getScaleLimits(scale.id, elements(scale.chart), scale.min, scale.max);
+		if (typeof scale.options.ticks.min === 'undefined' && typeof scale.options.ticks.suggestedMin === 'undefined') {
+			scale.min = range.min;
+		}
+		if (typeof scale.options.ticks.max === 'undefined' && typeof scale.options.ticks.suggestedMax === 'undefined') {
+			scale.max = range.max;
+		}
+		if (scale.handleTickRangeOptions) {
+			scale.handleTickRangeOptions();
+		}
+	}
+
+	function getNearestItems(annotations, position) {
+		var minDistance = Number.POSITIVE_INFINITY;
+
+		return annotations
+			.filter(function(element) {
+				return element.inRange(position.x, position.y);
+			})
+			.reduce(function(nearestItems, element) {
+				var center = element.getCenterPoint();
+				var distance = chartHelpers.distanceBetweenPoints(position, center);
+
+				if (distance < minDistance) {
+					nearestItems = [element];
+					minDistance = distance;
+				} else if (distance === minDistance) {
+					// Can have multiple items at the same distance in which case we sort by size
+					nearestItems.push(element);
+				}
+
+				return nearestItems;
+			}, [])
+			.sort(function(a, b) {
+				// If there are multiple elements equally close,
+				// sort them by size, then by index
+				var sizeA = a.getArea(), sizeB = b.getArea();
+				return (sizeA > sizeB || sizeA < sizeB) ? sizeA - sizeB : a._index - b._index;
+			})
+			.slice(0, 1)[0]; // return only the top item
+	}
 
 	return {
-		min: min,
-		max: max
+		initConfig: initConfig,
+		elements: elements,
+		callEach: callEach,
+		noop: noop,
+		objectId: objectId,
+		isValid: isValid,
+		decorate: decorate,
+		adjustScaleRange: adjustScaleRange,
+		getNearestItems: getNearestItems,
+		getEventHandlerName: getEventHandlerName,
+		createMouseEvent: createMouseEvent
 	};
-}
-
-function getNearestItems(annotations, position) {
-	var minDistance = Number.POSITIVE_INFINITY;
-
-	return annotations
-		.filter(function(element) {
-			return element.inRange(position.x, position.y);
-		})
-		.reduce(function(nearestItems, element) {
-			var center = element.getCenterPoint();
-			var distance = chartHelpers.distanceBetweenPoints(position, center);
-
-			if (distance < minDistance) {
-				nearestItems = [element];
-				minDistance = distance;
-			} else if (distance === minDistance) {
-				// Can have multiple items at the same distance in which case we sort by size
-				nearestItems.push(element);
-			}
-
-			return nearestItems;
-		}, [])
-		.sort(function(a, b) {
-			// If there are multiple elements equally close,
-			// sort them by size, then by index
-			var sizeA = a.getArea(), sizeB = b.getArea();
-			return (sizeA > sizeB || sizeA < sizeB) ? sizeA - sizeB : a._index - b._index;
-		})
-		.slice(0, 1)[0]; // return only the top item
-}
-
-module.exports = {
-	isValid: isValid,
-	decorate: decorate,
-	getEventHandlerName: getEventHandlerName,
-	getScaleLimits: getScaleLimits,
-	getNearestItems: getNearestItems
 };
 
-},{"chart.js":1}],4:[function(require,module,exports){
+
+},{}],6:[function(require,module,exports){
 // Get the chart variable
 var Chart = require('chart.js');
 Chart = typeof(Chart) === 'function' ? Chart : window.Chart;
-var chartHelpers = Chart.helpers;
-var helpers = require('./helpers.js');
 
 // Configure plugin namespace
 Chart.Annotation = Chart.Annotation || {};
 
-var DRAW_AFTER = 'afterDraw';
-var DRAW_AFTER_DATASETS = 'afterDatasetsDraw';
-var DRAW_BEFORE_DATASETS = 'beforeDatasetsDraw';
-
 Chart.Annotation.drawTimeOptions = {
-	afterDraw: DRAW_AFTER,
-	afterDatasetsDraw: DRAW_AFTER_DATASETS,
-	beforeDatasetsDraw: DRAW_BEFORE_DATASETS
+	afterDraw: 'afterDraw',
+	afterDatasetsDraw: 'afterDatasetsDraw',
+	beforeDatasetsDraw: 'beforeDatasetsDraw'
 };
 
-Chart.Annotation.Element = require('./element.js')(Chart);
-
-var annotationTypes =
-Chart.Annotation.types = {
-	line: require('./types/line.js')(Chart),
-	box: require('./types/box.js')(Chart)
-};
-
-// Default plugin options
-var annotationDefaults =
 Chart.Annotation.defaults = {
-	drawTime: DRAW_AFTER,
+	drawTime: 'afterDraw',
+	dblClickSpeed: 350, // ms
 	events: [],
 	annotations: []
 };
 
-// Default annotation label options
-var labelDefaults =
 Chart.Annotation.labelDefaults = {
 	backgroundColor: 'rgba(0,0,0,0.8)',
 	fontFamily: Chart.defaults.global.defaultFontFamily,
@@ -170,152 +479,26 @@ Chart.Annotation.labelDefaults = {
 	content: null
 };
 
-function draw(chartInstance, easingDecimal) {
-	if (chartHelpers.isArray(chartInstance.annotations)) {
-		chartInstance.annotations.forEach(function(annotation) {
-			annotation.transition(easingDecimal).draw();
-		});
-	}
-}
+Chart.Annotation.Element = require('./element.js')(Chart);
 
-function initConfig(config) {
-	config = chartHelpers.configMerge(annotationDefaults, config);
-	if (chartHelpers.isArray(config.annotations)) {
-		config.annotations.forEach(function(annotation) {
-			annotation.label = chartHelpers.configMerge(labelDefaults, annotation.label);
-		});
-	}
-	return config;
-}
-
-function build(configs, chartInstance) {
-	return configs
-		.filter(function(config) {
-			return !!annotationTypes[config.type];
-		})
-		.map(function(config, i) {
-			var annotation = annotationTypes[config.type];
-			var annotationObject = new annotation({
-				_index: i,
-				options: config,
-				chartInstance: chartInstance,
-				ctx: chartInstance.chart.ctx
-			});
-			annotationObject.initialize();
-			return annotationObject;
-		});
-}
-
-function eventDispatcher(e) {
-	var position = chartHelpers.getRelativePosition(e, this.chart);
-	var element = helpers.getNearestItems(this.annotations, position);
-	var eventHandlerName = helpers.getEventHandlerName(e.type);
-	var options = (element || {}).options;
-	if (element && options[eventHandlerName]) {
-		e.stopImmediatePropagation();
-		e.preventDefault();
-		options[eventHandlerName].call(element, e);
-	}
-}
-
-var annotationPlugin = {
-	beforeInit: function(chartInstance) {
-		chartInstance.annotations = [];
-
-		// Decorate Chart.Controller.buildScales() so we can decorate each scale
-		// instance's determineDataLimits() method
-		helpers.decorate(chartInstance, 'buildScales', function(previous) {
-			previous();
-
-			// Decorate Chart.Scale.determineDataLimits() so we can
-			// check the annotation values and adjust the scale range
-			Object.keys(chartInstance.scales).forEach(function(scaleId) {
-				var scale = chartInstance.scales[scaleId];
-
-				helpers.decorate(scale, 'determineDataLimits', function(previous) {
-					previous();
-
-					if (chartInstance.annotations) {
-						var range = helpers.getScaleLimits(scaleId, chartInstance.annotations, scale.min, scale.max);
-						if (typeof scale.options.ticks.min === 'undefined' && typeof scale.options.ticks.suggestedMin === 'undefined') {
-							scale.min = range.min;
-						}
-						if (typeof scale.options.ticks.max === 'undefined' && typeof scale.options.ticks.suggestedMax === 'undefined') {
-							scale.max = range.max;
-						}
-					}
-				});
-			});
-		});
-
-		// Detect and intercept events that happen on an annotation element
-		var config = chartInstance.options.annotation || {};
-		if (config.events) {
-			chartInstance._annotationEventHandler = eventDispatcher.bind(chartInstance);
-			config.events.forEach(function(eventName) {
-				chartHelpers.addEvent(chartInstance.chart.canvas, eventName, chartInstance._annotationEventHandler);
-			});
-		}
-	},
-	destroy: function(chartInstance) {
-		var config = chartInstance.annotations._config;
-		if (config.events.length > 0) {
-			config.events.forEach(function(eventName) {
-				chartHelpers.removeEvent(chartInstance.chart.canvas, eventName, chartInstance._annotationEventHandler);
-			});
-		}
-	},
-	beforeUpdate: function(chartInstance) {
-		// Build the configuration with all the defaults set
-		var config = chartInstance.options.annotation;
-		config = initConfig(config || {});
-
-		if (chartHelpers.isArray(config.annotations)) {
-			chartInstance.annotations.forEach(function(annotation) {
-				annotation.destroy(chartInstance);
-			});
-			chartInstance.annotations = build(config.annotations, chartInstance);
-			chartInstance.annotations._config = config;
-		}
-	},
-	afterScaleUpdate: function(chartInstance) {
-		if (chartHelpers.isArray(chartInstance.annotations)) {
-			chartInstance.annotations.forEach(function(annotation) {
-				annotation.configure();
-			});
-		}
-	},
-	afterDraw: function(chartInstance, easingDecimal) {
-		var config = chartInstance.annotations._config;
-		if (config.drawTime == DRAW_AFTER) {
-			draw(chartInstance, easingDecimal);
-		}
-	},
-	afterDatasetsDraw: function(chartInstance, easingDecimal) {
-		var config = chartInstance.annotations._config;
-		if (config.drawTime == DRAW_AFTER_DATASETS) {
-			draw(chartInstance, easingDecimal);
-		}
-	},
-	beforeDatasetsDraw: function(chartInstance, easingDecimal) {
-		var config = chartInstance.annotations._config;
-		if (config.drawTime == DRAW_BEFORE_DATASETS) {
-			draw(chartInstance, easingDecimal);
-		}
-	}
+Chart.Annotation.types = {
+	line: require('./types/line.js')(Chart),
+	box: require('./types/box.js')(Chart)
 };
+
+var annotationPlugin = require('./annotation.js')(Chart);
 
 module.exports = annotationPlugin;
 Chart.pluginService.register(annotationPlugin);
 
-},{"./element.js":2,"./helpers.js":3,"./types/box.js":5,"./types/line.js":6,"chart.js":1}],5:[function(require,module,exports){
-var helpers = require('../helpers.js');
-
+},{"./annotation.js":2,"./element.js":3,"./types/box.js":7,"./types/line.js":8,"chart.js":1}],7:[function(require,module,exports){
 // Box Annotation implementation
 module.exports = function(Chart) {
+	var helpers = require('../helpers.js')(Chart);
+	
 	var BoxAnnotation = Chart.Annotation.Element.extend({
 		setDataLimits: function() {
-			var model = this._model = this._model || {};
+			var model = this._model;
 			var options = this.options;
 			var chartInstance = this.chartInstance;
 
@@ -347,7 +530,7 @@ module.exports = function(Chart) {
 			}
 		},
 		configure: function() {
-			var model = this._model = this._model || {};
+			var model = this._model;
 			var options = this.options;
 			var chartInstance = this.chartInstance;
 
@@ -396,33 +579,38 @@ module.exports = function(Chart) {
 			model.backgroundColor = options.backgroundColor;
 		},
 		inRange: function(mouseX, mouseY) {
-			return this._view &&
-				mouseX >= this._view.left && 
-				mouseX <= this._view.right && 
-				mouseY >= this._view.top && 
-				mouseY <= this._view.bottom;
+			var model = this._model;
+			return model &&
+				mouseX >= model.left && 
+				mouseX <= model.right && 
+				mouseY >= model.top && 
+				mouseY <= model.bottom;
 		},
 		getCenterPoint: function() {
+			var model = this._model;
 			return {
-				x: (this._view.right + this._view.left) / 2,
-				y: (this._view.bottom + this._view.top) / 2
+				x: (model.right + model.left) / 2,
+				y: (model.bottom + model.top) / 2
 			};
 		},
 		getWidth: function() {
-			return Math.abs(this._view.right - this._view.left);
+			var model = this._model;
+			return Math.abs(model.right - model.left);
 		},
 		getHeight: function() {
-			return Math.abs(this._view.bottom - this._view.top);
+			var model = this._model;
+			return Math.abs(model.bottom - model.top);
 		},
 		getArea: function() {
 			return this.getWidth() * this.getHeight();
 		},
 		draw: function() {
 			var view = this._view;
-			var ctx = this.ctx;
+			var ctx = this.chartInstance.chart.ctx;
+
+			ctx.save();
 
 			// Canvas setup
-			ctx.save();
 			ctx.beginPath();
 			ctx.rect(view.clip.x1, view.clip.y1, view.clip.x2 - view.clip.x1, view.clip.y2 - view.clip.y1);
 			ctx.clip();
@@ -436,26 +624,26 @@ module.exports = function(Chart) {
 				height = view.bottom - view.top;
 			ctx.fillRect(view.left, view.top, width, height);
 			ctx.strokeRect(view.left, view.top, width, height);
+
+			ctx.restore();
 		}
 	});
 
 	return BoxAnnotation;
 };
 
-},{"../helpers.js":3}],6:[function(require,module,exports){
-// Get the chart variable
-var helpers = require('../helpers.js');
-
+},{"../helpers.js":5}],8:[function(require,module,exports){
 // Line Annotation implementation
 module.exports = function(Chart) {
 	var chartHelpers = Chart.helpers;
+	var helpers = require('../helpers.js')(Chart);
 
 	var horizontalKeyword = 'horizontal';
 	var verticalKeyword = 'vertical';
 
 	var LineAnnotation = Chart.Annotation.Element.extend({
 		setDataLimits: function() {
-			var model = this._model = chartHelpers.clone(this._model) || {};
+			var model = this._model;
 			var options = this.options;
 
 			// Set the data range for this annotation
@@ -466,10 +654,10 @@ module.exports = function(Chart) {
 			};
 		},
 		configure: function() {
-			var model = this._model = chartHelpers.clone(this._model) || {};
+			var model = this._model;
 			var options = this.options;
 			var chartInstance = this.chartInstance;
-			var ctx = this.ctx;
+			var ctx = chartInstance.chart.ctx;
 
 			var scale = chartInstance.scales[options.scaleID];
 			var pixel, endPixel;
@@ -537,34 +725,35 @@ module.exports = function(Chart) {
 			model.borderDashOffset = options.borderDashOffset || 0;
 		},
 		inRange: function(mouseX, mouseY) {
-			var model = this._model || {};
+			var model = this._model;
 			return (model.line && model.line.intersects(mouseX, mouseY, this.getHeight()));
 		},
 		getCenterPoint: function() {
 			return {
-				x: (this._view.x2 + this._view.x1) / 2,
-				y: (this._view.y2 + this._view.y1) / 2
+				x: (this._model.x2 + this._model.x1) / 2,
+				y: (this._model.y2 + this._model.y1) / 2
 			};
 		},
 		getWidth: function() {
-			return Math.abs(this._view.right - this._view.left);
+			return Math.abs(this._model.right - this._model.left);
 		},
 		getHeight: function() {
-			return this._view.borderWidth || 1;
+			return this._model.borderWidth || 1;
 		},
 		getArea: function() {
 			return Math.sqrt(Math.pow(this.getWidth(), 2) + Math.pow(this.getHeight(), 2));
 		},
 		draw: function() {
 			var view = this._view;
-			var ctx = this.ctx;
+			var ctx = this.chartInstance.chart.ctx;
 			
 			if (!view.clip) {
 				return;
 			}
 
-			// Canvas setup
 			ctx.save();
+
+			// Canvas setup
 			ctx.beginPath();
 			ctx.rect(view.clip.x1, view.clip.y1, view.clip.x2 - view.clip.x1, view.clip.y2 - view.clip.y1);
 			ctx.clip();
@@ -582,7 +771,6 @@ module.exports = function(Chart) {
 			ctx.moveTo(view.x1, view.y1);
 			ctx.lineTo(view.x2, view.y2);
 			ctx.stroke();
-			ctx.restore();
 
 			if (view.labelEnabled && view.labelContent) {
 				ctx.beginPath();
@@ -616,6 +804,8 @@ module.exports = function(Chart) {
 					view.labelY + (view.labelHeight / 2)
 				);
 			}
+
+			ctx.restore();
 		}
 	});
 
@@ -698,4 +888,4 @@ module.exports = function(Chart) {
 	return LineAnnotation;
 };
 
-},{"../helpers.js":3}]},{},[4]);
+},{"../helpers.js":5}]},{},[6]);
