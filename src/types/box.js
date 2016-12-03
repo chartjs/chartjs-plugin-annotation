@@ -1,7 +1,7 @@
-var helpers = require('../helpers.js');
-
 // Box Annotation implementation
 module.exports = function(Chart) {
+	var helpers = require('../helpers.js')(Chart);
+	
 	var BoxAnnotation = Chart.Annotation.Element.extend({
 		setDataLimits: function() {
 			var model = this._model;
@@ -112,7 +112,7 @@ module.exports = function(Chart) {
 		},
 		draw: function() {
 			var view = this._view;
-			var ctx = this.ctx;
+			var ctx = this.chartInstance.chart.ctx;
 
 			// Canvas setup
 			ctx.save();

@@ -1,9 +1,7 @@
-// Get the chart variable
-var helpers = require('../helpers.js');
-
 // Line Annotation implementation
 module.exports = function(Chart) {
 	var chartHelpers = Chart.helpers;
+	var helpers = require('../helpers.js')(Chart);
 
 	var horizontalKeyword = 'horizontal';
 	var verticalKeyword = 'vertical';
@@ -24,7 +22,7 @@ module.exports = function(Chart) {
 			var model = this._model;
 			var options = this.options;
 			var chartInstance = this.chartInstance;
-			var ctx = this.ctx;
+			var ctx = chartInstance.chart.ctx;
 
 			var scale = chartInstance.scales[options.scaleID];
 			var pixel, endPixel;
@@ -112,7 +110,7 @@ module.exports = function(Chart) {
 		},
 		draw: function() {
 			var view = this._view;
-			var ctx = this.ctx;
+			var ctx = this.chartInstance.chart.ctx;
 			
 			if (!view.clip) {
 				return;

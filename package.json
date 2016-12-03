@@ -3,7 +3,7 @@
   "description": "Annotations for Chart.js",
   "version": "0.5.1",
   "license": "MIT",
-  "main": "chartjs-plugin-annotation.js",
+  "main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/chartjs/chartjs-plugin-annotation.git"
@@ -27,6 +27,6 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
-    "chart.js": "^2.1.0"
+    "chart.js": "^2.4.0"
   }
 }
