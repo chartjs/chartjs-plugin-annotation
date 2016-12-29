@@ -33,8 +33,10 @@ module.exports = function(Chart) {
 
 			// Add the annotation scale adjuster to each scale's afterDataLimits hook
 			chartInstance.ensureScalesHaveIDs();
-			chartHelpers.each(chartOptions.scales.xAxes, setAfterDataLimitsHook);
-			chartHelpers.each(chartOptions.scales.yAxes, setAfterDataLimitsHook);
+			if (chartOptions.scales) {
+				chartHelpers.each(chartOptions.scales.xAxes, setAfterDataLimitsHook);
+				chartHelpers.each(chartOptions.scales.yAxes, setAfterDataLimitsHook);
+			}
 		},
 		beforeUpdate: function(chartInstance) {
 			var ns = chartInstance.annotation;
