@@ -34,7 +34,7 @@ To configure the annotations plugin, you can simply add new config options to yo
 		//
 		// Should be one of: afterDraw, afterDatasetsDraw, beforeDatasetsDraw
 		// See http://www.chartjs.org/docs/#advanced-usage-creating-plugins
-		drawTime: 'afterDraw', // (default)
+		drawTime: 'afterDatasetsDraw', // (default)
 
 		// Mouse events to enable on each annotation.
 		// Should be an array of one or more browser-supported mouse events

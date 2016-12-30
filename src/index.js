@@ -12,7 +12,7 @@ Chart.Annotation.drawTimeOptions = {
 };
 
 Chart.Annotation.defaults = {
-	drawTime: 'afterDraw',
+	drawTime: 'afterDatasetsDraw',
 	dblClickSpeed: 350, // ms
 	events: [],
 	annotations: []
