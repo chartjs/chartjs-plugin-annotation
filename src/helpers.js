@@ -11,8 +11,14 @@ function objectId() {
 	return Math.random().toString(36).substr(2, 6);
 }
 
-function isValid(num) {
-	return !isNaN(num) && isFinite(num);
+function isValid(rawValue) {
+	if (rawValue === null || typeof rawValue === 'undefined') {
+		return false;
+	} else if (typeof rawValue === 'number') {
+		return isFinite(rawValue);
+	} else {
+		return !!rawValue;
+	}
 }
 
 function decorate(obj, prop, func) {
