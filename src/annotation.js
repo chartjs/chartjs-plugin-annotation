@@ -97,7 +97,7 @@ module.exports = function(Chart) {
 		afterInit: function(chartInstance) {
 			// Detect and intercept events that happen on an annotation element
 			var watchFor = chartInstance.annotation.options.events;
-			if (watchFor.length > 0) {
+			if (chartHelpers.isArray(watchFor) && watchFor.length > 0) {
 				var canvas = chartInstance.chart.canvas;
 				var eventHandler = events.dispatcher.bind(chartInstance);
 				events.collapseHoverEvents(watchFor).forEach(function(eventName) {
