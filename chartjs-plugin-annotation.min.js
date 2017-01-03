@@ -1,7 +1,7 @@
 /*!
  * chartjs-plugin-annotation.js
  * http://chartjs.org/
- * Version: 0.5.2
+ * Version: 0.5.3
  *
  * Copyright 2016 Evert Timberg
  * Released under the MIT license
