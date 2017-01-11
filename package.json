@@ -7,7 +7,7 @@
   "main": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/chartjs/chartjs-plugin-annotation.git"
+    "url": "https://github.com/njcaruso/chartjs-plugin-annotation.git"
   },
   "devDependencies": {
     "browserify": "^13.0.0",
