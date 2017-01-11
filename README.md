@@ -41,7 +41,7 @@ To configure the annotations plugin, you can simply add new config options to yo
 		// See https://developer.mozilla.org/en-US/docs/Web/Events
 		events: ['click'],
 
-		// Double-click speed in ms used to distinguish single-clicks from 
+		// Double-click speed in ms used to distinguish single-clicks from
 		// double-clicks whenever you need to capture both. When listening for
 		// both click and dblclick, click events will be delayed by this
 		// amount.
@@ -65,6 +65,8 @@ Vertical or horizontal lines are supported.
 
 	// ID of the scale to bind onto
 	scaleID: 'y-axis-0',
+
+	useTicks: true, // optional, and helpful if using 'x-axis-0' with ticks for data and mode = 'vertical'
 
 	// Data value to draw the line at
 	value: 25,
