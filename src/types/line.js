@@ -214,7 +214,7 @@ module.exports = function(Chart) {
 				ya = padHeight + view.labelYAdjust;
 				xa = (width / 2) + view.labelXAdjust;
 				ret.y = view.y1 + ya;
-				ret.x = (isFinite(line.m) ? line.getY(ret.y) : view.x1) - xa;
+				ret.x = (isFinite(line.m) ? line.getX(ret.y) : view.x1) - xa;
 			break;
 			
 			// bottom align
