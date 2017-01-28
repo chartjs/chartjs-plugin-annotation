@@ -131,6 +131,16 @@ module.exports = function(Chart) {
 			}
 			ctx.lineDashOffset = view.borderDashOffset;
 
+			var aliasPixel = Chart.helpers.aliasPixel(ctx.lineWidth);
+			if (view.mode === verticalKeyword) {
+				view.x1 += aliasPixel;
+				view.x2 += aliasPixel;
+			}
+			else {
+				view.y1 += aliasPixel;
+				view.y2 += aliasPixel;
+			}
+
 			// Draw
 			ctx.beginPath();
 			ctx.moveTo(view.x1, view.y1);
