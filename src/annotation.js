@@ -33,8 +33,10 @@ module.exports = function(Chart) {
 
 			// Add the annotation scale adjuster to each scale's afterDataLimits hook
 			chartInstance.ensureScalesHaveIDs();
-			chartHelpers.each(chartOptions.scales.xAxes, setAfterDataLimitsHook);
-			chartHelpers.each(chartOptions.scales.yAxes, setAfterDataLimitsHook);
+			if (chartOptions.scales) {
+				chartHelpers.each(chartOptions.scales.xAxes, setAfterDataLimitsHook);
+				chartHelpers.each(chartOptions.scales.yAxes, setAfterDataLimitsHook);
+			}
 		},
 		beforeUpdate: function(chartInstance) {
 			var ns = chartInstance.annotation;
@@ -50,7 +52,7 @@ module.exports = function(Chart) {
 			// Add new elements, or update existing ones
 			ns.options.annotations.forEach(function(annotation) {
 				var id = annotation.id || helpers.objectId();
-				
+
 				// No element with that ID exists, and it's a valid annotation type
 				if (!ns.elements[id] && annotationTypes[annotation.type]) {
 					var cls = annotationTypes[annotation.type];
