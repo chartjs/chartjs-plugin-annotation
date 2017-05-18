@@ -12,7 +12,11 @@ function objectId() {
 }
 
 function isValid(num) {
-	return !isNaN(num) && isFinite(num);
+  if (!isNaN(num)) {
+    return isFinite(num);
+  }
+
+  return num && typeof num === 'string';
 }
 
 function decorate(obj, prop, func) {

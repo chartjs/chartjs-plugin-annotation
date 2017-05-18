@@ -277,7 +277,11 @@ function objectId() {
 }
 
 function isValid(num) {
-	return !isNaN(num) && isFinite(num);
+  if (!isNaN(num)) {
+    return isFinite(num);
+  }
+
+  return num && typeof num === 'string';
 }
 
 function decorate(obj, prop, func) {
@@ -746,7 +750,7 @@ module.exports = function(Chart) {
 		draw: function() {
 			var view = this._view;
 			var ctx = this.chartInstance.chart.ctx;
-			
+
 			if (!view.clip) {
 				return;
 			}
@@ -833,7 +837,7 @@ module.exports = function(Chart) {
 			var dy = this.getY(x),
 				dx = this.getX(y);
 			return (
-				(!isFinite(dy) || Math.abs(y - dy) < epsilon) && 
+				(!isFinite(dy) || Math.abs(y - dy) < epsilon) &&
 				(!isFinite(dx) || Math.abs(x - dx) < epsilon)
 			);
 		};
@@ -849,9 +853,9 @@ module.exports = function(Chart) {
 				ya = padHeight + view.labelYAdjust;
 				xa = (width / 2) + view.labelXAdjust;
 				ret.y = view.y1 + ya;
-				ret.x = (isFinite(line.m) ? line.getY(ret.y) : view.x1) - xa;
+				ret.x = (isFinite(line.m) ? line.getX(ret.y) : view.x1) - xa;
 			break;
-			
+
 			// bottom align
 			case view.mode == verticalKeyword && view.labelPosition == "bottom":
 				ya = height + padHeight + view.labelYAdjust;
@@ -859,7 +863,7 @@ module.exports = function(Chart) {
 				ret.y = view.y2 - ya;
 				ret.x = (isFinite(line.m) ? line.getX(ret.y) : view.x1) - xa;
 			break;
-			
+
 			// left align
 			case view.mode == horizontalKeyword && view.labelPosition == "left":
 				xa = padWidth + view.labelXAdjust;
@@ -867,7 +871,7 @@ module.exports = function(Chart) {
 				ret.x = view.x1 + xa;
 				ret.y = line.getY(ret.x) + ya;
 			break;
-			
+
 			// right align
 			case view.mode == horizontalKeyword && view.labelPosition == "right":
 				xa = width + padWidth + view.labelXAdjust;
