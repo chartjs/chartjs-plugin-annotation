@@ -6,6 +6,11 @@ This plugin draws lines and boxes on the chart area.
 
 Annotations work with line, bar, scatter and bubble charts that use linear, logarithmic, time, or category scales. Annotations will not work on any chart that does not have exactly two axes, including pie, radar, and polar area charts.
 
+## Demo
+
+<iframe height='406' scrolling='no' title='chartjs-plugin-annotation sandbox' src='//codepen.io/compwright/embed/preview/mmQMrZ/?height=406&theme-id=light&default-tab=result&embed-version=2' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'>See the Pen <a href='https://codepen.io/compwright/pen/mmQMrZ/'>chartjs-plugin-annotation sandbox</a> by Jonathon Hill (<a href='http://codepen.io/compwright'>@compwright</a>) on <a href='http://codepen.io'>CodePen</a>.
+</iframe>
+
 ## Configuration
 
 To configure the annotations plugin, you can simply add new config options to your chart config.
