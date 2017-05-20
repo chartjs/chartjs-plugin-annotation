@@ -6,10 +6,9 @@ This plugin draws lines and boxes on the chart area.
 
 Annotations work with line, bar, scatter and bubble charts that use linear, logarithmic, time, or category scales. Annotations will not work on any chart that does not have exactly two axes, including pie, radar, and polar area charts.
 
-## Demo
+![Example Screenshot from Dropbox](https://www.dropbox.com/s/92cmt8zrth55z55/Screenshot%202017-05-20%2018.26.39.png?dl=1)
 
-<iframe height='406' scrolling='no' title='chartjs-plugin-annotation sandbox' src='//codepen.io/compwright/embed/preview/mmQMrZ/?height=406&theme-id=light&default-tab=result&embed-version=2' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'>See the Pen <a href='https://codepen.io/compwright/pen/mmQMrZ/'>chartjs-plugin-annotation sandbox</a> by Jonathon Hill (<a href='http://codepen.io/compwright'>@compwright</a>) on <a href='http://codepen.io'>CodePen</a>.
-</iframe>
+[View this example on CodePen](https://codepen.io/compwright/full/mmQMrZ/)
 
 ## Configuration
 
@@ -247,7 +246,7 @@ You can find documentation for Chart.js at [www.chartjs.org/docs](http://www.cha
 
 ## Contributing
 
-Before submitting an issue or a pull request to the project, please take a moment to look over the [contributing guidelines](https://github.com/chartjs/chartjs-plugin-annotation.js/blob/master/CONTRIBUTING.md) first.
+Before submitting an issue or a pull request to the project, please take a moment to look over the [contributing guidelines](CONTRIBUTING.md) first.
 
 ## License
 
