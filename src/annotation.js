@@ -13,6 +13,20 @@ module.exports = function(Chart) {
 		});
 	}
 
+	function draw(drawTime) {
+		return function(chartInstance, easingDecimal) {
+			var defaultDrawTime = chartInstance.annotation.options.drawTime;
+
+			helpers.elements(chartInstance)
+				.filter(function(element) {
+					return drawTime === (element.options.drawTime || defaultDrawTime);
+				})
+				.forEach(function(element) {
+					element.transition(easingDecimal).draw();
+				});
+		};
+	}
+
 	return {
 		beforeInit: function(chartInstance) {
 			var chartOptions = chartInstance.options;
@@ -24,12 +38,6 @@ module.exports = function(Chart) {
 				onDestroy: [],
 				firstRun: true,
 				supported: false
-			};
-
-			ns[ns.options.drawTime] = function(easingDecimal) {
-				helpers.elements(chartInstance).forEach(function(element) {
-					element.transition(easingDecimal).draw();
-				});
 			};
 
 			// Add the annotation scale adjuster to each scale's afterDataLimits hook
@@ -91,15 +99,9 @@ module.exports = function(Chart) {
 				element.configure();
 			});
 		},
-		beforeDatasetsDraw: function(chartInstance, easingDecimal) {
-			(chartInstance.annotation.beforeDatasetsDraw || helpers.noop)(easingDecimal);
-		},
-		afterDatasetsDraw: function(chartInstance, easingDecimal) {
-			(chartInstance.annotation.afterDatasetsDraw || helpers.noop)(easingDecimal);
-		},
-		afterDraw: function(chartInstance, easingDecimal) {
-			(chartInstance.annotation.afterDraw || helpers.noop)(easingDecimal);
-		},
+		beforeDatasetsDraw: draw('beforeDatasetsDraw'),
+		afterDatasetsDraw: draw('afterDatasetsDraw'),
+		afterDraw: draw('afterDraw'),
 		afterInit: function(chartInstance) {
 			// Detect and intercept events that happen on an annotation element
 			var watchFor = chartInstance.annotation.options.events;
