@@ -22,7 +22,8 @@ module.exports = function(Chart) {
 				elements: {},
 				options: helpers.initConfig(chartOptions.annotation || {}),
 				onDestroy: [],
-				firstRun: true
+				firstRun: true,
+				supported: false
 			};
 
 			ns[ns.options.drawTime] = function(easingDecimal) {
@@ -34,12 +35,17 @@ module.exports = function(Chart) {
 			// Add the annotation scale adjuster to each scale's afterDataLimits hook
 			chartInstance.ensureScalesHaveIDs();
 			if (chartOptions.scales) {
+				ns.supported = true;
 				chartHelpers.each(chartOptions.scales.xAxes, setAfterDataLimitsHook);
 				chartHelpers.each(chartOptions.scales.yAxes, setAfterDataLimitsHook);
 			}
 		},
 		beforeUpdate: function(chartInstance) {
 			var ns = chartInstance.annotation;
+
+			if (!ns.supported) {
+				return;
+			}
 
 			if (!ns.firstRun) {
 				ns.options = helpers.initConfig(chartInstance.options.annotation || {});
