@@ -91,7 +91,20 @@ module.exports = function(Chart) {
 		},
 		inRange: function(mouseX, mouseY) {
 			var model = this._model;
-			return (model.line && model.line.intersects(mouseX, mouseY, this.getHeight()));
+			
+			return (
+				// On the line
+				model.line &&
+				model.line.intersects(mouseX, mouseY, this.getHeight())
+			) || (
+				// On the label
+				model.labelEnabled &&
+				model.labelContent &&
+				mouseX >= model.labelX && 
+				mouseX <= model.labelX + model.labelWidth && 
+				mouseY >= model.labelY && 
+				mouseY <= model.labelY + model.labelHeight
+			);
 		},
 		getCenterPoint: function() {
 			return {
