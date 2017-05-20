@@ -27,8 +27,13 @@ module.exports = function(Chart) {
 			var scale = chartInstance.scales[options.scaleID];
 			var pixel, endPixel;
 			if (scale) {
-				pixel = helpers.isValid(options.value) ? scale.getPixelForValue(options.value) : NaN;
-				endPixel = helpers.isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : pixel;
+				if (options.useTicks) {
+					pixel = helpers.isValid(options.value) ? scale.getPixelForTick(options.value) : NaN;
+					endPixel = helpers.isValid(options.endValue) ? scale.getPixelForTick(options.endValue) : pixel;
+				} else {
+					pixel = helpers.isValid(options.value) ? scale.getPixelForValue(options.value) : NaN;
+					endPixel = helpers.isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : pixel;
+				}
 			}
 
 			if (isNaN(pixel)) {
