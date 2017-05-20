@@ -68,7 +68,7 @@ function bumpTask(complete) {
     name: 'version',
     message: 'What version update would you like?',
     choices: choices
-  }, function(res) {
+  }).then(function(res) {
     var increment = res.version.split(' ')[0],
       newVersion = semver.inc(package.version, increment);
 
