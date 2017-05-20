@@ -75,9 +75,9 @@
                 }]
             },
             annotation: {
-                drawTime: 'afterDatasetsDraw',
                 events: ['click'],
                 annotations: [{
+                    drawTime: 'afterDraw',
                     id: 'hline',
                     type: 'line',
                     mode: 'horizontal',
@@ -95,6 +95,7 @@
                         console.log('Annotation', e.type, this);
                     }
                 }, {
+                    drawTime: 'afterDraw',
                     id: 'vline',
                     type: 'line',
                     mode: 'vertical',
@@ -112,6 +113,7 @@
                         console.log('Annotation', e.type, this);
                     }
                 }, {
+                    drawTime: 'beforeDatasetsDraw',
                     type: 'box',
                     xScaleID: 'x-axis-0',
                     yScaleID: 'y-axis-0',

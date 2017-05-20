@@ -1,6 +1,7 @@
 function noop() {}
 
 function elements(chartInstance) {
+	// Turn the elements object into an array of elements
 	var elements = chartInstance.annotation.elements;
 	return Object.keys(elements).map(function(id) {
 		return elements[id];

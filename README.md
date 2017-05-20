@@ -13,22 +13,6 @@ To configure the annotations plugin, you can simply add new config options to yo
 ```javascript
 {
 	annotation: {
-		annotations: [{
-			id: 'a-line-1', // optional
-			type: 'line',
-			mode: 'horizontal',
-			scaleID: 'y-axis-0',
-			value: '25',
-			borderColor: 'red',
-			borderWidth: 2,
-
-			// Fires when the user clicks this annotation on the chart
-			// (be sure to enable the event in the events array below).
-			onClick: function(e) {
-				// `this` is bound to the annotation element
-			}
-		}],
-
 		// Defines when the annotations are drawn.
 		// This allows positioning of the annotation relative to the other
 		// elements of the graph.
@@ -46,7 +30,26 @@ To configure the annotations plugin, you can simply add new config options to yo
 		// double-clicks whenever you need to capture both. When listening for
 		// both click and dblclick, click events will be delayed by this
 		// amount.
-		dblClickSpeed: 350 // ms (default)
+		dblClickSpeed: 350, // ms (default)
+
+		// Array of annotation configuration objects
+		// See below for detailed descriptions of the annotation options
+		annotations: [{
+			drawTime: 'afterDraw', // overrides annotation.drawTime if set
+			id: 'a-line-1', // optional
+			type: 'line',
+			mode: 'horizontal',
+			scaleID: 'y-axis-0',
+			value: '25',
+			borderColor: 'red',
+			borderWidth: 2,
+
+			// Fires when the user clicks this annotation on the chart
+			// (be sure to enable the event in the events array below).
+			onClick: function(e) {
+				// `this` is bound to the annotation element
+			}
+		}]
 	}
 }
 ```
@@ -57,6 +60,9 @@ Vertical or horizontal lines are supported.
 ```javascript
 {
 	type: 'line',
+
+	// optional drawTime to control layering, overrides global drawTime setting
+	drawTime: 'afterDatasetsDraw',
 
 	// optional annotation ID (must be unique)
 	id: 'a-line-1',
@@ -159,6 +165,9 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 {
 	type: 'box',
 
+	// optional drawTime to control layering, overrides global drawTime setting
+	drawTime: 'beforeDatasetsDraw',
+
 	// optional annotation ID (must be unique)
 	id: 'a-box-1',
 
@@ -211,7 +220,8 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 
 The following features still need to be done:
 
-* Point Annotations
+* Box annotation labels
+* Point annotations
 * Text annotations
 
 ## Installation

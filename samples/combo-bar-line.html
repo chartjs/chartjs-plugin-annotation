@@ -85,9 +85,9 @@
                         intersect: true
                     },
                     annotation: {
-                        drawTime: 'afterDatasetsDraw',
                         events: ['click'],
                         annotations: [{
+                            drawTime: 'afterDatasetsDraw',
                             id: 'hline',
                             type: 'line',
                             mode: 'horizontal',
@@ -105,6 +105,7 @@
                                 console.log('Annotation', e.type, this);
                             }
                         }, {
+                            drawTime: 'beforeDatasetsDraw',
                             type: 'box',
                             xScaleID: 'x-axis-0',
                             yScaleID: 'y-axis-0',
