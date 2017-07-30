@@ -127,12 +127,12 @@ Vertical or horizontal lines are supported.
 
 		// Adjustment along x-axis (left-right) of label relative to above number (can be negative)
 		// For horizontal lines positioned left or right, negative values move
-		// the label toward the edge, and negative values toward the center.
+		// the label toward the edge, and positive values toward the center.
 		xAdjust: 0,
 
 		// Adjustment along y-axis (top-bottom) of label relative to above number (can be negative)
 		// For vertical lines positioned top or bottom, negative values move
-		// the label toward the edge, and negative values toward the center.
+		// the label toward the edge, and positive values toward the center.
 		yAdjust: 0,
 
 		// Whether the label is enabled and should be displayed
