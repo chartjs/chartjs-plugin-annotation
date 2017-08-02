@@ -12,12 +12,12 @@ module.exports = function(Chart) {
 			var yScale = chartInstance.scales[options.yScaleID];
 			var chartArea = chartInstance.chartArea;
 
+			// Set the data range for this annotation
+			model.ranges = {};
+			
 			if (!chartArea) {
 				return;
 			}
-
-			// Set the data range for this annotation
-			model.ranges = {};
 			
 			var min = 0;
 			var max = 0;
