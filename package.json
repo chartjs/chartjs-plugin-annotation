@@ -5,6 +5,7 @@
   "author": "Evert Timberg <evert.timberg@gmail.com>",
   "license": "MIT",
   "main": "src/index.js",
+  "types": "./index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/chartjs/chartjs-plugin-annotation.git"
