@@ -1,13 +1,17 @@
 {
   "name": "chartjs-plugin-annotation",
   "description": "Annotations for Chart.js",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "author": "Evert Timberg <evert.timberg@gmail.com>",
   "license": "MIT",
   "main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/chartjs/chartjs-plugin-annotation.git"
+  },
+  "scripts": {
+    "test": "gulp jshint",
+    "build": "gulp build"
   },
   "devDependencies": {
     "browserify": "^13.0.0",
