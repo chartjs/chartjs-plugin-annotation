@@ -1,0 +1,6 @@
+{
+  "name": "chartjs-plugin-annotation",
+  "description": "Annotation plugin for Chart.js",
+  "license": "MIT",
+  "main": "./chartjs-plugin-annotation.js"
+}
