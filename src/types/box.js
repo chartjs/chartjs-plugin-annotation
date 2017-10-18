@@ -15,6 +15,10 @@ module.exports = function(Chart) {
 			// Set the data range for this annotation
 			model.ranges = {};
 			
+			if (!chartArea) {
+				return;
+			}
+			
 			var min = 0;
 			var max = 0;
 			
