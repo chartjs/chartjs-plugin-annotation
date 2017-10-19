@@ -1,7 +1,7 @@
 /*!
  * chartjs-plugin-annotation.js
  * http://chartjs.org/
- * Version: 0.5.6
+ * Version: 0.5.7
  *
  * Copyright 2016 Evert Timberg
  * Released under the MIT license
@@ -525,6 +525,10 @@ module.exports = function(Chart) {
 
 			// Set the data range for this annotation
 			model.ranges = {};
+			
+			if (!chartArea) {
+				return;
+			}
 			
 			var min = 0;
 			var max = 0;
