@@ -1,4 +1,5 @@
 # chartjs-plugin-annotation.js
+[![CDNJS version](https://img.shields.io/cdnjs/v/chartjs-plugin-annotation.svg)](https://cdnjs.com/libraries/chartjs-plugin-annotation)
 
 An annotation plugin for Chart.js >= 2.4.0
 
