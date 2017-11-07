@@ -67,15 +67,15 @@ module.exports = function(Chart) {
 			var min, max;
 
 			if (xScale) {
-				min = this.setPixelForValue(xScale, options.xMin, chartArea.left);
-				max = this.setPixelForValue(xScale, options.xMax, chartArea.right);
+				min = helpers.getPixelForValue(xScale, options.xMin, chartArea.left);
+				max = helpers.getPixelForValue(xScale, options.xMax, chartArea.right);
 				left = Math.min(min, max);
 				right = Math.max(min, max);
 			}
 
 			if (yScale) {
-				min = this.setPixelForValue(yScale, options.yMin, chartArea.bottom);
-				max = this.setPixelForValue(yScale, options.yMax, chartArea.top);
+				min = helpers.getPixelForValue(yScale, options.yMin, chartArea.bottom);
+				max = helpers.getPixelForValue(yScale, options.yMax, chartArea.top);
 				top = Math.min(min, max);
 				bottom = Math.max(min, max);
 			}
@@ -90,13 +90,6 @@ module.exports = function(Chart) {
 			model.borderColor = options.borderColor;
 			model.borderWidth = options.borderWidth;
 			model.backgroundColor = options.backgroundColor;
-		},
-		setPixelForValue: function(scale, value, defaultValue) {
-			if(Array.isArray(value) && value.length == 2)
-				return (this.setPixelForValue(scale, value[0], defaultValue) + this.setPixelForValue(scale, value[1], defaultValue)) / 2;
-			if(helpers.isValid(value))
-				return scale.getPixelForValue(value);
-			return defaultValue;
 		},
 		inRange: function(mouseX, mouseY) {
 			var model = this._model;

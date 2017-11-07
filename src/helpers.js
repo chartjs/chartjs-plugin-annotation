@@ -22,6 +22,14 @@ function isValid(rawValue) {
 	}
 }
 
+function getPixelForValue(scale, value, defaultValue) {
+	if(Array.isArray(value) && value.length == 2)
+		return (getPixelForValue(scale, value[0], defaultValue) + getPixelForValue(scale, value[1], defaultValue)) / 2;
+	if(isValid(value))
+		return scale.getPixelForValue(value);
+	return defaultValue;
+}
+
 function decorate(obj, prop, func) {
 	var prefix = '$';
 	if (!obj[prefix + prop]) {
@@ -175,6 +183,7 @@ module.exports = function(Chart) {
 		noop: noop,
 		objectId: objectId,
 		isValid: isValid,
+		getPixelForValue: getPixelForValue,
 		decorate: decorate,
 		adjustScaleRange: adjustScaleRange,
 		getNearestItems: getNearestItems,

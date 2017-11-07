@@ -13,9 +13,11 @@ module.exports = function(Chart) {
 
 			// Set the data range for this annotation
 			model.ranges = {};
+			var minValue = Array.isArray(options.value)    ? options.value[0]    : options.value;
+			var maxValue = Array.isArray(options.endValue) ? options.endValue[1] : options.endValue;
 			model.ranges[options.scaleID] = {
-				min: options.value,
-				max: options.endValue || options.value
+				min: minValue,
+				max: maxValue || minValue
 			};
 		},
 		configure: function() {
@@ -27,8 +29,8 @@ module.exports = function(Chart) {
 			var scale = chartInstance.scales[options.scaleID];
 			var pixel, endPixel;
 			if (scale) {
-				pixel = helpers.isValid(options.value) ? scale.getPixelForValue(options.value) : NaN;
-				endPixel = helpers.isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : pixel;
+				pixel = helpers.getPixelForValue(scale, options.value, NaN);
+				endPixel = helpers.getPixelForValue(scale, options.endValue, pixel);
 			}
 
 			if (isNaN(pixel)) {

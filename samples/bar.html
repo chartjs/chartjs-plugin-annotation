@@ -113,6 +113,23 @@
                                 console.log('Annotation', e.type, this);
                             }
                         }, {
+                            id: 'vlineBetween',
+                            type: 'line',
+                            mode: 'vertical',
+                            scaleID: 'x-axis-0',
+                            value: ['June', 'July'],
+                            borderColor: 'green',
+                            borderWidth: 5,
+                            label: {
+                                backgroundColor: "green",
+                                content: "Between categories",
+                                enabled: true
+                            },
+                            onClick: function(e) {
+                                // The annotation is is bound to the `this` variable
+                                console.log('Annotation', e.type, this);
+                            }
+                        }, {
                             drawTime: 'beforeDatasetsDraw',
                             type: 'box',
                             xScaleID: 'x-axis-0',
