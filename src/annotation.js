@@ -8,7 +8,9 @@ module.exports = function(Chart) {
 
 	function setAfterDataLimitsHook(axisOptions) {
 		helpers.decorate(axisOptions, 'afterDataLimits', function(previous, scale) {
-			if (previous) previous(scale);
+			if (previous) {
+				previous(scale);
+			}
 			helpers.adjustScaleRange(scale);
 		});
 	}
@@ -66,7 +68,7 @@ module.exports = function(Chart) {
 			// Add new elements, or update existing ones
 			ns.options.annotations.forEach(function(annotation) {
 				var id = annotation.id || helpers.objectId();
-				
+
 				// No element with that ID exists, and it's a valid annotation type
 				if (!ns.elements[id] && annotationTypes[annotation.type]) {
 					var cls = annotationTypes[annotation.type];

@@ -2,9 +2,9 @@ function noop() {}
 
 function elements(chartInstance) {
 	// Turn the elements object into an array of elements
-	var elements = chartInstance.annotation.elements;
-	return Object.keys(elements).map(function(id) {
-		return elements[id];
+	var els = chartInstance.annotation.elements;
+	return Object.keys(els).map(function(id) {
+		return els[id];
 	});
 }
 
@@ -17,9 +17,8 @@ function isValid(rawValue) {
 		return false;
 	} else if (typeof rawValue === 'number') {
 		return isFinite(rawValue);
-	} else {
-		return !!rawValue;
 	}
+	return !!rawValue;
 }
 
 function decorate(obj, prop, func) {
@@ -28,12 +27,12 @@ function decorate(obj, prop, func) {
 		if (obj[prop]) {
 			obj[prefix + prop] = obj[prop].bind(obj);
 			obj[prop] = function() {
-				var args = [ obj[prefix + prop] ].concat(Array.prototype.slice.call(arguments));
+				var args = [obj[prefix + prop]].concat(Array.prototype.slice.call(arguments));
 				return func.apply(obj, args);
 			};
 		} else {
 			obj[prop] = function() {
-				var args = [ undefined ].concat(Array.prototype.slice.call(arguments));
+				var args = [undefined].concat(Array.prototype.slice.call(arguments));
 				return func.apply(obj, args);
 			};
 		}
@@ -162,7 +161,8 @@ module.exports = function(Chart) {
 			.sort(function(a, b) {
 				// If there are multiple elements equally close,
 				// sort them by size, then by index
-				var sizeA = a.getArea(), sizeB = b.getArea();
+				var sizeA = a.getArea();
+				var sizeB = b.getArea();
 				return (sizeA > sizeB || sizeA < sizeB) ? sizeA - sizeB : a._index - b._index;
 			})
 			.slice(0, 1)[0]; // return only the top item

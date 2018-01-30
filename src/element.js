@@ -1,6 +1,6 @@
 module.exports = function(Chart) {
 	var chartHelpers = Chart.helpers;
-	
+
 	var AnnotationElement = Chart.Element.extend({
 		initialize: function() {
 			this.hidden = false;
