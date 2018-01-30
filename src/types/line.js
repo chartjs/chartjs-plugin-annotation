@@ -6,6 +6,84 @@ module.exports = function(Chart) {
 	var horizontalKeyword = 'horizontal';
 	var verticalKeyword = 'vertical';
 
+	function LineFunction(view) {
+		// Describe the line in slope-intercept form (y = mx + b).
+		// Note that the axes are rotated 90° CCW, which causes the
+		// x- and y-axes to be swapped.
+		var m = (view.x2 - view.x1) / (view.y2 - view.y1);
+		var b = view.x1 || 0;
+
+		this.m = m;
+		this.b = b;
+
+		this.getX = function(y) {
+			// Coordinates are relative to the origin of the canvas
+			return m * (y - view.y1) + b;
+		};
+
+		this.getY = function(x) {
+			return ((x - b) / m) + view.y1;
+		};
+
+		this.intersects = function(x, y, epsilon) {
+			epsilon = epsilon || 0.001;
+			var dy = this.getY(x);
+			var dx = this.getX(y);
+			return (
+				(!isFinite(dy) || Math.abs(y - dy) < epsilon) &&
+				(!isFinite(dx) || Math.abs(x - dx) < epsilon)
+			);
+		};
+	}
+
+	function calculateLabelPosition(view, width, height, padWidth, padHeight) {
+		var line = view.line;
+		var ret = {};
+		var xa = 0;
+		var ya = 0;
+
+		switch (true) {
+		// top align
+		case view.mode === verticalKeyword && view.labelPosition === 'top':
+			ya = padHeight + view.labelYAdjust;
+			xa = (width / 2) + view.labelXAdjust;
+			ret.y = view.y1 + ya;
+			ret.x = (isFinite(line.m) ? line.getX(ret.y) : view.x1) - xa;
+			break;
+
+		// bottom align
+		case view.mode === verticalKeyword && view.labelPosition === 'bottom':
+			ya = height + padHeight + view.labelYAdjust;
+			xa = (width / 2) + view.labelXAdjust;
+			ret.y = view.y2 - ya;
+			ret.x = (isFinite(line.m) ? line.getX(ret.y) : view.x1) - xa;
+			break;
+
+		// left align
+		case view.mode === horizontalKeyword && view.labelPosition === 'left':
+			xa = padWidth + view.labelXAdjust;
+			ya = -(height / 2) + view.labelYAdjust;
+			ret.x = view.x1 + xa;
+			ret.y = line.getY(ret.x) + ya;
+			break;
+
+		// right align
+		case view.mode === horizontalKeyword && view.labelPosition === 'right':
+			xa = width + padWidth + view.labelXAdjust;
+			ya = -(height / 2) + view.labelYAdjust;
+			ret.x = view.x2 - xa;
+			ret.y = line.getY(ret.x) + ya;
+			break;
+
+		// center align
+		default:
+			ret.x = ((view.x1 + view.x2 - width) / 2) + view.labelXAdjust;
+			ret.y = ((view.y1 + view.y2 - height) / 2) + view.labelYAdjust;
+		}
+
+		return ret;
+	}
+
 	var LineAnnotation = Chart.Annotation.Element.extend({
 		setDataLimits: function() {
 			var model = this._model;
@@ -45,7 +123,7 @@ module.exports = function(Chart) {
 				y2: chartArea.bottom
 			};
 
-			if (this.options.mode == horizontalKeyword) {
+			if (this.options.mode === horizontalKeyword) {
 				model.x1 = chartArea.left;
 				model.x2 = chartArea.right;
 				model.y1 = pixel;
@@ -91,7 +169,7 @@ module.exports = function(Chart) {
 		},
 		inRange: function(mouseX, mouseY) {
 			var model = this._model;
-			
+
 			return (
 				// On the line
 				model.line &&
@@ -100,9 +178,9 @@ module.exports = function(Chart) {
 				// On the label
 				model.labelEnabled &&
 				model.labelContent &&
-				mouseX >= model.labelX && 
-				mouseX <= model.labelX + model.labelWidth && 
-				mouseY >= model.labelY && 
+				mouseX >= model.labelX &&
+				mouseX <= model.labelX + model.labelWidth &&
+				mouseY >= model.labelY &&
 				mouseY <= model.labelY + model.labelHeight
 			);
 		},
@@ -186,82 +264,6 @@ module.exports = function(Chart) {
 			ctx.restore();
 		}
 	});
-
-	function LineFunction(view) {
-		// Describe the line in slope-intercept form (y = mx + b).
-		// Note that the axes are rotated 90° CCW, which causes the
-		// x- and y-axes to be swapped.
-		var m = (view.x2 - view.x1) / (view.y2 - view.y1);
-		var b = view.x1 || 0;
-
-		this.m = m;
-		this.b = b;
-
-		this.getX = function(y) {
-			// Coordinates are relative to the origin of the canvas
-			return m * (y - view.y1) + b;
-		};
-
-		this.getY = function(x) {
-			return ((x - b) / m) + view.y1;
-		};
-
-		this.intersects = function(x, y, epsilon) {
-			epsilon = epsilon || 0.001;
-			var dy = this.getY(x),
-				dx = this.getX(y);
-			return (
-				(!isFinite(dy) || Math.abs(y - dy) < epsilon) &&
-				(!isFinite(dx) || Math.abs(x - dx) < epsilon)
-			);
-		};
-	}
-
-	function calculateLabelPosition(view, width, height, padWidth, padHeight) {
-		var line = view.line;
-		var ret = {}, xa = 0, ya = 0;
-
-		switch (true) {
-			// top align
-			case view.mode == verticalKeyword && view.labelPosition == "top":
-				ya = padHeight + view.labelYAdjust;
-				xa = (width / 2) + view.labelXAdjust;
-				ret.y = view.y1 + ya;
-				ret.x = (isFinite(line.m) ? line.getX(ret.y) : view.x1) - xa;
-			break;
-
-			// bottom align
-			case view.mode == verticalKeyword && view.labelPosition == "bottom":
-				ya = height + padHeight + view.labelYAdjust;
-				xa = (width / 2) + view.labelXAdjust;
-				ret.y = view.y2 - ya;
-				ret.x = (isFinite(line.m) ? line.getX(ret.y) : view.x1) - xa;
-			break;
-
-			// left align
-			case view.mode == horizontalKeyword && view.labelPosition == "left":
-				xa = padWidth + view.labelXAdjust;
-				ya = -(height / 2) + view.labelYAdjust;
-				ret.x = view.x1 + xa;
-				ret.y = line.getY(ret.x) + ya;
-			break;
-
-			// right align
-			case view.mode == horizontalKeyword && view.labelPosition == "right":
-				xa = width + padWidth + view.labelXAdjust;
-				ya = -(height / 2) + view.labelYAdjust;
-				ret.x = view.x2 - xa;
-				ret.y = line.getY(ret.x) + ya;
-			break;
-
-			// center align
-			default:
-				ret.x = ((view.x1 + view.x2 - width) / 2) + view.labelXAdjust;
-				ret.y = ((view.y1 + view.y2 - height) / 2) + view.labelYAdjust;
-		}
-
-		return ret;
-	}
 
 	return LineAnnotation;
 };

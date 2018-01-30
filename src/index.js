@@ -1,6 +1,6 @@
 // Get the chart variable
 var Chart = require('chart.js');
-Chart = typeof(Chart) === 'function' ? Chart : window.Chart;
+Chart = typeof Chart === 'function' ? Chart : window.Chart;
 
 // Configure plugin namespace
 Chart.Annotation = Chart.Annotation || {};

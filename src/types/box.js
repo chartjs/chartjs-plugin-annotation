@@ -1,7 +1,7 @@
 // Box Annotation implementation
 module.exports = function(Chart) {
 	var helpers = require('../helpers.js')(Chart);
-	
+
 	var BoxAnnotation = Chart.Annotation.Element.extend({
 		setDataLimits: function() {
 			var model = this._model;
@@ -14,14 +14,14 @@ module.exports = function(Chart) {
 
 			// Set the data range for this annotation
 			model.ranges = {};
-			
+
 			if (!chartArea) {
 				return;
 			}
-			
+
 			var min = 0;
 			var max = 0;
-			
+
 			if (xScale) {
 				min = helpers.isValid(options.xMin) ? options.xMin : xScale.getPixelForValue(chartArea.left);
 				max = helpers.isValid(options.xMax) ? options.xMax : xScale.getPixelForValue(chartArea.right);
@@ -59,10 +59,10 @@ module.exports = function(Chart) {
 				y2: chartArea.bottom
 			};
 
-			var left = chartArea.left, 
-				top = chartArea.top, 
-				right = chartArea.right, 
-				bottom = chartArea.bottom;
+			var left = chartArea.left;
+			var top = chartArea.top;
+			var right = chartArea.right;
+			var bottom = chartArea.bottom;
 
 			var min, max;
 
@@ -94,9 +94,9 @@ module.exports = function(Chart) {
 		inRange: function(mouseX, mouseY) {
 			var model = this._model;
 			return model &&
-				mouseX >= model.left && 
-				mouseX <= model.right && 
-				mouseY >= model.top && 
+				mouseX >= model.left &&
+				mouseX <= model.right &&
+				mouseY >= model.top &&
 				mouseY <= model.bottom;
 		},
 		getCenterPoint: function() {
@@ -133,8 +133,8 @@ module.exports = function(Chart) {
 			ctx.fillStyle = view.backgroundColor;
 
 			// Draw
-			var width = view.right - view.left,
-				height = view.bottom - view.top;
+			var width = view.right - view.left;
+			var height = view.bottom - view.top;
 			ctx.fillRect(view.left, view.top, width, height);
 			ctx.strokeRect(view.left, view.top, width, height);
 

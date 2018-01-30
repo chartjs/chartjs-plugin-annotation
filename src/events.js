@@ -6,15 +6,15 @@ module.exports = function(Chart) {
 		var hover = false;
 		var filteredEvents = events.filter(function(eventName) {
 			switch (eventName) {
-				case 'mouseenter':
-				case 'mouseover':
-				case 'mouseout':
-				case 'mouseleave':
-					hover = true;
-					return false;
+			case 'mouseenter':
+			case 'mouseover':
+			case 'mouseout':
+			case 'mouseleave':
+				hover = true;
+				return false;
 
-				default:
-					return true;
+			default:
+				return true;
 			}
 		});
 		if (hover && filteredEvents.indexOf('mousemove') === -1) {
@@ -39,24 +39,24 @@ module.exports = function(Chart) {
 			if (element && !element.hovering) {
 				// hover started
 				['mouseenter', 'mouseover'].forEach(function(eventName) {
-					var eventHandlerName = helpers.getEventHandlerName(eventName);
+					var handlerName = helpers.getEventHandlerName(eventName);
 					var hoverEvent = helpers.createMouseEvent(eventName, e); // recreate the event to match the handler
 					element.hovering = true;
-					if (typeof options[eventHandlerName] === 'function') {
-						eventHandlers.push([ options[eventHandlerName], hoverEvent, element ]);
+					if (typeof options[handlerName] === 'function') {
+						eventHandlers.push([options[handlerName], hoverEvent, element]);
 					}
 				});
 			} else if (!element) {
 				// hover ended
-				elements.forEach(function(element) {
-					if (element.hovering) {
-						element.hovering = false;
-						var options = element.options;
+				elements.forEach(function(el) {
+					if (el.hovering) {
+						el.hovering = false;
+						var opt = el.options;
 						['mouseout', 'mouseleave'].forEach(function(eventName) {
-							var eventHandlerName = helpers.getEventHandlerName(eventName);
+							var handlerName = helpers.getEventHandlerName(eventName);
 							var hoverEvent = helpers.createMouseEvent(eventName, e); // recreate the event to match the handler
-							if (typeof options[eventHandlerName] === 'function') {
-								eventHandlers.push([ options[eventHandlerName], hoverEvent, element ]);
+							if (typeof opt[handlerName] === 'function') {
+								eventHandlers.push([opt[handlerName], hoverEvent, el]);
 							}
 						});
 					}
@@ -69,7 +69,7 @@ module.exports = function(Chart) {
 		//
 		// 1: wait dblClickSpeed ms, then fire click
 		// 2: cancel (1) if it is waiting then wait dblClickSpeed ms then fire click, else fire click immediately
-		// 3: cancel (1) or (2) if waiting, then fire dblclick 
+		// 3: cancel (1) or (2) if waiting, then fire dblclick
 		if (element && events.indexOf('dblclick') > -1 && typeof options.onDblclick === 'function') {
 			if (e.type === 'click' && typeof options.onClick === 'function') {
 				clearTimeout(element.clickTimeout);
@@ -88,7 +88,7 @@ module.exports = function(Chart) {
 
 		// Dispatch the event to the usual handler, but only if we haven't substituted it
 		if (element && typeof options[eventHandlerName] === 'function' && eventHandlers.length === 0) {
-			eventHandlers.push([ options[eventHandlerName], e, element ]);
+			eventHandlers.push([options[eventHandlerName], e, element]);
 		}
 
 		if (eventHandlers.length > 0) {
