@@ -24,8 +24,8 @@ module.exports = function(Chart) {
 					return drawTime === (element.options.drawTime || defaultDrawTime);
 				})
 				.forEach(function(element) {
-                    element.configure();
-                    element.transition(easingDecimal).draw();
+					element.configure();
+					element.transition(easingDecimal).draw();
 				});
 		};
 	}
