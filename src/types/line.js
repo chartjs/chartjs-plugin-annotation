@@ -155,12 +155,24 @@ module.exports = function(Chart) {
 
 			ctx.font = chartHelpers.fontString(model.labelFontSize, model.labelFontStyle, model.labelFontFamily);
 			var textWidth = ctx.measureText(model.labelContent).width;
-			var textHeight = ctx.measureText('M').width;
+			var textHeight = model.labelFontSize;
+			model.labelHeight = textHeight + (2 * model.labelYPadding);
+
+			if(model.labelContent !== null && model.labelContent.indexOf("\n") !== -1) {
+			    var labelContentArray = model.labelContent.split("\n");
+
+			    var longestLabel = labelContentArray.sort(function (a, b) { return b.length - a.length; })[0];
+			    textWidth = ctx.measureText(longestLabel).width;
+
+			    model.labelHeight = (textHeight * labelContentArray.length) + (2 * model.labelYPadding);
+			    //Add padding for in between each label item
+			    model.labelHeight += (5 * (labelContentArray.length - 1));
+			}
+
 			var labelPosition = calculateLabelPosition(model, textWidth, textHeight, model.labelXPadding, model.labelYPadding);
 			model.labelX = labelPosition.x - model.labelXPadding;
 			model.labelY = labelPosition.y - model.labelYPadding;
 			model.labelWidth = textWidth + (2 * model.labelXPadding);
-			model.labelHeight = textHeight + (2 * model.labelYPadding);
 
 			model.borderColor = options.borderColor;
 			model.borderWidth = options.borderWidth;
@@ -253,12 +265,29 @@ module.exports = function(Chart) {
 				);
 				ctx.fillStyle = view.labelFontColor;
 				ctx.textAlign = 'center';
-				ctx.textBaseline = 'middle';
-				ctx.fillText(
-					view.labelContent,
-					view.labelX + (view.labelWidth / 2),
-					view.labelY + (view.labelHeight / 2)
-				);
+
+				if(view.labelContent !== null && view.labelContent.indexOf("\n") !== -1) {
+				    var textYPosition = view.labelY + view.labelYPadding;
+				    var labelContentArray = view.labelContent.split("\n");
+
+				    for(var i = 0; i < labelContentArray.length; i++) {
+				        ctx.textBaseline = 'top';
+				        ctx.fillText(
+				            labelContentArray[i],
+				            view.labelX + (view.labelWidth / 2),
+				            textYPosition
+				        );
+
+				        textYPosition += (view.labelFontSize + 5);
+				    }
+				} else {
+				    ctx.textBaseline = 'middle';
+				    ctx.fillText(
+				        view.labelContent,
+				        view.labelX + (view.labelWidth / 2),
+				        view.labelY + (view.labelHeight / 2)
+				    );
+				}
 			}
 
 			ctx.restore();

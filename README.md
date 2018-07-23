@@ -139,7 +139,7 @@ Vertical or horizontal lines are supported.
 		// Whether the label is enabled and should be displayed
 		enabled: false,
 
-		// Text to display in label - default is null
+		// Text to display in label - default is null. Use \n to take a new line
 		content: "Test label"
 	},
 
