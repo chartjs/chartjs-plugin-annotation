@@ -156,10 +156,11 @@ module.exports = function(Chart) {
 			model.labelEnabled = options.label.enabled;
 			model.labelContent = options.label.content;
 
+			var lineBounds = this.getLineBoundaries(model);
 			ctx.font = chartHelpers.fontString(model.labelFontSize, model.labelFontStyle, model.labelFontFamily);
 			var textWidth = ctx.measureText(model.labelContent).width;
 			var textHeight = ctx.measureText('M').width;
-			var labelPosition = calculateLabelPosition(model, textWidth, textHeight, model.labelXPadding, model.labelYPadding, model.x1, model.x2, model.y1, model.y2);
+			var labelPosition = calculateLabelPosition(model, textWidth, textHeight, model.labelXPadding, model.labelYPadding, lineBounds.x1, lineBounds.x2, lineBounds.y1, lineBounds.y2);
 			model.labelX = labelPosition.x - model.labelXPadding;
 			model.labelY = labelPosition.y - model.labelYPadding;
 			model.labelWidth = textWidth + (2 * model.labelXPadding);
@@ -202,20 +203,42 @@ module.exports = function(Chart) {
 		getArea: function() {
 			return Math.sqrt(Math.pow(this.getWidth(), 2) + Math.pow(this.getHeight(), 2));
 		},
-		getLineBoundaries: function(view, x1, x2) {
-			if (!isNaN(view.onlyForDataIndex)) {
-				var datasetMeta = this.chartInstance.getDatasetMeta(0);
-				var chartModel = datasetMeta.data[view.onlyForDataIndex]._model;
-				if (chartModel) {
-					var width = chartModel.width / datasetMeta.controller.getRuler().scale.options.barPercentage;
-					var halfBarWidth = width / 2.0;
-					var startX = chartModel.x - halfBarWidth - view.linePadding;
-					var endX = chartModel.x + halfBarWidth + view.linePadding;
-					return { x1: startX, x2: endX };
-				}
+		_getLineBoundariesForHorizontalLine: function(chartModel, barPercentage, linePadding) {
+			var width = chartModel.width / barPercentage;
+			var halfBarWidth = width / 2.0;
+			return {
+				x1: chartModel.x - halfBarWidth - linePadding,
+				x2: chartModel.x + halfBarWidth + linePadding
+			};
+		},
+		_getLineBoundariesForVerticalLine: function(chartModel, barPercentage, linePadding) {
+			var height = chartModel.height / barPercentage;
+			var halfBarHeight = height / 2.0;
+			return {
+				y1: chartModel.y - halfBarHeight - linePadding,
+				y2: chartModel.y + halfBarHeight + linePadding
+			};
+		},
+		getLineBoundaries: function(view) {
+			var defaultX = { x1: view.x1, x2: view.x2 };
+			var defaultY = { y1: view.y1, y2: view.y2 };
+
+			if (isNaN(view.onlyForDataIndex)) {
+				return Object.assign(defaultX, defaultY);
 			}
 
-			return { x1: x1, x2: x2 };
+			var datasetMeta = this.chartInstance.getDatasetMeta(0);
+			var data = datasetMeta.data[view.onlyForDataIndex];
+			if (!('_model' in data)) datasetMeta.controller.update();
+
+			var barPercentage = datasetMeta.controller.getRuler().scale.options.barPercentage;
+			if (this.options.mode === horizontalKeyword) {
+				var boundsX = this._getLineBoundariesForHorizontalLine(data._model, barPercentage, view.linePadding);
+				return Object.assign(boundsX, defaultY);
+			} else {
+				var boundsY = this._getLineBoundariesForVerticalLine(data._model, barPercentage, view.linePadding);
+				return Object.assign(boundsY, defaultX);
+			}
 		},
 		draw: function() {
 			var view = this._view;
@@ -242,16 +265,15 @@ module.exports = function(Chart) {
 
 			// Draw
 			ctx.beginPath();
-			var scale = this.chartInstance.scales['x-axis-0'];
 			window.chart = this.chartInstance;
 			window.ctx = ctx;
 			window.t = this;
 
-			var bounds = this.getLineBoundaries(view, view.x1, view.x2);
+			var bounds = this.getLineBoundaries(view);
 			var x1 = bounds.x1,
-					x2 = bounds.x2,
-					y1 = view.y1,
-					y2 = view.y2;
+				x2 = bounds.x2,
+				y1 = bounds.y1,
+				y2 = bounds.y2;
 
 			ctx.moveTo(x1, y1);
 			ctx.lineTo(x2, y2);
