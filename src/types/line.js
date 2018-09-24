@@ -104,12 +104,9 @@ module.exports = function(Chart) {
 
 			var scale = chartInstance.scales[options.scaleID];
 			var pixel, endPixel;
-
 			if (scale) {
 				pixel = helpers.isValid(options.value) ? scale.getPixelForValue(options.value) : NaN;
 				endPixel = helpers.isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : pixel;
-				model.onlyForDataIndex = helpers.isValid(options.onlyForDataIndex) ? options.onlyForDataIndex : NaN;
-				model.linePadding = helpers.isValid(options.linePadding) ? options.linePadding : 0;
 			}
 
 			if (isNaN(pixel)) {
@@ -140,6 +137,8 @@ module.exports = function(Chart) {
 
 			model.line = new LineFunction(model);
 			model.mode = options.mode;
+			model.onlyForDataIndex = helpers.isValid(options.onlyForDataIndex) ? options.onlyForDataIndex : NaN;
+			model.linePadding = helpers.isValid(options.linePadding) ? options.linePadding : 0;
 
 			// Figure out the label:
 			model.labelBackgroundColor = options.label.backgroundColor;
@@ -160,7 +159,13 @@ module.exports = function(Chart) {
 			ctx.font = chartHelpers.fontString(model.labelFontSize, model.labelFontStyle, model.labelFontFamily);
 			var textWidth = ctx.measureText(model.labelContent).width;
 			var textHeight = ctx.measureText('M').width;
-			var labelPosition = calculateLabelPosition(model, textWidth, textHeight, model.labelXPadding, model.labelYPadding, lineBounds.x1, lineBounds.x2, lineBounds.y1, lineBounds.y2);
+			var labelPosition = calculateLabelPosition(
+				model, textWidth, textHeight,
+				model.labelXPadding, model.labelYPadding,
+				lineBounds.x1, lineBounds.x2,
+				lineBounds.y1, lineBounds.y2
+			);
+
 			model.labelX = labelPosition.x - model.labelXPadding;
 			model.labelY = labelPosition.y - model.labelYPadding;
 			model.labelWidth = textWidth + (2 * model.labelXPadding);
@@ -265,9 +270,6 @@ module.exports = function(Chart) {
 
 			// Draw
 			ctx.beginPath();
-			window.chart = this.chartInstance;
-			window.ctx = ctx;
-			window.t = this;
 
 			var bounds = this.getLineBoundaries(view);
 			var x1 = bounds.x1,
