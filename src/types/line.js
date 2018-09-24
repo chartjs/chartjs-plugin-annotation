@@ -36,7 +36,7 @@ module.exports = function(Chart) {
 		};
 	}
 
-	function calculateLabelPosition(view, width, height, padWidth, padHeight) {
+	function calculateLabelPosition(view, width, height, padWidth, padHeight, x1, x2, y1, y2) {
 		var line = view.line;
 		var ret = {};
 		var xa = 0;
@@ -47,23 +47,23 @@ module.exports = function(Chart) {
 		case view.mode === verticalKeyword && view.labelPosition === 'top':
 			ya = padHeight + view.labelYAdjust;
 			xa = (width / 2) + view.labelXAdjust;
-			ret.y = view.y1 + ya;
-			ret.x = (isFinite(line.m) ? line.getX(ret.y) : view.x1) - xa;
+			ret.y = y1 + ya;
+			ret.x = (isFinite(line.m) ? line.getX(ret.y) : x1) - xa;
 			break;
 
 		// bottom align
 		case view.mode === verticalKeyword && view.labelPosition === 'bottom':
 			ya = height + padHeight + view.labelYAdjust;
 			xa = (width / 2) + view.labelXAdjust;
-			ret.y = view.y2 - ya;
-			ret.x = (isFinite(line.m) ? line.getX(ret.y) : view.x1) - xa;
+			ret.y = y2 - ya;
+			ret.x = (isFinite(line.m) ? line.getX(ret.y) : x1) - xa;
 			break;
 
 		// left align
 		case view.mode === horizontalKeyword && view.labelPosition === 'left':
 			xa = padWidth + view.labelXAdjust;
 			ya = -(height / 2) + view.labelYAdjust;
-			ret.x = view.x1 + xa;
+			ret.x = x1 + xa;
 			ret.y = line.getY(ret.x) + ya;
 			break;
 
@@ -71,14 +71,14 @@ module.exports = function(Chart) {
 		case view.mode === horizontalKeyword && view.labelPosition === 'right':
 			xa = width + padWidth + view.labelXAdjust;
 			ya = -(height / 2) + view.labelYAdjust;
-			ret.x = view.x2 - xa;
+			ret.x = x2 - xa;
 			ret.y = line.getY(ret.x) + ya;
 			break;
 
 		// center align
 		default:
-			ret.x = ((view.x1 + view.x2 - width) / 2) + view.labelXAdjust;
-			ret.y = ((view.y1 + view.y2 - height) / 2) + view.labelYAdjust;
+			ret.x = ((x1 + x2 - width) / 2) + view.labelXAdjust;
+			ret.y = ((y1 + y2 - height) / 2) + view.labelYAdjust;
 		}
 
 		return ret;
@@ -104,9 +104,12 @@ module.exports = function(Chart) {
 
 			var scale = chartInstance.scales[options.scaleID];
 			var pixel, endPixel;
+
 			if (scale) {
 				pixel = helpers.isValid(options.value) ? scale.getPixelForValue(options.value) : NaN;
 				endPixel = helpers.isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : pixel;
+				model.onlyForDataIndex = helpers.isValid(options.onlyForDataIndex) ? options.onlyForDataIndex : NaN;
+				model.linePadding = helpers.isValid(options.linePadding) ? options.linePadding : 0;
 			}
 
 			if (isNaN(pixel)) {
@@ -156,7 +159,7 @@ module.exports = function(Chart) {
 			ctx.font = chartHelpers.fontString(model.labelFontSize, model.labelFontStyle, model.labelFontFamily);
 			var textWidth = ctx.measureText(model.labelContent).width;
 			var textHeight = ctx.measureText('M').width;
-			var labelPosition = calculateLabelPosition(model, textWidth, textHeight, model.labelXPadding, model.labelYPadding);
+			var labelPosition = calculateLabelPosition(model, textWidth, textHeight, model.labelXPadding, model.labelYPadding, model.x1, model.x2, model.y1, model.y2);
 			model.labelX = labelPosition.x - model.labelXPadding;
 			model.labelY = labelPosition.y - model.labelYPadding;
 			model.labelWidth = textWidth + (2 * model.labelXPadding);
@@ -199,6 +202,21 @@ module.exports = function(Chart) {
 		getArea: function() {
 			return Math.sqrt(Math.pow(this.getWidth(), 2) + Math.pow(this.getHeight(), 2));
 		},
+		getLineBoundaries: function(view, x1, x2) {
+			if (!isNaN(view.onlyForDataIndex)) {
+				var datasetMeta = this.chartInstance.getDatasetMeta(0);
+				var chartModel = datasetMeta.data[view.onlyForDataIndex]._model;
+				if (chartModel) {
+					var width = chartModel.width / datasetMeta.controller.getRuler().scale.options.barPercentage;
+					var halfBarWidth = width / 2.0;
+					var startX = chartModel.x - halfBarWidth - view.linePadding;
+					var endX = chartModel.x + halfBarWidth + view.linePadding;
+					return { x1: startX, x2: endX };
+				}
+			}
+
+			return { x1: x1, x2: x2 };
+		},
 		draw: function() {
 			var view = this._view;
 			var ctx = this.chartInstance.chart.ctx;
@@ -224,8 +242,19 @@ module.exports = function(Chart) {
 
 			// Draw
 			ctx.beginPath();
-			ctx.moveTo(view.x1, view.y1);
-			ctx.lineTo(view.x2, view.y2);
+			var scale = this.chartInstance.scales['x-axis-0'];
+			window.chart = this.chartInstance;
+			window.ctx = ctx;
+			window.t = this;
+
+			var bounds = this.getLineBoundaries(view, view.x1, view.x2);
+			var x1 = bounds.x1,
+					x2 = bounds.x2,
+					y1 = view.y1,
+					y2 = view.y2;
+
+			ctx.moveTo(x1, y1);
+			ctx.lineTo(x2, y2);
 			ctx.stroke();
 
 			if (view.labelEnabled && view.labelContent) {
