@@ -101,6 +101,10 @@ Vertical or horizontal lines are supported.
 	// Only draw a line for a specific data at the specified index. Currently only supported for bar graphs
 	onlyForDataIndex: 1,
 
+	// Draw a line only over the data of the specified dataset index. 
+	// Only available if onlyForDataIndex is set
+	datasetIndex: 0,
+
 	// Add a padding to the start and end of the line
 	// Only available if onlyForDataIndex is set
 	linePadding: 5,
