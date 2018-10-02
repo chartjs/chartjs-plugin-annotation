@@ -138,6 +138,7 @@ module.exports = function(Chart) {
 			model.line = new LineFunction(model);
 			model.mode = options.mode;
 			model.onlyForDataIndex = helpers.isValid(options.onlyForDataIndex) ? options.onlyForDataIndex : NaN;
+			model.datasetIndex = helpers.isValid(options.datasetIndex) ? options.datasetIndex : 0;
 			model.linePadding = helpers.isValid(options.linePadding) ? options.linePadding : 0;
 
 			// Figure out the label:
@@ -232,7 +233,7 @@ module.exports = function(Chart) {
 				return Object.assign(defaultX, defaultY);
 			}
 
-			var datasetMeta = this.chartInstance.getDatasetMeta(0);
+			var datasetMeta = this.chartInstance.getDatasetMeta(view.datasetIndex);
 			var data = datasetMeta.data[view.onlyForDataIndex];
 			if (!('_model' in data)) datasetMeta.controller.update();
 
