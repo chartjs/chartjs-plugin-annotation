@@ -86,10 +86,16 @@ module.exports = function(Chart) {
 			model.right = right;
 			model.bottom = bottom;
 
-			// Stylistic options
-			model.borderColor = options.borderColor;
-			model.borderWidth = options.borderWidth;
-			model.backgroundColor = options.backgroundColor;
+			// Hide if display disabled
+			if(options.display && chartInstance.annotation.options.display) {
+				model.borderColor = options.borderColor;
+				model.borderWidth = options.borderWidth;
+				model.backgroundColor = options.backgroundColor;
+			} else {
+				model.borderColor = 'rgba(0,0,0,0)';
+				model.borderWidth = 0;
+				model.backgroundColor = 'rgba(0,0,0,0)';
+			}
 		},
 		inRange: function(mouseX, mouseY) {
 			var model = this._model;

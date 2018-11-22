@@ -166,6 +166,13 @@ module.exports = function(Chart) {
 			model.borderWidth = options.borderWidth;
 			model.borderDash = options.borderDash || [];
 			model.borderDashOffset = options.borderDashOffset || 0;
+
+			// Hide if display is disabled
+			if(!options.display || !chartInstance.annotation.options.display) {
+				model.labelEnabled = false;
+				model.borderColor = 'rgba(0,0,0,0)';
+				model.borderWidth = 0;
+			}
 		},
 		inRange: function(mouseX, mouseY) {
 			var model = this._model;
