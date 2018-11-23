@@ -23,10 +23,11 @@ module.exports = function(Chart) {
 		}
 		return filteredEvents;
 	}
-	
+
 	function applyHover(element,e,eventHandlers,beginHover) {
 		var options = element.options;
 		if(beginHover && !element.hovering) {
+			// fire hover events
 			['mouseenter', 'mouseover'].forEach(function(eventName) {
 				var handlerName = helpers.getEventHandlerName(eventName);
 				var hoverEvent = helpers.createMouseEvent(eventName, e); // recreate the event to match the handler
@@ -37,6 +38,7 @@ module.exports = function(Chart) {
 				}
 			});
 		} else if(!beginHover && element.hovering) {
+			// fire hover off events
 			element.hovering = false;
 			lastHoveredElement = undefined;
 			['mouseout', 'mouseleave'].forEach(function(eventName) {
