@@ -1,6 +1,7 @@
 module.exports = function(Chart) {
 	var chartHelpers = Chart.helpers;
 	var helpers = require('./helpers.js')(Chart);
+	var lastHoveredElement = undefined;
 
 	function collapseHoverEvents(events) {
 		var hover = false;
@@ -22,6 +23,31 @@ module.exports = function(Chart) {
 		}
 		return filteredEvents;
 	}
+	
+	function applyHover(element,e,eventHandlers,beginHover) {
+		var options = element.options;
+		if(beginHover && !element.hovering) {
+			['mouseenter', 'mouseover'].forEach(function(eventName) {
+				var handlerName = helpers.getEventHandlerName(eventName);
+				var hoverEvent = helpers.createMouseEvent(eventName, e); // recreate the event to match the handler
+				element.hovering = true;
+				lastHoveredElement = element;
+				if (typeof options[handlerName] === 'function') {
+					eventHandlers.push([options[handlerName], hoverEvent, element]);
+				}
+			});
+		} else if(!beginHover && element.hovering) {
+			element.hovering = false;
+			lastHoveredElement = undefined;
+			['mouseout', 'mouseleave'].forEach(function(eventName) {
+				var handlerName = helpers.getEventHandlerName(eventName);
+				var hoverEvent = helpers.createMouseEvent(eventName, e); // recreate the event to match the handler
+				if (typeof options[handlerName] === 'function') {
+					eventHandlers.push([options[handlerName], hoverEvent, element]);
+				}
+			});
+		}
+	}
 
 	function dispatcher(e) {
 		var ns = this.annotation;
@@ -37,29 +63,16 @@ module.exports = function(Chart) {
 		// Detect hover events
 		if (e.type === 'mousemove') {
 			if (element && !element.hovering) {
+				// end hover on the last hovered element
+				if(lastHoveredElement && element !== lastHoveredElement) {
+					applyHover(lastHoveredElement,e,eventHandlers,false);
+				}
 				// hover started
-				['mouseenter', 'mouseover'].forEach(function(eventName) {
-					var handlerName = helpers.getEventHandlerName(eventName);
-					var hoverEvent = helpers.createMouseEvent(eventName, e); // recreate the event to match the handler
-					element.hovering = true;
-					if (typeof options[handlerName] === 'function') {
-						eventHandlers.push([options[handlerName], hoverEvent, element]);
-					}
-				});
+				applyHover(element,e,eventHandlers,true);
 			} else if (!element) {
 				// hover ended
 				elements.forEach(function(el) {
-					if (el.hovering) {
-						el.hovering = false;
-						var opt = el.options;
-						['mouseout', 'mouseleave'].forEach(function(eventName) {
-							var handlerName = helpers.getEventHandlerName(eventName);
-							var hoverEvent = helpers.createMouseEvent(eventName, e); // recreate the event to match the handler
-							if (typeof opt[handlerName] === 'function') {
-								eventHandlers.push([opt[handlerName], hoverEvent, el]);
-							}
-						});
-					}
+					applyHover(el,e,eventHandlers,false);
 				});
 			}
 		}
