@@ -31,6 +31,12 @@ module.exports = function(Chart) {
 		};
 	}
 
+	function getAnnotationConfig(chartOptions) {
+		var plugins = chartOptions.plugins;
+		var pluginAnnotation = plugins && plugins.annotation ? plugins.annotation : null;
+		return pluginAnnotation || chartOptions.annotation || {};
+	}
+
 	return {
 		beforeInit: function(chartInstance) {
 			var chartOptions = chartInstance.options;
@@ -38,7 +44,7 @@ module.exports = function(Chart) {
 			// Initialize chart instance plugin namespace
 			var ns = chartInstance.annotation = {
 				elements: {},
-				options: helpers.initConfig(chartOptions.annotation || {}),
+				options: helpers.initConfig(getAnnotationConfig(chartOptions)),
 				onDestroy: [],
 				firstRun: true,
 				supported: false
@@ -60,7 +66,7 @@ module.exports = function(Chart) {
 			}
 
 			if (!ns.firstRun) {
-				ns.options = helpers.initConfig(chartInstance.options.annotation || {});
+				ns.options = helpers.initConfig(getAnnotationConfig(chartInstance.options));
 			} else {
 				ns.firstRun = false;
 			}
