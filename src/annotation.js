@@ -1,8 +1,10 @@
 module.exports = function(Chart) {
+	/* eslint-disable global-require */
 	var chartHelpers = Chart.helpers;
 
 	var helpers = require('./helpers.js')(Chart);
 	var events = require('./events.js')(Chart);
+	/* eslint-enable global-require */
 
 	var annotationTypes = Chart.Annotation.types;
 
