@@ -168,7 +168,7 @@ module.exports = function(Chart) {
 			model.borderDashOffset = options.borderDashOffset || 0;
 
 			// Hide if display is disabled
-			if(!options.display || !chartInstance.annotation.options.display) {
+			if (!options.display || !chartInstance.annotation.options.display) {
 				model.labelEnabled = false;
 				model.borderColor = 'rgba(0,0,0,0)';
 				model.borderWidth = 0;

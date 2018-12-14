@@ -87,7 +87,7 @@ module.exports = function(Chart) {
 			model.bottom = bottom;
 
 			// Hide if display disabled
-			if(options.display && chartInstance.annotation.options.display) {
+			if (options.display && chartInstance.annotation.options.display) {
 				model.borderColor = options.borderColor;
 				model.borderWidth = options.borderWidth;
 				model.backgroundColor = options.backgroundColor;
