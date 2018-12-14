@@ -26,6 +26,7 @@ module.exports = function(Chart) {
 					return drawTime === (element.options.drawTime || defaultDrawTime);
 				})
 				.forEach(function(element) {
+					element.configure();
 					element.transition(easingDecimal).draw();
 				});
 		};
@@ -102,11 +103,6 @@ module.exports = function(Chart) {
 					ns.elements[id].destroy();
 					delete ns.elements[id];
 				}
-			});
-		},
-		afterScaleUpdate: function(chartInstance) {
-			helpers.elements(chartInstance).forEach(function(element) {
-				element.configure();
 			});
 		},
 		beforeDatasetsDraw: draw('beforeDatasetsDraw'),
