@@ -278,14 +278,8 @@ module.exports = function(Chart) {
 
 			var bounds = this.getLineBoundaries(view);
 			var x1 = bounds.x1;
-
-
 			var x2 = bounds.x2;
-
-
 			var y1 = bounds.y1;
-
-
 			var y2 = bounds.y2;
 
 			ctx.moveTo(x1, y1);
