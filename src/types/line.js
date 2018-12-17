@@ -228,8 +228,8 @@ module.exports = function(Chart) {
 			};
 		},
 		getLineBoundaries: function(view) {
-			var defaultX = { x1: view.x1, x2: view.x2 };
-			var defaultY = { y1: view.y1, y2: view.y2 };
+			var defaultX = {x1: view.x1, x2: view.x2};
+			var defaultY = {y1: view.y1, y2: view.y2};
 
 			if (isNaN(view.onlyForDataIndex)) {
 				return Object.assign(defaultX, defaultY);
@@ -237,16 +237,18 @@ module.exports = function(Chart) {
 
 			var datasetMeta = this.chartInstance.getDatasetMeta(view.datasetIndex);
 			var data = datasetMeta.data[view.onlyForDataIndex];
-			if (!('_model' in data)) datasetMeta.controller.update();
+			if (!('_model' in data)) {
+				datasetMeta.controller.update();
+			}
 
 			var barPercentage = datasetMeta.controller.getRuler().scale.options.barPercentage;
 			if (this.options.mode === horizontalKeyword) {
 				var boundsX = this._getLineBoundariesForHorizontalLine(data._model, barPercentage, view.linePadding);
 				return Object.assign(boundsX, defaultY);
-			} else {
-				var boundsY = this._getLineBoundariesForVerticalLine(data._model, barPercentage, view.linePadding);
-				return Object.assign(boundsY, defaultX);
 			}
+			var boundsY = this._getLineBoundariesForVerticalLine(data._model, barPercentage, view.linePadding);
+			return Object.assign(boundsY, defaultX);
+
 		},
 		draw: function() {
 			var view = this._view;
@@ -275,10 +277,16 @@ module.exports = function(Chart) {
 			ctx.beginPath();
 
 			var bounds = this.getLineBoundaries(view);
-			var x1 = bounds.x1,
-				x2 = bounds.x2,
-				y1 = bounds.y1,
-				y2 = bounds.y2;
+			var x1 = bounds.x1;
+
+
+			var x2 = bounds.x2;
+
+
+			var y1 = bounds.y1;
+
+
+			var y2 = bounds.y2;
 
 			ctx.moveTo(x1, y1);
 			ctx.lineTo(x2, y2);
