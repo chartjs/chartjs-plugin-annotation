@@ -212,11 +212,10 @@ module.exports = function(Chart) {
 			return Math.sqrt(Math.pow(this.getWidth(), 2) + Math.pow(this.getHeight(), 2));
 		},
 		_getLineBoundariesForHorizontalLine: function(chartModel, barPercentage, linePadding) {
-			var width = chartModel.width / barPercentage;
-			var halfBarWidth = width / 2.0;
+			var halfWidth = chartModel.width / 2;
 			return {
-				x1: chartModel.x - halfBarWidth - linePadding,
-				x2: chartModel.x + halfBarWidth + linePadding
+				x1: (chartModel.x - halfWidth) + linePadding,
+				x2: (chartModel.x + halfWidth) - linePadding
 			};
 		},
 		_getLineBoundariesForVerticalLine: function(chartModel, barPercentage, linePadding) {
