@@ -22,7 +22,7 @@
 	<button id="randomizeData">Randomize Data</button>
 	<script>
 		var chartData = {
-			labels: ["January", "February", "March", "April", "May", "June", "July"],
+			labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
 			datasets: [{
 				type: 'line',
 				label: 'Dataset 1',
@@ -70,7 +70,7 @@
 
 		};
 		window.onload = function() {
-			var ctx = document.getElementById("canvas").getContext("2d");
+			var ctx = document.getElementById('canvas').getContext('2d');
 			window.myMixedChart = new Chart(ctx, {
 				type: 'bar',
 				data: chartData,
@@ -96,8 +96,8 @@
 							borderColor: 'black',
 							borderWidth: 5,
 							label: {
-								backgroundColor: "red",
-								content: "Test Label",
+								backgroundColor: 'red',
+								content: 'Test Label',
 								enabled: true
 							},
 							onClick: function(e) {

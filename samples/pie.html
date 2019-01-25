@@ -41,11 +41,11 @@
 				label: 'Dataset 1'
 			}],
 			labels: [
-				"Red",
-				"Orange",
-				"Yellow",
-				"Green",
-				"Blue"
+				'Red',
+				'Orange',
+				'Yellow',
+				'Green',
+				'Blue'
 			]
 		},
 		options: {
@@ -73,7 +73,7 @@
 	};
 
 	window.onload = function() {
-		var ctx = document.getElementById("chart-area").getContext("2d");
+		var ctx = document.getElementById('chart-area').getContext('2d');
 		window.myPie = new Chart(ctx, config);
 	};
 
@@ -98,7 +98,7 @@
 		for (var index = 0; index < config.data.labels.length; ++index) {
 			newDataset.data.push(randomScalingFactor());
 
-			var colorName = colorNames[index % colorNames.length];;
+			var colorName = colorNames[index % colorNames.length];
 			var newColor = window.chartColors[colorName];
 			newDataset.backgroundColor.push(newColor);
 		}

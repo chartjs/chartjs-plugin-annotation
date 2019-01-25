@@ -33,9 +33,9 @@ h<!doctype html>
 	var config = {
 		type: 'radar',
 		data: {
-			labels: [["Eating", "Dinner"], ["Drinking", "Water"], "Sleeping", ["Designing", "Graphics"], "Coding", "Cycling", "Running"],
+			labels: [['Eating', 'Dinner'], ['Drinking', 'Water'], 'Sleeping', ['Designing', 'Graphics'], 'Coding', 'Cycling', 'Running'],
 			datasets: [{
-				label: "My First dataset",
+				label: 'My First dataset',
 				backgroundColor: color(window.chartColors.red).alpha(0.2).rgbString(),
 				borderColor: window.chartColors.red,
 				pointBackgroundColor: window.chartColors.red,
@@ -49,7 +49,7 @@ h<!doctype html>
 					randomScalingFactor()
 				]
 			}, {
-				label: "My Second dataset",
+				label: 'My Second dataset',
 				backgroundColor: color(window.chartColors.blue).alpha(0.2).rgbString(),
 				borderColor: window.chartColors.blue,
 				pointBackgroundColor: window.chartColors.blue,
@@ -62,7 +62,7 @@ h<!doctype html>
 					randomScalingFactor(),
 					randomScalingFactor()
 				]
-			},]
+			}]
 		},
 		options: {
 			legend: {
@@ -100,7 +100,7 @@ h<!doctype html>
 	};
 
 	window.onload = function() {
-		window.myRadar = new Chart(document.getElementById("canvas"), config);
+		window.myRadar = new Chart(document.getElementById('canvas'), config);
 	};
 
 	document.getElementById('randomizeData').addEventListener('click', function() {
@@ -115,7 +115,7 @@ h<!doctype html>
 
 	var colorNames = Object.keys(window.chartColors);
 	document.getElementById('addDataset').addEventListener('click', function() {
-		var colorName = colorNames[config.data.datasets.length % colorNames.length];;
+		var colorName = colorNames[config.data.datasets.length % colorNames.length];
 		var newColor = window.chartColors[colorName];
 
 		var newDataset = {
@@ -138,7 +138,7 @@ h<!doctype html>
 		if (config.data.datasets.length > 0) {
 			config.data.labels.push('dataset #' + config.data.labels.length);
 
-			config.data.datasets.forEach(function (dataset) {
+			config.data.datasets.forEach(function(dataset) {
 				dataset.data.push(randomScalingFactor());
 			});
 

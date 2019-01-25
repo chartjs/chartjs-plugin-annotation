@@ -25,10 +25,10 @@
 	<button id="addData">Add Data</button>
 	<button id="removeData">Remove Data</button>
 	<script>
-		var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+		var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 		var color = Chart.helpers.color;
 		var barChartData = {
-			labels: ["January", "February", "March", "April", "May", "June", "July"],
+			labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
 			datasets: [{
 				label: 'Dataset 1',
 				backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
@@ -62,7 +62,7 @@
 		};
 
 		window.onload = function() {
-			var ctx = document.getElementById("canvas").getContext("2d");
+			var ctx = document.getElementById('canvas').getContext('2d');
 			window.myBar = new Chart(ctx, {
 				type: 'bar',
 				data: barChartData,
@@ -87,8 +87,8 @@
 							borderColor: 'black',
 							borderWidth: 5,
 							label: {
-								backgroundColor: "red",
-								content: "Test Label",
+								backgroundColor: 'red',
+								content: 'Test Label',
 								enabled: true
 							},
 							onClick: function(e) {
@@ -104,8 +104,8 @@
 							borderColor: 'black',
 							borderWidth: 5,
 							label: {
-								backgroundColor: "red",
-								content: "Test Label",
+								backgroundColor: 'red',
+								content: 'Test Label',
 								enabled: true
 							},
 							onClick: function(e) {
@@ -147,8 +147,8 @@
 
 		var colorNames = Object.keys(window.chartColors);
 		document.getElementById('addDataset').addEventListener('click', function() {
-			var colorName = colorNames[barChartData.datasets.length % colorNames.length];;
-			var dsColor = window.chartColors[colorName];
+			var colorName = colorNames[barChartData.datasets.length % colorNames.length];
+	var dsColor = window.chartColors[colorName];
 			var newDataset = {
 				label: 'Dataset ' + barChartData.datasets.length,
 				backgroundColor: color(dsColor).alpha(0.5).rgbString(),
@@ -171,7 +171,7 @@
 				barChartData.labels.push(month);
 
 				for (var index = 0; index < barChartData.datasets.length; ++index) {
-					//window.myBar.addData(randomScalingFactor(), index);
+					// window.myBar.addData(randomScalingFactor(), index);
 					barChartData.datasets[index].data.push(randomScalingFactor());
 				}
 
@@ -187,7 +187,7 @@
 		document.getElementById('removeData').addEventListener('click', function() {
 			barChartData.labels.splice(-1, 1); // remove the label first
 
-			barChartData.datasets.forEach(function(dataset, datasetIndex) {
+			barChartData.datasets.forEach(function(dataset) {
 				dataset.data.pop();
 			});
 

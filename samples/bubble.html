@@ -34,7 +34,7 @@
 				duration: 10000
 			},
 			datasets: [{
-				label: "My First dataset",
+				label: 'My First dataset',
 				backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
 				borderColor: window.chartColors.red,
 				borderWidth: 1,
@@ -68,7 +68,7 @@
 					r: Math.abs(randomScalingFactor()) / 5,
 				}]
 			}, {
-				label: "My Second dataset",
+				label: 'My Second dataset',
 				backgroundColor: color(window.chartColors.orange).alpha(0.5).rgbString(),
 				borderColor: window.chartColors.orange,
 				borderWidth: 1,
@@ -105,15 +105,15 @@
 		};
 
 		window.onload = function() {
-			var ctx = document.getElementById("canvas").getContext("2d");
+			var ctx = document.getElementById('canvas').getContext('2d');
 			window.myChart = new Chart(ctx, {
 				type: 'bubble',
 				data: bubbleChartData,
 				options: {
 					responsive: true,
-					title:{
-						display:true,
-						text:'Chart.js Bubble Chart'
+					title: {
+						display: true,
+						text: 'Chart.js Bubble Chart'
 					},
 					tooltips: {
 						mode: 'point'
@@ -157,10 +157,10 @@
 		var colorNames = Object.keys(window.chartColors);
 		document.getElementById('addDataset').addEventListener('click', function() {
 			++addedCount;
-			var colorName = colorNames[bubbleChartData.datasets.length % colorNames.length];;
-			var dsColor = window.chartColors[colorName];
+			var colorName = colorNames[bubbleChartData.datasets.length % colorNames.length];
+	var dsColor = window.chartColors[colorName];
 			var newDataset = {
-				label: "My added dataset " + addedCount,
+				label: 'My added dataset ' + addedCount,
 				backgroundColor: color(dsColor).alpha(0.5).rgbString(),
 				borderColor: dsColor,
 				borderWidth: 1,
@@ -199,7 +199,7 @@
 		});
 
 		document.getElementById('removeData').addEventListener('click', function() {
-			bubbleChartData.datasets.forEach(function(dataset, datasetIndex) {
+			bubbleChartData.datasets.forEach(function(dataset) {
 				dataset.data.pop();
 			});
 

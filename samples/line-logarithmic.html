@@ -28,9 +28,9 @@
 	var config = {
 		type: 'line',
 		data: {
-			labels: ["January", "February", "March", "April", "May", "June", "July"],
+			labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
 			datasets: [{
-				label: "My First dataset",
+				label: 'My First dataset',
 				backgroundColor: window.chartColors.red,
 				borderColor: window.chartColors.red,
 				fill: false,
@@ -44,7 +44,7 @@
 					randomScalingFactor()
 				],
 			}, {
-				label: "My Second dataset",
+				label: 'My Second dataset',
 				backgroundColor: window.chartColors.blue,
 				borderColor: window.chartColors.blue,
 				fill: false,
@@ -61,9 +61,9 @@
 		},
 		options: {
 			responsive: true,
-			title:{
-				display:true,
-				text:'Chart.js Line Chart - Logarithmic'
+			title: {
+				display: true,
+				text: 'Chart.js Line Chart - Logarithmic'
 			},
 			scales: {
 				xAxes: [{
@@ -86,8 +86,8 @@
 					borderColor: 'black',
 					borderWidth: 5,
 					label: {
-						backgroundColor: "red",
-						content: "Test Label",
+						backgroundColor: 'red',
+						content: 'Test Label',
 						enabled: true
 					},
 					onClick: function(e) {
@@ -104,8 +104,8 @@
 					borderColor: 'black',
 					borderWidth: 5,
 					label: {
-						backgroundColor: "red",
-						content: "Test Label",
+						backgroundColor: 'red',
+						content: 'Test Label',
 						enabled: true
 					},
 					onClick: function(e) {
@@ -133,7 +133,7 @@
 	};
 
 	window.onload = function() {
-		var ctx = document.getElementById("canvas").getContext("2d");
+		var ctx = document.getElementById('canvas').getContext('2d');
 		window.myLine = new Chart(ctx, config);
 	};
 

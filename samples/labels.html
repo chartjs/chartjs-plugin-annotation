@@ -30,7 +30,7 @@
 
 		var scatterChartData = {
 			datasets: [{
-				label: "My First dataset",
+				label: 'My First dataset',
 				data: [{
 					x: randomScalingFactor(),
 					y: randomScalingFactor(),
@@ -54,7 +54,7 @@
 					y: randomScalingFactor(),
 				}]
 			}, {
-				label: "My Second dataset",
+				label: 'My Second dataset',
 				data: [{
 					x: randomScalingFactor(),
 					y: randomScalingFactor(),
@@ -89,7 +89,7 @@
 		});
 
 		window.onload = function() {
-			var ctx = document.getElementById("canvas").getContext("2d");
+			var ctx = document.getElementById('canvas').getContext('2d');
 			window.myScatter = Chart.Scatter(ctx, {
 				data: scatterChartData,
 				options: {
@@ -101,7 +101,7 @@
 						xAxes: [{
 							position: 'top',
 							gridLines: {
-								zeroLineColor: "rgba(0,255,0,1)"
+								zeroLineColor: 'rgba(0,255,0,1)'
 							},
 							scaleLabel: {
 								display: true,
@@ -110,14 +110,14 @@
 							ticks: {
 								maxRotation: 0,
 								reverse: true,
-								//min: -100,
-								//max: 0
+								// min: -100,
+								// max: 0
 							}
 						}],
 						yAxes: [{
 							position: 'right',
 							gridLines: {
-								zeroLineColor: "rgba(0,255,0,1)"
+								zeroLineColor: 'rgba(0,255,0,1)'
 							},
 							scaleLabel: {
 								display: true,
@@ -125,8 +125,8 @@
 							},
 							ticks: {
 								reverse: true,
-								//min: -100,
-								//max: 0
+								// min: -100,
+								// max: 0
 							}
 						}]
 					},
@@ -142,8 +142,8 @@
 							borderWidth: 5,
 							label: {
 								yAdjust: -20,
-								backgroundColor: "red",
-								content: "This is a long test label",
+								backgroundColor: 'red',
+								content: 'This is a long test label',
 								enabled: true
 							},
 							onClick: function(e) {
@@ -161,9 +161,9 @@
 							borderColor: 'red',
 							borderWidth: 5,
 							label: {
-								position: "bottom",
+								position: 'bottom',
 								yAdjust: 100,
-								content: "This is a another test label",
+								content: 'This is a another test label',
 								enabled: true
 							},
 							onClick: function(e) {
