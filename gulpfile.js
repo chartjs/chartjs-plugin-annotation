@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
   concat = require('gulp-concat'),
+  htmllint = require('gulp-htmllint'),
   uglify = require('gulp-uglify'),
   util = require('gulp-util'),
   eslint = require('gulp-eslint'),
@@ -31,7 +32,9 @@ var header = "/*!\n\
 
 gulp.task('build', buildTask);
 gulp.task('bump', bumpTask);
-gulp.task('lint', lintTask);
+gulp.task('lint-html', lintHtmlTask);
+gulp.task('lint-js', lintJsTask);
+gulp.task('lint', gulp.parallel('lint-html', 'lint-js'));
 gulp.task('watch', watchTask);
 
 function buildTask() {
@@ -82,10 +85,12 @@ function bumpTask(complete) {
   });
 }
 
-function lintTask() {
+function lintJsTask() {
   var files = [
-    'samples/**/*.js',
-    'src/**/*.js'
+//    'samples/**/*.html',
+//    'samples/**/*.js',
+    'src/**/*.js',
+    'test/**/*.js'
   ];
 
   // NOTE(SB) codeclimate has 'complexity' and 'max-statements' eslint rules way too strict
@@ -104,7 +109,14 @@ function lintTask() {
     .pipe(eslint.failAfterError());
 }
 
+function lintHtmlTask() {
+  return gulp.src('samples/**/*.html')
+    .pipe(htmllint({
+      failOnError: true,
+    }));
+}
+
 function watchTask() {
   buildTask();
-  gulp.watch('src/**/*.js', ['lint', 'build']);
+  gulp.watch('src/**/*.js', gulp.parallel('lint', 'build'));
 }
