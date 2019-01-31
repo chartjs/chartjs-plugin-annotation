@@ -2,7 +2,7 @@ module.exports = function(Chart) {
 	/* eslint-disable global-require */
 	var chartHelpers = Chart.helpers;
 	var helpers = require('./helpers.js')(Chart);
-	var lastHoveredElement = undefined;
+	var lastHoveredElement;
 	/* eslint-enable global-require */
 
 	function collapseHoverEvents(events) {
@@ -26,9 +26,9 @@ module.exports = function(Chart) {
 		return filteredEvents;
 	}
 
-	function applyHover(element,e,eventHandlers,beginHover) {
+	function applyHover(element, e, eventHandlers, beginHover) {
 		var options = element.options;
-		if(beginHover && !element.hovering) {
+		if (beginHover && !element.hovering) {
 			// fire hover events
 			['mouseenter', 'mouseover'].forEach(function(eventName) {
 				var handlerName = helpers.getEventHandlerName(eventName);
@@ -39,7 +39,7 @@ module.exports = function(Chart) {
 					eventHandlers.push([options[handlerName], hoverEvent, element]);
 				}
 			});
-		} else if(!beginHover && element.hovering) {
+		} else if (!beginHover && element.hovering) {
 			// fire hover off events
 			element.hovering = false;
 			lastHoveredElement = undefined;
@@ -68,15 +68,15 @@ module.exports = function(Chart) {
 		if (e.type === 'mousemove') {
 			if (element && !element.hovering) {
 				// end hover on the last hovered element
-				if(lastHoveredElement && element !== lastHoveredElement) {
-					applyHover(lastHoveredElement,e,eventHandlers,false);
+				if (lastHoveredElement && element !== lastHoveredElement) {
+					applyHover(lastHoveredElement, e, eventHandlers, false);
 				}
 				// hover started
-				applyHover(element,e,eventHandlers,true);
+				applyHover(element, e, eventHandlers, true);
 			} else if (!element) {
 				// hover ended
 				elements.forEach(function(el) {
-					applyHover(el,e,eventHandlers,false);
+					applyHover(el, e, eventHandlers, false);
 				});
 			}
 		}
