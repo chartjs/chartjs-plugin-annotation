@@ -10,26 +10,28 @@
     "url": "https://github.com/chartjs/chartjs-plugin-annotation.git"
   },
   "scripts": {
-    "test": "gulp jshint",
+    "test": "gulp lint",
     "build": "gulp build"
   },
   "devDependencies": {
-    "browserify": "^13.0.0",
-    "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.0",
+    "browserify": "^16.2.3",
+    "eslint-config-chartjs": "^0.1.0",
+    "eslint-plugin-html": "^5.0.0",
+    "gulp": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-eslint": "^5.0.0",
+    "gulp-htmllint": "^0.0.16",
     "gulp-insert": "^0.5.0",
-    "gulp-jshint": "^2.0.0",
-    "gulp-replace": "^0.5.4",
+    "gulp-jshint": "^2.1.0",
+    "gulp-replace": "^1.0.0",
     "gulp-streamify": "^1.0.2",
-    "gulp-uglify": "^1.5.3",
-    "gulp-util": "^3.0.7",
-    "gulp-watch": "^4.3.10",
-    "inquirer": "^1.0.2",
-    "jshint": "^2.9.2",
-    "jshint-stylish": "^2.2.1",
-    "merge-stream": "^1.0.0",
-    "semver": "^5.1.0",
-    "vinyl-source-stream": "^1.1.0"
+    "gulp-uglify": "^3.0.1",
+    "gulp-util": "^3.0.8",
+    "gulp-watch": "^5.0.1",
+    "inquirer": "^6.2.1",
+    "merge-stream": "^1.0.1",
+    "semver": "^5.6.0",
+    "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
     "chart.js": "^2.4.0"

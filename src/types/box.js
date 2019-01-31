@@ -1,6 +1,8 @@
 // Box Annotation implementation
 module.exports = function(Chart) {
+	/* eslint-disable global-require */
 	var helpers = require('../helpers.js')(Chart);
+	/* eslint-enable global-require */
 
 	var BoxAnnotation = Chart.Annotation.Element.extend({
 		setDataLimits: function() {
