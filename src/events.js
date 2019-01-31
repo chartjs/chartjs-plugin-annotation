@@ -26,9 +26,9 @@ module.exports = function(Chart) {
 		return filteredEvents;
 	}
 
-	function applyHover(element, e, eventHandlers, beginHover) {
+	function startHover(element, e, eventHandlers) {
 		var options = element.options;
-		if (beginHover && !element.hovering) {
+		if (!element.hovering) {
 			// fire hover events
 			['mouseenter', 'mouseover'].forEach(function(eventName) {
 				var handlerName = helpers.getEventHandlerName(eventName);
@@ -39,7 +39,12 @@ module.exports = function(Chart) {
 					eventHandlers.push([options[handlerName], hoverEvent, element]);
 				}
 			});
-		} else if (!beginHover && element.hovering) {
+		}
+	}
+
+	function endHover(element, e, eventHandlers) {
+		var options = element.options;
+		if (element.hovering) {
 			// fire hover off events
 			element.hovering = false;
 			lastHoveredElement = undefined;
@@ -69,14 +74,14 @@ module.exports = function(Chart) {
 			if (element && !element.hovering) {
 				// end hover on the last hovered element
 				if (lastHoveredElement && element !== lastHoveredElement) {
-					applyHover(lastHoveredElement, e, eventHandlers, false);
+					endHover(lastHoveredElement, e, eventHandlers);
 				}
 				// hover started
-				applyHover(element, e, eventHandlers, true);
+				startHover(element, e, eventHandlers);
 			} else if (!element) {
 				// hover ended
 				elements.forEach(function(el) {
-					applyHover(el, e, eventHandlers, false);
+					endHover(el, e, eventHandlers);
 				});
 			}
 		}
