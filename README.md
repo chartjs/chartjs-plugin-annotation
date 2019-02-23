@@ -16,8 +16,8 @@ Annotations work with line, bar, scatter and bubble charts that use linear, loga
 To configure the annotations plugin, you can simply add new config options to your chart config.
 
 ```javascript
-{
-	plugins: {
+
+	options: {
 		annotation: {
 			// Defines when the annotations are drawn.
 			// This allows positioning of the annotation relative to the other
@@ -58,7 +58,7 @@ To configure the annotations plugin, you can simply add new config options to yo
 			}]
 		}
 	}
-}
+
 ```
 
 ### Line Annotations
