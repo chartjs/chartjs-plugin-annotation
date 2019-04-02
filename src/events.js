@@ -1,6 +1,8 @@
 module.exports = function(Chart) {
+	/* eslint-disable global-require */
 	var chartHelpers = Chart.helpers;
 	var helpers = require('./helpers.js')(Chart);
+	/* eslint-enable global-require */
 
 	function collapseHoverEvents(events) {
 		var hover = false;

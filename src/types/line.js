@@ -1,7 +1,9 @@
 // Line Annotation implementation
 module.exports = function(Chart) {
+	/* eslint-disable global-require */
 	var chartHelpers = Chart.helpers;
 	var helpers = require('../helpers.js')(Chart);
+	/* eslint-enable global-require */
 
 	var horizontalKeyword = 'horizontal';
 	var verticalKeyword = 'vertical';
@@ -105,8 +107,8 @@ module.exports = function(Chart) {
 			var scale = chartInstance.scales[options.scaleID];
 			var pixel, endPixel;
 			if (scale) {
-				pixel = helpers.isValid(options.value) ? scale.getPixelForValue(options.value) : NaN;
-				endPixel = helpers.isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : pixel;
+				pixel = helpers.isValid(options.value) ? scale.getPixelForValue(options.value, options.value.index) : NaN;
+				endPixel = helpers.isValid(options.endValue) ? scale.getPixelForValue(options.endValue, options.value.index) : pixel;
 			}
 
 			if (isNaN(pixel)) {

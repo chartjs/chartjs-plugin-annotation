@@ -1,6 +1,8 @@
 // Box Annotation implementation
 module.exports = function(Chart) {
+	/* eslint-disable global-require */
 	var helpers = require('../helpers.js')(Chart);
+	/* eslint-enable global-require */
 
 	var BoxAnnotation = Chart.Annotation.Element.extend({
 		setDataLimits: function() {
@@ -23,8 +25,8 @@ module.exports = function(Chart) {
 			var max = 0;
 
 			if (xScale) {
-				min = helpers.isValid(options.xMin) ? options.xMin : xScale.getPixelForValue(chartArea.left);
-				max = helpers.isValid(options.xMax) ? options.xMax : xScale.getPixelForValue(chartArea.right);
+				min = helpers.isValid(options.xMin) ? options.xMin : xScale.getValueForPixel(chartArea.left);
+				max = helpers.isValid(options.xMax) ? options.xMax : xScale.getValueForPixel(chartArea.right);
 
 				model.ranges[options.xScaleID] = {
 					min: Math.min(min, max),
@@ -33,8 +35,8 @@ module.exports = function(Chart) {
 			}
 
 			if (yScale) {
-				min = helpers.isValid(options.yMin) ? options.yMin : yScale.getPixelForValue(chartArea.bottom);
-				max = helpers.isValid(options.yMax) ? options.yMax : yScale.getPixelForValue(chartArea.top);
+				min = helpers.isValid(options.yMin) ? options.yMin : yScale.getValueForPixel(chartArea.bottom);
+				max = helpers.isValid(options.yMax) ? options.yMax : yScale.getValueForPixel(chartArea.top);
 
 				model.ranges[options.yScaleID] = {
 					min: Math.min(min, max),
