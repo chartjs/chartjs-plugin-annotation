@@ -169,7 +169,7 @@ module.exports = function(Chart) {
 
 				model.labelHeight = (textHeight * model.labelContent.length) + (2 * model.labelYPadding);
 				// Add padding in between each label item
-				model.labelHeight += 5 * (model.labelContent.length - 1);
+				model.labelHeight += model.labelYPadding * (model.labelContent.length - 1);
 			}
 
 			var labelPosition = calculateLabelPosition(model, textWidth, textHeight, model.labelXPadding, model.labelYPadding);
@@ -279,7 +279,7 @@ module.exports = function(Chart) {
 							textYPosition
 						);
 
-						textYPosition += view.labelFontSize + 5;
+						textYPosition += view.labelFontSize + view.labelYPadding;
 					}
 				} else {
 					ctx.textBaseline = 'middle';
