@@ -160,17 +160,16 @@ module.exports = function(Chart) {
 			var textHeight = model.labelFontSize;
 			model.labelHeight = textHeight + (2 * model.labelYPadding);
 
-			if (model.labelContent !== null && model.labelContent.indexOf('\n') !== -1) {
-				var labelContentArray = model.labelContent.split('\n');
-
+			if (model.labelContent && chartHelpers.isArray(model.labelContent)) {
+				var labelContentArray = model.labelContent.slice(0);
 				var longestLabel = labelContentArray.sort(function(a, b) {
 					return b.length - a.length;
 				})[0];
 				textWidth = ctx.measureText(longestLabel).width;
 
-				model.labelHeight = (textHeight * labelContentArray.length) + (2 * model.labelYPadding);
+				model.labelHeight = (textHeight * model.labelContent.length) + (2 * model.labelYPadding);
 				// Add padding in between each label item
-				model.labelHeight += 5 * (labelContentArray.length - 1);
+				model.labelHeight += 5 * (model.labelContent.length - 1);
 			}
 
 			var labelPosition = calculateLabelPosition(model, textWidth, textHeight, model.labelXPadding, model.labelYPadding);
@@ -270,14 +269,12 @@ module.exports = function(Chart) {
 				ctx.fillStyle = view.labelFontColor;
 				ctx.textAlign = 'center';
 
-				if (view.labelContent !== null && view.labelContent.indexOf('\n') !== -1) {
+				if (view.labelContent && chartHelpers.isArray(view.labelContent)) {
 					var textYPosition = view.labelY + view.labelYPadding;
-					var labelContentArray = view.labelContent.split('\n');
-
-					for (var i = 0; i < labelContentArray.length; i++) {
+					for (var i = 0; i < view.labelContent.length; i++) {
 						ctx.textBaseline = 'top';
 						ctx.fillText(
-							labelContentArray[i],
+							view.labelContent[i],
 							view.labelX + (view.labelWidth / 2),
 							textYPosition
 						);
