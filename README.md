@@ -141,7 +141,7 @@ Vertical or horizontal lines are supported.
 		// Whether the label is enabled and should be displayed
 		enabled: false,
 
-		// Text to display in label - default is null
+		// Text to display in label - default is null. Provide an array to display values on a new line
 		content: "Test label"
 	},
 
