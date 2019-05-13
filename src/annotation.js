@@ -32,7 +32,6 @@ module.exports = function(Chart) {
 				element.transition(easingDecimal).draw();
 			});
 			elements.forEach(function(element) {
-				element.configure();
 				element.transition(easingDecimal).drawLabel();
 			});
 		};
