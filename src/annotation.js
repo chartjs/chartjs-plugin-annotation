@@ -124,15 +124,10 @@ module.exports = function(Chart) {
 		},
 		destroy: function(chartInstance) {
 			var deregisterers;
-			if (chartInstance) {
-				if (chartInstance.annotation) {
-					deregisterers = chartInstance.annotation.onDestroy;
-				} else {
-					return;
-				}
-			} else {
+			if (!chartInstance || !chartInstance.annotation) {
 				return;
 			}
+			deregisterers = chartInstance.annotation.onDestroy;
 			while (deregisterers.length > 0) {
 				deregisterers.pop()();
 			}
