@@ -39,6 +39,8 @@ module.exports = function(Chart) {
 	}
 
 	return {
+		id: 'annotation',
+				
 		beforeInit: function(chartInstance) {
 			var chartOptions = chartInstance.options;
 
