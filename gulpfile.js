@@ -20,7 +20,7 @@ var gulp = require('gulp'),
 var srcDir = './src/';
 var outDir = './';
 
-var header = "/*!\n\
+var header = "/*@preserve!\n\
  * chartjs-plugin-annotation.js\n\
  * http://chartjs.org/\n\
  * Version: {{ version }}\n\
@@ -46,9 +46,9 @@ function buildTask() {
     .pipe(insert.prepend(header))
     .pipe(streamify(replace('{{ version }}', package.version)))
     .pipe(gulp.dest(outDir))
-    .pipe(streamify(uglify({
-      preserveComments: 'some'
-    })))
+    .pipe(streamify(uglify({ output: {
+      comments: 'some'
+    }})))
     .pipe(streamify(concat('chartjs-plugin-annotation.min.js')))
     .pipe(gulp.dest(outDir));
 
