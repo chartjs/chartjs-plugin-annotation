@@ -113,6 +113,24 @@
 								console.log('Annotation', e.type, this);
 							}
 						}, {
+							id: 'vline-rotated',
+							type: 'line',
+							mode: 'vertical',
+							scaleID: 'x-axis-0',
+							value: 'June',
+							borderColor: 'black',
+							borderWidth: 5,
+							label: {
+								backgroundColor: 'red',
+								content: 'Test Label',
+								enabled: true,
+								rotation: -90
+							},
+							onClick: function(e) {
+								// The annotation is is bound to the `this` variable
+								console.log('Annotation', e.type, this);
+							}
+						}, {
 							drawTime: 'beforeDatasetsDraw',
 							type: 'box',
 							xScaleID: 'x-axis-0',
