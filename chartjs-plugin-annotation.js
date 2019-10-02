@@ -129,9 +129,11 @@ module.exports = function(Chart) {
 			}
 		},
 		destroy: function(chartInstance) {
-			var deregisterers = chartInstance.annotation.onDestroy;
-			while (deregisterers.length > 0) {
-				deregisterers.pop()();
+			if (chartInstance.annotation) {
+				var deregisterers = chartInstance.annotation.onDestroy;
+				while (deregisterers.length > 0) {
+					deregisterers.pop()();
+				}
 			}
 		}
 	};
