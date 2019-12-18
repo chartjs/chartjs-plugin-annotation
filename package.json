@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "browserify": "^16.2.3",
-    "chart.js": "^2.4.0",
+    "chart.js": "^2.9.3",
     "eslint-config-chartjs": "^0.1.0",
     "eslint-plugin-html": "^5.0.0",
     "gulp": "^4.0.0",
