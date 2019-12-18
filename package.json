@@ -36,6 +36,5 @@
   },
   "peerDependencies": {
     "chart.js": "^2.4.0"
-  },
-  "publishConfig": { "registry": "https://npm.pkg.github.com/" }
+  }
 }
