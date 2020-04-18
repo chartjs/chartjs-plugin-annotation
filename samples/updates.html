@@ -147,19 +147,23 @@
 		};
 
 		function addLine() {
-			lines.push({
-				type: 'line',
-				mode: 'horizontal',
-				scaleID: 'y-axis-1',
-				value: randomScalingFactor() * 3,
-				borderColor: randomColor(0.75),
-				borderWidth: 5
-			});
+			window.myScatter.options.annotation.annotations = [
+				...window.myScatter.annotation.options.annotations,
+				{
+					type: 'line',
+					mode: 'horizontal',
+					scaleID: 'y-axis-1',
+					value: randomScalingFactor(),
+					borderColor: randomColor(0.75),
+					borderWidth: 5
+				}
+			];
+
 			window.myScatter.update(0);
 		}
 
 		function removeLine() {
-			lines.pop();
+			window.myScatter.options.annotation.annotations.pop();
 			window.myScatter.update(0);
 		}
 	</script>
