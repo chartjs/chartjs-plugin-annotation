@@ -3,7 +3,7 @@
 
 <head>
 	<title>Scatter Chart</title>
-	<script src="../node_modules/chart.js/dist/Chart.bundle.js"></script>
+	<script src="../node_modules/chart.js/dist/chart.js"></script>
 	<script src="../chartjs-plugin-annotation.js"></script>
 	<style>
 	canvas {
@@ -90,7 +90,8 @@
 
 		window.onload = function() {
 			var ctx = document.getElementById('canvas').getContext('2d');
-			window.myScatter = Chart.Scatter(ctx, {
+			window.myScatter = new Chart(ctx, {
+				type: 'scatter',
 				data: scatterChartData,
 				options: {
 					title: {
@@ -98,7 +99,7 @@
 						text: 'Chart.js Scatter Chart'
 					},
 					scales: {
-						xAxes: [{
+						x: {
 							position: 'top',
 							gridLines: {
 								zeroLineColor: 'rgba(0,255,0,1)'
@@ -111,8 +112,8 @@
 								maxRotation: 0,
 								reverse: true
 							}
-						}],
-						yAxes: [{
+						},
+						y: {
 							position: 'right',
 							gridLines: {
 								zeroLineColor: 'rgba(0,255,0,1)'
@@ -124,26 +125,28 @@
 							ticks: {
 								reverse: true
 							}
-						}]
+						}
 					},
-					annotation: {
-						drawTime: 'afterDraw',
-						events: ['dblclick'],
-						annotations: [{
-							type: 'box',
-							xScaleID: 'x-axis-1',
-							yScaleID: 'y-axis-1',
-							xMin: -120,
-							xMax: 20,
-							yMin: -120,
-							yMax: 20,
-							backgroundColor: 'rgba(101, 33, 171, 0.5)',
-							borderColor: 'rgb(101, 33, 171)',
-							borderWidth: 1,
-							onDblclick: function(e) {
-								console.log('Box', e.type, this);
-							}
-						}]
+					plugins: {
+						annotation: {
+							drawTime: 'afterDraw',
+							events: ['dblclick'],
+							annotations: [{
+								type: 'box',
+								xScaleID: 'x',
+								yScaleID: 'y',
+								xMin: -120,
+								xMax: 20,
+								yMin: -120,
+								yMax: 20,
+								backgroundColor: 'rgba(101, 33, 171, 0.5)',
+								borderColor: 'rgb(101, 33, 171)',
+								borderWidth: 1,
+								onDblclick: function(e) {
+									console.log('Box', e.type, this);
+								}
+							}]
+						}
 					}
 				}
 			});

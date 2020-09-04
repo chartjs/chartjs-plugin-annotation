@@ -1,7 +1,14 @@
-extends: chartjs
+
+extends:
+  - chartjs
+  - esnext
 
 parserOptions:
+  ecmaVersion: 7
   sourceType: module
+  ecmaFeatures:
+    impliedStrict: true
+    modules: true
 
 env:
   browser: true

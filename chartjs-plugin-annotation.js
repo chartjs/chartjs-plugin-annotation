@@ -1,518 +1,146 @@
 /*!
- * chartjs-plugin-annotation.js
- * http://chartjs.org/
- * Version: 0.5.7
- *
- * Copyright 2016 Evert Timberg
- * Released under the MIT license
- * https://github.com/chartjs/Chart.Annotation.js/blob/master/LICENSE.md
+* chartjs-plugin-annotation v0.5.7
+* undefined
+ * (c) 2020 Chart.js Contributors
+ * Released under the MIT License
  */
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function (global, factory) {
+typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('chart.js')) :
+typeof define === 'function' && define.amd ? define(['chart.js'], factory) :
+(global = typeof globalThis !== 'undefined' ? globalThis : global || self, global['chartjs-plugin-annotation'] = factory(global.Chart));
+}(this, (function (chart_js) { 'use strict';
 
-},{}],2:[function(require,module,exports){
-module.exports = function(Chart) {
-	var chartHelpers = Chart.helpers;
-
-	var helpers = require('./helpers.js')(Chart);
-	var events = require('./events.js')(Chart);
-
-	var annotationTypes = Chart.Annotation.types;
-
-	function setAfterDataLimitsHook(axisOptions) {
-		helpers.decorate(axisOptions, 'afterDataLimits', function(previous, scale) {
-			if (previous) previous(scale);
-			helpers.adjustScaleRange(scale);
-		});
+/*!
+ * Chart.js v3.0.0-beta
+ * https://www.chartjs.org
+ * (c) 2020 Chart.js Contributors
+ * Released under the MIT License
+ */
+function isArray(value) {
+	if (Array.isArray && Array.isArray(value)) {
+		return true;
 	}
-
-	function draw(drawTime) {
-		return function(chartInstance, easingDecimal) {
-			var defaultDrawTime = chartInstance.annotation.options.drawTime;
-
-			helpers.elements(chartInstance)
-				.filter(function(element) {
-					return drawTime === (element.options.drawTime || defaultDrawTime);
-				})
-				.forEach(function(element) {
-					element.transition(easingDecimal).draw();
-				});
-		};
+	const type = Object.prototype.toString.call(value);
+	if (type.substr(0, 7) === '[object' && type.substr(-6) === 'Array]') {
+		return true;
 	}
-
-	return {
-		beforeInit: function(chartInstance) {
-			var chartOptions = chartInstance.options;
-
-			// Initialize chart instance plugin namespace
-			var ns = chartInstance.annotation = {
-				elements: {},
-				options: helpers.initConfig(chartOptions.annotation || {}),
-				onDestroy: [],
-				firstRun: true,
-				supported: false
-			};
-
-			// Add the annotation scale adjuster to each scale's afterDataLimits hook
-			chartInstance.ensureScalesHaveIDs();
-			if (chartOptions.scales) {
-				ns.supported = true;
-				chartHelpers.each(chartOptions.scales.xAxes, setAfterDataLimitsHook);
-				chartHelpers.each(chartOptions.scales.yAxes, setAfterDataLimitsHook);
-			}
-		},
-		beforeUpdate: function(chartInstance) {
-			var ns = chartInstance.annotation;
-
-			if (!ns.supported) {
-				return;
-			}
-
-			if (!ns.firstRun) {
-				ns.options = helpers.initConfig(chartInstance.options.annotation || {});
-			} else {
-				ns.firstRun = false;
-			}
-
-			var elementIds = [];
-
-			// Add new elements, or update existing ones
-			ns.options.annotations.forEach(function(annotation) {
-				var id = annotation.id || helpers.objectId();
-				
-				// No element with that ID exists, and it's a valid annotation type
-				if (!ns.elements[id] && annotationTypes[annotation.type]) {
-					var cls = annotationTypes[annotation.type];
-					var element = new cls({
-						id: id,
-						options: annotation,
-						chartInstance: chartInstance,
-					});
-					element.initialize();
-					ns.elements[id] = element;
-					annotation.id = id;
-					elementIds.push(id);
-				} else if (ns.elements[id]) {
-					// Nothing to do for update, since the element config references
-					// the same object that exists in the chart annotation config
-					elementIds.push(id);
-				}
-			});
-
-			// Delete removed elements
-			Object.keys(ns.elements).forEach(function(id) {
-				if (elementIds.indexOf(id) === -1) {
-					ns.elements[id].destroy();
-					delete ns.elements[id];
-				}
-			});
-		},
-		afterScaleUpdate: function(chartInstance) {
-			helpers.elements(chartInstance).forEach(function(element) {
-				element.configure();
-			});
-		},
-		beforeDatasetsDraw: draw('beforeDatasetsDraw'),
-		afterDatasetsDraw: draw('afterDatasetsDraw'),
-		afterDraw: draw('afterDraw'),
-		afterInit: function(chartInstance) {
-			// Detect and intercept events that happen on an annotation element
-			var watchFor = chartInstance.annotation.options.events;
-			if (chartHelpers.isArray(watchFor) && watchFor.length > 0) {
-				var canvas = chartInstance.chart.canvas;
-				var eventHandler = events.dispatcher.bind(chartInstance);
-				events.collapseHoverEvents(watchFor).forEach(function(eventName) {
-					chartHelpers.addEvent(canvas, eventName, eventHandler);
-					chartInstance.annotation.onDestroy.push(function() {
-						chartHelpers.removeEvent(canvas, eventName, eventHandler);
-					});
-				});
-			}
-		},
-		destroy: function(chartInstance) {
-			var deregisterers = chartInstance.annotation.onDestroy;
-			while (deregisterers.length > 0) {
-				deregisterers.pop()();
-			}
-		}
-	};
-};
-
-},{"./events.js":4,"./helpers.js":5}],3:[function(require,module,exports){
-module.exports = function(Chart) {
-	var chartHelpers = Chart.helpers;
-	
-	var AnnotationElement = Chart.Element.extend({
-		initialize: function() {
-			this.hidden = false;
-			this.hovering = false;
-			this._model = chartHelpers.clone(this._model) || {};
-			this.setDataLimits();
-		},
-		destroy: function() {},
-		setDataLimits: function() {},
-		configure: function() {},
-		inRange: function() {},
-		getCenterPoint: function() {},
-		getWidth: function() {},
-		getHeight: function() {},
-		getArea: function() {},
-		draw: function() {}
-	});
-
-	return AnnotationElement;
-};
-
-},{}],4:[function(require,module,exports){
-module.exports = function(Chart) {
-	var chartHelpers = Chart.helpers;
-	var helpers = require('./helpers.js')(Chart);
-
-	function collapseHoverEvents(events) {
-		var hover = false;
-		var filteredEvents = events.filter(function(eventName) {
-			switch (eventName) {
-				case 'mouseenter':
-				case 'mouseover':
-				case 'mouseout':
-				case 'mouseleave':
-					hover = true;
-					return false;
-
-				default:
-					return true;
-			}
-		});
-		if (hover && filteredEvents.indexOf('mousemove') === -1) {
-			filteredEvents.push('mousemove');
-		}
-		return filteredEvents;
-	}
-
-	function dispatcher(e) {
-		var ns = this.annotation;
-		var elements = helpers.elements(this);
-		var position = chartHelpers.getRelativePosition(e, this.chart);
-		var element = helpers.getNearestItems(elements, position);
-		var events = collapseHoverEvents(ns.options.events);
-		var dblClickSpeed = ns.options.dblClickSpeed;
-		var eventHandlers = [];
-		var eventHandlerName = helpers.getEventHandlerName(e.type);
-		var options = (element || {}).options;
-
-		// Detect hover events
-		if (e.type === 'mousemove') {
-			if (element && !element.hovering) {
-				// hover started
-				['mouseenter', 'mouseover'].forEach(function(eventName) {
-					var eventHandlerName = helpers.getEventHandlerName(eventName);
-					var hoverEvent = helpers.createMouseEvent(eventName, e); // recreate the event to match the handler
-					element.hovering = true;
-					if (typeof options[eventHandlerName] === 'function') {
-						eventHandlers.push([ options[eventHandlerName], hoverEvent, element ]);
-					}
-				});
-			} else if (!element) {
-				// hover ended
-				elements.forEach(function(element) {
-					if (element.hovering) {
-						element.hovering = false;
-						var options = element.options;
-						['mouseout', 'mouseleave'].forEach(function(eventName) {
-							var eventHandlerName = helpers.getEventHandlerName(eventName);
-							var hoverEvent = helpers.createMouseEvent(eventName, e); // recreate the event to match the handler
-							if (typeof options[eventHandlerName] === 'function') {
-								eventHandlers.push([ options[eventHandlerName], hoverEvent, element ]);
-							}
-						});
-					}
-				});
-			}
-		}
-
-		// Suppress duplicate click events during a double click
-		// 1. click -> 2. click -> 3. dblclick
-		//
-		// 1: wait dblClickSpeed ms, then fire click
-		// 2: cancel (1) if it is waiting then wait dblClickSpeed ms then fire click, else fire click immediately
-		// 3: cancel (1) or (2) if waiting, then fire dblclick 
-		if (element && events.indexOf('dblclick') > -1 && typeof options.onDblclick === 'function') {
-			if (e.type === 'click' && typeof options.onClick === 'function') {
-				clearTimeout(element.clickTimeout);
-				element.clickTimeout = setTimeout(function() {
-					delete element.clickTimeout;
-					options.onClick.call(element, e);
-				}, dblClickSpeed);
-				e.stopImmediatePropagation();
-				e.preventDefault();
-				return;
-			} else if (e.type === 'dblclick' && element.clickTimeout) {
-				clearTimeout(element.clickTimeout);
-				delete element.clickTimeout;
-			}
-		}
-
-		// Dispatch the event to the usual handler, but only if we haven't substituted it
-		if (element && typeof options[eventHandlerName] === 'function' && eventHandlers.length === 0) {
-			eventHandlers.push([ options[eventHandlerName], e, element ]);
-		}
-
-		if (eventHandlers.length > 0) {
-			e.stopImmediatePropagation();
-			e.preventDefault();
-			eventHandlers.forEach(function(eventHandler) {
-				// [handler, event, element]
-				eventHandler[0].call(eventHandler[2], eventHandler[1]);
-			});
-		}
-	}
-
-	return {
-		dispatcher: dispatcher,
-		collapseHoverEvents: collapseHoverEvents
-	};
-};
-
-},{"./helpers.js":5}],5:[function(require,module,exports){
-function noop() {}
-
-function elements(chartInstance) {
-	// Turn the elements object into an array of elements
-	var elements = chartInstance.annotation.elements;
-	return Object.keys(elements).map(function(id) {
-		return elements[id];
-	});
+	return false;
 }
-
-function objectId() {
-	return Math.random().toString(36).substr(2, 6);
+function isObject(value) {
+	return value !== null && Object.prototype.toString.call(value) === '[object Object]';
 }
-
-function isValid(rawValue) {
-	if (rawValue === null || typeof rawValue === 'undefined') {
-		return false;
-	} else if (typeof rawValue === 'number') {
-		return isFinite(rawValue);
+const isNumberFinite = (value) => (typeof value === 'number' || value instanceof Number) && isFinite(+value);
+function clone(source) {
+	if (isArray(source)) {
+		return source.map(clone);
+	}
+	if (isObject(source)) {
+		const target = {};
+		const keys = Object.keys(source);
+		const klen = keys.length;
+		let k = 0;
+		for (; k < klen; ++k) {
+			target[keys[k]] = clone(source[keys[k]]);
+		}
+		return target;
+	}
+	return source;
+}
+function _merger(key, target, source, options) {
+	const tval = target[key];
+	const sval = source[key];
+	if (isObject(tval) && isObject(sval)) {
+		merge(tval, sval, options);
 	} else {
-		return !!rawValue;
+		target[key] = clone(sval);
 	}
 }
-
-function decorate(obj, prop, func) {
-	var prefix = '$';
-	if (!obj[prefix + prop]) {
-		if (obj[prop]) {
-			obj[prefix + prop] = obj[prop].bind(obj);
-			obj[prop] = function() {
-				var args = [ obj[prefix + prop] ].concat(Array.prototype.slice.call(arguments));
-				return func.apply(obj, args);
-			};
-		} else {
-			obj[prop] = function() {
-				var args = [ undefined ].concat(Array.prototype.slice.call(arguments));
-				return func.apply(obj, args);
-			};
+function merge(target, source, options) {
+	const sources = isArray(source) ? source : [source];
+	const ilen = sources.length;
+	if (!isObject(target)) {
+		return target;
+	}
+	options = options || {};
+	const merger = options.merger || _merger;
+	for (let i = 0; i < ilen; ++i) {
+		source = sources[i];
+		if (!isObject(source)) {
+			continue;
+		}
+		const keys = Object.keys(source);
+		for (let k = 0, klen = keys.length; k < klen; ++k) {
+			merger(keys[k], target, source, options);
 		}
 	}
+	return target;
 }
 
-function callEach(fns, method) {
-	fns.forEach(function(fn) {
-		(method ? fn[method] : fn)();
-	});
+/*!
+ * Chart.js v3.0.0-beta
+ * https://www.chartjs.org
+ * (c) 2020 Chart.js Contributors
+ * Released under the MIT License
+ */
+function clipArea(ctx, area) {
+	ctx.save();
+	ctx.beginPath();
+	ctx.rect(area.left, area.top, area.right - area.left, area.bottom - area.top);
+	ctx.clip();
+}
+function unclipArea(ctx) {
+	ctx.restore();
 }
 
-function getEventHandlerName(eventName) {
-	return 'on' + eventName[0].toUpperCase() + eventName.substring(1);
-}
+class BoxAnnotation extends chart_js.Element {
+	inRange(mouseX, mouseY, useFinalPosition) {
+		const {x, y, width, height} = this.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
 
-function createMouseEvent(type, previousEvent) {
-	try {
-		return new MouseEvent(type, previousEvent);
-	} catch (exception) {
-		try {
-			var m = document.createEvent('MouseEvent');
-			m.initMouseEvent(
-				type,
-				previousEvent.canBubble,
-				previousEvent.cancelable,
-				previousEvent.view,
-				previousEvent.detail,
-				previousEvent.screenX,
-				previousEvent.screenY,
-				previousEvent.clientX,
-				previousEvent.clientY,
-				previousEvent.ctrlKey,
-				previousEvent.altKey,
-				previousEvent.shiftKey,
-				previousEvent.metaKey,
-				previousEvent.button,
-				previousEvent.relatedTarget
-			);
-			return m;
-		} catch (exception2) {
-			var e = document.createEvent('Event');
-			e.initEvent(
-				type,
-				previousEvent.canBubble,
-				previousEvent.cancelable
-			);
-			return e;
-		}
-	}
-}
-
-module.exports = function(Chart) {
-	var chartHelpers = Chart.helpers;
-
-	function initConfig(config) {
-		config = chartHelpers.configMerge(Chart.Annotation.defaults, config);
-		if (chartHelpers.isArray(config.annotations)) {
-			config.annotations.forEach(function(annotation) {
-				annotation.label = chartHelpers.configMerge(Chart.Annotation.labelDefaults, annotation.label);
-			});
-		}
-		return config;
+		return mouseX >= x &&
+			mouseX <= x + width &&
+			mouseY >= y &&
+			mouseY <= y + height;
 	}
 
-	function getScaleLimits(scaleId, annotations, scaleMin, scaleMax) {
-		var ranges = annotations.filter(function(annotation) {
-			return !!annotation._model.ranges[scaleId];
-		}).map(function(annotation) {
-			return annotation._model.ranges[scaleId];
-		});
-
-		var min = ranges.map(function(range) {
-			return Number(range.min);
-		}).reduce(function(a, b) {
-			return isFinite(b) && !isNaN(b) && b < a ? b : a;
-		}, scaleMin);
-
-		var max = ranges.map(function(range) {
-			return Number(range.max);
-		}).reduce(function(a, b) {
-			return isFinite(b) && !isNaN(b) && b > a ? b : a;
-		}, scaleMax);
-
+	getCenterPoint(useFinalPosition) {
+		const {x, y, width, height} = this.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
 		return {
-			min: min,
-			max: max
+			x: x + width / 2,
+			y: y + height / 2
 		};
 	}
 
-	function adjustScaleRange(scale) {
-		// Adjust the scale range to include annotation values
-		var range = getScaleLimits(scale.id, elements(scale.chart), scale.min, scale.max);
-		if (typeof scale.options.ticks.min === 'undefined' && typeof scale.options.ticks.suggestedMin === 'undefined') {
-			scale.min = range.min;
-		}
-		if (typeof scale.options.ticks.max === 'undefined' && typeof scale.options.ticks.suggestedMax === 'undefined') {
-			scale.max = range.max;
-		}
-		if (scale.handleTickRangeOptions) {
-			scale.handleTickRangeOptions();
-		}
+	draw(ctx) {
+		const {x, y, width, height, options} = this;
+
+		ctx.save();
+
+		ctx.lineWidth = options.borderWidth;
+		ctx.strokeStyle = options.borderColor;
+		ctx.fillStyle = options.backgroundColor;
+
+		ctx.fillRect(x, y, width, height);
+		ctx.strokeRect(x, y, width, height);
+
+		ctx.restore();
 	}
+}
 
-	function getNearestItems(annotations, position) {
-		var minDistance = Number.POSITIVE_INFINITY;
+BoxAnnotation.id = 'boxAnnotation';
 
-		return annotations
-			.filter(function(element) {
-				return element.inRange(position.x, position.y);
-			})
-			.reduce(function(nearestItems, element) {
-				var center = element.getCenterPoint();
-				var distance = chartHelpers.distanceBetweenPoints(position, center);
-
-				if (distance < minDistance) {
-					nearestItems = [element];
-					minDistance = distance;
-				} else if (distance === minDistance) {
-					// Can have multiple items at the same distance in which case we sort by size
-					nearestItems.push(element);
-				}
-
-				return nearestItems;
-			}, [])
-			.sort(function(a, b) {
-				// If there are multiple elements equally close,
-				// sort them by size, then by index
-				var sizeA = a.getArea(), sizeB = b.getArea();
-				return (sizeA > sizeB || sizeA < sizeB) ? sizeA - sizeB : a._index - b._index;
-			})
-			.slice(0, 1)[0]; // return only the top item
-	}
-
-	return {
-		initConfig: initConfig,
-		elements: elements,
-		callEach: callEach,
-		noop: noop,
-		objectId: objectId,
-		isValid: isValid,
-		decorate: decorate,
-		adjustScaleRange: adjustScaleRange,
-		getNearestItems: getNearestItems,
-		getEventHandlerName: getEventHandlerName,
-		createMouseEvent: createMouseEvent
-	};
+BoxAnnotation.defaults = {
+	borderWidth: 1
 };
 
-
-},{}],6:[function(require,module,exports){
-// Get the chart variable
-var Chart = require('chart.js');
-Chart = typeof(Chart) === 'function' ? Chart : window.Chart;
-
-// Configure plugin namespace
-Chart.Annotation = Chart.Annotation || {};
-
-Chart.Annotation.drawTimeOptions = {
-	afterDraw: 'afterDraw',
-	afterDatasetsDraw: 'afterDatasetsDraw',
-	beforeDatasetsDraw: 'beforeDatasetsDraw'
+BoxAnnotation.defaultRoutes = {
+	borderColor: 'color',
+	backgroundColor: 'color'
 };
 
-Chart.Annotation.defaults = {
-	drawTime: 'afterDatasetsDraw',
-	dblClickSpeed: 350, // ms
-	events: [],
-	annotations: []
-};
-
-Chart.Annotation.labelDefaults = {
-	backgroundColor: 'rgba(0,0,0,0.8)',
-	fontFamily: Chart.defaults.global.defaultFontFamily,
-	fontSize: Chart.defaults.global.defaultFontSize,
-	fontStyle: 'bold',
-	fontColor: '#fff',
-	xPadding: 6,
-	yPadding: 6,
-	cornerRadius: 6,
-	position: 'center',
-	xAdjust: 0,
-	yAdjust: 0,
-	enabled: false,
-	content: null
-};
-
-Chart.Annotation.Element = require('./element.js')(Chart);
-
-Chart.Annotation.types = {
-	line: require('./types/line.js')(Chart),
-	box: require('./types/box.js')(Chart)
-};
-
-var annotationPlugin = require('./annotation.js')(Chart);
-
-module.exports = annotationPlugin;
-Chart.pluginService.register(annotationPlugin);
-
-},{"./annotation.js":2,"./element.js":3,"./types/box.js":7,"./types/line.js":8,"chart.js":1}],7:[function(require,module,exports){
-// Box Annotation implementation
-module.exports = function(Chart) {
+/*
+function(Chart) {
 	var helpers = require('../helpers.js')(Chart);
-	
+
 	var BoxAnnotation = Chart.Annotation.Element.extend({
 		setDataLimits: function() {
 			var model = this._model;
@@ -525,17 +153,17 @@ module.exports = function(Chart) {
 
 			// Set the data range for this annotation
 			model.ranges = {};
-			
+
 			if (!chartArea) {
 				return;
 			}
-			
+
 			var min = 0;
 			var max = 0;
-			
+
 			if (xScale) {
-				min = helpers.isValid(options.xMin) ? options.xMin : xScale.getPixelForValue(chartArea.left);
-				max = helpers.isValid(options.xMax) ? options.xMax : xScale.getPixelForValue(chartArea.right);
+				min = helpers.isValid(options.xMin) ? options.xMin : xScale.getValueForPixel(chartArea.left);
+				max = helpers.isValid(options.xMax) ? options.xMax : xScale.getValueForPixel(chartArea.right);
 
 				model.ranges[options.xScaleID] = {
 					min: Math.min(min, max),
@@ -544,8 +172,8 @@ module.exports = function(Chart) {
 			}
 
 			if (yScale) {
-				min = helpers.isValid(options.yMin) ? options.yMin : yScale.getPixelForValue(chartArea.bottom);
-				max = helpers.isValid(options.yMax) ? options.yMax : yScale.getPixelForValue(chartArea.top);
+				min = helpers.isValid(options.yMin) ? options.yMin : yScale.getValueForPixel(chartArea.bottom);
+				max = helpers.isValid(options.yMax) ? options.yMax : yScale.getValueForPixel(chartArea.top);
 
 				model.ranges[options.yScaleID] = {
 					min: Math.min(min, max),
@@ -570,10 +198,10 @@ module.exports = function(Chart) {
 				y2: chartArea.bottom
 			};
 
-			var left = chartArea.left, 
-				top = chartArea.top, 
-				right = chartArea.right, 
-				bottom = chartArea.bottom;
+			var left = chartArea.left;
+			var top = chartArea.top;
+			var right = chartArea.right;
+			var bottom = chartArea.bottom;
 
 			var min, max;
 
@@ -605,9 +233,9 @@ module.exports = function(Chart) {
 		inRange: function(mouseX, mouseY) {
 			var model = this._model;
 			return model &&
-				mouseX >= model.left && 
-				mouseX <= model.right && 
-				mouseY >= model.top && 
+				mouseX >= model.left &&
+				mouseX <= model.right &&
+				mouseY >= model.top &&
 				mouseY <= model.bottom;
 		},
 		getCenterPoint: function() {
@@ -644,8 +272,8 @@ module.exports = function(Chart) {
 			ctx.fillStyle = view.backgroundColor;
 
 			// Draw
-			var width = view.right - view.left,
-				height = view.bottom - view.top;
+			var width = view.right - view.left;
+			var height = view.bottom - view.top;
 			ctx.fillRect(view.left, view.top, width, height);
 			ctx.strokeRect(view.left, view.top, width, height);
 
@@ -655,15 +283,299 @@ module.exports = function(Chart) {
 
 	return BoxAnnotation;
 };
+*/
 
-},{"../helpers.js":5}],8:[function(require,module,exports){
-// Line Annotation implementation
-module.exports = function(Chart) {
+/*!
+ * Chart.js v3.0.0-beta
+ * https://www.chartjs.org
+ * (c) 2020 Chart.js Contributors
+ * Released under the MIT License
+ */
+function fontString(pixelSize, fontStyle, fontFamily) {
+	return fontStyle + ' ' + pixelSize + 'px ' + fontFamily;
+}
+
+const PI = Math.PI;
+const HALF_PI = PI / 2;
+
+class LineAnnotation extends chart_js.Element {
+
+	draw(ctx) {
+		const {x, y, x2, y2, options} = this;
+		ctx.save();
+
+		ctx.lineWidth = options.borderWidth;
+		ctx.strokeStyle = options.borderColor;
+
+		if (ctx.setLineDash) {
+			ctx.setLineDash(options.borderDash);
+		}
+		ctx.lineDashOffset = options.borderDashOffset;
+
+		// Draw
+		ctx.beginPath();
+		ctx.moveTo(x, y);
+		ctx.lineTo(x2, y2);
+		ctx.stroke();
+
+		const label = options.label;
+		if (label && label.enabled && label.content) {
+			drawLabel(ctx, this);
+		}
+
+		ctx.restore();
+	}
+}
+
+LineAnnotation.id = 'lineAnnotation';
+LineAnnotation.defaults = {
+	borderDash: [],
+	borderDashOffset: 0,
+	label: {
+		backgroundColor: 'rgba(0,0,0,0.8)',
+		font: {
+			family: chart_js.defaults.font.family,
+			size: chart_js.defaults.font.size,
+			style: 'bold',
+			color: '#fff',
+		},
+		xPadding: 6,
+		yPadding: 6,
+		rotation: 0,
+		cornerRadius: 6,
+		position: 'center',
+		xAdjust: 0,
+		yAdjust: 0,
+		enabled: false,
+		content: null
+	}
+};
+
+function drawLabel(ctx, line) {
+	const label = line.options.label;
+
+	ctx.font = fontString(
+		label.font.size,
+		label.font.style,
+		label.font.family
+	);
+	ctx.textAlign = 'center';
+
+	const {width, height} = measureLabel(ctx, label);
+	const pos = calculateLabelPosition(line, width, height);
+
+	ctx.translate(pos.x, pos.y);
+	ctx.rotate(label.rotation * PI / 180);
+
+	ctx.fillStyle = label.backgroundColor;
+	roundedRect(ctx, -(width / 2), -(height / 2), width, height, label.cornerRadius);
+	ctx.fill();
+
+	ctx.fillStyle = label.font.color;
+	if (isArray(label.content)) {
+		let textYPosition = -(height / 2) + label.yPadding;
+		for (let i = 0; i < label.content.length; i++) {
+			ctx.textBaseline = 'top';
+			ctx.fillText(
+				label.content[i],
+				-(width / 2) + (width / 2),
+				textYPosition
+			);
+
+			textYPosition += label.font.size + label.yPadding;
+		}
+	} else {
+		ctx.textBaseline = 'middle';
+		ctx.fillText(label.content, 0, 0);
+	}
+}
+
+const widthCache = new Map();
+function measureLabel(ctx, label) {
+	const content = label.content;
+	const lines = isArray(content) ? content : [content];
+	const count = lines.length;
+	let width = 0;
+	for (let i = 0; i < count; i++) {
+		const text = lines[i];
+		if (!widthCache.has(text)) {
+			widthCache.set(text, ctx.measureText(text).width);
+		}
+		width = Math.max(width, widthCache.get(text));
+	}
+	width += 2 * label.xPadding;
+
+	return {
+		width,
+		height: count * label.font.size + ((count + 1) * label.yPadding)
+	};
+}
+
+const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
+const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
+const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
+
+function calculateLabelPosition(line, width, height) {
+	const label = line.options.label;
+	const {xPadding, xAdjust, yPadding, yAdjust} = label;
+	const p1 = {x: line.x, y: line.y};
+	const p2 = {x: line.x2, y: line.y2};
+	let x, y, pt;
+
+	switch (label.position) {
+	case 'top':
+		y = yPadding + yAdjust;
+		x = interpolateX(y, p1, p2);
+		break;
+	case 'bottom':
+		y = height - yPadding + yAdjust;
+		x = interpolateX(y, p1, p2);
+		break;
+	case 'left':
+		x = xPadding + xAdjust;
+		y = interpolateY(x, p1, p2);
+		break;
+	case 'right':
+		x = width - xPadding + xAdjust;
+		y = interpolateY(x, p1, p2);
+		break;
+	default:
+		pt = pointInLine(p1, p2, 0.5);
+		x = pt.x + xAdjust;
+		y = pt.y + yAdjust;
+	}
+	return {x, y};
+}
+
+
+/**
+ * Creates a "path" for a rectangle with rounded corners at position (x, y) with a
+ * given size (width, height) and the same `radius` for all corners.
+ * @param {CanvasRenderingContext2D} ctx - The canvas 2D Context.
+ * @param {number} x - The x axis of the coordinate for the rectangle starting point.
+ * @param {number} y - The y axis of the coordinate for the rectangle starting point.
+ * @param {number} width - The rectangle's width.
+ * @param {number} height - The rectangle's height.
+ * @param {number} radius - The rounded amount (in pixels) for the four corners.
+ * @todo handle `radius` as top-left, top-right, bottom-right, bottom-left array/object?
+ */
+function roundedRect(ctx, x, y, width, height, radius) {
+	if (radius) {
+		const r = Math.min(radius, height / 2, width / 2);
+		const left = x + r;
+		const top = y + r;
+		const right = x + width - r;
+		const bottom = y + height - r;
+
+		ctx.moveTo(x, top);
+		if (left < right && top < bottom) {
+			ctx.arc(left, top, r, -PI, -HALF_PI);
+			ctx.arc(right, top, r, -HALF_PI, 0);
+			ctx.arc(right, bottom, r, 0, HALF_PI);
+			ctx.arc(left, bottom, r, HALF_PI, PI);
+		} else if (left < right) {
+			ctx.moveTo(left, y);
+			ctx.arc(right, top, r, -HALF_PI, HALF_PI);
+			ctx.arc(left, top, r, HALF_PI, PI + HALF_PI);
+		} else if (top < bottom) {
+			ctx.arc(left, top, r, -PI, 0);
+			ctx.arc(left, bottom, r, 0, PI);
+		} else {
+			ctx.arc(left, top, r, -PI, PI);
+		}
+		ctx.closePath();
+		ctx.moveTo(x, y);
+	} else {
+		ctx.rect(x, y, width, height);
+	}
+}
+
+
+/*
+export default function(Chart) {
 	var chartHelpers = Chart.helpers;
 	var helpers = require('../helpers.js')(Chart);
 
 	var horizontalKeyword = 'horizontal';
 	var verticalKeyword = 'vertical';
+
+	function LineFunction(view) {
+		// Describe the line in slope-intercept form (y = mx + b).
+		// Note that the axes are rotated 90° CCW, which causes the
+		// x- and y-axes to be swapped.
+		var m = (x2 - x) / (y2 - y);
+		var b = x || 0;
+
+		this.m = m;
+		this.b = b;
+
+		this.getX = function(y) {
+			// Coordinates are relative to the origin of the canvas
+			return m * (y - y) + b;
+		};
+
+		this.getY = function(x) {
+			return ((x - b) / m) + y;
+		};
+
+		this.intersects = function(x, y, epsilon) {
+			epsilon = epsilon || 0.001;
+			var dy = this.getY(x);
+			var dx = this.getX(y);
+			return (
+				(!isFinite(dy) || Math.abs(y - dy) < epsilon) &&
+				(!isFinite(dx) || Math.abs(x - dx) < epsilon)
+			);
+		};
+	}
+
+	function calculateLabelPosition(view, width, height, padWidth, padHeight) {
+		var line = view.line;
+		var ret = {};
+		var xa = 0;
+		var ya = 0;
+
+		switch (true) {
+		// top align
+		case view.mode === verticalKeyword && view.labelPosition === 'top':
+			ya = padHeight + view.labelYAdjust;
+			xa = (width / 2) + view.labelXAdjust;
+			ret.y = y + ya;
+			ret.x = (isFinite(line.m) ? line.getX(ret.y) : x) - xa;
+			break;
+
+		// bottom align
+		case view.mode === verticalKeyword && view.labelPosition === 'bottom':
+			ya = height + padHeight + view.labelYAdjust;
+			xa = (width / 2) + view.labelXAdjust;
+			ret.y = y2 - ya;
+			ret.x = (isFinite(line.m) ? line.getX(ret.y) : x) - xa;
+			break;
+
+		// left align
+		case view.mode === horizontalKeyword && view.labelPosition === 'left':
+			xa = padWidth + view.labelXAdjust;
+			ya = -(height / 2) + view.labelYAdjust;
+			ret.x = x + xa;
+			ret.y = line.getY(ret.x) + ya;
+			break;
+
+		// right align
+		case view.mode === horizontalKeyword && view.labelPosition === 'right':
+			xa = width + padWidth + view.labelXAdjust;
+			ya = -(height / 2) + view.labelYAdjust;
+			ret.x = x2 - xa;
+			ret.y = line.getY(ret.x) + ya;
+			break;
+
+		// center align
+		default:
+			ret.x = ((x + x2 - width) / 2) + view.labelXAdjust;
+			ret.y = ((y + y2 - height) / 2) + view.labelYAdjust;
+		}
+
+		return ret;
+	}
 
 	var LineAnnotation = Chart.Annotation.Element.extend({
 		setDataLimits: function() {
@@ -686,8 +598,8 @@ module.exports = function(Chart) {
 			var scale = chartInstance.scales[options.scaleID];
 			var pixel, endPixel;
 			if (scale) {
-				pixel = helpers.isValid(options.value) ? scale.getPixelForValue(options.value) : NaN;
-				endPixel = helpers.isValid(options.endValue) ? scale.getPixelForValue(options.endValue) : pixel;
+				pixel = helpers.isValid(options.value) ? scale.getPixelForValue(options.value, options.value.index) : NaN;
+				endPixel = helpers.isValid(options.endValue) ? scale.getPixelForValue(options.endValue, options.value.index) : pixel;
 			}
 
 			if (isNaN(pixel)) {
@@ -704,7 +616,7 @@ module.exports = function(Chart) {
 				y2: chartArea.bottom
 			};
 
-			if (this.options.mode == horizontalKeyword) {
+			if (this.options.mode === horizontalKeyword) {
 				model.x1 = chartArea.left;
 				model.x2 = chartArea.right;
 				model.y1 = pixel;
@@ -733,15 +645,29 @@ module.exports = function(Chart) {
 			model.labelYAdjust = options.label.yAdjust;
 			model.labelEnabled = options.label.enabled;
 			model.labelContent = options.label.content;
+			model.labelRotation = options.label.rotation;
 
 			ctx.font = chartHelpers.fontString(model.labelFontSize, model.labelFontStyle, model.labelFontFamily);
 			var textWidth = ctx.measureText(model.labelContent).width;
-			var textHeight = ctx.measureText('M').width;
+			var textHeight = model.labelFontSize;
+			model.labelHeight = textHeight + (2 * model.labelYPadding);
+
+			if (model.labelContent && chartHelpers.isArray(model.labelContent)) {
+				var labelContentArray = model.labelContent.slice(0);
+				var longestLabel = labelContentArray.sort(function(a, b) {
+					return b.length - a.length;
+				})[0];
+				textWidth = ctx.measureText(longestLabel).width;
+
+				model.labelHeight = (textHeight * model.labelContent.length) + (2 * model.labelYPadding);
+				// Add padding in between each label item
+				model.labelHeight += model.labelYPadding * (model.labelContent.length - 1);
+			}
+
 			var labelPosition = calculateLabelPosition(model, textWidth, textHeight, model.labelXPadding, model.labelYPadding);
 			model.labelX = labelPosition.x - model.labelXPadding;
 			model.labelY = labelPosition.y - model.labelYPadding;
 			model.labelWidth = textWidth + (2 * model.labelXPadding);
-			model.labelHeight = textHeight + (2 * model.labelYPadding);
 
 			model.borderColor = options.borderColor;
 			model.borderWidth = options.borderWidth;
@@ -750,7 +676,7 @@ module.exports = function(Chart) {
 		},
 		inRange: function(mouseX, mouseY) {
 			var model = this._model;
-			
+
 			return (
 				// On the line
 				model.line &&
@@ -759,9 +685,9 @@ module.exports = function(Chart) {
 				// On the label
 				model.labelEnabled &&
 				model.labelContent &&
-				mouseX >= model.labelX && 
-				mouseX <= model.labelX + model.labelWidth && 
-				mouseY >= model.labelY && 
+				mouseX >= model.labelX &&
+				mouseX <= model.labelX + model.labelWidth &&
+				mouseY >= model.labelY &&
 				mouseY <= model.labelY + model.labelHeight
 			);
 		},
@@ -805,23 +731,26 @@ module.exports = function(Chart) {
 
 			// Draw
 			ctx.beginPath();
-			ctx.moveTo(view.x1, view.y1);
-			ctx.lineTo(view.x2, view.y2);
+			ctx.moveTo(x, y);
+			ctx.lineTo(x2, y2);
 			ctx.stroke();
 
-			if (view.labelEnabled && view.labelContent) {
+			if (view.labelEnabled && label.content) {
 				ctx.beginPath();
 				ctx.rect(view.clip.x1, view.clip.y1, view.clip.x2 - view.clip.x1, view.clip.y2 - view.clip.y1);
 				ctx.clip();
+
+				ctx.translate(view.labelX + (labelWidth / 2), view.labelY + (labelHeight / 2));
+				ctx.rotate(view.labelRotation * Math.PI / 180);
 
 				ctx.fillStyle = view.labelBackgroundColor;
 				// Draw the tooltip
 				chartHelpers.drawRoundedRectangle(
 					ctx,
-					view.labelX, // x
-					view.labelY, // y
-					view.labelWidth, // width
-					view.labelHeight, // height
+					-(labelWidth / 2), // x
+					-(labelHeight / 2), // y
+					labelWidth, // width
+					labelHeight, // height
 					view.labelCornerRadius // radius
 				);
 				ctx.fill();
@@ -834,95 +763,320 @@ module.exports = function(Chart) {
 				);
 				ctx.fillStyle = view.labelFontColor;
 				ctx.textAlign = 'center';
-				ctx.textBaseline = 'middle';
-				ctx.fillText(
-					view.labelContent,
-					view.labelX + (view.labelWidth / 2),
-					view.labelY + (view.labelHeight / 2)
-				);
+
+				if (label.content && chartHelpers.isArray(label.content)) {
+					var textYPosition = -(labelHeight / 2) + label.yPadding;
+					for (var i = 0; i < label.content.length; i++) {
+						ctx.textBaseline = 'top';
+						ctx.fillText(
+							label.content[i],
+							-(labelWidth / 2) + (labelWidth / 2),
+							textYPosition
+						);
+
+						textYPosition += view.labelFontSize + label.yPadding;
+					}
+				} else {
+					ctx.textBaseline = 'middle';
+					ctx.fillText(label.content, 0, 0);
+				}
 			}
 
 			ctx.restore();
 		}
 	});
 
-	function LineFunction(view) {
-		// Describe the line in slope-intercept form (y = mx + b).
-		// Note that the axes are rotated 90° CCW, which causes the
-		// x- and y-axes to be swapped.
-		var m = (view.x2 - view.x1) / (view.y2 - view.y1);
-		var b = view.x1 || 0;
-
-		this.m = m;
-		this.b = b;
-
-		this.getX = function(y) {
-			// Coordinates are relative to the origin of the canvas
-			return m * (y - view.y1) + b;
-		};
-
-		this.getY = function(x) {
-			return ((x - b) / m) + view.y1;
-		};
-
-		this.intersects = function(x, y, epsilon) {
-			epsilon = epsilon || 0.001;
-			var dy = this.getY(x),
-				dx = this.getX(y);
-			return (
-				(!isFinite(dy) || Math.abs(y - dy) < epsilon) &&
-				(!isFinite(dx) || Math.abs(x - dx) < epsilon)
-			);
-		};
-	}
-
-	function calculateLabelPosition(view, width, height, padWidth, padHeight) {
-		var line = view.line;
-		var ret = {}, xa = 0, ya = 0;
-
-		switch (true) {
-			// top align
-			case view.mode == verticalKeyword && view.labelPosition == "top":
-				ya = padHeight + view.labelYAdjust;
-				xa = (width / 2) + view.labelXAdjust;
-				ret.y = view.y1 + ya;
-				ret.x = (isFinite(line.m) ? line.getX(ret.y) : view.x1) - xa;
-			break;
-
-			// bottom align
-			case view.mode == verticalKeyword && view.labelPosition == "bottom":
-				ya = height + padHeight + view.labelYAdjust;
-				xa = (width / 2) + view.labelXAdjust;
-				ret.y = view.y2 - ya;
-				ret.x = (isFinite(line.m) ? line.getX(ret.y) : view.x1) - xa;
-			break;
-
-			// left align
-			case view.mode == horizontalKeyword && view.labelPosition == "left":
-				xa = padWidth + view.labelXAdjust;
-				ya = -(height / 2) + view.labelYAdjust;
-				ret.x = view.x1 + xa;
-				ret.y = line.getY(ret.x) + ya;
-			break;
-
-			// right align
-			case view.mode == horizontalKeyword && view.labelPosition == "right":
-				xa = width + padWidth + view.labelXAdjust;
-				ya = -(height / 2) + view.labelYAdjust;
-				ret.x = view.x2 - xa;
-				ret.y = line.getY(ret.x) + ya;
-			break;
-
-			// center align
-			default:
-				ret.x = ((view.x1 + view.x2 - width) / 2) + view.labelXAdjust;
-				ret.y = ((view.y1 + view.y2 - height) / 2) + view.labelYAdjust;
-		}
-
-		return ret;
-	}
-
 	return LineAnnotation;
 };
+*/
 
-},{"../helpers.js":5}]},{},[6]);
+const chartElements = new Map();
+
+const annotationTypes = {
+	box: BoxAnnotation,
+	line: LineAnnotation
+};
+
+var Annotation = {
+	id: 'annotation',
+
+	afterUpdate(chart, options) {
+		updateElements(chart, options);
+	},
+
+	resize(chart, options) {
+		updateElements(chart, options, 'resize');
+	},
+
+	beforeDatasetDraw(chart, options) {
+		draw(chart, options, 'beforeDatasetsDraw');
+	},
+
+	afterDatasetsDraw(chart, options) {
+		draw(chart, options, 'afterDatasetsDraw');
+	},
+
+	afterDraw(chart, options) {
+		draw(chart, options, 'afterDraw');
+	},
+
+	afterEvent(chart, event, _replay, options) {
+		const events = options.events || [];
+		if (events.indexOf(event.type) !== -1) {
+			handleEvent(chart, event, options);
+		}
+	},
+
+	destroy(chart) {
+		chartElements.remove(chart);
+	},
+
+	defaults: {
+		drawTime: 'afterDatasetsDraw',
+		dblClickSpeed: 350, // ms
+		events: [],
+		annotations: [],
+		animation: {
+			numbers: {
+				properties: ['x', 'y', 'x2', 'y2', 'width', 'height'],
+				type: 'number'
+			},
+		}
+	},
+};
+
+function updateElements(chart, options, mode) {
+	const chartAnims = chart.options.animation;
+	const animOpts = chartAnims && merge({}, [chartAnims, options.animation]);
+	const animations = new chart_js.Animations(chart, animOpts, mode);
+
+	const elements = chartElements.get(chart) || (chartElements.set(chart, []).get(chart));
+	const annotations = options.annotations || [];
+	const count = annotations.length;
+	const start = elements.length;
+
+	if (start < count) {
+		const add = count - start;
+		elements.splice(start, 0, ...new Array(add));
+	} else if (start > count) {
+		elements.splice(count, start - count);
+	}
+	for (let i = 0; i < annotations.length; i++) {
+		const annotation = annotations[i];
+		let el = elements[i];
+		const elType = annotationTypes[annotation.type] || annotationTypes.line;
+		if (!el || !(el instanceof elType)) {
+			el = elements[i] = new elType();
+		}
+		const properties = calculateElementProperties(chart, annotation, elType.defaults);
+		animations.update(el, properties);
+	}
+}
+
+const scaleValue = (scale, value, fallback) => isNumberFinite(value) ? scale.getPixelForValue(value) : fallback;
+
+function calculateElementProperties(chart, options, defaults) {
+	const scale = chart.scales[options.scaleID];
+
+	let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
+	let min, max;
+
+	if (scale) {
+		min = scaleValue(scale, options.value, NaN);
+		max = scaleValue(scale, options.endValue, min);
+		if (scale.isHorizontal()) {
+			x = Math.min(min, max);
+			x2 = Math.max(min, max);
+		} else {
+			y = Math.min(min, max);
+			y2 = Math.max(min, max);
+		}
+	} else {
+		const xScale = chart.scales[options.xScaleID];
+		const yScale = chart.scales[options.yScaleID];
+
+		if (xScale) {
+			min = scaleValue(xScale, options.xMin, x);
+			max = scaleValue(xScale, options.xMax, x2);
+			x = Math.min(min, max);
+			x2 = Math.max(min, max);
+		}
+
+		if (yScale) {
+			min = scaleValue(yScale, options.yMin, y2);
+			max = scaleValue(yScale, options.yMax, y);
+			y = Math.min(min, max);
+			y2 = Math.max(min, max);
+		}
+	}
+
+	return {
+		x,
+		y,
+		x2,
+		y2,
+		width: x2 - x,
+		height: y2 - y,
+		options: merge({}, [defaults, options])
+	};
+}
+
+function draw(chart, options, caller) {
+	if (options.drawTime !== caller) {
+		return;
+	}
+	const {ctx, chartArea} = chart;
+	const elements = chartElements.get(chart);
+
+	clipArea(ctx, chartArea);
+	for (let i = 0; i < elements.length; i++) {
+		const el = elements[i];
+		if ((el.options.drawTime || caller) === caller) {
+			el.draw(ctx);
+		}
+	}
+	unclipArea(ctx);
+}
+
+/*
+export default function(Chart) {
+	var chartHelpers = Chart.helpers;
+
+	var helpers = require('./helpers.js')(Chart);
+	var events = require('./events.js')(Chart);
+
+	var annotationTypes = Chart.Annotation.types;
+
+	function setAfterDataLimitsHook(axisOptions) {
+		helpers.decorate(axisOptions, 'afterDataLimits', function(previous, scale) {
+			if (previous) {
+				previous(scale);
+			}
+			helpers.adjustScaleRange(scale);
+		});
+	}
+
+	function draw(drawTime) {
+		return function(chartInstance, easingDecimal) {
+			var defaultDrawTime = chartInstance.annotation.options.drawTime;
+
+			helpers.elements(chartInstance)
+				.filter(function(element) {
+					return drawTime === (element.options.drawTime || defaultDrawTime);
+				})
+				.forEach(function(element) {
+					element.configure();
+					element.transition(easingDecimal).draw();
+				});
+		};
+	}
+
+	function getAnnotationConfig(chartOptions) {
+		var plugins = chartOptions.plugins;
+		var pluginAnnotation = plugins && plugins.annotation ? plugins.annotation : null;
+		return pluginAnnotation || chartOptions.annotation || {};
+	}
+
+	return {
+		id: 'annotation',
+		beforeInit: function(chartInstance) {
+			var chartOptions = chartInstance.options;
+
+			// Initialize chart instance plugin namespace
+			var ns = chartInstance.annotation = {
+				elements: {},
+				options: helpers.initConfig(getAnnotationConfig(chartOptions)),
+				onDestroy: [],
+				firstRun: true,
+				supported: false
+			};
+
+			// Add the annotation scale adjuster to each scale's afterDataLimits hook
+			chartInstance.ensureScalesHaveIDs();
+			if (chartOptions.scales) {
+				ns.supported = true;
+				chartHelpers.each(chartOptions.scales.xAxes, setAfterDataLimitsHook);
+				chartHelpers.each(chartOptions.scales.yAxes, setAfterDataLimitsHook);
+			}
+		},
+		beforeUpdate: function(chartInstance) {
+			var ns = chartInstance.annotation;
+
+			if (!ns.supported) {
+				return;
+			}
+
+			if (!ns.firstRun) {
+				ns.options = helpers.initConfig(getAnnotationConfig(chartInstance.options));
+			} else {
+				ns.firstRun = false;
+			}
+
+			var elementIds = [];
+
+			// Add new elements, or update existing ones
+			ns.options.annotations.forEach(function(annotation) {
+				var id = annotation.id || helpers.objectId();
+
+				// No element with that ID exists, and it's a valid annotation type
+				if (!ns.elements[id] && annotationTypes[annotation.type]) {
+					var cls = annotationTypes[annotation.type];
+					var element = new cls({
+						id: id,
+						options: annotation,
+						chartInstance: chartInstance,
+					});
+					element.initialize();
+					ns.elements[id] = element;
+					annotation.id = id;
+					elementIds.push(id);
+				} else if (ns.elements[id]) {
+					// Nothing to do for update, since the element config references
+					// the same object that exists in the chart annotation config
+					elementIds.push(id);
+				}
+			});
+
+			// Delete removed elements
+			Object.keys(ns.elements).forEach(function(id) {
+				if (elementIds.indexOf(id) === -1) {
+					ns.elements[id].destroy();
+					delete ns.elements[id];
+				}
+			});
+		},
+		beforeDatasetsDraw: draw('beforeDatasetsDraw'),
+		afterDatasetsDraw: draw('afterDatasetsDraw'),
+		afterDraw: draw('afterDraw'),
+		afterInit: function(chartInstance) {
+			// Detect and intercept events that happen on an annotation element
+			var watchFor = chartInstance.annotation.options.events;
+			if (chartHelpers.isArray(watchFor) && watchFor.length > 0) {
+				var canvas = chartInstance.chart.canvas;
+				var eventHandler = events.dispatcher.bind(chartInstance);
+				events.collapseHoverEvents(watchFor).forEach(function(eventName) {
+					chartHelpers.addEvent(canvas, eventName, eventHandler);
+					chartInstance.annotation.onDestroy.push(function() {
+						chartHelpers.removeEvent(canvas, eventName, eventHandler);
+					});
+				});
+			}
+		},
+		destroy: function(chartInstance) {
+			if (!chartInstance || !chartInstance.annotation) {
+				return;
+			}
+			var deregisterers = chartInstance.annotation.onDestroy;
+			while (deregisterers.length > 0) {
+				deregisterers.pop()();
+			}
+		}
+	};
+};
+*/
+
+chart_js.Chart.register(Annotation, BoxAnnotation, LineAnnotation);
+
+return Annotation;
+
+})));

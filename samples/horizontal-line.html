@@ -3,14 +3,14 @@
 
 <head>
 	<title>Scatter Chart</title>
-	<script src="../node_modules/chart.js/dist/Chart.bundle.js"></script>
+	<script src="../node_modules/chart.js/dist/chart.js"></script>
 	<script src="../chartjs-plugin-annotation.js"></script>
 	<style>
-	canvas {
-		-moz-user-select: none;
-		-webkit-user-select: none;
-		-ms-user-select: none;
-	}
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
 	</style>
 </head>
 
@@ -21,14 +21,14 @@
 		</div>
 	</div>
 	<script>
-		var randomScalingFactor = function() {
+		const randomScalingFactor = function() {
 			return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
 		};
-		var randomColor = function(opacity) {
+		const randomColor = function(opacity) {
 			return 'rgba(' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ',' + (opacity || '.3') + ')';
 		};
 
-		var scatterChartData = {
+		const scatterChartData = {
 			datasets: [{
 				label: 'My First dataset',
 				data: [{
@@ -80,7 +80,7 @@
 			}]
 		};
 
-		scatterChartData.datasets.forEach(function(dataset) {
+		scatterChartData.datasets.forEach((dataset) => {
 			dataset.borderColor = randomColor(0.4);
 			dataset.backgroundColor = randomColor(0.1);
 			dataset.pointBorderColor = randomColor(0.7);
@@ -89,8 +89,9 @@
 		});
 
 		window.onload = function() {
-			var ctx = document.getElementById('canvas').getContext('2d');
-			window.myScatter = Chart.Scatter(ctx, {
+			const ctx = document.getElementById('canvas').getContext('2d');
+			window.myScatter = new Chart(ctx, {
+				type: 'scatter',
 				data: scatterChartData,
 				options: {
 					title: {
@@ -98,7 +99,7 @@
 						text: 'Chart.js Scatter Chart'
 					},
 					scales: {
-						xAxes: [{
+						x: {
 							position: 'top',
 							gridLines: {
 								zeroLineColor: 'rgba(0,255,0,1)'
@@ -111,8 +112,8 @@
 								maxRotation: 0,
 								reverse: true
 							}
-						}],
-						yAxes: [{
+						},
+						y: {
 							position: 'right',
 							gridLines: {
 								zeroLineColor: 'rgba(0,255,0,1)'
@@ -124,64 +125,66 @@
 							ticks: {
 								reverse: true
 							}
-						}]
+						}
 					},
-					annotation: {
-						events: ['click', 'dblclick', 'mouseover', 'mouseout'],
-						annotations: [{
-							type: 'line',
-							mode: 'horizontal',
-							scaleID: 'y-axis-1',
-							value: 120,
-							borderColor: 'rgba(255, 0, 0, 0.5)',
-							borderWidth: 4,
-							label: {
-								enabled: false,
-								content: 'Test label'
-							},
-							onClick: function(e) {
-								var element = this;
-								element.options.borderColor = 'rgba(255, 0, 0, 1.0)';
-								element.options.label.enabled = true;
-								element.options.label.content = e.type;
-								element.chartInstance.update();
-								setTimeout(function() {
-									element.options.borderColor = 'rgba(255, 0, 0, 0.5)';
+					plugins: {
+						annotation: {
+							events: ['click', 'dblclick', 'mouseover', 'mouseout'],
+							annotations: [{
+								type: 'line',
+								mode: 'horizontal',
+								scaleID: 'y',
+								value: 120,
+								borderColor: 'rgba(255, 0, 0, 0.5)',
+								borderWidth: 4,
+								label: {
+									enabled: false,
+									content: 'Test label'
+								},
+								onClick(e) {
+									const element = this;
+									element.options.borderColor = 'rgba(255, 0, 0, 1.0)';
+									element.options.label.enabled = true;
+									element.options.label.content = e.type;
 									element.chartInstance.update();
-								}, 500);
-							},
-							onDblclick: function(e) {
-								var element = this;
-								element.options.borderColor = 'rgba(0, 255, 0, 1.0)';
-								element.options.label.enabled = true;
-								element.options.label.content = e.type;
-								element.chartInstance.update();
-								setTimeout(function() {
-									element.options.borderColor = 'rgba(255, 0, 0, 0.5)';
+									setTimeout(() => {
+										element.options.borderColor = 'rgba(255, 0, 0, 0.5)';
+										element.chartInstance.update();
+									}, 500);
+								},
+								onDblclick(e) {
+									const element = this;
+									element.options.borderColor = 'rgba(0, 255, 0, 1.0)';
+									element.options.label.enabled = true;
+									element.options.label.content = e.type;
 									element.chartInstance.update();
-								}, 500);
-							},
-							onMouseover: function(e) {
-								var element = this;
-								element.options.borderWidth = 7;
-								element.options.label.enabled = true;
-								element.options.label.content = e.type;
-								element.chartInstance.update();
-								element.chartInstance.chart.canvas.style.cursor = 'pointer';
-							},
-							onMouseout: function(e) {
-								var element = this;
-								element.options.borderWidth = 4;
-								element.options.label.enabled = true;
-								element.options.label.content = e.type;
-								element.chartInstance.update();
-								setTimeout(function() {
-									element.options.label.enabled = false;
+									setTimeout(() => {
+										element.options.borderColor = 'rgba(255, 0, 0, 0.5)';
+										element.chartInstance.update();
+									}, 500);
+								},
+								onMouseover(e) {
+									const element = this;
+									element.options.borderWidth = 7;
+									element.options.label.enabled = true;
+									element.options.label.content = e.type;
 									element.chartInstance.update();
-								}, 500);
-								element.chartInstance.chart.canvas.style.cursor = 'initial';
-							}
-						}]
+									element.chartInstance.chart.canvas.style.cursor = 'pointer';
+								},
+								onMouseout(e) {
+									const element = this;
+									element.options.borderWidth = 4;
+									element.options.label.enabled = true;
+									element.options.label.content = e.type;
+									element.chartInstance.update();
+									setTimeout(() => {
+										element.options.label.enabled = false;
+										element.chartInstance.update();
+									}, 500);
+									element.chartInstance.chart.canvas.style.cursor = 'initial';
+								}
+							}]
+						}
 					}
 				}
 			});

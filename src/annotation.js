@@ -1,10 +1,164 @@
-module.exports = function(Chart) {
-	/* eslint-disable global-require */
+import {Animations} from 'chart.js';
+import {clipArea, unclipArea} from 'chart.js/helpers/canvas';
+import {isFinite, merge} from 'chart.js/helpers/core';
+
+import BoxAnnotation from './types/box';
+import LineAnnotation from './types/line';
+
+const chartElements = new Map();
+
+const annotationTypes = {
+	box: BoxAnnotation,
+	line: LineAnnotation
+};
+
+export default {
+	id: 'annotation',
+
+	afterUpdate(chart, options) {
+		updateElements(chart, options);
+	},
+
+	resize(chart, options) {
+		updateElements(chart, options, 'resize');
+	},
+
+	beforeDatasetDraw(chart, options) {
+		draw(chart, options, 'beforeDatasetsDraw');
+	},
+
+	afterDatasetsDraw(chart, options) {
+		draw(chart, options, 'afterDatasetsDraw');
+	},
+
+	afterDraw(chart, options) {
+		draw(chart, options, 'afterDraw');
+	},
+
+	afterEvent(chart, event, _replay, options) {
+		const events = options.events || [];
+		if (events.indexOf(event.type) !== -1) {
+			handleEvent(chart, event, options);
+		}
+	},
+
+	destroy(chart) {
+		chartElements.remove(chart);
+	},
+
+	defaults: {
+		drawTime: 'afterDatasetsDraw',
+		dblClickSpeed: 350, // ms
+		events: [],
+		annotations: [],
+		animation: {
+			numbers: {
+				properties: ['x', 'y', 'x2', 'y2', 'width', 'height'],
+				type: 'number'
+			},
+		}
+	},
+};
+
+function updateElements(chart, options, mode) {
+	const chartAnims = chart.options.animation;
+	const animOpts = chartAnims && merge({}, [chartAnims, options.animation]);
+	const animations = new Animations(chart, animOpts, mode);
+
+	const elements = chartElements.get(chart) || (chartElements.set(chart, []).get(chart));
+	const annotations = options.annotations || [];
+	const count = annotations.length;
+	const start = elements.length;
+
+	if (start < count) {
+		const add = count - start;
+		elements.splice(start, 0, ...new Array(add));
+	} else if (start > count) {
+		elements.splice(count, start - count);
+	}
+	for (let i = 0; i < annotations.length; i++) {
+		const annotation = annotations[i];
+		let el = elements[i];
+		const elType = annotationTypes[annotation.type] || annotationTypes.line;
+		if (!el || !(el instanceof elType)) {
+			el = elements[i] = new elType();
+		}
+		const properties = calculateElementProperties(chart, annotation, elType.defaults);
+		animations.update(el, properties);
+	}
+}
+
+const scaleValue = (scale, value, fallback) => isFinite(value) ? scale.getPixelForValue(value) : fallback;
+
+function calculateElementProperties(chart, options, defaults) {
+	const scale = chart.scales[options.scaleID];
+
+	let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
+	let min, max;
+
+	if (scale) {
+		min = scaleValue(scale, options.value, NaN);
+		max = scaleValue(scale, options.endValue, min);
+		if (scale.isHorizontal()) {
+			x = Math.min(min, max);
+			x2 = Math.max(min, max);
+		} else {
+			y = Math.min(min, max);
+			y2 = Math.max(min, max);
+		}
+	} else {
+		const xScale = chart.scales[options.xScaleID];
+		const yScale = chart.scales[options.yScaleID];
+
+		if (xScale) {
+			min = scaleValue(xScale, options.xMin, x);
+			max = scaleValue(xScale, options.xMax, x2);
+			x = Math.min(min, max);
+			x2 = Math.max(min, max);
+		}
+
+		if (yScale) {
+			min = scaleValue(yScale, options.yMin, y2);
+			max = scaleValue(yScale, options.yMax, y);
+			y = Math.min(min, max);
+			y2 = Math.max(min, max);
+		}
+	}
+
+	return {
+		x,
+		y,
+		x2,
+		y2,
+		width: x2 - x,
+		height: y2 - y,
+		options: merge({}, [defaults, options])
+	};
+}
+
+function draw(chart, options, caller) {
+	if (options.drawTime !== caller) {
+		return;
+	}
+	const {ctx, chartArea} = chart;
+	const elements = chartElements.get(chart);
+
+	clipArea(ctx, chartArea)
+	for (let i = 0; i < elements.length; i++) {
+		const el = elements[i];
+		if ((el.options.drawTime || caller) === caller) {
+			el.draw(ctx);
+		}
+	}
+	unclipArea(ctx);
+}
+
+/*
+export default function(Chart) {
 	var chartHelpers = Chart.helpers;
 
 	var helpers = require('./helpers.js')(Chart);
 	var events = require('./events.js')(Chart);
-	/* eslint-enable global-require */
 
 	var annotationTypes = Chart.Annotation.types;
 
@@ -134,3 +288,4 @@ module.exports = function(Chart) {
 		}
 	};
 };
+*/

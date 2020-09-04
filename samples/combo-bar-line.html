@@ -3,15 +3,15 @@
 
 <head>
 	<title>Combo Bar-Line Chart</title>
-	<script src="../node_modules/chart.js/dist/Chart.bundle.js"></script>
+	<script src="../node_modules/chart.js/dist/chart.js"></script>
 	<script src="../chartjs-plugin-annotation.js"></script>
-	<script src="../node_modules/chart.js/samples/utils.js"></script>
+	<script src="https://chartjs.org/samples/master/utils.js"></script>
 	<style>
-	canvas {
-		-moz-user-select: none;
-		-webkit-user-select: none;
-		-ms-user-select: none;
-	}
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
 	</style>
 </head>
 
@@ -21,7 +21,7 @@
 	</div>
 	<button id="randomizeData">Randomize Data</button>
 	<script>
-		var chartData = {
+		const chartData = {
 			labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
 			datasets: [{
 				type: 'line',
@@ -70,7 +70,7 @@
 
 		};
 		window.onload = function() {
-			var ctx = document.getElementById('canvas').getContext('2d');
+			const ctx = document.getElementById('canvas').getContext('2d');
 			window.myMixedChart = new Chart(ctx, {
 				type: 'bar',
 				data: chartData,
@@ -84,52 +84,52 @@
 						mode: 'index',
 						intersect: true
 					},
-					annotation: {
-						events: ['click'],
-						annotations: [{
-							drawTime: 'afterDatasetsDraw',
-							id: 'hline',
-							type: 'line',
-							mode: 'horizontal',
-							scaleID: 'y-axis-0',
-							value: randomScalingFactor(),
-							borderColor: 'black',
-							borderWidth: 5,
-							label: {
-								backgroundColor: 'red',
-								content: 'Test Label',
-								enabled: true
-							},
-							onClick: function(e) {
-								// The annotation is is bound to the `this` variable
-								console.log('Annotation', e.type, this);
-							}
-						}, {
-							drawTime: 'beforeDatasetsDraw',
-							type: 'box',
-							xScaleID: 'x-axis-0',
-							yScaleID: 'y-axis-0',
-							xMin: 'February',
-							xMax: 'April',
-							yMin: randomScalingFactor(),
-							yMax: randomScalingFactor(),
-							backgroundColor: 'rgba(101, 33, 171, 0.5)',
-							borderColor: 'rgb(101, 33, 171)',
-							borderWidth: 1,
-							onClick: function(e) {
-								console.log('Box', e.type, this);
-							}
-						}]
+					plugins: {
+						annotation: {
+							events: ['click'],
+							annotations: [{
+								drawTime: 'afterDatasetsDraw',
+								id: 'hline',
+								type: 'line',
+								mode: 'horizontal',
+								scaleID: 'y',
+								value: randomScalingFactor(),
+								borderColor: 'black',
+								borderWidth: 5,
+								label: {
+									backgroundColor: 'red',
+									content: 'Test Label',
+									enabled: true
+								},
+								onClick(e) {
+									// The annotation is is bound to the `this` variable
+									console.log('Annotation', e.type, this);
+								}
+							}, {
+								drawTime: 'beforeDatasetsDraw',
+								type: 'box',
+								xScaleID: 'x',
+								yScaleID: 'y',
+								xMin: 'February',
+								xMax: 'April',
+								yMin: randomScalingFactor(),
+								yMax: randomScalingFactor(),
+								backgroundColor: 'rgba(101, 33, 171, 0.5)',
+								borderColor: 'rgb(101, 33, 171)',
+								borderWidth: 1,
+								onClick(e) {
+									console.log('Box', e.type, this);
+								}
+							}]
+						}
 					}
 				}
 			});
 		};
 
-		document.getElementById('randomizeData').addEventListener('click', function() {
-			chartData.datasets.forEach(function(dataset) {
-				dataset.data = dataset.data.map(function() {
-					return randomScalingFactor();
-				});
+		document.getElementById('randomizeData').addEventListener('click', () => {
+			chartData.datasets.forEach((dataset) => {
+				dataset.data = dataset.data.map(() => randomScalingFactor());
 			});
 			window.myMixedChart.update();
 		});
