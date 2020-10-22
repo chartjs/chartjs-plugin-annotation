@@ -15,7 +15,8 @@
   ],
   "scripts": {
     "build": "rollup -c",
-    "lint": "eslint samples/**/*.html src/**/*.js **/*.md"
+    "lint": "eslint samples/**/*.html src/**/*.js **/*.md",
+    "test": "npm run lint"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^9.0.0",
