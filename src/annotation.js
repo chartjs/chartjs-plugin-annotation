@@ -172,8 +172,16 @@ function bindAfterDataLimits(chart, options) {
 	});
 }
 
+function getAnnotationOptions(chart, options) {
+	const elems = chartElements.get(chart);
+	if (elems) {
+		return elems.map(el => el.options);
+	}
+	return options.annotations || [];
+}
+
 function adjustScaleRange(scale, options) {
-	const annotations = options.annotations || [];
+	const annotations = getAnnotationOptions(scale.chart, options);
 	const range = getScaleLimits(scale, annotations);
 	let changed = false;
 	if (isFinite(range.min) &&
