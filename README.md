@@ -100,7 +100,7 @@ Vertical or horizontal lines are supported.
 	// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset
 	borderDashOffset: 5,
 
-	// Only draw a line for a specific data at the specified index. Currently only supported for bar graphs
+	// Only draw a line for a specific data element at the specified index. Currently only supported for bar graphs
 	onlyForDataIndex: 1,
 
 	// Draw a line only over the data of the specified dataset index. 
