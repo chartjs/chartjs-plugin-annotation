@@ -19,8 +19,8 @@ To configure the annotations plugin, you can simply add new config options to yo
 {
 	plugins: {
 		annotation: {
-  		// Set this to false to hide all annotations (events will still trigger)
-	  	display: true, // (default)
+			// Set this to false to hide all annotations (events will still trigger)
+			display: true, // (default)
       
 			// Defines when the annotations are drawn.
 			// This allows positioning of the annotation relative to the other
@@ -44,7 +44,7 @@ To configure the annotations plugin, you can simply add new config options to yo
 			// Array of annotation configuration objects
 			// See below for detailed descriptions of the annotation options
 			annotations: [{
-  			display: true, // (default)
+				display: true, // (default)
 				drawTime: 'afterDraw', // overrides annotation.drawTime if set
 				id: 'a-line-1', // optional
 				type: 'line',
