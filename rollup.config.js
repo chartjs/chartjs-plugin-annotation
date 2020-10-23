@@ -1,6 +1,5 @@
 import resolve from '@rollup/plugin-node-resolve';
 import {terser} from 'rollup-plugin-terser';
-import chartjs from 'rollup-plugin-chartjs-globals';
 import {name, version, homepage, main} from './package.json';
 
 const banner = `/*!
@@ -12,30 +11,35 @@ const banner = `/*!
 
 const input = 'src/index.js';
 const inputESM = 'src/index.esm.js';
+const external = [
+	'chart.js',
+	'chart.js/helpers'
+];
+const globals = {
+	'chart.js': 'Chart',
+	'chart.js/helpers': 'Chart.helpers'
+};
 
 export default [
 	{
 		input,
 		plugins: [
 			resolve(),
-			chartjs()
 		],
 		output: {
 			name,
 			file: main,
 			banner,
 			format: 'umd',
-			indent: false
+			indent: false,
+			globals
 		},
-		external: [
-			'chart.js'
-		]
+		external
 	},
 	{
 		input,
 		plugins: [
 			resolve(),
-			chartjs(),
 			terser({
 				output: {
 					preamble: banner
@@ -47,11 +51,10 @@ export default [
 			file: main.replace('.js', '.min.js'),
 			format: 'umd',
 			sourcemap: true,
-			indent: false
+			indent: false,
+			globals
 		},
-		external: [
-			'chart.js'
-		]
+		external
 	},
 	{
 		input: inputESM,
@@ -65,8 +68,6 @@ export default [
 			format: 'esm',
 			indent: false
 		},
-		external: [
-			'chart.js'
-		]
+		external
 	},
 ];
