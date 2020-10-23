@@ -1,8 +1,10 @@
 module.exports = function(Chart) {
+	/* eslint-disable global-require */
 	var chartHelpers = Chart.helpers;
 
 	var helpers = require('./helpers.js')(Chart);
 	var events = require('./events.js')(Chart);
+	/* eslint-enable global-require */
 
 	var annotationTypes = Chart.Annotation.types;
 
@@ -24,19 +26,27 @@ module.exports = function(Chart) {
 					return drawTime === (element.options.drawTime || defaultDrawTime);
 				})
 				.forEach(function(element) {
+					element.configure();
 					element.transition(easingDecimal).draw();
 				});
 		};
 	}
 
+	function getAnnotationConfig(chartOptions) {
+		var plugins = chartOptions.plugins;
+		var pluginAnnotation = plugins && plugins.annotation ? plugins.annotation : null;
+		return pluginAnnotation || chartOptions.annotation || {};
+	}
+
 	return {
+		id: 'annotation',
 		beforeInit: function(chartInstance) {
 			var chartOptions = chartInstance.options;
 
 			// Initialize chart instance plugin namespace
 			var ns = chartInstance.annotation = {
 				elements: {},
-				options: helpers.initConfig(chartOptions.annotation || {}),
+				options: helpers.initConfig(getAnnotationConfig(chartOptions)),
 				onDestroy: [],
 				firstRun: true,
 				supported: false
@@ -58,7 +68,7 @@ module.exports = function(Chart) {
 			}
 
 			if (!ns.firstRun) {
-				ns.options = helpers.initConfig(chartInstance.options.annotation || {});
+				ns.options = helpers.initConfig(getAnnotationConfig(chartInstance.options));
 			} else {
 				ns.firstRun = false;
 			}
@@ -96,11 +106,6 @@ module.exports = function(Chart) {
 				}
 			});
 		},
-		afterScaleUpdate: function(chartInstance) {
-			helpers.elements(chartInstance).forEach(function(element) {
-				element.configure();
-			});
-		},
 		beforeDatasetsDraw: draw('beforeDatasetsDraw'),
 		afterDatasetsDraw: draw('afterDatasetsDraw'),
 		afterDraw: draw('afterDraw'),
@@ -119,6 +124,9 @@ module.exports = function(Chart) {
 			}
 		},
 		destroy: function(chartInstance) {
+			if (!chartInstance || !chartInstance.annotation) {
+				return;
+			}
 			var deregisterers = chartInstance.annotation.onDestroy;
 			while (deregisterers.length > 0) {
 				deregisterers.pop()();

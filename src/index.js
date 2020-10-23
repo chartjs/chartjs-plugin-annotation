@@ -41,10 +41,12 @@ Chart.Annotation.labelDefaults = {
 
 Chart.Annotation.Element = require('./element.js')(Chart);
 
+/* eslint-disable global-require */
 Chart.Annotation.types = {
 	line: require('./types/line.js')(Chart),
 	box: require('./types/box.js')(Chart)
 };
+/* eslint-enable global-require */
 
 var annotationPlugin = require('./annotation.js')(Chart);
 
