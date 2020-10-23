@@ -145,7 +145,7 @@ Vertical or horizontal lines are supported.
         yAdjust: 0,
 
         // Whether the label is enabled and should be displayed
-        enabled: false,
+        enabled: true,
 
         // Text to display in label - default is null. Provide an array to display values on a new line
         content: "Test label",

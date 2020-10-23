@@ -1,6 +1,6 @@
 import resolve from '@rollup/plugin-node-resolve';
 import {terser} from 'rollup-plugin-terser';
-import {name, version, homepage, main} from './package.json';
+import {name, version, homepage, main, module} from './package.json';
 
 const banner = `/*!
 * ${name} v${version}
@@ -63,7 +63,7 @@ export default [
 		],
 		output: {
 			name,
-			file: main.replace('.js', '.esm.js'),
+			file: module,
 			banner,
 			format: 'esm',
 			indent: false
