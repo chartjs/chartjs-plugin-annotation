@@ -3,16 +3,17 @@
 
 <head>
 	<title>Line Chart</title>
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-	<script src="../node_modules/chart.js/dist/Chart.bundle.js"></script>
+	<script src="../node_modules/chart.js/dist/chart.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@1.1.0-alpha.3/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 	<script src="../chartjs-plugin-annotation.js"></script>
-	<script src="../node_modules/chart.js/samples/utils.js"></script>
+	<script src="https://chartjs.org/samples/master/utils.js"></script>
 	<style>
-	canvas {
-		-moz-user-select: none;
-		-webkit-user-select: none;
-		-ms-user-select: none;
-	}
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
 	</style>
 </head>
 
@@ -28,18 +29,14 @@
 	<button id="addData">Add Data</button>
 	<button id="removeData">Remove Data</button>
 	<script>
-		var timeFormat = 'MM/DD/YYYY HH:mm';
-
 		function newDate(days) {
-			return moment().add(days, 'd').toDate();
+			const date = new Date();
+			date.setDate(date.getDate() + days);
+			return date;
 		}
 
-		function newDateString(days) {
-			return moment().add(days, 'd').format(timeFormat);
-		}
-
-		var color = Chart.helpers.color;
-		var config = {
+		const color = Chart.helpers.color;
+		const config = {
 			type: 'line',
 			data: {
 				labels: [ // Date Objects
@@ -85,16 +82,16 @@
 					borderColor: window.chartColors.green,
 					fill: false,
 					data: [{
-						x: newDateString(0),
+						x: newDate(0),
 						y: randomScalingFactor()
 					}, {
-						x: newDateString(5),
+						x: newDate(5),
 						y: randomScalingFactor()
 					}, {
-						x: newDateString(7),
+						x: newDate(7),
 						y: randomScalingFactor()
 					}, {
-						x: newDateString(15),
+						x: newDate(15),
 						y: randomScalingFactor()
 					}],
 				}]
@@ -104,90 +101,94 @@
 					text: 'Chart.js Time Scale'
 				},
 				scales: {
-					xAxes: [{
+					x: {
 						type: 'time',
 						time: {
-							format: timeFormat,
 							// round: 'day'
-							tooltipFormat: 'll HH:mm'
+							tooltipFormat: 'dd.MM.yyyy HH:mm'
 						},
 						scaleLabel: {
 							display: true,
 							labelString: 'Date'
 						}
-					}],
-					yAxes: [{
+					},
+					y: {
 						scaleLabel: {
 							display: true,
 							labelString: 'value'
 						}
-					}]
+					}
 				},
-				annotation: {
-					drawTime: 'afterDatasetsDraw',
-					events: ['click'],
-					annotations: [{
-						id: 'hline',
-						type: 'line',
-						mode: 'horizontal',
-						scaleID: 'y-axis-0',
-						value: randomScalingFactor(),
-						borderColor: 'black',
-						borderWidth: 5,
-						label: {
-							backgroundColor: 'red',
-							content: 'Test Label',
-							enabled: true
-						},
-						onClick: function(e) {
-							// The annotation is is bound to the `this` variable
-							console.log('Annotation', e.type, this);
-						}
-					}, {
-						id: 'vline',
-						type: 'line',
-						mode: 'vertical',
-						scaleID: 'x-axis-0',
-						value: newDate(2),
-						borderColor: 'black',
-						borderWidth: 5,
-						label: {
-							backgroundColor: 'red',
-							content: 'Test Label',
-							enabled: true
-						},
-						onClick: function(e) {
-							// The annotation is is bound to the `this` variable
-							console.log('Annotation', e.type, this);
-						}
-					}, {
-						type: 'box',
-						xScaleID: 'x-axis-0',
-						yScaleID: 'y-axis-0',
-						xMin: newDate(1),
-						xMax: newDate(4),
-						yMin: randomScalingFactor(),
-						yMax: randomScalingFactor(),
-						backgroundColor: 'rgba(101, 33, 171, 0.5)',
-						borderColor: 'rgb(101, 33, 171)',
-						borderWidth: 1,
-						onClick: function(e) {
-							console.log('Box', e.type, this);
-						}
-					}]
+				plugins: {
+					annotation: {
+						drawTime: 'afterDatasetsDraw',
+						events: ['click'],
+						annotations: [{
+							id: 'hline',
+							type: 'line',
+							mode: 'horizontal',
+							scaleID: 'y',
+							value: randomScalingFactor(),
+							borderColor: 'black',
+							borderWidth: 5,
+							label: {
+								backgroundColor: 'red',
+								content: 'Test Label',
+								enabled: true
+							},
+							onClick(e) {
+								// The annotation is is bound to the `this` variable
+								// eslint-disable-next-line no-console
+								console.log('Annotation', e.type, this);
+							}
+						}, {
+							id: 'vline',
+							type: 'line',
+							mode: 'vertical',
+							scaleID: 'x',
+							value: newDate(2),
+							borderColor: 'black',
+							borderWidth: 5,
+							label: {
+								backgroundColor: 'red',
+								content: 'Test Label',
+								enabled: true
+							},
+							onClick(e) {
+								// The annotation is is bound to the `this` variable
+								// eslint-disable-next-line no-console
+								console.log('Annotation', e.type, this);
+							}
+						}, {
+							type: 'box',
+							xScaleID: 'x',
+							yScaleID: 'y',
+							xMin: newDate(1),
+							xMax: newDate(4),
+							yMin: randomScalingFactor(),
+							yMax: randomScalingFactor(),
+							backgroundColor: 'rgba(101, 33, 171, 0.5)',
+							borderColor: 'rgb(101, 33, 171)',
+							borderWidth: 1,
+							onClick(e) {
+								// eslint-disable-next-line no-console
+								console.log('Box', e.type, this);
+							}
+						}]
+					}
 				}
 			}
 		};
 
 		window.onload = function() {
-			var ctx = document.getElementById('canvas').getContext('2d');
+			const ctx = document.getElementById('canvas').getContext('2d');
 			window.myLine = new Chart(ctx, config);
 
 		};
 
-		document.getElementById('randomizeData').addEventListener('click', function() {
-			config.data.datasets.forEach(function(dataset) {
-				dataset.data.forEach(function(dataObj, j) {
+		document.getElementById('randomizeData').addEventListener('click', () => {
+			config.data.datasets.forEach((dataset) => {
+				dataset.data.forEach((dataObj, j) => {
 					if (typeof dataObj === 'object') {
 						dataObj.y = randomScalingFactor();
 					} else {
@@ -199,18 +200,18 @@
 			window.myLine.update();
 		});
 
-		var colorNames = Object.keys(window.chartColors);
-		document.getElementById('addDataset').addEventListener('click', function() {
-			var colorName = colorNames[config.data.datasets.length % colorNames.length];
-			var newColor = window.chartColors[colorName];
-			var newDataset = {
+		const colorNames = Object.keys(window.chartColors);
+		document.getElementById('addDataset').addEventListener('click', () => {
+			const colorName = colorNames[config.data.datasets.length % colorNames.length];
+			const newColor = window.chartColors[colorName];
+			const newDataset = {
 				label: 'Dataset ' + config.data.datasets.length,
 				borderColor: newColor,
 				backgroundColor: color(newColor).alpha(0.5).rgbString(),
 				data: [],
 			};
 
-			for (var index = 0; index < config.data.labels.length; ++index) {
+			for (let index = 0; index < config.data.labels.length; ++index) {
 				newDataset.data.push(randomScalingFactor());
 			}
 
@@ -218,11 +219,11 @@
 			window.myLine.update();
 		});
 
-		document.getElementById('addData').addEventListener('click', function() {
+		document.getElementById('addData').addEventListener('click', () => {
 			if (config.data.datasets.length > 0) {
 				config.data.labels.push(newDate(config.data.labels.length));
 
-				for (var index = 0; index < config.data.datasets.length; ++index) {
+				for (let index = 0; index < config.data.datasets.length; ++index) {
 					if (typeof config.data.datasets[index].data[0] === 'object') {
 						config.data.datasets[index].data.push({
 							x: newDate(config.data.datasets[index].data.length),
@@ -237,15 +238,15 @@
 			}
 		});
 
-		document.getElementById('removeDataset').addEventListener('click', function() {
+		document.getElementById('removeDataset').addEventListener('click', () => {
 			config.data.datasets.splice(0, 1);
 			window.myLine.update();
 		});
 
-		document.getElementById('removeData').addEventListener('click', function() {
+		document.getElementById('removeData').addEventListener('click', () => {
 			config.data.labels.splice(-1, 1); // remove the label first
 
-			config.data.datasets.forEach(function(dataset) {
+			config.data.datasets.forEach((dataset) => {
 				dataset.data.pop();
 			});
 

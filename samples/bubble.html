@@ -3,15 +3,15 @@
 
 <head>
 	<title>Bubble Chart</title>
-	<script src="../node_modules/chart.js/dist/Chart.bundle.js"></script>
+	<script src="../node_modules/chart.js/dist/chart.js"></script>
 	<script src="../chartjs-plugin-annotation.js"></script>
-	<script src="../node_modules/chart.js/samples/utils.js"></script>
+	<script src="https://chartjs.org/samples/master/utils.js"></script>
 	<style type="text/css">
-	canvas{
-		-moz-user-select: none;
-		-webkit-user-select: none;
-		-ms-user-select: none;
-	}
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
 	</style>
 </head>
 
@@ -25,11 +25,11 @@
 	<button id="addData">Add Data</button>
 	<button id="removeData">Remove Data</button>
 	<script>
-		var DEFAULT_DATASET_SIZE = 7;
+		const DEFAULT_DATASET_SIZE = 7;
 
-		var addedCount = 0;
-		var color = Chart.helpers.color;
-		var bubbleChartData = {
+		let addedCount = 0;
+		const color = Chart.helpers.color;
+		const bubbleChartData = {
 			animation: {
 				duration: 10000
 			},
@@ -105,7 +105,7 @@
 		};
 
 		window.onload = function() {
-			var ctx = document.getElementById('canvas').getContext('2d');
+			const ctx = document.getElementById('canvas').getContext('2d');
 			window.myChart = new Chart(ctx, {
 				type: 'bubble',
 				data: bubbleChartData,
@@ -118,48 +118,48 @@
 					tooltips: {
 						mode: 'point'
 					},
-					annotation: {
-						drawTime: 'beforeDatasetsDraw',
-						events: ['dblclick'],
-						annotations: [{
-							type: 'box',
-							xScaleID: 'x-axis-0',
-							yScaleID: 'y-axis-0',
-							xMin: randomScalingFactor(),
-							xMax: randomScalingFactor(),
-							yMin: randomScalingFactor(),
-							yMax: randomScalingFactor(),
-							backgroundColor: 'rgba(101, 33, 171, 0.5)',
-							borderColor: 'rgb(101, 33, 171)',
-							borderWidth: 1,
-							onDblclick: function(e) {
-								console.log('Box', e.type, this);
-							}
-						}]
+					plugins: {
+						annotation: {
+							drawTime: 'beforeDatasetsDraw',
+							events: ['dblclick'],
+							annotations: [{
+								type: 'box',
+								xScaleID: 'x',
+								yScaleID: 'y',
+								xMin: randomScalingFactor(),
+								xMax: randomScalingFactor(),
+								yMin: randomScalingFactor(),
+								yMax: randomScalingFactor(),
+								backgroundColor: 'rgba(101, 33, 171, 0.5)',
+								borderColor: 'rgb(101, 33, 171)',
+								borderWidth: 1,
+								onDblclick(e) {
+									console.log('Box', e.type, this);
+								}
+							}]
+						}
 					}
 				}
 			});
 		};
 
-		document.getElementById('randomizeData').addEventListener('click', function() {
-			bubbleChartData.datasets.forEach(function(dataset) {
-				dataset.data = dataset.data.map(function() {
-					return {
-						x: randomScalingFactor(),
-						y: randomScalingFactor(),
-						r: Math.abs(randomScalingFactor()) / 5,
-					};
-				});
+		document.getElementById('randomizeData').addEventListener('click', () => {
+			bubbleChartData.datasets.forEach((dataset) => {
+				dataset.data = dataset.data.map(() => ({
+					x: randomScalingFactor(),
+					y: randomScalingFactor(),
+					r: Math.abs(randomScalingFactor()) / 5,
+				}));
 			});
 			window.myChart.update();
 		});
 
-		var colorNames = Object.keys(window.chartColors);
-		document.getElementById('addDataset').addEventListener('click', function() {
+		const colorNames = Object.keys(window.chartColors);
+		document.getElementById('addDataset').addEventListener('click', () => {
 			++addedCount;
-			var colorName = colorNames[bubbleChartData.datasets.length % colorNames.length];
-	var dsColor = window.chartColors[colorName];
-			var newDataset = {
+			const colorName = colorNames[bubbleChartData.datasets.length % colorNames.length];
+			const dsColor = window.chartColors[colorName];
+			const newDataset = {
 				label: 'My added dataset ' + addedCount,
 				backgroundColor: color(dsColor).alpha(0.5).rgbString(),
 				borderColor: dsColor,
@@ -167,7 +167,7 @@
 				data: []
 			};
 
-			for (var index = 0; index < DEFAULT_DATASET_SIZE; ++index) {
+			for (let index = 0; index < DEFAULT_DATASET_SIZE; ++index) {
 				newDataset.data.push({
 					x: randomScalingFactor(),
 					y: randomScalingFactor(),
@@ -179,9 +179,9 @@
 			window.myChart.update();
 		});
 
-		document.getElementById('addData').addEventListener('click', function() {
+		document.getElementById('addData').addEventListener('click', () => {
 			if (bubbleChartData.datasets.length > 0) {
-				for (var index = 0; index < bubbleChartData.datasets.length; ++index) {
+				for (let index = 0; index < bubbleChartData.datasets.length; ++index) {
 					bubbleChartData.datasets[index].data.push({
 						x: randomScalingFactor(),
 						y: randomScalingFactor(),
@@ -193,13 +193,13 @@
 			}
 		});
 
-		document.getElementById('removeDataset').addEventListener('click', function() {
+		document.getElementById('removeDataset').addEventListener('click', () => {
 			bubbleChartData.datasets.splice(0, 1);
 			window.myChart.update();
 		});
 
-		document.getElementById('removeData').addEventListener('click', function() {
-			bubbleChartData.datasets.forEach(function(dataset) {
+		document.getElementById('removeData').addEventListener('click', () => {
+			bubbleChartData.datasets.forEach((dataset) => {
 				dataset.data.pop();
 			});
 

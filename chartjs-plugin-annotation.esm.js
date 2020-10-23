@@ -4,11 +4,8 @@
  * (c) 2020 Chart.js Contributors
  * Released under the MIT License
  */
-(function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('chart.js'), require('chart.js/helpers')) :
-typeof define === 'function' && define.amd ? define(['chart.js', 'chart.js/helpers'], factory) :
-(global = typeof globalThis !== 'undefined' ? globalThis : global || self, global['chartjs-plugin-annotation'] = factory(global.Chart, global.Chart.helpers));
-}(this, (function (chart_js, helpers) { 'use strict';
+import { Element, defaults, Animations } from 'chart.js';
+import { distanceBetweenPoints, fontString, isArray, merge, isFinite as isFinite$1, clipArea, unclipArea, valueOrDefault } from 'chart.js/helpers';
 
 function handleEvent(event, elements) {
 	const element = getNearestItem(elements, event);
@@ -136,7 +133,7 @@ function getNearestItem(elements, position) {
 		.filter((element) => element.inRange(position.x, position.y))
 		.reduce((nearestItems, element) => {
 			const center = element.getCenterPoint();
-			const distance = helpers.distanceBetweenPoints(position, center);
+			const distance = distanceBetweenPoints(position, center);
 
 			if (distance < minDistance) {
 				nearestItems = [element];
@@ -158,7 +155,7 @@ function getNearestItem(elements, position) {
 		.slice(0, 1)[0]; // return only the top item
 }
 
-class BoxAnnotation extends chart_js.Element {
+class BoxAnnotation extends Element {
 	inRange(mouseX, mouseY, useFinalPosition) {
 		const {x, y, width, height} = this.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
 
@@ -210,7 +207,7 @@ const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * 
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
 
-class LineAnnotation extends chart_js.Element {
+class LineAnnotation extends Element {
 	intersects(x, y, epsilon) {
 		epsilon = epsilon || 0.001;
 		const me = this;
@@ -285,8 +282,8 @@ LineAnnotation.defaults = {
 	label: {
 		backgroundColor: 'rgba(0,0,0,0.8)',
 		font: {
-			family: chart_js.defaults.font.family,
-			size: chart_js.defaults.font.size,
+			family: defaults.font.family,
+			size: defaults.font.size,
 			style: 'bold',
 			color: '#fff',
 		},
@@ -305,7 +302,7 @@ LineAnnotation.defaults = {
 function drawLabel(ctx, line) {
 	const label = line.options.label;
 
-	ctx.font = helpers.fontString(
+	ctx.font = fontString(
 		label.font.size,
 		label.font.style,
 		label.font.family
@@ -324,7 +321,7 @@ function drawLabel(ctx, line) {
 	ctx.fill();
 
 	ctx.fillStyle = label.font.color;
-	if (helpers.isArray(label.content)) {
+	if (isArray(label.content)) {
 		let textYPosition = -(height / 2) + label.yPadding;
 		for (let i = 0; i < label.content.length; i++) {
 			ctx.textBaseline = 'top';
@@ -345,7 +342,7 @@ function drawLabel(ctx, line) {
 const widthCache = new Map();
 function measureLabel(ctx, label) {
 	const content = label.content;
-	const lines = helpers.isArray(content) ? content : [content];
+	const lines = isArray(content) ? content : [content];
 	const count = lines.length;
 	let width = 0;
 	for (let i = 0; i < count; i++) {
@@ -445,7 +442,7 @@ const annotationTypes = {
 	line: LineAnnotation
 };
 
-var Annotation = {
+var annotation = {
 	id: 'annotation',
 
 	beforeUpdate(chart, options) {
@@ -499,8 +496,8 @@ var Annotation = {
 
 function updateElements(chart, options, mode) {
 	const chartAnims = chart.options.animation;
-	const animOpts = chartAnims && helpers.merge({}, [chartAnims, options.animation]);
-	const animations = new chart_js.Animations(chart, animOpts, mode);
+	const animOpts = chartAnims && merge({}, [chartAnims, options.animation]);
+	const animations = new Animations(chart, animOpts, mode);
 
 	const elements = chartElements.get(chart) || (chartElements.set(chart, []).get(chart));
 	const annotations = options.annotations || [];
@@ -525,7 +522,7 @@ function updateElements(chart, options, mode) {
 	}
 }
 
-const scaleValue = (scale, value, fallback) => helpers.isFinite(value) ? scale.getPixelForValue(value) : fallback;
+const scaleValue = (scale, value, fallback) => isFinite$1(value) ? scale.getPixelForValue(value) : fallback;
 
 function calculateElementProperties(chart, options, defaults) {
 	const scale = chart.scales[options.scaleID];
@@ -569,7 +566,7 @@ function calculateElementProperties(chart, options, defaults) {
 		y2,
 		width: x2 - x,
 		height: y2 - y,
-		options: helpers.merge(Object.create(null), [defaults, options])
+		options: merge(Object.create(null), [defaults, options])
 	};
 }
 
@@ -577,14 +574,14 @@ function draw(chart, options, caller) {
 	const {ctx, chartArea} = chart;
 	const elements = chartElements.get(chart);
 
-	helpers.clipArea(ctx, chartArea);
+	clipArea(ctx, chartArea);
 	for (let i = 0; i < elements.length; i++) {
 		const el = elements[i];
 		if ((el.options.drawTime || options.drawTime || caller) === caller) {
 			el.draw(ctx);
 		}
 	}
-	helpers.unclipArea(ctx);
+	unclipArea(ctx);
 }
 
 const binds = new WeakSet();
@@ -618,13 +615,13 @@ function adjustScaleRange(scale, options) {
 	const annotations = getAnnotationOptions(scale.chart, options);
 	const range = getScaleLimits(scale, annotations);
 	let changed = false;
-	if (helpers.isFinite(range.min) &&
+	if (isFinite$1(range.min) &&
 		typeof scale.options.min === 'undefined' &&
 		typeof scale.options.suggestedMin === 'undefined') {
 		scale.min = range.min;
 		changed = true;
 	}
-	if (helpers.isFinite(range.max) &&
+	if (isFinite$1(range.max) &&
 		typeof scale.options.max === 'undefined' &&
 		typeof scale.options.suggestedMax === 'undefined') {
 		scale.max = range.max;
@@ -640,8 +637,8 @@ function getScaleLimits(scale, annotations) {
 	const scaleID = scale.id;
 	const scaleIDOption = scale.axis + 'ScaleID';
 	const scaleAnnotations = annotations.filter(annotation => annotation[scaleIDOption] === scaleID || annotation.scaleID === scaleID);
-	let min = helpers.valueOrDefault(scale.min, Number.NEGATIVE_INFINITY);
-	let max = helpers.valueOrDefault(scale.max, Number.POSITIVE_INFINITY);
+	let min = valueOrDefault(scale.min, Number.NEGATIVE_INFINITY);
+	let max = valueOrDefault(scale.max, Number.POSITIVE_INFINITY);
 	scaleAnnotations.forEach(annotation => {
 		['value', 'endValue', axis + 'Min', axis + 'Max'].forEach(prop => {
 			if (prop in annotation) {
@@ -654,8 +651,4 @@ function getScaleLimits(scale, annotations) {
 	return {min, max};
 }
 
-chart_js.Chart.register(Annotation, BoxAnnotation, LineAnnotation);
-
-return Annotation;
-
-})));
+export { annotation as Annotation, BoxAnnotation, LineAnnotation };

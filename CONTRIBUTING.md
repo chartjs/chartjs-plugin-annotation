@@ -3,7 +3,6 @@ Contributing to Chart.js
 
 Contributions to Chart.js are welcome and encouraged, but please have a look through the guidelines in this document before raising an issue, or writing code for the project.
 
-
 Using issues
 ------------
 
@@ -15,7 +14,6 @@ To keep the library lightweight for everyone, it's unlikely we'll add many more 
 
 Please do not use issues for support requests. For help using Chart.js, please take a look at the [`chartjs`](http://stackoverflow.com/questions/tagged/chartjs) tag on Stack Overflow.
 
-
 Reporting bugs
 --------------
 
@@ -23,18 +21,16 @@ Well structured, detailed bug reports are hugely valuable for the project.
 
 Guidlines for reporting bugs:
 
- - Check the issue search to see if it has already been reported
- - Isolate the problem to a simple test case
- - Provide a demonstration of the problem on [JS Bin](http://jsbin.com) or similar
+- Check the issue search to see if it has already been reported
+- Isolate the problem to a simple test case
+- Provide a demonstration of the problem on [JS Bin](http://jsbin.com) or similar
 
 Please provide any additional details associated with the bug, if it's browser or screen density specific, or only happens with a certain configuration or data.
-
 
 Local development
 -----------------
 
 Run `npm install` to install all the libraries, then run `gulp dev --test` to build and run tests as you make changes.
-
 
 Pull requests
 -------------
@@ -45,18 +41,20 @@ Be advised that **Chart.js 1.0.2 is in feature-complete status**. Pull requests 
 
 Guidelines:
 
- - Please create an issue first:
-   - For bugs, we can discuss the fixing approach
-   - For enhancements, we can discuss if it is within the project scope and avoid duplicate effort
- - Please make changes to the files in [`/src`](https://github.com/chartjs/Chart.js/tree/master/src), not `Chart.js` or `Chart.min.js` in the repo root directory, this avoids merge conflicts
- - Tabs for indentation, not spaces please
- - If adding new functionality, please also update the relevant `.md` file in [`/docs`](https://github.com/chartjs/Chart.js/tree/master/docs)
- - Please make your commits in logical sections with clear commit messages
+- Please create an issue first:
+  - For bugs, we can discuss the fixing approach
+  - For enhancements, we can discuss if it is within the project scope and avoid duplicate effort
+- Please make changes to the files in [`/src`](https://github.com/chartjs/Chart.js/tree/master/src), not `Chart.js` or `Chart.min.js` in the repo root directory, this avoids merge conflicts
+- Tabs for indentation, not spaces please
+- If adding new functionality, please also update the relevant `.md` file in [`/docs`](https://github.com/chartjs/Chart.js/tree/master/docs)
+- Please make your commits in logical sections with clear commit messages
 
 Joining the project
+
 -------------
- - Active committers and contributors are invited to introduce yourself and request commit access to this project.  Please send an email to hello@nickdownie.com or file an issue.
- - We have a very active Slack community that you can join at https://chartjs-slack-automation.herokuapp.com. If you think you can help, we'd love to have you!
+
+- Active committers and contributors are invited to introduce yourself and request commit access to this project.  Please send an email to hello@nickdownie.com or file an issue.
+- We have a very active Slack community that you can join at https://chartjs-slack-automation.herokuapp.com. If you think you can help, we'd love to have you!
 
 License
 -------
