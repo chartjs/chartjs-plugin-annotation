@@ -1,40 +1,35 @@
 {
   "name": "chartjs-plugin-annotation",
   "description": "Annotations for Chart.js",
-  "version": "0.5.7",
+  "version": "3.0.0-beta",
   "author": "Evert Timberg <evert.timberg@gmail.com>",
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "chartjs-plugin-annotation.js",
+  "module": "chartjs-plugin-annotation.ems.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/chartjs/chartjs-plugin-annotation.git"
   },
+  "files": [
+    "dist/*.js"
+  ],
   "scripts": {
-    "test": "gulp lint",
-    "build": "gulp build"
+    "build": "rollup -c",
+    "lint": "eslint samples/**/*.html src/**/*.js",
+    "test": "npm run lint"
   },
   "devDependencies": {
-    "browserify": "^16.2.3",
-    "chart.js": "^2.4.0",
-    "eslint-config-chartjs": "^0.1.0",
-    "eslint-plugin-html": "^5.0.0",
-    "gulp": "^4.0.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-eslint": "^5.0.0",
-    "gulp-htmllint": "^0.0.16",
-    "gulp-insert": "^0.5.0",
-    "gulp-jshint": "^2.1.0",
-    "gulp-replace": "^1.0.0",
-    "gulp-streamify": "^1.0.2",
-    "gulp-uglify": "^3.0.1",
-    "gulp-util": "^3.0.8",
-    "gulp-watch": "^5.0.1",
-    "inquirer": "^6.2.1",
-    "merge-stream": "^1.0.1",
-    "semver": "^5.6.0",
-    "vinyl-source-stream": "^2.0.0"
+    "@rollup/plugin-node-resolve": "^9.0.0",
+    "chart.js": "^3.0.0-beta.4",
+    "eslint": "^7.11.0",
+    "eslint-config-chartjs": "^0.2.0",
+    "eslint-config-esnext": "^4.1.0",
+    "eslint-plugin-html": "^6.1.0",
+    "rollup": "^2.32.1",
+    "rollup-plugin-terser": "^7.0.2"
   },
   "peerDependencies": {
-    "chart.js": "^2.4.0"
-  }
+    "chart.js": "^3.0.0-beta.4"
+  },
+  "dependencies": {}
 }

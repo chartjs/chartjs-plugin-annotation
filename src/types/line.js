@@ -1,299 +1,237 @@
-// Line Annotation implementation
-module.exports = function(Chart) {
-	/* eslint-disable global-require */
-	var chartHelpers = Chart.helpers;
-	var helpers = require('../helpers.js')(Chart);
-	/* eslint-enable global-require */
+import {Element, defaults} from 'chart.js';
+import {isArray, fontString} from 'chart.js/helpers';
 
-	var horizontalKeyword = 'horizontal';
-	var verticalKeyword = 'vertical';
+const PI = Math.PI;
+const HALF_PI = PI / 2;
 
-	function LineFunction(view) {
-		// Describe the line in slope-intercept form (y = mx + b).
-		// Note that the axes are rotated 90° CCW, which causes the
-		// x- and y-axes to be swapped.
-		var m = (view.x2 - view.x1) / (view.y2 - view.y1);
-		var b = view.x1 || 0;
+const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
+const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
+const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
 
-		this.m = m;
-		this.b = b;
+export default class LineAnnotation extends Element {
+	intersects(x, y, epsilon) {
+		epsilon = epsilon || 0.001;
+		const me = this;
+		const p1 = {x: me.x, y: me.y};
+		const p2 = {x: me.x2, y: me.y2};
+		const dy = interpolateY(x, p1, p2);
+		const dx = interpolateX(y, p1, p2);
+		return (
+			(!isFinite(dy) || Math.abs(y - dy) < epsilon) &&
+			(!isFinite(dx) || Math.abs(x - dx) < epsilon)
+		);
+	}
 
-		this.getX = function(y) {
-			// Coordinates are relative to the origin of the canvas
-			return m * (y - view.y1) + b;
-		};
+	labelIsVisible() {
+		const label = this.options.label;
+		return label && label.enabled && label.content;
+	}
 
-		this.getY = function(x) {
-			return ((x - b) / m) + view.y1;
-		};
+	isOnLabel(x, y) {
+		const labelRect = this.labelRect || {};
+		const w2 = labelRect.width / 2;
+		const h2 = labelRect.height / 2;
+		return this.labelIsVisible() &&
+			x >= labelRect.x - w2 &&
+			x <= labelRect.x + w2 &&
+			y >= labelRect.y - h2 &&
+			y <= labelRect.y + h2;
+	}
 
-		this.intersects = function(x, y, epsilon) {
-			epsilon = epsilon || 0.001;
-			var dy = this.getY(x);
-			var dx = this.getX(y);
-			return (
-				(!isFinite(dy) || Math.abs(y - dy) < epsilon) &&
-				(!isFinite(dx) || Math.abs(x - dx) < epsilon)
-			);
+	inRange(x, y) {
+		const epsilon = this.options.borderWidth || 1;
+		return this.intersects(x, y, epsilon) || this.isOnLabel(x, y);
+	}
+
+	getCenterPoint() {
+		return {
+			x: (this.x2 + this.x) / 2,
+			y: (this.y2 + this.y) / 2
 		};
 	}
 
-	function calculateLabelPosition(view, width, height, padWidth, padHeight) {
-		var line = view.line;
-		var ret = {};
-		var xa = 0;
-		var ya = 0;
+	draw(ctx) {
+		const {x, y, x2, y2, options} = this;
+		ctx.save();
 
-		switch (true) {
-		// top align
-		case view.mode === verticalKeyword && view.labelPosition === 'top':
-			ya = padHeight + view.labelYAdjust;
-			xa = (width / 2) + view.labelXAdjust;
-			ret.y = view.y1 + ya;
-			ret.x = (isFinite(line.m) ? line.getX(ret.y) : view.x1) - xa;
-			break;
+		ctx.lineWidth = options.borderWidth;
+		ctx.strokeStyle = options.borderColor;
 
-		// bottom align
-		case view.mode === verticalKeyword && view.labelPosition === 'bottom':
-			ya = height + padHeight + view.labelYAdjust;
-			xa = (width / 2) + view.labelXAdjust;
-			ret.y = view.y2 - ya;
-			ret.x = (isFinite(line.m) ? line.getX(ret.y) : view.x1) - xa;
-			break;
+		if (ctx.setLineDash) {
+			ctx.setLineDash(options.borderDash);
+		}
+		ctx.lineDashOffset = options.borderDashOffset;
 
-		// left align
-		case view.mode === horizontalKeyword && view.labelPosition === 'left':
-			xa = padWidth + view.labelXAdjust;
-			ya = -(height / 2) + view.labelYAdjust;
-			ret.x = view.x1 + xa;
-			ret.y = line.getY(ret.x) + ya;
-			break;
+		// Draw
+		ctx.beginPath();
+		ctx.moveTo(x, y);
+		ctx.lineTo(x2, y2);
+		ctx.stroke();
 
-		// right align
-		case view.mode === horizontalKeyword && view.labelPosition === 'right':
-			xa = width + padWidth + view.labelXAdjust;
-			ya = -(height / 2) + view.labelYAdjust;
-			ret.x = view.x2 - xa;
-			ret.y = line.getY(ret.x) + ya;
-			break;
-
-		// center align
-		default:
-			ret.x = ((view.x1 + view.x2 - width) / 2) + view.labelXAdjust;
-			ret.y = ((view.y1 + view.y2 - height) / 2) + view.labelYAdjust;
+		if (this.labelIsVisible()) {
+			drawLabel(ctx, this);
 		}
 
-		return ret;
+		ctx.restore();
 	}
+}
 
-	var LineAnnotation = Chart.Annotation.Element.extend({
-		setDataLimits: function() {
-			var model = this._model;
-			var options = this.options;
-
-			// Set the data range for this annotation
-			model.ranges = {};
-			model.ranges[options.scaleID] = {
-				min: options.value,
-				max: options.endValue || options.value
-			};
+LineAnnotation.id = 'lineAnnotation';
+LineAnnotation.defaults = {
+	borderDash: [],
+	borderDashOffset: 0,
+	label: {
+		backgroundColor: 'rgba(0,0,0,0.8)',
+		font: {
+			family: defaults.font.family,
+			size: defaults.font.size,
+			style: 'bold',
+			color: '#fff',
 		},
-		configure: function() {
-			var model = this._model;
-			var options = this.options;
-			var chartInstance = this.chartInstance;
-			var ctx = chartInstance.chart.ctx;
-
-			var scale = chartInstance.scales[options.scaleID];
-			var pixel, endPixel;
-			if (scale) {
-				pixel = helpers.isValid(options.value) ? scale.getPixelForValue(options.value, options.value.index) : NaN;
-				endPixel = helpers.isValid(options.endValue) ? scale.getPixelForValue(options.endValue, options.value.index) : pixel;
-			}
-
-			if (isNaN(pixel)) {
-				return;
-			}
-
-			var chartArea = chartInstance.chartArea;
-
-			// clip annotations to the chart area
-			model.clip = {
-				x1: chartArea.left,
-				x2: chartArea.right,
-				y1: chartArea.top,
-				y2: chartArea.bottom
-			};
-
-			if (this.options.mode === horizontalKeyword) {
-				model.x1 = chartArea.left;
-				model.x2 = chartArea.right;
-				model.y1 = pixel;
-				model.y2 = endPixel;
-			} else {
-				model.y1 = chartArea.top;
-				model.y2 = chartArea.bottom;
-				model.x1 = pixel;
-				model.x2 = endPixel;
-			}
-
-			model.line = new LineFunction(model);
-			model.mode = options.mode;
-
-			// Figure out the label:
-			model.labelBackgroundColor = options.label.backgroundColor;
-			model.labelFontFamily = options.label.fontFamily;
-			model.labelFontSize = options.label.fontSize;
-			model.labelFontStyle = options.label.fontStyle;
-			model.labelFontColor = options.label.fontColor;
-			model.labelXPadding = options.label.xPadding;
-			model.labelYPadding = options.label.yPadding;
-			model.labelCornerRadius = options.label.cornerRadius;
-			model.labelPosition = options.label.position;
-			model.labelXAdjust = options.label.xAdjust;
-			model.labelYAdjust = options.label.yAdjust;
-			model.labelEnabled = options.label.enabled;
-			model.labelContent = options.label.content;
-			model.labelRotation = options.label.rotation;
-
-			ctx.font = chartHelpers.fontString(model.labelFontSize, model.labelFontStyle, model.labelFontFamily);
-			var textWidth = ctx.measureText(model.labelContent).width;
-			var textHeight = model.labelFontSize;
-			model.labelHeight = textHeight + (2 * model.labelYPadding);
-
-			if (model.labelContent && chartHelpers.isArray(model.labelContent)) {
-				var labelContentArray = model.labelContent.slice(0);
-				var longestLabel = labelContentArray.sort(function(a, b) {
-					return b.length - a.length;
-				})[0];
-				textWidth = ctx.measureText(longestLabel).width;
-
-				model.labelHeight = (textHeight * model.labelContent.length) + (2 * model.labelYPadding);
-				// Add padding in between each label item
-				model.labelHeight += model.labelYPadding * (model.labelContent.length - 1);
-			}
-
-			var labelPosition = calculateLabelPosition(model, textWidth, textHeight, model.labelXPadding, model.labelYPadding);
-			model.labelX = labelPosition.x - model.labelXPadding;
-			model.labelY = labelPosition.y - model.labelYPadding;
-			model.labelWidth = textWidth + (2 * model.labelXPadding);
-
-			model.borderColor = options.borderColor;
-			model.borderWidth = options.borderWidth;
-			model.borderDash = options.borderDash || [];
-			model.borderDashOffset = options.borderDashOffset || 0;
-		},
-		inRange: function(mouseX, mouseY) {
-			var model = this._model;
-
-			return (
-				// On the line
-				model.line &&
-				model.line.intersects(mouseX, mouseY, this.getHeight())
-			) || (
-				// On the label
-				model.labelEnabled &&
-				model.labelContent &&
-				mouseX >= model.labelX &&
-				mouseX <= model.labelX + model.labelWidth &&
-				mouseY >= model.labelY &&
-				mouseY <= model.labelY + model.labelHeight
-			);
-		},
-		getCenterPoint: function() {
-			return {
-				x: (this._model.x2 + this._model.x1) / 2,
-				y: (this._model.y2 + this._model.y1) / 2
-			};
-		},
-		getWidth: function() {
-			return Math.abs(this._model.right - this._model.left);
-		},
-		getHeight: function() {
-			return this._model.borderWidth || 1;
-		},
-		getArea: function() {
-			return Math.sqrt(Math.pow(this.getWidth(), 2) + Math.pow(this.getHeight(), 2));
-		},
-		draw: function() {
-			var view = this._view;
-			var ctx = this.chartInstance.chart.ctx;
-
-			if (!view.clip) {
-				return;
-			}
-
-			ctx.save();
-
-			// Canvas setup
-			ctx.beginPath();
-			ctx.rect(view.clip.x1, view.clip.y1, view.clip.x2 - view.clip.x1, view.clip.y2 - view.clip.y1);
-			ctx.clip();
-
-			ctx.lineWidth = view.borderWidth;
-			ctx.strokeStyle = view.borderColor;
-
-			if (ctx.setLineDash) {
-				ctx.setLineDash(view.borderDash);
-			}
-			ctx.lineDashOffset = view.borderDashOffset;
-
-			// Draw
-			ctx.beginPath();
-			ctx.moveTo(view.x1, view.y1);
-			ctx.lineTo(view.x2, view.y2);
-			ctx.stroke();
-
-			if (view.labelEnabled && view.labelContent) {
-				ctx.beginPath();
-				ctx.rect(view.clip.x1, view.clip.y1, view.clip.x2 - view.clip.x1, view.clip.y2 - view.clip.y1);
-				ctx.clip();
-
-				ctx.translate(view.labelX + (view.labelWidth / 2), view.labelY + (view.labelHeight / 2));
-				ctx.rotate(view.labelRotation * Math.PI / 180);
-
-				ctx.fillStyle = view.labelBackgroundColor;
-				// Draw the tooltip
-				chartHelpers.drawRoundedRectangle(
-					ctx,
-					-(view.labelWidth / 2), // x
-					-(view.labelHeight / 2), // y
-					view.labelWidth, // width
-					view.labelHeight, // height
-					view.labelCornerRadius // radius
-				);
-				ctx.fill();
-
-				// Draw the text
-				ctx.font = chartHelpers.fontString(
-					view.labelFontSize,
-					view.labelFontStyle,
-					view.labelFontFamily
-				);
-				ctx.fillStyle = view.labelFontColor;
-				ctx.textAlign = 'center';
-
-				if (view.labelContent && chartHelpers.isArray(view.labelContent)) {
-					var textYPosition = -(view.labelHeight / 2) + view.labelYPadding;
-					for (var i = 0; i < view.labelContent.length; i++) {
-						ctx.textBaseline = 'top';
-						ctx.fillText(
-							view.labelContent[i],
-							-(view.labelWidth / 2) + (view.labelWidth / 2),
-							textYPosition
-						);
-
-						textYPosition += view.labelFontSize + view.labelYPadding;
-					}
-				} else {
-					ctx.textBaseline = 'middle';
-					ctx.fillText(view.labelContent, 0, 0);
-				}
-			}
-
-			ctx.restore();
-		}
-	});
-
-	return LineAnnotation;
+		xPadding: 6,
+		yPadding: 6,
+		rotation: 0,
+		cornerRadius: 6,
+		position: 'center',
+		xAdjust: 0,
+		yAdjust: 0,
+		enabled: false,
+		content: null
+	}
 };
+
+function drawLabel(ctx, line) {
+	const label = line.options.label;
+
+	ctx.font = fontString(
+		label.font.size,
+		label.font.style,
+		label.font.family
+	);
+	ctx.textAlign = 'center';
+
+	const {width, height} = measureLabel(ctx, label);
+	const pos = calculateLabelPosition(line, width, height);
+	line.labelRect = {x: pos.x, y: pos.y, width, height};
+
+	ctx.translate(pos.x, pos.y);
+	ctx.rotate(label.rotation * PI / 180);
+
+	ctx.fillStyle = label.backgroundColor;
+	roundedRect(ctx, -(width / 2), -(height / 2), width, height, label.cornerRadius);
+	ctx.fill();
+
+	ctx.fillStyle = label.font.color;
+	if (isArray(label.content)) {
+		let textYPosition = -(height / 2) + label.yPadding;
+		for (let i = 0; i < label.content.length; i++) {
+			ctx.textBaseline = 'top';
+			ctx.fillText(
+				label.content[i],
+				-(width / 2) + (width / 2),
+				textYPosition
+			);
+
+			textYPosition += label.font.size + label.yPadding;
+		}
+	} else {
+		ctx.textBaseline = 'middle';
+		ctx.fillText(label.content, 0, 0);
+	}
+}
+
+const widthCache = new Map();
+function measureLabel(ctx, label) {
+	const content = label.content;
+	const lines = isArray(content) ? content : [content];
+	const count = lines.length;
+	let width = 0;
+	for (let i = 0; i < count; i++) {
+		const text = lines[i];
+		if (!widthCache.has(text)) {
+			widthCache.set(text, ctx.measureText(text).width);
+		}
+		width = Math.max(width, widthCache.get(text));
+	}
+	width += 2 * label.xPadding;
+
+	return {
+		width,
+		height: count * label.font.size + ((count + 1) * label.yPadding)
+	};
+}
+
+function calculateLabelPosition(line, width, height) {
+	const label = line.options.label;
+	const {xPadding, xAdjust, yPadding, yAdjust} = label;
+	const p1 = {x: line.x, y: line.y};
+	const p2 = {x: line.x2, y: line.y2};
+	let x, y, pt;
+
+	switch (label.position) {
+	case 'top':
+		y = yPadding + yAdjust;
+		x = interpolateX(y, p1, p2);
+		break;
+	case 'bottom':
+		y = height - yPadding + yAdjust;
+		x = interpolateX(y, p1, p2);
+		break;
+	case 'left':
+		x = xPadding + xAdjust;
+		y = interpolateY(x, p1, p2);
+		break;
+	case 'right':
+		x = width - xPadding + xAdjust;
+		y = interpolateY(x, p1, p2);
+		break;
+	default:
+		pt = pointInLine(p1, p2, 0.5);
+		x = pt.x + xAdjust;
+		y = pt.y + yAdjust;
+	}
+	return {x, y};
+}
+
+
+/**
+ * Creates a "path" for a rectangle with rounded corners at position (x, y) with a
+ * given size (width, height) and the same `radius` for all corners.
+ * @param {CanvasRenderingContext2D} ctx - The canvas 2D Context.
+ * @param {number} x - The x axis of the coordinate for the rectangle starting point.
+ * @param {number} y - The y axis of the coordinate for the rectangle starting point.
+ * @param {number} width - The rectangle's width.
+ * @param {number} height - The rectangle's height.
+ * @param {number} radius - The rounded amount (in pixels) for the four corners.
+ * @todo handle `radius` as top-left, top-right, bottom-right, bottom-left array/object?
+ */
+function roundedRect(ctx, x, y, width, height, radius) {
+	if (radius) {
+		const r = Math.min(radius, height / 2, width / 2);
+		const left = x + r;
+		const top = y + r;
+		const right = x + width - r;
+		const bottom = y + height - r;
+
+		ctx.moveTo(x, top);
+		if (left < right && top < bottom) {
+			ctx.arc(left, top, r, -PI, -HALF_PI);
+			ctx.arc(right, top, r, -HALF_PI, 0);
+			ctx.arc(right, bottom, r, 0, HALF_PI);
+			ctx.arc(left, bottom, r, HALF_PI, PI);
+		} else if (left < right) {
+			ctx.moveTo(left, y);
+			ctx.arc(right, top, r, -HALF_PI, HALF_PI);
+			ctx.arc(left, top, r, HALF_PI, PI + HALF_PI);
+		} else if (top < bottom) {
+			ctx.arc(left, top, r, -PI, 0);
+			ctx.arc(left, bottom, r, 0, PI);
+		} else {
+			ctx.arc(left, top, r, -PI, PI);
+		}
+		ctx.closePath();
+		ctx.moveTo(x, y);
+	} else {
+		ctx.rect(x, y, width, height);
+	}
+}

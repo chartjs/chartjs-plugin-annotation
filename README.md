@@ -1,7 +1,10 @@
 # chartjs-plugin-annotation.js
+
 [![CDNJS version](https://img.shields.io/cdnjs/v/chartjs-plugin-annotation.svg)](https://cdnjs.com/libraries/chartjs-plugin-annotation)
 
-An annotation plugin for Chart.js >= 2.4.0
+An annotation plugin for Chart.js >= 3.0.0
+
+For Chart.js 2.4.0 to 2.9.x support, use [version 0.5.7 of this plugin](https://github.com/chartjs/chartjs-plugin-annotation/releases/tag/v0.5.7)
 
 This plugin draws lines and boxes on the chart area.
 
@@ -17,212 +20,216 @@ To configure the annotations plugin, you can simply add new config options to yo
 
 ```javascript
 {
-	plugins: {
-		annotation: {
-			// Defines when the annotations are drawn.
-			// This allows positioning of the annotation relative to the other
-			// elements of the graph.
-			//
-			// Should be one of: afterDraw, afterDatasetsDraw, beforeDatasetsDraw
-			// See http://www.chartjs.org/docs/#advanced-usage-creating-plugins
-			drawTime: 'afterDatasetsDraw', // (default)
+    plugins: {
+        annotation: {
+            // Defines when the annotations are drawn.
+            // This allows positioning of the annotation relative to the other
+            // elements of the graph.
+            //
+            // Should be one of: afterDraw, afterDatasetsDraw, beforeDatasetsDraw
+            // See http://www.chartjs.org/docs/#advanced-usage-creating-plugins
+            drawTime: 'afterDatasetsDraw', // (default)
 
-			// Mouse events to enable on each annotation.
-			// Should be an array of one or more browser-supported mouse events
-			// See https://developer.mozilla.org/en-US/docs/Web/Events
-			events: ['click'],
+            // Mouse events to enable on each annotation.
+            // Should be an array of one or more browser-supported mouse events
+            // See https://developer.mozilla.org/en-US/docs/Web/Events
+            events: ['click'],
 
-			// Double-click speed in ms used to distinguish single-clicks from
-			// double-clicks whenever you need to capture both. When listening for
-			// both click and dblclick, click events will be delayed by this
-			// amount.
-			dblClickSpeed: 350, // ms (default)
+            // Double-click speed in ms used to distinguish single-clicks from
+            // double-clicks whenever you need to capture both. When listening for
+            // both click and dblclick, click events will be delayed by this
+            // amount.
+            dblClickSpeed: 350, // ms (default)
 
-			// Array of annotation configuration objects
-			// See below for detailed descriptions of the annotation options
-			annotations: [{
-				drawTime: 'afterDraw', // overrides annotation.drawTime if set
-				id: 'a-line-1', // optional
-				type: 'line',
-				mode: 'horizontal',
-				scaleID: 'y-axis-0',
-				value: '25',
-				borderColor: 'red',
-				borderWidth: 2,
+            // Array of annotation configuration objects
+            // See below for detailed descriptions of the annotation options
+            annotations: [{
+                drawTime: 'afterDraw', // overrides annotation.drawTime if set
+                id: 'a-line-1', // optional
+                type: 'line',
+                mode: 'horizontal',
+                scaleID: 'y',
+                value: '25',
+                borderColor: 'red',
+                borderWidth: 2,
 
-				// Fires when the user clicks this annotation on the chart
-				// (be sure to enable the event in the events array below).
-				onClick: function(e) {
-					// `this` is bound to the annotation element
-				}
-			}]
-		}
-	}
+                // Fires when the user clicks this annotation on the chart
+                // (be sure to enable the event in the events array below).
+                onClick: function(e) {
+                    // `this` is bound to the annotation element
+                }
+            }]
+        }
+    }
 }
 ```
 
 ### Line Annotations
+
 Vertical or horizontal lines are supported.
 
 ```javascript
 {
-	type: 'line',
+    type: 'line',
 
-	// optional drawTime to control layering, overrides global drawTime setting
-	drawTime: 'afterDatasetsDraw',
+    // optional drawTime to control layering, overrides global drawTime setting
+    drawTime: 'afterDatasetsDraw',
 
-	// optional annotation ID (must be unique)
-	id: 'a-line-1',
+    // optional annotation ID (must be unique)
+    id: 'a-line-1',
 
-	// set to 'vertical' to draw a vertical line
-	mode: 'horizontal',
+    // set to 'vertical' to draw a vertical line
+    mode: 'horizontal',
 
-	// ID of the scale to bind onto
-	scaleID: 'y-axis-0',
+    // ID of the scale to bind onto
+    scaleID: 'y',
 
-	// Data value to draw the line at
-	value: 25,
+    // Data value to draw the line at
+    value: 25,
 
-	// Optional value at which the line draw should end
-	endValue: 26,
+    // Optional value at which the line draw should end
+    endValue: 26,
 
-	// Line color
-	borderColor: 'red',
+    // Line color
+    borderColor: 'red',
 
-	// Line width
-	borderWidth: 2,
+    // Line width
+    borderWidth: 2,
 
-	// Line dash
-	// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash
-	borderDash: [2, 2],
+    // Line dash
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash
+    borderDash: [2, 2],
 
-	// Line Dash Offset
-	// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset
-	borderDashOffset: 5,
+    // Line Dash Offset
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset
+    borderDashOffset: 5,
 
-	label: {
-		// Background color of label, default below
-		backgroundColor: 'rgba(0,0,0,0.8)',
+    label: {
+        // Background color of label, default below
+        backgroundColor: 'rgba(0,0,0,0.8)',
 
-		// Font family of text, inherits from global
-		fontFamily: "sans-serif",
+        font: {
+            // Font family of text, inherits from global
+            family: "sans-serif",
 
-		// Font size of text, inherits from global
-		fontSize: 12,
+            // Font size of text, inherits from global
+            size: 12,
 
-		// Font style of text, default below
-		fontStyle: "bold",
+            // Font style of text, default below
+            style: "bold",
 
-		// Font color of text, default below
-		fontColor: "#fff",
+            // Font color of text, default below
+            color: "#fff",
+        }
 
-		// Padding of label to add left/right, default below
-		xPadding: 6,
+        // Padding of label to add left/right, default below
+        xPadding: 6,
 
-		// Padding of label to add top/bottom, default below
-		yPadding: 6,
+        // Padding of label to add top/bottom, default below
+        yPadding: 6,
 
-		// Radius of label rectangle, default below
-		cornerRadius: 6,
+        // Radius of label rectangle, default below
+        cornerRadius: 6,
 
-		// Anchor position of label on line, can be one of: top, bottom, left, right, center. Default below.
-		position: "center",
+        // Anchor position of label on line, can be one of: top, bottom, left, right, center. Default below.
+        position: "center",
 
-		// Adjustment along x-axis (left-right) of label relative to above number (can be negative)
-		// For horizontal lines positioned left or right, negative values move
-		// the label toward the edge, and positive values toward the center.
-		xAdjust: 0,
+        // Adjustment along x-axis (left-right) of label relative to above number (can be negative)
+        // For horizontal lines positioned left or right, negative values move
+        // the label toward the edge, and positive values toward the center.
+        xAdjust: 0,
 
-		// Adjustment along y-axis (top-bottom) of label relative to above number (can be negative)
-		// For vertical lines positioned top or bottom, negative values move
-		// the label toward the edge, and positive values toward the center.
-		yAdjust: 0,
+        // Adjustment along y-axis (top-bottom) of label relative to above number (can be negative)
+        // For vertical lines positioned top or bottom, negative values move
+        // the label toward the edge, and positive values toward the center.
+        yAdjust: 0,
 
-		// Whether the label is enabled and should be displayed
-		enabled: false,
+        // Whether the label is enabled and should be displayed
+        enabled: false,
 
-		// Text to display in label - default is null. Provide an array to display values on a new line
-		content: "Test label",
+        // Text to display in label - default is null. Provide an array to display values on a new line
+        content: "Test label",
 
-		// Rotation of label, in degrees, default is 0
-		rotation: 90
-	},
+        // Rotation of label, in degrees, default is 0
+        rotation: 90
+    },
 
-	// Mouse event handlers - be sure to enable the corresponding events in the
-	// annotation events array or the event handler will not be called.
-	// See https://developer.mozilla.org/en-US/docs/Web/Events for a list of
-	// supported mouse events.
-	onMouseenter: function(e) {},
-	onMouseover: function(e) {},
-	onMouseleave: function(e) {},
-	onMouseout: function(e) {},
-	onMousemove: function(e) {},
-	onMousedown: function(e) {},
-	onMouseup: function(e) {},
-	onClick: function(e) {},
-	onDblclick: function(e) {},
-	onContextmenu: function(e) {},
-	onWheel: function(e) {}
+    // Mouse event handlers - be sure to enable the corresponding events in the
+    // annotation events array or the event handler will not be called.
+    // See https://developer.mozilla.org/en-US/docs/Web/Events for a list of
+    // supported mouse events.
+    onMouseenter: function(e) {},
+    onMouseover: function(e) {},
+    onMouseleave: function(e) {},
+    onMouseout: function(e) {},
+    onMousemove: function(e) {},
+    onMousedown: function(e) {},
+    onMouseup: function(e) {},
+    onClick: function(e) {},
+    onDblclick: function(e) {},
+    onContextmenu: function(e) {},
+    onWheel: function(e) {}
 }
 ```
 
 ### Box Annotations
+
 Box annotations are supported. If one of the axes is not specified, the box will take the entire chart dimension.
 
 The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges
 
 ```javascript
 {
-	type: 'box',
+    type: 'box',
 
-	// optional drawTime to control layering, overrides global drawTime setting
-	drawTime: 'beforeDatasetsDraw',
+    // optional drawTime to control layering, overrides global drawTime setting
+    drawTime: 'beforeDatasetsDraw',
 
-	// optional annotation ID (must be unique)
-	id: 'a-box-1',
+    // optional annotation ID (must be unique)
+    id: 'a-box-1',
 
-	// ID of the X scale to bind onto
-	xScaleID: 'x-axis-0',
+    // ID of the X scale to bind onto
+    xScaleID: 'x',
 
-	// ID of the Y scale to bind onto
-	yScaleID: 'y-axis-0',
+    // ID of the Y scale to bind onto
+    yScaleID: 'y',
 
-	// Left edge of the box. in units along the x axis
-	xMin: 25,
+    // Left edge of the box. in units along the x axis
+    xMin: 25,
 
-	// Right edge of the box
-	xMax: 40,
+    // Right edge of the box
+    xMax: 40,
 
-	// Top edge of the box in units along the y axis
-	yMax: 20,
+    // Top edge of the box in units along the y axis
+    yMax: 20,
 
-	// Bottom edge of the box
-	yMin:  15,
+    // Bottom edge of the box
+    yMin:  15,
 
-	// Stroke color
-	borderColor: 'red',
+    // Stroke color
+    borderColor: 'red',
 
-	// Stroke width
-	borderWidth: 2,
+    // Stroke width
+    borderWidth: 2,
 
-	// Fill color
-	backgroundColor: 'green',
+    // Fill color
+    backgroundColor: 'green',
 
-	// Mouse event handlers - be sure to enable the corresponding events in the
-	// annotation events array or the event handler will not be called.
-	// See https://developer.mozilla.org/en-US/docs/Web/Events for a list of
-	// supported mouse events.
-	onMouseenter: function(e) {},
-	onMouseover: function(e) {},
-	onMouseleave: function(e) {},
-	onMouseout: function(e) {},
-	onMousemove: function(e) {},
-	onMousedown: function(e) {},
-	onMouseup: function(e) {},
-	onClick: function(e) {},
-	onDblclick: function(e) {},
-	onContextmenu: function(e) {},
-	onWheel: function(e) {}
+    // Mouse event handlers - be sure to enable the corresponding events in the
+    // annotation events array or the event handler will not be called.
+    // See https://developer.mozilla.org/en-US/docs/Web/Events for a list of
+    // supported mouse events.
+    onMouseenter: function(e) {},
+    onMouseover: function(e) {},
+    onMouseleave: function(e) {},
+    onMouseout: function(e) {},
+    onMousemove: function(e) {},
+    onMousedown: function(e) {},
+    onMouseup: function(e) {},
+    onClick: function(e) {},
+    onDblclick: function(e) {},
+    onContextmenu: function(e) {},
+    onWheel: function(e) {}
 }
 ```
 

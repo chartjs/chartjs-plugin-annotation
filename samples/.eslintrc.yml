@@ -1,0 +1,7 @@
+globals:
+  Chart: true
+  randomScalingFactor: true
+
+rules:
+  no-console: 0
+  consistent-this: 0

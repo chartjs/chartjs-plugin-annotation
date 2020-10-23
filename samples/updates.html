@@ -3,14 +3,14 @@
 
 <head>
 	<title>Scatter Chart</title>
-	<script src="../node_modules/chart.js/dist/Chart.bundle.js"></script>
+	<script src="../node_modules/chart.js/dist/chart.js"></script>
 	<script src="../chartjs-plugin-annotation.js"></script>
 	<style>
-	canvas {
-		-moz-user-select: none;
-		-webkit-user-select: none;
-		-ms-user-select: none;
-	}
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
 	</style>
 </head>
 
@@ -18,18 +18,21 @@
 	<div style="width:75%">
 		<canvas id="canvas"></canvas>
 	</div>
-	<button onclick="addLine()">Add line</button>
-	<button onclick="removeLine()">Remove line</button>
+	<button id="add">Add line</button>
+	<button id="remove">Remove line</button>
 
 	<script>
-		var randomScalingFactor = function() {
+		document.getElementById('add').addEventListener('click', addLine);
+		document.getElementById('remove').addEventListener('click', removeLine);
+
+		const randomScalingFactor = function() {
 			return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
 		};
-		var randomColor = function(opacity) {
+		const randomColor = function(opacity) {
 			return 'rgba(' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ',' + (opacity || '.3') + ')';
 		};
 
-		var scatterChartData = {
+		const scatterChartData = {
 			datasets: [{
 				label: 'My First dataset',
 				data: [{
@@ -81,7 +84,7 @@
 			}]
 		};
 
-		scatterChartData.datasets.forEach(function(dataset) {
+		scatterChartData.datasets.forEach((dataset) => {
 			dataset.borderColor = randomColor(0.4);
 			dataset.backgroundColor = randomColor(0.1);
 			dataset.pointBorderColor = randomColor(0.7);
@@ -89,18 +92,19 @@
 			dataset.pointBorderWidth = 1;
 		});
 
-		var lines = [{
+		const lines = [{
 			type: 'line',
 			mode: 'horizontal',
-			scaleID: 'y-axis-1',
+			scaleID: 'y',
 			value: randomScalingFactor() + 50,
 			borderColor: randomColor(0.75),
 			borderWidth: 5
 		}];
 
 		window.onload = function() {
-			var ctx = document.getElementById('canvas').getContext('2d');
-			window.myScatter = Chart.Scatter(ctx, {
+			const ctx = document.getElementById('canvas').getContext('2d');
+			window.myScatter = new Chart(ctx, {
+				type: 'scatter',
 				data: scatterChartData,
 				options: {
 					title: {
@@ -108,8 +112,7 @@
 						text: 'Chart.js Scatter Chart'
 					},
 					scales: {
-						xAxes: [{
-							id: 'x-axis-1',
+						x: {
 							position: 'top',
 							gridLines: {
 								zeroLineColor: 'rgba(0,255,0,1)'
@@ -122,9 +125,8 @@
 								maxRotation: 0,
 								reverse: true
 							}
-						}],
-						yAxes: [{
-							id: 'y-axis-1',
+						},
+						y: {
 							position: 'right',
 							gridLines: {
 								zeroLineColor: 'rgba(0,255,0,1)'
@@ -136,31 +138,33 @@
 							ticks: {
 								reverse: true
 							}
-						}]
+						}
 					},
-					annotation: {
-						drawTime: 'afterDraw',
-						annotations: lines
+					plugins: {
+						annotation: {
+							drawTime: 'afterDraw',
+							annotations: lines
+						}
 					}
 				}
 			});
 		};
 
 		function addLine() {
-			lines.push({
+			window.myScatter.options.plugins.annotation.annotations.push({
 				type: 'line',
 				mode: 'horizontal',
-				scaleID: 'y-axis-1',
-				value: randomScalingFactor() * 3,
+				scaleID: 'y',
+				value: randomScalingFactor(),
 				borderColor: randomColor(0.75),
 				borderWidth: 5
 			});
-			window.myScatter.update(0);
+			window.myScatter.update();
 		}
 
 		function removeLine() {
-			lines.pop();
-			window.myScatter.update(0);
+			window.myScatter.options.plugins.annotation.annotations.pop();
+			window.myScatter.update();
 		}
 	</script>
 </body>
