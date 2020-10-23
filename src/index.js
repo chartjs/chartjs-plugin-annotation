@@ -12,10 +12,15 @@ Chart.Annotation.drawTimeOptions = {
 };
 
 Chart.Annotation.defaults = {
+	display: true,
 	drawTime: 'afterDatasetsDraw',
 	dblClickSpeed: 350, // ms
 	events: [],
 	annotations: []
+};
+
+Chart.Annotation.annotationDefaults = {
+	display: true
 };
 
 Chart.Annotation.labelDefaults = {

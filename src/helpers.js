@@ -91,8 +91,9 @@ module.exports = function(Chart) {
 	function initConfig(config) {
 		config = chartHelpers.configMerge(Chart.Annotation.defaults, config);
 		if (chartHelpers.isArray(config.annotations)) {
-			config.annotations.forEach(function(annotation) {
+			config.annotations = config.annotations.map(function(annotation) {
 				annotation.label = chartHelpers.configMerge(Chart.Annotation.labelDefaults, annotation.label);
+				return chartHelpers.configMerge(Chart.Annotation.annotationDefaults, annotation);
 			});
 		}
 		return config;
