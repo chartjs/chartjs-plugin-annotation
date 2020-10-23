@@ -4,8 +4,8 @@
   "version": "3.0.0-beta",
   "author": "Evert Timberg <evert.timberg@gmail.com>",
   "license": "MIT",
-  "main": "chartjs-plugin-annotation.js",
-  "module": "chartjs-plugin-annotation.ems.js",
+  "main": "dist/chartjs-plugin-annotation.js",
+  "module": "dist/chartjs-plugin-annotation.esm.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/chartjs/chartjs-plugin-annotation.git"
