@@ -95,7 +95,11 @@ module.exports = function(Chart) {
 
 		if (eventHandlers.length > 0) {
 			e.stopImmediatePropagation();
-			e.preventDefault();
+
+			if (!helpers.supportsEventListenerOptions) {
+				e.preventDefault();
+			}
+
 			eventHandlers.forEach(function(eventHandler) {
 				// [handler, event, element]
 				eventHandler[0].call(eventHandler[2], eventHandler[1]);
