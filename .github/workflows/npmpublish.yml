@@ -1,0 +1,46 @@
+name: Node.js Package
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm ci
+      - run: npm test
+
+  publish-npm:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - name: Setup and build
+        run: |
+          npm ci
+          npm install -g json
+          json -I -f package.json -e "this.version=\"$VERSION\""
+          json -I -f package-lock.json -e "this.version=\"$VERSION\""
+          npm run build
+          npm pack
+        env:
+          VERSION: ${{ github.event.release.tag_name }}
+      - name: Publish @next
+        run: npm publish --tag next --dry-run
+        if: "github.event.release.prerelease"
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+      - name: Publish @latest
+        run: npm publish --tag latest --dry-run
+        if: "!github.event.release.prerelease"
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
