@@ -1,5 +1,5 @@
 /*!
-* chartjs-plugin-annotation v0.5.7
+* chartjs-plugin-annotation v3.0.0-beta
 * undefined
  * (c) 2020 Chart.js Contributors
  * Released under the MIT License
