@@ -1,7 +1,6 @@
 import {Animations} from 'chart.js';
-import {clipArea, unclipArea} from 'chart.js/helpers/canvas';
-import {isFinite, merge} from 'chart.js/helpers/core';
-
+import {clipArea, unclipArea, isFinite, merge, valueOrDefault} from 'chart.js/helpers';
+import handleEvent from './events';
 import BoxAnnotation from './types/box';
 import LineAnnotation from './types/line';
 
@@ -14,6 +13,10 @@ const annotationTypes = {
 
 export default {
 	id: 'annotation',
+
+	beforeUpdate(chart, options) {
+		bindAfterDataLimits(chart, options);
+	},
 
 	afterUpdate(chart, options) {
 		updateElements(chart, options);
@@ -38,7 +41,7 @@ export default {
 	afterEvent(chart, event, _replay, options) {
 		const events = options.events || [];
 		if (events.indexOf(event.type) !== -1) {
-			handleEvent(chart, event, options);
+			handleEvent(event, chartElements.get(chart));
 		}
 	},
 
@@ -132,160 +135,80 @@ function calculateElementProperties(chart, options, defaults) {
 		y2,
 		width: x2 - x,
 		height: y2 - y,
-		options: merge({}, [defaults, options])
+		options: merge(Object.create(null), [defaults, options])
 	};
 }
 
 function draw(chart, options, caller) {
-	if (options.drawTime !== caller) {
-		return;
-	}
 	const {ctx, chartArea} = chart;
 	const elements = chartElements.get(chart);
 
-	clipArea(ctx, chartArea)
+	clipArea(ctx, chartArea);
 	for (let i = 0; i < elements.length; i++) {
 		const el = elements[i];
-		if ((el.options.drawTime || caller) === caller) {
+		if ((el.options.drawTime || options.drawTime || caller) === caller) {
 			el.draw(ctx);
 		}
 	}
 	unclipArea(ctx);
 }
 
-/*
-export default function(Chart) {
-	var chartHelpers = Chart.helpers;
-
-	var helpers = require('./helpers.js')(Chart);
-	var events = require('./events.js')(Chart);
-
-	var annotationTypes = Chart.Annotation.types;
-
-	function setAfterDataLimitsHook(axisOptions) {
-		helpers.decorate(axisOptions, 'afterDataLimits', function(previous, scale) {
-			if (previous) {
-				previous(scale);
-			}
-			helpers.adjustScaleRange(scale);
-		});
-	}
-
-	function draw(drawTime) {
-		return function(chartInstance, easingDecimal) {
-			var defaultDrawTime = chartInstance.annotation.options.drawTime;
-
-			helpers.elements(chartInstance)
-				.filter(function(element) {
-					return drawTime === (element.options.drawTime || defaultDrawTime);
-				})
-				.forEach(function(element) {
-					element.configure();
-					element.transition(easingDecimal).draw();
-				});
-		};
-	}
-
-	function getAnnotationConfig(chartOptions) {
-		var plugins = chartOptions.plugins;
-		var pluginAnnotation = plugins && plugins.annotation ? plugins.annotation : null;
-		return pluginAnnotation || chartOptions.annotation || {};
-	}
-
-	return {
-		id: 'annotation',
-		beforeInit: function(chartInstance) {
-			var chartOptions = chartInstance.options;
-
-			// Initialize chart instance plugin namespace
-			var ns = chartInstance.annotation = {
-				elements: {},
-				options: helpers.initConfig(getAnnotationConfig(chartOptions)),
-				onDestroy: [],
-				firstRun: true,
-				supported: false
-			};
-
-			// Add the annotation scale adjuster to each scale's afterDataLimits hook
-			chartInstance.ensureScalesHaveIDs();
-			if (chartOptions.scales) {
-				ns.supported = true;
-				chartHelpers.each(chartOptions.scales.xAxes, setAfterDataLimitsHook);
-				chartHelpers.each(chartOptions.scales.yAxes, setAfterDataLimitsHook);
-			}
-		},
-		beforeUpdate: function(chartInstance) {
-			var ns = chartInstance.annotation;
-
-			if (!ns.supported) {
-				return;
-			}
-
-			if (!ns.firstRun) {
-				ns.options = helpers.initConfig(getAnnotationConfig(chartInstance.options));
-			} else {
-				ns.firstRun = false;
-			}
-
-			var elementIds = [];
-
-			// Add new elements, or update existing ones
-			ns.options.annotations.forEach(function(annotation) {
-				var id = annotation.id || helpers.objectId();
-
-				// No element with that ID exists, and it's a valid annotation type
-				if (!ns.elements[id] && annotationTypes[annotation.type]) {
-					var cls = annotationTypes[annotation.type];
-					var element = new cls({
-						id: id,
-						options: annotation,
-						chartInstance: chartInstance,
-					});
-					element.initialize();
-					ns.elements[id] = element;
-					annotation.id = id;
-					elementIds.push(id);
-				} else if (ns.elements[id]) {
-					// Nothing to do for update, since the element config references
-					// the same object that exists in the chart annotation config
-					elementIds.push(id);
-				}
-			});
-
-			// Delete removed elements
-			Object.keys(ns.elements).forEach(function(id) {
-				if (elementIds.indexOf(id) === -1) {
-					ns.elements[id].destroy();
-					delete ns.elements[id];
-				}
-			});
-		},
-		beforeDatasetsDraw: draw('beforeDatasetsDraw'),
-		afterDatasetsDraw: draw('afterDatasetsDraw'),
-		afterDraw: draw('afterDraw'),
-		afterInit: function(chartInstance) {
-			// Detect and intercept events that happen on an annotation element
-			var watchFor = chartInstance.annotation.options.events;
-			if (chartHelpers.isArray(watchFor) && watchFor.length > 0) {
-				var canvas = chartInstance.chart.canvas;
-				var eventHandler = events.dispatcher.bind(chartInstance);
-				events.collapseHoverEvents(watchFor).forEach(function(eventName) {
-					chartHelpers.addEvent(canvas, eventName, eventHandler);
-					chartInstance.annotation.onDestroy.push(function() {
-						chartHelpers.removeEvent(canvas, eventName, eventHandler);
-					});
-				});
-			}
-		},
-		destroy: function(chartInstance) {
-			if (!chartInstance || !chartInstance.annotation) {
-				return;
-			}
-			var deregisterers = chartInstance.annotation.onDestroy;
-			while (deregisterers.length > 0) {
-				deregisterers.pop()();
-			}
+const binds = new WeakSet();
+function bindAfterDataLimits(chart, options) {
+	const scales = chart.scales || {};
+	Object.keys(scales).forEach(id => {
+		const scale = chart.scales[id];
+		if (binds.has(scale)) {
+			return;
 		}
-	};
-};
-*/
+		const originalHook = scale.afterDataLimits;
+		scale.afterDataLimits = function(...args) {
+			if (originalHook) {
+				originalHook.apply(scale, [...args]);
+			}
+			adjustScaleRange(scale, options);
+		};
+		binds.add(scale);
+	});
+}
+
+function adjustScaleRange(scale, options) {
+	const annotations = options.annotations || [];
+	const range = getScaleLimits(scale, annotations);
+	let changed = false;
+	if (isFinite(range.min) &&
+		typeof scale.options.min === 'undefined' &&
+		typeof scale.options.suggestedMin === 'undefined') {
+		scale.min = range.min;
+		changed = true;
+	}
+	if (isFinite(range.max) &&
+		typeof scale.options.max === 'undefined' &&
+		typeof scale.options.suggestedMax === 'undefined') {
+		scale.max = range.max;
+		changed = true;
+	}
+	if (changed && typeof scale.handleTickRangeOptions === 'function') {
+		scale.handleTickRangeOptions();
+	}
+}
+
+function getScaleLimits(scale, annotations) {
+	const axis = scale.axis;
+	const scaleID = scale.id;
+	const scaleIDOption = scale.axis + 'ScaleID';
+	const scaleAnnotations = annotations.filter(annotation => annotation[scaleIDOption] === scaleID || annotation.scaleID === scaleID);
+	let min = valueOrDefault(scale.min, Number.NEGATIVE_INFINITY);
+	let max = valueOrDefault(scale.max, Number.POSITIVE_INFINITY);
+	scaleAnnotations.forEach(annotation => {
+		['value', 'endValue', axis + 'Min', axis + 'Max'].forEach(prop => {
+			if (prop in annotation) {
+				const value = annotation[prop];
+				min = Math.min(min, value);
+				max = Math.max(max, value);
+			}
+		});
+	});
+	return {min, max};
+}
+
