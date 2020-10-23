@@ -1,10 +1,13 @@
 {
   "name": "chartjs-plugin-annotation",
   "description": "Annotations for Chart.js",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "author": "Evert Timberg <evert.timberg@gmail.com>",
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "dist/chartjs-plugin-annotation.js",
+  "files": [
+    "dist/*.js"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/chartjs/chartjs-plugin-annotation.git"
