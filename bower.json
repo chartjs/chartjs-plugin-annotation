@@ -3,5 +3,5 @@
   "description": "Annotations for Chart.js",
   "author": "Evert Timberg <evert.timberg@gmail.com>",
   "license": "MIT",
-  "main": "./chartjs-plugin-annotation.js"
+  "main": "dist/chartjs-plugin-annotation.js"
 }
