@@ -167,6 +167,24 @@ module.exports = function(Chart) {
 			})
 			.slice(0, 1)[0]; // return only the top item
 	}
+	/**
+	 * Copied from https://github.com/chartjs/Chart.js/blob/4f722ab619be071e90dd9ea67db27032dc9edd2a/src/platforms/platform.dom.js#L109
+	 */
+	var supportsEventListenerOptions = (function() {
+		var supports = false;
+		try {
+			var options = Object.defineProperty({}, 'passive', {
+				// eslint-disable-next-line getter-return
+				get: function() {
+					supports = true;
+				}
+			});
+			window.addEventListener('e', null, options);
+		} catch (e) {
+			// continue regardless of error
+		}
+		return supports;
+	}());
 
 	return {
 		initConfig: initConfig,
@@ -179,7 +197,8 @@ module.exports = function(Chart) {
 		adjustScaleRange: adjustScaleRange,
 		getNearestItems: getNearestItems,
 		getEventHandlerName: getEventHandlerName,
-		createMouseEvent: createMouseEvent
+		createMouseEvent: createMouseEvent,
+		supportsEventListenerOptions: supportsEventListenerOptions
 	};
 };
 

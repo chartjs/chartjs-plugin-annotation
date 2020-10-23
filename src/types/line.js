@@ -157,11 +157,26 @@ module.exports = function(Chart) {
 			model.labelYAdjust = options.label.yAdjust;
 			model.labelEnabled = options.label.enabled;
 			model.labelContent = options.label.content;
+			model.labelRotation = options.label.rotation;
 
 			var lineBounds = this.getLineBoundaries(model);
 			ctx.font = chartHelpers.fontString(model.labelFontSize, model.labelFontStyle, model.labelFontFamily);
 			var textWidth = ctx.measureText(model.labelContent).width;
-			var textHeight = ctx.measureText('M').width;
+			var textHeight = model.labelFontSize;
+			model.labelHeight = textHeight + (2 * model.labelYPadding);
+
+			if (model.labelContent && chartHelpers.isArray(model.labelContent)) {
+				var labelContentArray = model.labelContent.slice(0);
+				var longestLabel = labelContentArray.sort(function(a, b) {
+					return b.length - a.length;
+				})[0];
+				textWidth = ctx.measureText(longestLabel).width;
+
+				model.labelHeight = (textHeight * model.labelContent.length) + (2 * model.labelYPadding);
+				// Add padding in between each label item
+				model.labelHeight += model.labelYPadding * (model.labelContent.length - 1);
+			}
+
 			var labelPosition = calculateLabelPosition(
 				model, textWidth, textHeight,
 				model.labelXPadding, model.labelYPadding,
@@ -172,7 +187,6 @@ module.exports = function(Chart) {
 			model.labelX = labelPosition.x - model.labelXPadding;
 			model.labelY = labelPosition.y - model.labelYPadding;
 			model.labelWidth = textWidth + (2 * model.labelXPadding);
-			model.labelHeight = textHeight + (2 * model.labelYPadding);
 
 			model.borderColor = options.borderColor;
 			model.borderWidth = options.borderWidth;
@@ -290,12 +304,15 @@ module.exports = function(Chart) {
 				ctx.rect(view.clip.x1, view.clip.y1, view.clip.x2 - view.clip.x1, view.clip.y2 - view.clip.y1);
 				ctx.clip();
 
+				ctx.translate(view.labelX + (view.labelWidth / 2), view.labelY + (view.labelHeight / 2));
+				ctx.rotate(view.labelRotation * Math.PI / 180);
+
 				ctx.fillStyle = view.labelBackgroundColor;
 				// Draw the tooltip
 				chartHelpers.drawRoundedRectangle(
 					ctx,
-					view.labelX, // x
-					view.labelY, // y
+					-(view.labelWidth / 2), // x
+					-(view.labelHeight / 2), // y
 					view.labelWidth, // width
 					view.labelHeight, // height
 					view.labelCornerRadius // radius
@@ -310,12 +327,23 @@ module.exports = function(Chart) {
 				);
 				ctx.fillStyle = view.labelFontColor;
 				ctx.textAlign = 'center';
-				ctx.textBaseline = 'middle';
-				ctx.fillText(
-					view.labelContent,
-					view.labelX + (view.labelWidth / 2),
-					view.labelY + (view.labelHeight / 2)
-				);
+
+				if (view.labelContent && chartHelpers.isArray(view.labelContent)) {
+					var textYPosition = -(view.labelHeight / 2) + view.labelYPadding;
+					for (var i = 0; i < view.labelContent.length; i++) {
+						ctx.textBaseline = 'top';
+						ctx.fillText(
+							view.labelContent[i],
+							-(view.labelWidth / 2) + (view.labelWidth / 2),
+							textYPosition
+						);
+
+						textYPosition += view.labelFontSize + view.labelYPadding;
+					}
+				} else {
+					ctx.textBaseline = 'middle';
+					ctx.fillText(view.labelContent, 0, 0);
+				}
 			}
 
 			ctx.restore();

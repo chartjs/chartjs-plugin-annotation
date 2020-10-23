@@ -3,6 +3,7 @@ module.exports = function(Chart) {
 	var chartHelpers = Chart.helpers;
 	var helpers = require('./helpers.js')(Chart);
 	/* eslint-enable global-require */
+	var lastHoveredElement;
 
 	function collapseHoverEvents(events) {
 		var hover = false;
@@ -25,6 +26,38 @@ module.exports = function(Chart) {
 		return filteredEvents;
 	}
 
+	function startHover(element, e, eventHandlers) {
+		var options = element.options;
+		if (!element.hovering) {
+			// fire hover events
+			['mouseenter', 'mouseover'].forEach(function(eventName) {
+				var handlerName = helpers.getEventHandlerName(eventName);
+				var hoverEvent = helpers.createMouseEvent(eventName, e); // recreate the event to match the handler
+				element.hovering = true;
+				lastHoveredElement = element;
+				if (typeof options[handlerName] === 'function') {
+					eventHandlers.push([options[handlerName], hoverEvent, element]);
+				}
+			});
+		}
+	}
+
+	function endHover(element, e, eventHandlers) {
+		var options = element.options;
+		if (element.hovering) {
+			// fire hover off events
+			element.hovering = false;
+			lastHoveredElement = undefined;
+			['mouseout', 'mouseleave'].forEach(function(eventName) {
+				var handlerName = helpers.getEventHandlerName(eventName);
+				var hoverEvent = helpers.createMouseEvent(eventName, e); // recreate the event to match the handler
+				if (typeof options[handlerName] === 'function') {
+					eventHandlers.push([options[handlerName], hoverEvent, element]);
+				}
+			});
+		}
+	}
+
 	function dispatcher(e) {
 		var ns = this.annotation;
 		var elements = helpers.elements(this);
@@ -39,29 +72,16 @@ module.exports = function(Chart) {
 		// Detect hover events
 		if (e.type === 'mousemove') {
 			if (element && !element.hovering) {
+				// end hover on the last hovered element
+				if (lastHoveredElement && element !== lastHoveredElement) {
+					endHover(lastHoveredElement, e, eventHandlers);
+				}
 				// hover started
-				['mouseenter', 'mouseover'].forEach(function(eventName) {
-					var handlerName = helpers.getEventHandlerName(eventName);
-					var hoverEvent = helpers.createMouseEvent(eventName, e); // recreate the event to match the handler
-					element.hovering = true;
-					if (typeof options[handlerName] === 'function') {
-						eventHandlers.push([options[handlerName], hoverEvent, element]);
-					}
-				});
+				startHover(element, e, eventHandlers);
 			} else if (!element) {
 				// hover ended
 				elements.forEach(function(el) {
-					if (el.hovering) {
-						el.hovering = false;
-						var opt = el.options;
-						['mouseout', 'mouseleave'].forEach(function(eventName) {
-							var handlerName = helpers.getEventHandlerName(eventName);
-							var hoverEvent = helpers.createMouseEvent(eventName, e); // recreate the event to match the handler
-							if (typeof opt[handlerName] === 'function') {
-								eventHandlers.push([opt[handlerName], hoverEvent, el]);
-							}
-						});
-					}
+					endHover(el, e, eventHandlers);
 				});
 			}
 		}
@@ -95,7 +115,11 @@ module.exports = function(Chart) {
 
 		if (eventHandlers.length > 0) {
 			e.stopImmediatePropagation();
-			e.preventDefault();
+
+			if (!helpers.supportsEventListenerOptions) {
+				e.preventDefault();
+			}
+
 			eventHandlers.forEach(function(eventHandler) {
 				// [handler, event, element]
 				eventHandler[0].call(eventHandler[2], eventHandler[1]);
