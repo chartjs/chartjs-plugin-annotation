@@ -18,10 +18,13 @@
 	<div style="width:75%">
 		<canvas id="canvas"></canvas>
 	</div>
-	<button onclick="addLine()">Add line</button>
-	<button onclick="removeLine()">Remove line</button>
+	<button id="add">Add line</button>
+	<button id="remove">Remove line</button>
 
 	<script>
+		document.getElementById('add').addEventListener('click', addLine);
+		document.getElementById('remove').addEventListener('click', removeLine);
+
 		const randomScalingFactor = function() {
 			return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
 		};

@@ -29,8 +29,6 @@
 	<button id="addData">Add Data</button>
 	<button id="removeData">Remove Data</button>
 	<script>
-		/* global Chart, randomScalingFactor */
-
 		function newDate(days) {
 			const date = new Date();
 			date.setDate(date.getDate() + days);
@@ -107,7 +105,7 @@
 						type: 'time',
 						time: {
 							// round: 'day'
-							tooltipFormat: 'll HH:mm'
+							tooltipFormat: 'dd.MM.yyyy HH:mm'
 						},
 						scaleLabel: {
 							display: true,

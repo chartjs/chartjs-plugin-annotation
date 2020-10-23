@@ -18,9 +18,10 @@
 <body>
 	<div id="container" style="width: 75%;margin: auto">
 		<div><canvas id="canvas"></canvas></div>
-		<input type="range" style="width:100%" oninput="update()"/>
+		<input id="update" type="range" style="width:100%"/>
 	</div>
 	<script>
+		document.getElementById('update').addEventListener('input', update);
 
 		/* eslint-disable no-undef,no-console */
 		const ctx = document.getElementById('canvas').getContext('2d');

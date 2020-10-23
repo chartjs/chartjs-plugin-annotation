@@ -21,14 +21,14 @@
 		</div>
 	</div>
 	<script>
-		var randomScalingFactor = function() {
+		const randomScalingFactor = function() {
 			return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
 		};
-		var randomColor = function(opacity) {
+		const randomColor = function(opacity) {
 			return 'rgba(' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ',' + (opacity || '.3') + ')';
 		};
 
-		var scatterChartData = {
+		const scatterChartData = {
 			datasets: [{
 				label: 'My First dataset',
 				data: [{
@@ -80,7 +80,7 @@
 			}]
 		};
 
-		scatterChartData.datasets.forEach(function(dataset) {
+		scatterChartData.datasets.forEach((dataset) => {
 			dataset.borderColor = randomColor(0.4);
 			dataset.backgroundColor = randomColor(0.1);
 			dataset.pointBorderColor = randomColor(0.7);
@@ -89,7 +89,7 @@
 		});
 
 		window.onload = function() {
-			var ctx = document.getElementById('canvas').getContext('2d');
+			const ctx = document.getElementById('canvas').getContext('2d');
 			window.myScatter = new Chart(ctx, {
 				type: 'scatter',
 				data: scatterChartData,
@@ -142,7 +142,7 @@
 								backgroundColor: 'rgba(101, 33, 171, 0.5)',
 								borderColor: 'rgb(101, 33, 171)',
 								borderWidth: 1,
-								onDblclick: function(e) {
+								onDblclick(e) {
 									console.log('Box', e.type, this);
 								}
 							}]
