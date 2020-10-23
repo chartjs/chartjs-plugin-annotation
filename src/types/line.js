@@ -38,7 +38,7 @@ module.exports = function(Chart) {
 		};
 	}
 
-	function calculateLabelPosition(view, width, height, padWidth, padHeight) {
+	function calculateLabelPosition(view, width, height, padWidth, padHeight, x1, x2, y1, y2) {
 		var line = view.line;
 		var ret = {};
 		var xa = 0;
@@ -49,23 +49,23 @@ module.exports = function(Chart) {
 		case view.mode === verticalKeyword && view.labelPosition === 'top':
 			ya = padHeight + view.labelYAdjust;
 			xa = (width / 2) + view.labelXAdjust;
-			ret.y = view.y1 + ya;
-			ret.x = (isFinite(line.m) ? line.getX(ret.y) : view.x1) - xa;
+			ret.y = y1 + ya;
+			ret.x = (isFinite(line.m) ? line.getX(ret.y) : x1) - xa;
 			break;
 
 		// bottom align
 		case view.mode === verticalKeyword && view.labelPosition === 'bottom':
 			ya = height + padHeight + view.labelYAdjust;
 			xa = (width / 2) + view.labelXAdjust;
-			ret.y = view.y2 - ya;
-			ret.x = (isFinite(line.m) ? line.getX(ret.y) : view.x1) - xa;
+			ret.y = y2 - ya;
+			ret.x = (isFinite(line.m) ? line.getX(ret.y) : x1) - xa;
 			break;
 
 		// left align
 		case view.mode === horizontalKeyword && view.labelPosition === 'left':
 			xa = padWidth + view.labelXAdjust;
 			ya = -(height / 2) + view.labelYAdjust;
-			ret.x = view.x1 + xa;
+			ret.x = x1 + xa;
 			ret.y = line.getY(ret.x) + ya;
 			break;
 
@@ -73,14 +73,14 @@ module.exports = function(Chart) {
 		case view.mode === horizontalKeyword && view.labelPosition === 'right':
 			xa = width + padWidth + view.labelXAdjust;
 			ya = -(height / 2) + view.labelYAdjust;
-			ret.x = view.x2 - xa;
+			ret.x = x2 - xa;
 			ret.y = line.getY(ret.x) + ya;
 			break;
 
 		// center align
 		default:
-			ret.x = ((view.x1 + view.x2 - width) / 2) + view.labelXAdjust;
-			ret.y = ((view.y1 + view.y2 - height) / 2) + view.labelYAdjust;
+			ret.x = ((x1 + x2 - width) / 2) + view.labelXAdjust;
+			ret.y = ((y1 + y2 - height) / 2) + view.labelYAdjust;
 		}
 
 		return ret;
@@ -139,6 +139,9 @@ module.exports = function(Chart) {
 
 			model.line = new LineFunction(model);
 			model.mode = options.mode;
+			model.onlyForDataIndex = helpers.isValid(options.onlyForDataIndex) ? options.onlyForDataIndex : NaN;
+			model.datasetIndex = helpers.isValid(options.datasetIndex) ? options.datasetIndex : 0;
+			model.linePadding = helpers.isValid(options.linePadding) ? options.linePadding : 0;
 
 			// Figure out the label:
 			model.labelBackgroundColor = options.label.backgroundColor;
@@ -156,6 +159,7 @@ module.exports = function(Chart) {
 			model.labelContent = options.label.content;
 			model.labelRotation = options.label.rotation;
 
+			var lineBounds = this.getLineBoundaries(model);
 			ctx.font = chartHelpers.fontString(model.labelFontSize, model.labelFontStyle, model.labelFontFamily);
 			var textWidth = ctx.measureText(model.labelContent).width;
 			var textHeight = model.labelFontSize;
@@ -173,7 +177,13 @@ module.exports = function(Chart) {
 				model.labelHeight += model.labelYPadding * (model.labelContent.length - 1);
 			}
 
-			var labelPosition = calculateLabelPosition(model, textWidth, textHeight, model.labelXPadding, model.labelYPadding);
+			var labelPosition = calculateLabelPosition(
+				model, textWidth, textHeight,
+				model.labelXPadding, model.labelYPadding,
+				lineBounds.x1, lineBounds.x2,
+				lineBounds.y1, lineBounds.y2
+			);
+
 			model.labelX = labelPosition.x - model.labelXPadding;
 			model.labelY = labelPosition.y - model.labelYPadding;
 			model.labelWidth = textWidth + (2 * model.labelXPadding);
@@ -222,6 +232,44 @@ module.exports = function(Chart) {
 		getArea: function() {
 			return Math.sqrt(Math.pow(this.getWidth(), 2) + Math.pow(this.getHeight(), 2));
 		},
+		_getLineBoundariesForHorizontalLine: function(chartModel, barPercentage, linePadding) {
+			var halfWidth = chartModel.width / 2;
+			return {
+				x1: (chartModel.x - halfWidth) + linePadding,
+				x2: (chartModel.x + halfWidth) - linePadding
+			};
+		},
+		_getLineBoundariesForVerticalLine: function(chartModel, barPercentage, linePadding) {
+			var height = chartModel.height / barPercentage;
+			var halfBarHeight = height / 2.0;
+			return {
+				y1: chartModel.y - halfBarHeight - linePadding,
+				y2: chartModel.y + halfBarHeight + linePadding
+			};
+		},
+		getLineBoundaries: function(view) {
+			var defaultX = {x1: view.x1, x2: view.x2};
+			var defaultY = {y1: view.y1, y2: view.y2};
+
+			if (isNaN(view.onlyForDataIndex)) {
+				return Object.assign(defaultX, defaultY);
+			}
+
+			var datasetMeta = this.chartInstance.getDatasetMeta(view.datasetIndex);
+			var data = datasetMeta.data[view.onlyForDataIndex];
+			if (!('_model' in data)) {
+				datasetMeta.controller.update();
+			}
+
+			var barPercentage = datasetMeta.controller.getRuler().scale.options.barPercentage;
+			if (this.options.mode === horizontalKeyword) {
+				var boundsX = this._getLineBoundariesForHorizontalLine(data._model, barPercentage, view.linePadding);
+				return Object.assign(boundsX, defaultY);
+			}
+			var boundsY = this._getLineBoundariesForVerticalLine(data._model, barPercentage, view.linePadding);
+			return Object.assign(boundsY, defaultX);
+
+		},
 		draw: function() {
 			var view = this._view;
 			var ctx = this.chartInstance.chart.ctx;
@@ -247,8 +295,15 @@ module.exports = function(Chart) {
 
 			// Draw
 			ctx.beginPath();
-			ctx.moveTo(view.x1, view.y1);
-			ctx.lineTo(view.x2, view.y2);
+
+			var bounds = this.getLineBoundaries(view);
+			var x1 = bounds.x1;
+			var x2 = bounds.x2;
+			var y1 = bounds.y1;
+			var y2 = bounds.y2;
+
+			ctx.moveTo(x1, y1);
+			ctx.lineTo(x2, y2);
 			ctx.stroke();
 
 			if (view.labelEnabled && view.labelContent) {
