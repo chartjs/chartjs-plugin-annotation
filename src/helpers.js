@@ -23,10 +23,12 @@ function isValid(rawValue) {
 }
 
 function getPixelForValue(scale, value, defaultValue) {
-	if(Array.isArray(value) && value.length == 2)
+	if(Array.isArray(value) && value.length == 2) {
 		return (getPixelForValue(scale, value[0], defaultValue) + getPixelForValue(scale, value[1], defaultValue)) / 2;
-	if(isValid(value))
+	}
+	if(isValid(value)) {
 		return scale.getPixelForValue(value);
+	}
 	return defaultValue;
 }
 
