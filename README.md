@@ -2,7 +2,8 @@
 
 [![CDNJS version](https://img.shields.io/cdnjs/v/chartjs-plugin-annotation.svg)](https://cdnjs.com/libraries/chartjs-plugin-annotation)
 
-An annotation plugin for Chart.js >= 2.4.0
+An annotation plugin for Chart.js >= 3.0.0
+For Chart.js 2.4.0 to 2.9.x support, use [version 0.5.7 of this plugin](https://github.com/chartjs/chartjs-plugin-annotation/releases/tag/v0.5.7)
 
 This plugin draws lines and boxes on the chart area.
 
