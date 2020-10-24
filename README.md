@@ -45,7 +45,6 @@ To configure the annotations plugin, you can simply add new config options to yo
             // See below for detailed descriptions of the annotation options
             annotations: [{
                 drawTime: 'afterDraw', // overrides annotation.drawTime if set
-                id: 'a-line-1', // optional
                 type: 'line',
                 mode: 'horizontal',
                 scaleID: 'y',
