@@ -50,7 +50,7 @@ export default {
 
 	beforeEvent(chart, event, _replay, options) {
 		const state = chartStates.get(chart);
-		handleEvent(event, state, event, options);
+		handleEvent(chart, state, event, options);
 	},
 
 	destroy(chart) {
