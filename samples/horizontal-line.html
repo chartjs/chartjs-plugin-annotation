@@ -145,10 +145,10 @@
 									element.options.borderColor = 'rgba(255, 0, 0, 1.0)';
 									element.options.label.enabled = true;
 									element.options.label.content = 'click';
-									element.chartInstance.draw();
+									context.chart.draw();
 									setTimeout(() => {
 										element.options.borderColor = 'rgba(255, 0, 0, 0.5)';
-										element.chartInstance.draw();
+										context.chart.draw();
 									}, 500);
 								},
 								dblclick(context) {
@@ -156,10 +156,10 @@
 									element.options.borderColor = 'rgba(0, 255, 0, 1.0)';
 									element.options.label.enabled = true;
 									element.options.label.content = 'dblclick';
-									element.chartInstance.draw();
+									context.chart.draw();
 									setTimeout(() => {
 										element.options.borderColor = 'rgba(255, 0, 0, 0.5)';
-										element.chartInstance.draw();
+										context.chart.draw();
 									}, 500);
 								},
 								enter(context) {
@@ -167,20 +167,20 @@
 									element.options.borderWidth = 7;
 									element.options.label.enabled = true;
 									element.options.label.content = 'enter';
-									element.chartInstance.draw();
-									element.chartInstance.canvas.style.cursor = 'pointer';
+									context.chart.draw();
+									context.chart.canvas.style.cursor = 'pointer';
 								},
 								leave(context) {
 									const element = context.element;
 									element.options.borderWidth = 4;
 									element.options.label.enabled = true;
 									element.options.label.content = 'leave';
-									element.chartInstance.draw();
+									context.chart.draw();
 									setTimeout(() => {
 										element.options.label.enabled = false;
-										element.chartInstance.draw();
+										context.chart.draw();
 									}, 500);
-									element.chartInstance.canvas.style.cursor = 'initial';
+									context.chart.canvas.style.cursor = 'initial';
 								}
 							}]
 						}
