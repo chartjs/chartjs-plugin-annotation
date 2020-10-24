@@ -1,0 +1,70 @@
+# 3.x Migration Guide
+
+chartjs-plugin-annotation 3.0 introduces a number of breaking changes.
+
+## Setup and installation
+
+* Chart.js 3 is tree-shakeable and thus requires registering the plugins when used as an `npm` module. Here is an example:
+
+```javascript
+import { Chart, LineController, LineElement, PointElement, LinearScale } from 'chart.js';
+import { * as annotation } from 'chartjs-plugin-annotation';
+
+Chart.register(LineController, LineElement, PointElement, LinearScale, annotation);
+
+const Chart = new Chart(ctx, {
+    type: 'line',
+    // data: ...
+    options: {
+        plugins: {
+            annotation: {
+                // annotation plugin options
+                annotations: [{
+                    // annotation element options
+                    type: 'line',
+                    mode: 'horizontal',
+                    scaleID: 'y',
+                    value: 25,
+                    borderColor: 'red',
+                    borderWidth: 2
+                }]
+            }
+        }
+    }
+}):
+```
+
+## Options
+
+### Plugin options
+
+* `events` array was removed. Listened events are determined automatically from the hooks specified.
+* `enter`, `leave`, `click`, `dblclick` event hooks can now be defined also at plugin level options.
+
+### Element options
+
+* `id` was removed.
+* `onMouseenter` was removed. Use `enter` instead.
+* `onMouseleave` was removed. Use `leave` instead.
+* `onMouseover` was removed. Use `enter` instead.
+* `onMouseout` was removed. Use `leave` instead.
+* `onMousemove` was removed.
+* `onMousedown` was removed. Use `click` instead.
+* `onMouseup` was removed. Use `click` instead.
+* `onClick` was removed. Use `click` instead.
+* `onDblclick` was removed. Use `dblclick` instead.
+* `onContextmenu` was removed.
+* `onWheel` was removed.
+
+#### Label
+
+* `fontColor` was renamed to `font.color`
+* `fontFamily` was renamed to `font.family`
+* `fontSize` was renamed to `font.size`
+* `fontStyle` was renamed to `font.style`
+* `lineHeight` was renamed to `font.lineHeight`
+
+## Event hooks
+
+* Event hooks are now supplied with single `context` parameter, containing `chart` and `element` properties. `chart` is the chart instance and `element` is the event target annotation element.
+* Events are now fired from `beforeEvent` hook.
