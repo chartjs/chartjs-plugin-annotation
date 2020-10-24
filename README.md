@@ -36,6 +36,11 @@ To configure the annotations plugin, you can simply add new config options to yo
             // amount.
             dblClickSpeed: 350, // ms (default)
 
+            // Fires when an annotation is hovered.
+            enter: function(context) {
+                // context: {chart, element}
+            },
+
             // Array of annotation configuration objects
             // See below for detailed descriptions of the annotation options
             annotations: [{
@@ -48,10 +53,13 @@ To configure the annotations plugin, you can simply add new config options to yo
                 borderColor: 'red',
                 borderWidth: 2,
 
+                // Event hooks can be defined per annotation (`click` below) or
+                // at chart level (`enter` above). If defined in both places,
+                // the one defined per annotation takes precedence.
+
                 // Fires when the user clicks this annotation on the chart
-                // (be sure to enable the event in the events array below).
                 click: function(context) {
-                    // `this` is bound to the annotation element
+                    // context: {chart, element}
                 }
             }]
         }
@@ -69,9 +77,6 @@ Vertical or horizontal lines are supported.
 
     // optional drawTime to control layering, overrides global drawTime setting
     drawTime: 'afterDatasetsDraw',
-
-    // optional annotation ID (must be unique)
-    id: 'a-line-1',
 
     // set to 'vertical' to draw a vertical line
     mode: 'horizontal',
@@ -115,7 +120,7 @@ Vertical or horizontal lines are supported.
 
             // Font color of text, default below
             color: "#fff",
-        }
+        },
 
         // Padding of label to add left/right, default below
         xPadding: 6,
@@ -149,7 +154,7 @@ Vertical or horizontal lines are supported.
         rotation: 90
     },
 
-    // Event hooks
+    // Event hooks - context: {chart, element}
     enter: function(context) {},
     leave: function(context) {},
     click: function(context) {},
@@ -169,9 +174,6 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 
     // optional drawTime to control layering, overrides global drawTime setting
     drawTime: 'beforeDatasetsDraw',
-
-    // optional annotation ID (must be unique)
-    id: 'a-box-1',
 
     // ID of the X scale to bind onto
     xScaleID: 'x',
@@ -200,7 +202,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
     // Fill color
     backgroundColor: 'green',
 
-    // Event hooks
+    // Event hooks - context: {chart, element}
     enter: function(context) {},
     leave: function(context) {},
     click: function(context) {},
