@@ -61,7 +61,6 @@ export default {
 		drawTime: 'afterDatasetsDraw',
 		dblClickSpeed: 350, // ms
 		annotations: [],
-		listeners: {},
 		animation: {
 			numbers: {
 				properties: ['x', 'y', 'x2', 'y2', 'width', 'height'],

@@ -65,12 +65,11 @@ function handleMoveEvents(chart, state, event) {
 
 	if (event.type === 'mousemove') {
 		element = getNearestItem(state.elements, event);
-	} else if (event.type !== 'mouseout') {
-		return;
 	}
 
 	const previous = state.hovered;
 	state.hovered = element;
+
 	dispatchMoveEvents(chart, state, previous, element);
 }
 
@@ -108,18 +107,8 @@ function handleClickEvents(chart, state, event, options) {
 	}
 }
 
-function dispatchEvent(chart, state, handler, element) {
-	if (!handler) {
-		return;
-	}
-
-	if (callHandler(handler, [{chart, element}]) === true) {
-		// Users are allowed to tweak the given context by injecting values that can be
-		// used in scriptable options to display labels differently based on the current
-		// event (e.g. highlight an hovered label). That's why we update the label with
-		// the output context and schedule a new chart render by setting it dirty.
-		state.dirty = true;
-	}
+function dispatchEvent(chart, _state, handler, element) {
+	callHandler(handler, [{chart, element}]);
 }
 
 function getNearestItem(elements, position) {
