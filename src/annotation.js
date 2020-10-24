@@ -14,16 +14,14 @@ const annotationTypes = {
 export default {
 	id: 'annotation',
 
-	beforeUpdate(chart, options) {
-		bindAfterDataLimits(chart, options);
+	beforeUpdate(chart, args, options) {
+		if (!args.mode) {
+			bindAfterDataLimits(chart, options);
+		}
 	},
 
-	afterUpdate(chart, options) {
-		updateElements(chart, options);
-	},
-
-	resize(chart, options) {
-		updateElements(chart, options, 'resize');
+	afterUpdate(chart, args, options) {
+		updateElements(chart, options, args.mode);
 	},
 
 	beforeDatasetDraw(chart, options) {
@@ -174,7 +172,7 @@ function bindAfterDataLimits(chart, options) {
 
 function getAnnotationOptions(chart, options) {
 	const elems = chartElements.get(chart);
-	if (elems) {
+	if (elems && elems.length) {
 		return elems.map(el => el.options);
 	}
 	return options.annotations || [];
