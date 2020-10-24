@@ -4,7 +4,7 @@
 <head>
 	<title>Scatter Chart</title>
 	<script src="../node_modules/chart.js/dist/chart.js"></script>
-	<script src="../chartjs-plugin-annotation.js"></script>
+	<script src="../dist/chartjs-plugin-annotation.js"></script>
 	<style>
 		canvas {
 			-moz-user-select: none;
@@ -146,10 +146,10 @@
 									element.options.borderColor = 'rgba(255, 0, 0, 1.0)';
 									element.options.label.enabled = true;
 									element.options.label.content = e.type;
-									element.chartInstance.update();
+									element.chartInstance.draw();
 									setTimeout(() => {
 										element.options.borderColor = 'rgba(255, 0, 0, 0.5)';
-										element.chartInstance.update();
+										element.chartInstance.draw();
 									}, 500);
 								},
 								onDblclick(e) {
@@ -157,10 +157,10 @@
 									element.options.borderColor = 'rgba(0, 255, 0, 1.0)';
 									element.options.label.enabled = true;
 									element.options.label.content = e.type;
-									element.chartInstance.update();
+									element.chartInstance.draw();
 									setTimeout(() => {
 										element.options.borderColor = 'rgba(255, 0, 0, 0.5)';
-										element.chartInstance.update();
+										element.chartInstance.draw();
 									}, 500);
 								},
 								onMouseover(e) {
@@ -168,7 +168,7 @@
 									element.options.borderWidth = 7;
 									element.options.label.enabled = true;
 									element.options.label.content = e.type;
-									element.chartInstance.update();
+									element.chartInstance.draw();
 									element.chartInstance.chart.canvas.style.cursor = 'pointer';
 								},
 								onMouseout(e) {
@@ -176,10 +176,10 @@
 									element.options.borderWidth = 4;
 									element.options.label.enabled = true;
 									element.options.label.content = e.type;
-									element.chartInstance.update();
+									element.chartInstance.draw();
 									setTimeout(() => {
 										element.options.label.enabled = false;
-										element.chartInstance.update();
+										element.chartInstance.draw();
 									}, 500);
 									element.chartInstance.chart.canvas.style.cursor = 'initial';
 								}

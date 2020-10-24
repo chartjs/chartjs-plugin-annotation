@@ -129,6 +129,7 @@ function calculateElementProperties(chart, options, defaults) {
 	}
 
 	return {
+		chartInstance: chart,
 		x,
 		y,
 		x2,
