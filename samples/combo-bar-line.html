@@ -86,7 +86,9 @@
 					},
 					plugins: {
 						annotation: {
-							events: ['click'],
+							click(context) {
+								console.log('Annotation', context);
+							},
 							annotations: [{
 								drawTime: 'afterDatasetsDraw',
 								id: 'hline',
@@ -101,10 +103,6 @@
 									content: 'Test Label',
 									enabled: true
 								},
-								onClick(e) {
-									// The annotation is is bound to the `this` variable
-									console.log('Annotation', e.type, this);
-								}
 							}, {
 								drawTime: 'beforeDatasetsDraw',
 								type: 'box',
@@ -117,9 +115,6 @@
 								backgroundColor: 'rgba(101, 33, 171, 0.5)',
 								borderColor: 'rgb(101, 33, 171)',
 								borderWidth: 1,
-								onClick(e) {
-									console.log('Box', e.type, this);
-								}
 							}]
 						}
 					}

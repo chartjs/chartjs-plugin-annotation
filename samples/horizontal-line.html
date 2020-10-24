@@ -129,7 +129,6 @@
 					},
 					plugins: {
 						annotation: {
-							events: ['click', 'dblclick', 'mouseover', 'mouseout'],
 							annotations: [{
 								type: 'line',
 								mode: 'horizontal',
@@ -141,47 +140,47 @@
 									enabled: false,
 									content: 'Test label'
 								},
-								onClick(e) {
-									const element = this;
+								click(context) {
+									const element = context.element;
 									element.options.borderColor = 'rgba(255, 0, 0, 1.0)';
 									element.options.label.enabled = true;
-									element.options.label.content = e.type;
+									element.options.label.content = 'click';
 									element.chartInstance.draw();
 									setTimeout(() => {
 										element.options.borderColor = 'rgba(255, 0, 0, 0.5)';
 										element.chartInstance.draw();
 									}, 500);
 								},
-								onDblclick(e) {
-									const element = this;
+								dblclick(context) {
+									const element = context.element;
 									element.options.borderColor = 'rgba(0, 255, 0, 1.0)';
 									element.options.label.enabled = true;
-									element.options.label.content = e.type;
+									element.options.label.content = 'dblclick';
 									element.chartInstance.draw();
 									setTimeout(() => {
 										element.options.borderColor = 'rgba(255, 0, 0, 0.5)';
 										element.chartInstance.draw();
 									}, 500);
 								},
-								onMouseover(e) {
-									const element = this;
+								enter(context) {
+									const element = context.element;
 									element.options.borderWidth = 7;
 									element.options.label.enabled = true;
-									element.options.label.content = e.type;
+									element.options.label.content = 'enter';
 									element.chartInstance.draw();
-									element.chartInstance.chart.canvas.style.cursor = 'pointer';
+									element.chartInstance.canvas.style.cursor = 'pointer';
 								},
-								onMouseout(e) {
-									const element = this;
+								leave(context) {
+									const element = context.element;
 									element.options.borderWidth = 4;
 									element.options.label.enabled = true;
-									element.options.label.content = e.type;
+									element.options.label.content = 'leave';
 									element.chartInstance.draw();
 									setTimeout(() => {
 										element.options.label.enabled = false;
 										element.chartInstance.draw();
 									}, 500);
-									element.chartInstance.chart.canvas.style.cursor = 'initial';
+									element.chartInstance.canvas.style.cursor = 'initial';
 								}
 							}]
 						}

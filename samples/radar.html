@@ -1,4 +1,3 @@
-h
 <!doctype html>
 <html>
 
@@ -73,15 +72,14 @@ h
 					display: true,
 					text: 'Chart.js Radar Chart'
 				},
-				scale: {
-					ticks: {
+				scales: {
+					r: {
 						beginAtZero: true
 					}
 				},
 				plugins: {
 					annotation: { // not supported, and should not display or error
 						drawTime: 'beforeDatasetsDraw',
-						events: ['dblclick'],
 						annotations: [{
 							type: 'box',
 							xScaleID: 'x',
@@ -93,8 +91,8 @@ h
 							backgroundColor: 'rgba(101, 33, 171, 0.5)',
 							borderColor: 'rgb(101, 33, 171)',
 							borderWidth: 1,
-							onDblclick(e) {
-								console.log('Box', e.type, this);
+							dblclick(context) {
+								console.log('Box', context);
 							}
 						}]
 					}

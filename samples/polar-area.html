@@ -66,11 +66,11 @@
 					display: true,
 					text: 'Chart.js Polar Area Chart'
 				},
-				scale: {
-					ticks: {
-						beginAtZero: true
-					},
-					reverse: false
+				scales: {
+					r: {
+						beginAtZero: true,
+						reverse: false
+					}
 				},
 				animation: {
 					animateRotate: false,
@@ -79,7 +79,6 @@
 				plugins: {
 					annotation: { // not supported, and should not display or error
 						drawTime: 'beforeDatasetsDraw',
-						events: ['dblclick'],
 						annotations: [{
 							type: 'box',
 							xScaleID: 'x',
@@ -91,8 +90,8 @@
 							backgroundColor: 'rgba(101, 33, 171, 1.0)',
 							borderColor: 'rgb(101, 33, 171)',
 							borderWidth: 1,
-							onDblclick(e) {
-								console.log('Box', e.type, this);
+							dblclick(context) {
+								console.log('Box', context);
 							}
 						}]
 					}

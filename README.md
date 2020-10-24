@@ -30,11 +30,6 @@ To configure the annotations plugin, you can simply add new config options to yo
             // See http://www.chartjs.org/docs/#advanced-usage-creating-plugins
             drawTime: 'afterDatasetsDraw', // (default)
 
-            // Mouse events to enable on each annotation.
-            // Should be an array of one or more browser-supported mouse events
-            // See https://developer.mozilla.org/en-US/docs/Web/Events
-            events: ['click'],
-
             // Double-click speed in ms used to distinguish single-clicks from
             // double-clicks whenever you need to capture both. When listening for
             // both click and dblclick, click events will be delayed by this
@@ -55,7 +50,7 @@ To configure the annotations plugin, you can simply add new config options to yo
 
                 // Fires when the user clicks this annotation on the chart
                 // (be sure to enable the event in the events array below).
-                onClick: function(e) {
+                click: function(context) {
                     // `this` is bound to the annotation element
                 }
             }]
@@ -154,21 +149,11 @@ Vertical or horizontal lines are supported.
         rotation: 90
     },
 
-    // Mouse event handlers - be sure to enable the corresponding events in the
-    // annotation events array or the event handler will not be called.
-    // See https://developer.mozilla.org/en-US/docs/Web/Events for a list of
-    // supported mouse events.
-    onMouseenter: function(e) {},
-    onMouseover: function(e) {},
-    onMouseleave: function(e) {},
-    onMouseout: function(e) {},
-    onMousemove: function(e) {},
-    onMousedown: function(e) {},
-    onMouseup: function(e) {},
-    onClick: function(e) {},
-    onDblclick: function(e) {},
-    onContextmenu: function(e) {},
-    onWheel: function(e) {}
+    // Event hooks
+    enter: function(context) {},
+    leave: function(context) {},
+    click: function(context) {},
+    dblclick: function(context) {}
 }
 ```
 
@@ -215,21 +200,11 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
     // Fill color
     backgroundColor: 'green',
 
-    // Mouse event handlers - be sure to enable the corresponding events in the
-    // annotation events array or the event handler will not be called.
-    // See https://developer.mozilla.org/en-US/docs/Web/Events for a list of
-    // supported mouse events.
-    onMouseenter: function(e) {},
-    onMouseover: function(e) {},
-    onMouseleave: function(e) {},
-    onMouseout: function(e) {},
-    onMousemove: function(e) {},
-    onMousedown: function(e) {},
-    onMouseup: function(e) {},
-    onClick: function(e) {},
-    onDblclick: function(e) {},
-    onContextmenu: function(e) {},
-    onWheel: function(e) {}
+    // Event hooks
+    enter: function(context) {},
+    leave: function(context) {},
+    click: function(context) {},
+    dblclick: function(context) {}
 }
 ```
 

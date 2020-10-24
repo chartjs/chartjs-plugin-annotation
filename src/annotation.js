@@ -1,10 +1,10 @@
 import {Animations} from 'chart.js';
 import {clipArea, unclipArea, isFinite, merge, valueOrDefault} from 'chart.js/helpers';
-import handleEvent from './events';
+import {handleEvent, updateListeners} from './events';
 import BoxAnnotation from './types/box';
 import LineAnnotation from './types/line';
 
-const chartElements = new Map();
+const chartStates = new Map();
 
 const annotationTypes = {
 	box: BoxAnnotation,
@@ -14,6 +14,16 @@ const annotationTypes = {
 export default {
 	id: 'annotation',
 
+	beforeInit(chart) {
+		chartStates.set(chart, {
+			elements: [],
+			listeners: {},
+			listened: false,
+			moveListened: false,
+			scales: new Set()
+		});
+	},
+
 	beforeUpdate(chart, args, options) {
 		if (!args.mode) {
 			bindAfterDataLimits(chart, options);
@@ -21,7 +31,9 @@ export default {
 	},
 
 	afterUpdate(chart, args, options) {
-		updateElements(chart, options, args.mode);
+		const state = chartStates.get(chart);
+		updateListeners(chart, state, options);
+		updateElements(chart, state, options, args.mode);
 	},
 
 	beforeDatasetsDraw(chart, options) {
@@ -36,22 +48,20 @@ export default {
 		draw(chart, options, 'afterDraw');
 	},
 
-	afterEvent(chart, event, _replay, options) {
-		const events = options.events || [];
-		if (events.indexOf(event.type) !== -1) {
-			handleEvent(event, chartElements.get(chart));
-		}
+	beforeEvent(chart, event, _replay, options) {
+		const state = chartStates.get(chart);
+		handleEvent(event, state, event, options);
 	},
 
 	destroy(chart) {
-		chartElements.delete(chart);
+		chartStates.delete(chart);
 	},
 
 	defaults: {
 		drawTime: 'afterDatasetsDraw',
 		dblClickSpeed: 350, // ms
-		events: [],
 		annotations: [],
+		listeners: {},
 		animation: {
 			numbers: {
 				properties: ['x', 'y', 'x2', 'y2', 'width', 'height'],
@@ -61,12 +71,23 @@ export default {
 	},
 };
 
-function updateElements(chart, options, mode) {
+const directUpdater = {
+	update: Object.assign
+};
+
+function resolveAnimations(chart, animOpts, mode) {
+	if (mode === 'reset' || mode === 'none' || mode === 'resize') {
+		return directUpdater;
+	}
+	return new Animations(chart, animOpts);
+}
+
+function updateElements(chart, state, options, mode) {
 	const chartAnims = chart.options.animation;
 	const animOpts = chartAnims && merge({}, [chartAnims, options.animation]);
-	const animations = new Animations(chart, animOpts, mode);
+	const animations = resolveAnimations(chart, animOpts, mode);
 
-	const elements = chartElements.get(chart) || (chartElements.set(chart, []).get(chart));
+	const elements = state.elements;
 	const annotations = options.annotations || [];
 	const count = annotations.length;
 	const start = elements.length;
@@ -89,7 +110,10 @@ function updateElements(chart, options, mode) {
 	}
 }
 
-const scaleValue = (scale, value, fallback) => isFinite(value) ? scale.getPixelForValue(value) : fallback;
+function scaleValue(scale, value, fallback) {
+	value = scale.parse(value);
+	return isFinite(value) ? scale.getPixelForValue(value) : fallback;
+}
 
 function calculateElementProperties(chart, options, defaults) {
 	const scale = chart.scales[options.scaleID];
@@ -110,6 +134,9 @@ function calculateElementProperties(chart, options, defaults) {
 	} else {
 		const xScale = chart.scales[options.xScaleID];
 		const yScale = chart.scales[options.yScaleID];
+		if (!xScale && !yScale) {
+			return {options: {}};
+		}
 
 		if (xScale) {
 			min = scaleValue(xScale, options.xMin, x);
@@ -140,7 +167,7 @@ function calculateElementProperties(chart, options, defaults) {
 
 function draw(chart, options, caller) {
 	const {ctx, chartArea} = chart;
-	const elements = chartElements.get(chart);
+	const elements = chartStates.get(chart).elements;
 
 	clipArea(ctx, chartArea);
 	for (let i = 0; i < elements.length; i++) {
@@ -152,12 +179,13 @@ function draw(chart, options, caller) {
 	unclipArea(ctx);
 }
 
-const binds = new WeakSet();
 function bindAfterDataLimits(chart, options) {
+	const state = chartStates.get(chart);
+	const scaleSet = state.scales;
 	const scales = chart.scales || {};
 	Object.keys(scales).forEach(id => {
 		const scale = chart.scales[id];
-		if (binds.has(scale)) {
+		if (scaleSet.has(scale)) {
 			return;
 		}
 		const originalHook = scale.afterDataLimits;
@@ -165,22 +193,21 @@ function bindAfterDataLimits(chart, options) {
 			if (originalHook) {
 				originalHook.apply(scale, [...args]);
 			}
-			adjustScaleRange(scale, options);
+			adjustScaleRange(scale, state, options);
 		};
-		binds.add(scale);
+		scaleSet.add(scale);
 	});
 }
 
-function getAnnotationOptions(chart, options) {
-	const elems = chartElements.get(chart);
-	if (elems && elems.length) {
-		return elems.map(el => el.options);
+function getAnnotationOptions(elements, options) {
+	if (elements && elements.length) {
+		return elements.map(el => el.options);
 	}
 	return options.annotations || [];
 }
 
-function adjustScaleRange(scale, options) {
-	const annotations = getAnnotationOptions(scale.chart, options);
+function adjustScaleRange(scale, state, options) {
+	const annotations = getAnnotationOptions(state.elements, options);
 	const range = getScaleLimits(scale, annotations);
 	let changed = false;
 	if (isFinite(range.min) &&
