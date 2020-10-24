@@ -18,7 +18,6 @@ export default function handleEvent(event, elements) {
 
 	if (eventHandlers.length > 0) {
 		native.stopImmediatePropagation();
-		native.preventDefault();
 		eventHandlers.forEach((eventHandler) => {
 			// [handler, event, element]
 			eventHandler[0].call(eventHandler[2], eventHandler[1]);
@@ -71,7 +70,6 @@ function detectDoubleClick(event, element, dblClickSpeed) {
 			options.onClick.call(element, event);
 		}, dblClickSpeed);
 		event.stopImmediatePropagation();
-		event.preventDefault();
 		return true;
 	} else if (event.type === 'dblclick' && element.clickTimeout) {
 		clearTimeout(element.clickTimeout);
