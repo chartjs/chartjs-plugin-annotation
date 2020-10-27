@@ -24,7 +24,7 @@ export default {
 		updateElements(chart, options, args.mode);
 	},
 
-	beforeDatasetDraw(chart, options) {
+	beforeDatasetsDraw(chart, options) {
 		draw(chart, options, 'beforeDatasetsDraw');
 	},
 
