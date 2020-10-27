@@ -8,7 +8,7 @@ chartjs-plugin-annotation 3.0 introduces a number of breaking changes.
 
 ```javascript
 import { Chart, LineController, LineElement, PointElement, LinearScale } from 'chart.js';
-import { * as annotation } from 'chartjs-plugin-annotation';
+import * as annotation from 'chartjs-plugin-annotation';
 
 Chart.register(LineController, LineElement, PointElement, LinearScale, annotation);
 
