@@ -44,7 +44,7 @@ export default {
 	},
 
 	destroy(chart) {
-		chartElements.remove(chart);
+		chartElements.delete(chart);
 	},
 
 	defaults: {
