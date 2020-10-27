@@ -129,12 +129,12 @@
 					},
 					plugins: {
 						annotation: {
-							events: ['click', 'dblclick', 'mouseover', 'mouseout'],
+							events: ['click', 'dblclick', 'mousemove', 'mouseout'],
 							annotations: [{
 								type: 'line',
 								mode: 'horizontal',
 								scaleID: 'y',
-								value: 120,
+								value: 10,
 								borderColor: 'rgba(255, 0, 0, 0.5)',
 								borderWidth: 4,
 								label: {
@@ -163,13 +163,13 @@
 										element.chartInstance.draw();
 									}, 500);
 								},
-								onMouseover(e) {
+								onMousemove(e) {
 									const element = this;
 									element.options.borderWidth = 7;
 									element.options.label.enabled = true;
 									element.options.label.content = e.type;
 									element.chartInstance.draw();
-									element.chartInstance.chart.canvas.style.cursor = 'pointer';
+									element.chartInstance.canvas.style.cursor = 'pointer';
 								},
 								onMouseout(e) {
 									const element = this;
@@ -181,7 +181,7 @@
 										element.options.label.enabled = false;
 										element.chartInstance.draw();
 									}, 500);
-									element.chartInstance.chart.canvas.style.cursor = 'initial';
+									element.chartInstance.canvas.style.cursor = 'initial';
 								}
 							}]
 						}
