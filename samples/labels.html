@@ -133,9 +133,7 @@
 					},
 					plugins: {
 						annotation: {
-							events: ['click'],
 							annotations: [{
-								id: 'hline',
 								type: 'line',
 								mode: 'horizontal',
 								scaleID: 'y',
@@ -148,13 +146,12 @@
 									content: 'This is a long test label',
 									enabled: true
 								},
-								onClick(e) {
+								click(context) {
 									// The annotation is is bound to the `this` variable
-									console.log('Annotation', e.type, this);
+									console.log('Annotation', context);
 								}
 							},
 							{
-								id: 'vline',
 								type: 'line',
 								mode: 'vertical',
 								scaleID: 'x',
@@ -165,12 +162,12 @@
 								label: {
 									position: 'bottom',
 									yAdjust: 100,
-									content: 'This is a another test label',
+									content: 'This is another test label',
 									enabled: true
 								},
-								onClick(e) {
+								click(context) {
 									// The annotation is is bound to the `this` variable
-									console.log('Annotation', e.type, this);
+									console.log('Annotation', context);
 								}
 							}]
 						}

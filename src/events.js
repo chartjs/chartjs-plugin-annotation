@@ -1,120 +1,114 @@
-import {distanceBetweenPoints} from 'chart.js/helpers';
+import {distanceBetweenPoints, callback as callHandler} from 'chart.js/helpers';
 
-export default function handleEvent(event, elements) {
-	const element = getNearestItem(elements, event);
-	const native = event.native;
-	const eventHandlers = [];
+const clickHooks = ['click', 'dblclick'];
+const moveHooks = ['enter', 'leave'];
+const hooks = clickHooks.concat(moveHooks);
 
-	if (native.type === 'mousemove') {
-		addHoverEvents(eventHandlers, native, elements, element);
-	} else if (element && detectDoubleClick(native, element)) {
-		return;
-	}
+export function updateListeners(chart, state, options) {
+	const annotations = options.annotations || [];
+	state.listened = false;
 
-	// Dispatch the event to the usual handler, but only if we haven't substituted it
-	if (element && eventHandlers.length === 0) {
-		addEventHandler(eventHandlers, native, element);
-	}
+	hooks.forEach(hook => {
+		if (typeof options[hook] === 'function') {
+			state.listened = true;
+			state.listeners[hook] = options[hook];
+		}
+	});
+	moveHooks.forEach(hook => {
+		if (typeof options[hook] === 'function') {
+			state.moveListened = true;
+		}
+	});
 
-	if (eventHandlers.length > 0) {
-		native.stopImmediatePropagation();
-		eventHandlers.forEach((eventHandler) => {
-			// [handler, event, element]
-			eventHandler[0].call(eventHandler[2], eventHandler[1]);
-		});
-	}
-}
-
-function addHoverEvents(eventHandlers, event, elements, element) {
-	if (element && !element.hovering) {
-		['mouseenter', 'mouseover'].forEach((eventName) => {
-			element.hovering = true;
-			const hoverEvent = createMouseEvent(eventName, event);
-			addEventHandler(eventHandlers, hoverEvent, element);
-		});
-	} else if (!element) {
-		elements.forEach((el) => {
-			if (el.hovering) {
-				el.hovering = false;
-				['mouseout', 'mouseleave'].forEach((eventName) => {
-					const hoverEvent = createMouseEvent(eventName, event);
-					addEventHandler(eventHandlers, hoverEvent, el);
+	if (!state.listened || !state.moveListened) {
+		annotations.forEach(scope => {
+			if (!state.listened) {
+				clickHooks.forEach(hook => {
+					if (typeof scope[hook] === 'function') {
+						state.listened = true;
+					}
+				});
+			}
+			if (!state.moveListened) {
+				moveHooks.forEach(hook => {
+					if (typeof scope[hook] === 'function') {
+						state.listened = true;
+						state.moveListened = true;
+					}
 				});
 			}
 		});
 	}
 }
 
-function addEventHandler(eventHandlers, event, element) {
-	const options = element.options || {};
-	const eventHandlerName = getEventHandlerName(event.type);
-	const handler = options[eventHandlerName];
-	if (typeof handler === 'function') {
-		eventHandlers.push([handler, event, element]);
-	}
-}
-
-function detectDoubleClick(event, element, dblClickSpeed) {
-	// Suppress duplicate click events during a double click
-	// 1. click -> 2. click -> 3. dblclick
-	//
-	// 1: wait dblClickSpeed ms, then fire click
-	// 2: cancel (1) if it is waiting then wait dblClickSpeed ms then fire click, else fire click immediately
-	// 3: cancel (1) or (2) if waiting, then fire dblclick
-
-	const options = element.options || {};
-	if (event.type === 'click' && typeof options.onClick === 'function') {
-		clearTimeout(element.clickTimeout);
-		element.clickTimeout = setTimeout(() => {
-			delete element.clickTimeout;
-			options.onClick.call(element, event);
-		}, dblClickSpeed);
-		event.stopImmediatePropagation();
-		return true;
-	} else if (event.type === 'dblclick' && element.clickTimeout) {
-		clearTimeout(element.clickTimeout);
-		delete element.clickTimeout;
-	}
-}
-
-function getEventHandlerName(eventName) {
-	return 'on' + eventName[0].toUpperCase() + eventName.substring(1);
-}
-
-function createMouseEvent(type, previousEvent) {
-	try {
-		return new MouseEvent(type, previousEvent);
-	} catch (exception) {
-		try {
-			const m = document.createEvent('MouseEvent');
-			m.initMouseEvent(
-				type,
-				previousEvent.canBubble,
-				previousEvent.cancelable,
-				previousEvent.view,
-				previousEvent.detail,
-				previousEvent.screenX,
-				previousEvent.screenY,
-				previousEvent.clientX,
-				previousEvent.clientY,
-				previousEvent.ctrlKey,
-				previousEvent.altKey,
-				previousEvent.shiftKey,
-				previousEvent.metaKey,
-				previousEvent.button,
-				previousEvent.relatedTarget
-			);
-			return m;
-		} catch (exception2) {
-			const e = document.createEvent('Event');
-			e.initEvent(
-				type,
-				previousEvent.canBubble,
-				previousEvent.cancelable
-			);
-			return e;
+export function handleEvent(chart, state, event, options) {
+	if (state.listened) {
+		switch (event.type) {
+		case 'mousemove':
+		case 'mouseout':
+			handleMoveEvents(chart, state, event);
+			break;
+		case 'click':
+			handleClickEvents(chart, state, event, options);
+			break;
+		default:
 		}
 	}
+}
+
+function handleMoveEvents(chart, state, event) {
+	if (!state.moveListened) {
+		return;
+	}
+
+	let element;
+
+	if (event.type === 'mousemove') {
+		element = getNearestItem(state.elements, event);
+	}
+
+	const previous = state.hovered;
+	state.hovered = element;
+
+	dispatchMoveEvents(chart, state, previous, element);
+}
+
+function dispatchMoveEvents(chart, state, previous, element) {
+	if (previous && previous !== element) {
+		dispatchEvent(chart, state, previous.options.leave || state.listeners.leave, previous);
+	}
+	if (element && element !== previous) {
+		dispatchEvent(chart, state, element.options.enter || state.listeners.enter, element);
+	}
+}
+
+function handleClickEvents(chart, state, event, options) {
+	const listeners = state.listeners;
+	const element = getNearestItem(state.elements, event);
+	if (element) {
+		const elOpts = element.options;
+		const dblclick = elOpts.dblclick || listeners.dblclick;
+		const click = elOpts.click || listeners.click;
+		if (element.clickTimeout) {
+			// 2nd click before timeout, so its a double click
+			clearTimeout(element.clickTimeout);
+			delete element.clickTimeout;
+			dispatchEvent(chart, state, dblclick, element);
+		} else if (dblclick) {
+			// if there is a dblclick handler, wait for dblClickSpeed ms before deciding its a click
+			element.clickTimeout = setTimeout(() => {
+				delete element.clickTimeout;
+				dispatchEvent(chart, state, click, element);
+			}, options.dblClickSpeed);
+		} else {
+			// no double click handler, just call the click handler directly
+			dispatchEvent(chart, state, click, element);
+		}
+	}
+}
+
+function dispatchEvent(chart, _state, handler, element) {
+	callHandler(handler, [{chart, element}]);
 }
 
 function getNearestItem(elements, position) {

@@ -122,9 +122,7 @@
 				plugins: {
 					annotation: {
 						drawTime: 'afterDatasetsDraw',
-						events: ['click'],
 						annotations: [{
-							id: 'hline',
 							type: 'line',
 							mode: 'horizontal',
 							scaleID: 'y',
@@ -136,13 +134,12 @@
 								content: 'Test Label',
 								enabled: true
 							},
-							onClick(e) {
+							click(context) {
 								// The annotation is is bound to the `this` variable
 								// eslint-disable-next-line no-console
-								console.log('Annotation', e.type, this);
+								console.log('Annotation', context);
 							}
 						}, {
-							id: 'vline',
 							type: 'line',
 							mode: 'vertical',
 							scaleID: 'x',
@@ -154,10 +151,10 @@
 								content: 'Test Label',
 								enabled: true
 							},
-							onClick(e) {
+							click(context) {
 								// The annotation is is bound to the `this` variable
 								// eslint-disable-next-line no-console
-								console.log('Annotation', e.type, this);
+								console.log('Annotation', context);
 							}
 						}, {
 							type: 'box',
@@ -170,9 +167,9 @@
 							backgroundColor: 'rgba(101, 33, 171, 0.5)',
 							borderColor: 'rgb(101, 33, 171)',
 							borderWidth: 1,
-							onClick(e) {
+							click(context) {
 								// eslint-disable-next-line no-console
-								console.log('Box', e.type, this);
+								console.log('Box', context);
 							}
 						}]
 					}

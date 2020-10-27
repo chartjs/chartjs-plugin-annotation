@@ -76,10 +76,8 @@
 				},
 				plugins: {
 					annotation: {
-						events: ['click'],
 						annotations: [{
 							drawTime: 'afterDraw',
-							id: 'hline',
 							type: 'line',
 							mode: 'horizontal',
 							scaleID: 'y',
@@ -91,13 +89,12 @@
 								content: 'Test Label',
 								enabled: true
 							},
-							onClick(e) {
+							click(context) {
 								// The annotation is is bound to the `this` variable
-								console.log('Annotation', e.type, this);
+								console.log('Annotation', context);
 							}
 						}, {
 							drawTime: 'afterDraw',
-							id: 'vline',
 							type: 'line',
 							mode: 'vertical',
 							scaleID: 'x',
@@ -109,9 +106,9 @@
 								content: 'Test Label',
 								enabled: true
 							},
-							onClick(e) {
+							click(context) {
 								// The annotation is is bound to the `this` variable
-								console.log('Annotation', e.type, this);
+								console.log('Annotation', context);
 							}
 						}, {
 							drawTime: 'beforeDatasetsDraw',
@@ -125,8 +122,8 @@
 							backgroundColor: 'rgba(101, 33, 171, 0.5)',
 							borderColor: 'rgb(101, 33, 171)',
 							borderWidth: 1,
-							onClick(e) {
-								console.log('Box', e.type, this);
+							click(context) {
+								console.log('Box', context);
 							}
 						}]
 					}
