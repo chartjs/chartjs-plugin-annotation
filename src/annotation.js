@@ -24,7 +24,7 @@ export default {
 		updateElements(chart, options, args.mode);
 	},
 
-	beforeDatasetDraw(chart, options) {
+	beforeDatasetsDraw(chart, options) {
 		draw(chart, options, 'beforeDatasetsDraw');
 	},
 
@@ -44,7 +44,7 @@ export default {
 	},
 
 	destroy(chart) {
-		chartElements.remove(chart);
+		chartElements.delete(chart);
 	},
 
 	defaults: {
