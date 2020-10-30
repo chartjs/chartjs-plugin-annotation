@@ -109,7 +109,7 @@
 							}, {
 								type: 'line',
 								mode: 'vertical',
-								display: function(chart, options) {
+								display(chart) {
 									return chart.data.datasets.length > 0 ? chart.isDatasetVisible(0) : false;
 								},
 								scaleID: 'x',
@@ -125,7 +125,7 @@
 							}, {
 								drawTime: 'beforeDatasetsDraw',
 								type: 'box',
-								display: function(chart, options) {
+								display(chart) {
 									return chart.data.datasets.length > 1 ? chart.isDatasetVisible(1) : false;
 								},
 								xScaleID: 'x',
