@@ -78,6 +78,7 @@ export default class LineAnnotation extends Element {
 
 LineAnnotation.id = 'lineAnnotation';
 LineAnnotation.defaults = {
+	display: true,
 	borderDash: [],
 	borderDashOffset: 0,
 	label: {

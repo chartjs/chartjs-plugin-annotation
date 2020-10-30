@@ -1,5 +1,5 @@
 import {Animations} from 'chart.js';
-import {clipArea, unclipArea, isFinite, merge, valueOrDefault} from 'chart.js/helpers';
+import {clipArea, unclipArea, isFinite, merge, valueOrDefault, callback as callCallback} from 'chart.js/helpers';
 import {handleEvent, updateListeners} from './events';
 import BoxAnnotation from './types/box';
 import LineAnnotation from './types/line';
@@ -25,15 +25,17 @@ export default {
 	},
 
 	beforeUpdate(chart, args, options) {
+		const annotationOptions = options || args;
 		if (!args.mode) {
-			bindAfterDataLimits(chart, options);
+			bindAfterDataLimits(chart, annotationOptions);
 		}
 	},
 
 	afterUpdate(chart, args, options) {
+		const annotationOptions = options || args;
 		const state = chartStates.get(chart);
-		updateListeners(chart, state, options);
-		updateElements(chart, state, options, args.mode);
+		updateListeners(chart, state, annotationOptions);
+		updateElements(chart, state, annotationOptions, args.mode);
 	},
 
 	beforeDatasetsDraw(chart, options) {
@@ -74,6 +76,13 @@ const directUpdater = {
 	update: Object.assign
 };
 
+function resolveDisplay(state, options) {
+	const annotations = options.annotations || [];
+	annotations.forEach(annotation => {
+		console.log(annotation);
+	});
+}
+
 function resolveAnimations(chart, animOpts, mode) {
 	if (mode === 'reset' || mode === 'none' || mode === 'resize') {
 		return directUpdater;
@@ -90,7 +99,7 @@ function updateElements(chart, state, options, mode) {
 	const annotations = options.annotations || [];
 	const count = annotations.length;
 	const start = elements.length;
-
+	
 	if (start < count) {
 		const add = count - start;
 		elements.splice(start, 0, ...new Array(add));
@@ -104,6 +113,9 @@ function updateElements(chart, state, options, mode) {
 		if (!el || !(el instanceof elType)) {
 			el = elements[i] = new elType();
 		}
+		const display = typeof annotation.display === 'function' ? callCallback(annotation.display, [chart, annotation], this) : valueOrDefault(annotation.display, true);
+		el._display = typeof display === 'boolean' ? display : false;
+		
 		const properties = calculateElementProperties(chart, annotation, elType.defaults);
 		animations.update(el, properties);
 	}
@@ -170,7 +182,7 @@ function draw(chart, options, caller) {
 	clipArea(ctx, chartArea);
 	for (let i = 0; i < elements.length; i++) {
 		const el = elements[i];
-		if ((el.options.drawTime || options.drawTime || caller) === caller) {
+		if ((el.options.drawTime || options.drawTime || caller) === caller && el._display) {
 			el.draw(ctx);
 		}
 	}
