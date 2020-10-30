@@ -109,6 +109,9 @@
 							}, {
 								type: 'line',
 								mode: 'vertical',
+								display(chart) {
+									return chart.data.datasets.length > 0 ? chart.isDatasetVisible(0) : false;
+								},
 								scaleID: 'x',
 								value: 'June',
 								borderColor: 'black',
@@ -122,6 +125,9 @@
 							}, {
 								drawTime: 'beforeDatasetsDraw',
 								type: 'box',
+								display(chart) {
+									return chart.data.datasets.length > 1 ? chart.isDatasetVisible(1) : false;
+								},
 								xScaleID: 'x',
 								yScaleID: 'y',
 								xMin: 'February',
@@ -151,7 +157,7 @@
 		const colorNames = Object.keys(window.chartColors);
 		document.getElementById('addDataset').addEventListener('click', () => {
 			const colorName = colorNames[barChartData.datasets.length % colorNames.length];
-	const dsColor = window.chartColors[colorName];
+			const dsColor = window.chartColors[colorName];
 			const newDataset = {
 				label: 'Dataset ' + barChartData.datasets.length,
 				backgroundColor: color(dsColor).alpha(0.5).rgbString(),

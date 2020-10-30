@@ -37,6 +37,7 @@ export default class BoxAnnotation extends Element {
 BoxAnnotation.id = 'boxAnnotation';
 
 BoxAnnotation.defaults = {
+	display: true,
 	borderWidth: 1
 };
 
