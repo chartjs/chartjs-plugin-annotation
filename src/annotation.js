@@ -248,4 +248,3 @@ function getScaleLimits(scale, annotations) {
 	});
 	return {min, max};
 }
-
