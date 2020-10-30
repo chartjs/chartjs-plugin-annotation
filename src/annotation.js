@@ -76,13 +76,6 @@ const directUpdater = {
 	update: Object.assign
 };
 
-function resolveDisplay(state, options) {
-	const annotations = options.annotations || [];
-	annotations.forEach(annotation => {
-		console.log(annotation);
-	});
-}
-
 function resolveAnimations(chart, animOpts, mode) {
 	if (mode === 'reset' || mode === 'none' || mode === 'resize') {
 		return directUpdater;
@@ -99,7 +92,7 @@ function updateElements(chart, state, options, mode) {
 	const annotations = options.annotations || [];
 	const count = annotations.length;
 	const start = elements.length;
-	
+
 	if (start < count) {
 		const add = count - start;
 		elements.splice(start, 0, ...new Array(add));
@@ -114,8 +107,8 @@ function updateElements(chart, state, options, mode) {
 			el = elements[i] = new elType();
 		}
 		const display = typeof annotation.display === 'function' ? callCallback(annotation.display, [chart, annotation], this) : valueOrDefault(annotation.display, true);
-		el._display = typeof display === 'boolean' ? display : false;
-		
+		el._display = !!display;
+
 		const properties = calculateElementProperties(chart, annotation, elType.defaults);
 		animations.update(el, properties);
 	}
@@ -182,7 +175,7 @@ function draw(chart, options, caller) {
 	clipArea(ctx, chartArea);
 	for (let i = 0; i < elements.length; i++) {
 		const el = elements[i];
-		if ((el.options.drawTime || options.drawTime || caller) === caller && el._display) {
+		if (el._display && (el.options.drawTime || options.drawTime || caller) === caller) {
 			el.draw(ctx);
 		}
 	}
