@@ -83,65 +83,65 @@
 								console.log('Annotation', context);
 							},
 							annotations: {
-							  primo: {
-								type: 'line',
-								mode: 'horizontal',
-								scaleID: 'y',
-								value: randomScalingFactor(),
-								borderColor: 'black',
-								borderWidth: 5,
-								label: {
-									backgroundColor: 'red',
-									content: 'Test Label',
-									enabled: true
+								first: {
+									type: 'line',
+									mode: 'horizontal',
+									scaleID: 'y',
+									value: randomScalingFactor(),
+									borderColor: 'black',
+									borderWidth: 5,
+									label: {
+										backgroundColor: 'red',
+										content: 'Test Label',
+										enabled: true
+									},
 								},
-							  }, 
-							  secondo: {
-								type: 'line',
-								mode: 'vertical',
-								scaleID: 'x',
-								value: 'May',
-								borderColor: 'black',
-								borderWidth: 5,
-								label: {
-									backgroundColor: 'red',
-									content: 'Test Label',
-									enabled: true
+								second: {
+									type: 'line',
+									mode: 'vertical',
+									scaleID: 'x',
+									value: 'May',
+									borderColor: 'black',
+									borderWidth: 5,
+									label: {
+										backgroundColor: 'red',
+										content: 'Test Label',
+										enabled: true
+									},
 								},
-							  }, 
-							  terzo: {
-								type: 'line',
-								mode: 'vertical',
-								display(chart) {
-									return chart.data.datasets.length > 0 ? chart.isDatasetVisible(0) : false;
+								third: {
+									type: 'line',
+									mode: 'vertical',
+									display(chart) {
+										return chart.data.datasets.length > 0 ? chart.isDatasetVisible(0) : false;
+									},
+									scaleID: 'x',
+									value: 'June',
+									borderColor: 'black',
+									borderWidth: 5,
+									label: {
+										backgroundColor: 'red',
+										content: 'Test Label',
+										enabled: true,
+										rotation: -90
+									},
 								},
-								scaleID: 'x',
-								value: 'June',
-								borderColor: 'black',
-								borderWidth: 5,
-								label: {
-									backgroundColor: 'red',
-									content: 'Test Label',
-									enabled: true,
-									rotation: -90
-								},
-							}, 
-							quarto: {
-								drawTime: 'beforeDatasetsDraw',
-								type: 'box',
-								display(chart) {
-									return chart.data.datasets.length > 1 ? chart.isDatasetVisible(1) : false;
-								},
-								xScaleID: 'x',
-								yScaleID: 'y',
-								xMin: 'February',
-								xMax: 'April',
-								yMin: randomScalingFactor(),
-								yMax: randomScalingFactor(),
-								backgroundColor: 'rgba(101, 33, 171, 0.5)',
-								borderColor: 'rgb(101, 33, 171)',
-								borderWidth: 1,
-							}
+								fourth: {
+									drawTime: 'beforeDatasetsDraw',
+									type: 'box',
+									display(chart) {
+										return chart.data.datasets.length > 1 ? chart.isDatasetVisible(1) : false;
+									},
+									xScaleID: 'x',
+									yScaleID: 'y',
+									xMin: 'February',
+									xMax: 'April',
+									yMin: randomScalingFactor(),
+									yMax: randomScalingFactor(),
+									backgroundColor: 'rgba(101, 33, 171, 0.5)',
+									borderColor: 'rgb(101, 33, 171)',
+									borderWidth: 1,
+								}
 							}
 						}
 					}
