@@ -41,26 +41,28 @@ To configure the annotations plugin, you can simply add new config options to yo
                 // context: {chart, element}
             },
 
-            // Array of annotation configuration objects
+            // Object with the annotation configuration objects, one for each key
             // See below for detailed descriptions of the annotation options
-            annotations: [{
-                drawTime: 'afterDraw', // overrides annotation.drawTime if set
-                type: 'line',
-                mode: 'horizontal',
-                scaleID: 'y',
-                value: '25',
-                borderColor: 'red',
-                borderWidth: 2,
+            annotations: {
+                myLine: {
+                    drawTime: 'afterDraw', // overrides annotation.drawTime if set
+                    type: 'line',
+                    mode: 'horizontal',
+                    scaleID: 'y',
+                    value: '25',
+                    borderColor: 'red',
+                    borderWidth: 2,
 
-                // Event hooks can be defined per annotation (`click` below) or
-                // at chart level (`enter` above). If defined in both places,
-                // the one defined per annotation takes precedence.
+                    // Event hooks can be defined per annotation (`click` below) or
+                    // at chart level (`enter` above). If defined in both places,
+                    // the one defined per annotation takes precedence.
 
-                // Fires when the user clicks this annotation on the chart
-                click: function(context) {
-                    // context: {chart, element}
+                    // Fires when the user clicks this annotation on the chart
+                    click: function(context) {
+                       // context: {chart, element}
+                    }
                 }
-            }]
+            }
         }
     }
 }

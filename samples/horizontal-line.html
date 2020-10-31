@@ -129,60 +129,62 @@
 					},
 					plugins: {
 						annotation: {
-							annotations: [{
-								type: 'line',
-								mode: 'horizontal',
-								scaleID: 'y',
-								value: 120,
-								borderColor: 'rgba(255, 0, 0, 0.5)',
-								borderWidth: 4,
-								label: {
-									enabled: false,
-									content: 'Test label'
-								},
-								click(context) {
-									const element = context.element;
-									element.options.borderColor = 'rgba(255, 0, 0, 1.0)';
-									element.options.label.enabled = true;
-									element.options.label.content = 'click';
-									context.chart.draw();
-									setTimeout(() => {
-										element.options.borderColor = 'rgba(255, 0, 0, 0.5)';
+							annotations: {
+								myLine : {
+									type: 'line',
+									mode: 'horizontal',
+									scaleID: 'y',
+									value: 120,
+									borderColor: 'rgba(255, 0, 0, 0.5)',
+									borderWidth: 4,
+									label: {
+										enabled: false,
+										content: 'Test label'
+									},
+									click(context) {
+										const element = context.element;
+										element.options.borderColor = 'rgba(255, 0, 0, 1.0)';
+										element.options.label.enabled = true;
+										element.options.label.content = 'click';
 										context.chart.draw();
-									}, 500);
-								},
-								dblclick(context) {
-									const element = context.element;
-									element.options.borderColor = 'rgba(0, 255, 0, 1.0)';
-									element.options.label.enabled = true;
-									element.options.label.content = 'dblclick';
-									context.chart.draw();
-									setTimeout(() => {
-										element.options.borderColor = 'rgba(255, 0, 0, 0.5)';
+										setTimeout(() => {
+											element.options.borderColor = 'rgba(255, 0, 0, 0.5)';
+											context.chart.draw();
+										}, 500);
+									},
+									dblclick(context) {
+										const element = context.element;
+										element.options.borderColor = 'rgba(0, 255, 0, 1.0)';
+										element.options.label.enabled = true;
+										element.options.label.content = 'dblclick';
 										context.chart.draw();
-									}, 500);
-								},
-								enter(context) {
-									const element = context.element;
-									element.options.borderWidth = 7;
-									element.options.label.enabled = true;
-									element.options.label.content = 'enter';
-									context.chart.draw();
-									context.chart.canvas.style.cursor = 'pointer';
-								},
-								leave(context) {
-									const element = context.element;
-									element.options.borderWidth = 4;
-									element.options.label.enabled = true;
-									element.options.label.content = 'leave';
-									context.chart.draw();
-									setTimeout(() => {
-										element.options.label.enabled = false;
+										setTimeout(() => {
+											element.options.borderColor = 'rgba(255, 0, 0, 0.5)';
+											context.chart.draw();
+										}, 500);
+									},
+									enter(context) {
+										const element = context.element;
+										element.options.borderWidth = 7;
+										element.options.label.enabled = true;
+										element.options.label.content = 'enter';
 										context.chart.draw();
-									}, 500);
-									context.chart.canvas.style.cursor = 'initial';
+										context.chart.canvas.style.cursor = 'pointer';
+									},
+									leave(context) {
+										const element = context.element;
+										element.options.borderWidth = 4;
+										element.options.label.enabled = true;
+										element.options.label.content = 'leave';
+										context.chart.draw();
+										setTimeout(() => {
+											element.options.label.enabled = false;
+											context.chart.draw();
+										}, 500);
+										context.chart.canvas.style.cursor = 'initial';
+									}
 								}
-							}]
+							}
 						}
 					}
 				}

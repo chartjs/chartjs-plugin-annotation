@@ -1,5 +1,5 @@
 import {Animations} from 'chart.js';
-import {clipArea, unclipArea, isFinite, merge, valueOrDefault, callback as callCallback} from 'chart.js/helpers';
+import {clipArea, unclipArea, isFinite, merge, valueOrDefault, callback as callCallback, isObject} from 'chart.js/helpers';
 import {handleEvent, updateListeners} from './events';
 import BoxAnnotation from './types/box';
 import LineAnnotation from './types/line';
@@ -26,6 +26,19 @@ export default {
 
 	beforeUpdate(chart, args, options) {
 		const annotationOptions = options || args;
+
+		const array = new Array();
+		if (!!annotationOptions.annotations) {
+			Object.keys(annotationOptions.annotations).forEach(key => {
+				let value = annotationOptions.annotations[key];
+				if (isObject(value)) {
+					value.id = key;
+					array.push(value);
+				}
+			});
+		}
+		annotationOptions.annotations = array;
+
 		if (!args.mode) {
 			bindAfterDataLimits(chart, annotationOptions);
 		}
@@ -62,7 +75,7 @@ export default {
 	defaults: {
 		drawTime: 'afterDatasetsDraw',
 		dblClickSpeed: 350, // ms
-		annotations: [],
+		annotations: {},
 		animation: {
 			numbers: {
 				properties: ['x', 'y', 'x2', 'y2', 'width', 'height'],

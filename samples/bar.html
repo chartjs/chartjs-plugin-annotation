@@ -82,7 +82,8 @@
 							click(context) {
 								console.log('Annotation', context);
 							},
-							annotations: [{
+							annotations: {
+							  primo: {
 								type: 'line',
 								mode: 'horizontal',
 								scaleID: 'y',
@@ -94,7 +95,8 @@
 									content: 'Test Label',
 									enabled: true
 								},
-							}, {
+							  }, 
+							  secondo: {
 								type: 'line',
 								mode: 'vertical',
 								scaleID: 'x',
@@ -106,7 +108,8 @@
 									content: 'Test Label',
 									enabled: true
 								},
-							}, {
+							  }, 
+							  terzo: {
 								type: 'line',
 								mode: 'vertical',
 								display(chart) {
@@ -122,7 +125,8 @@
 									enabled: true,
 									rotation: -90
 								},
-							}, {
+							}, 
+							quarto: {
 								drawTime: 'beforeDatasetsDraw',
 								type: 'box',
 								display(chart) {
@@ -137,12 +141,12 @@
 								backgroundColor: 'rgba(101, 33, 171, 0.5)',
 								borderColor: 'rgb(101, 33, 171)',
 								borderWidth: 1,
-							}]
+							}
+							}
 						}
 					}
 				}
 			});
-
 		};
 
 		document.getElementById('randomizeData').addEventListener('click', () => {

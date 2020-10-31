@@ -57,18 +57,20 @@
 				plugins: {
 					annotation: {
 						drawTime: 'afterDatasetsDraw',
-						annotations: [{
-							type: 'line',
-							borderWidth: 3,
-							scaleID: 'x',
-							value: 50,
-							borderColor: 'red',
-							label: {
-								rotation: 90,
-								content: 'annotation',
-								enabled: true,
-							},
-						}]
+						annotations: {
+							line: {
+								type: 'line',
+								borderWidth: 3,
+								scaleID: 'x',
+								value: 50,
+								borderColor: 'red',
+								label: {
+									rotation: 90,
+									content: 'annotation',
+									enabled: true,
+								},
+							}
+						}
 					}
 				}
 			}
@@ -78,7 +80,7 @@
 			const newval = +document.querySelector('input[type=range]').value;
 			myChart.data.datasets[0].data[1].x = newval;
 			myChart.data.datasets[0].data[2].x = newval;
-			myChart.options.plugins.annotation.annotations[0].value = newval;
+			myChart.options.plugins.annotation.annotations.line.value = newval;
 			myChart.update();
 		}
 	</script>

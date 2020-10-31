@@ -53,21 +53,23 @@
 				plugins: {
 					annotation: { // not supported, and should not display or error
 						drawTime: 'beforeDatasetsDraw',
-						annotations: [{
-							type: 'box',
-							xScaleID: 'x',
-							yScaleID: 'y',
-							xMin: -120,
-							xMax: 20,
-							yMin: -120,
-							yMax: 20,
-							backgroundColor: 'rgba(101, 33, 171, 1.0)',
-							borderColor: 'rgb(101, 33, 171)',
-							borderWidth: 1,
-							dblclick(context) {
-								console.log('Box', context);
+						annotations: {
+							myBox: {
+								type: 'box',
+								xScaleID: 'x',
+								yScaleID: 'y',
+								xMin: -120,
+								xMax: 20,
+								yMin: -120,
+								yMax: 20,
+								backgroundColor: 'rgba(101, 33, 171, 1.0)',
+								borderColor: 'rgb(101, 33, 171)',
+								borderWidth: 1,
+								dblclick(context) {
+									console.log(context.element.options.id, context);
+								}
 							}
-						}]
+						}
 					}
 				}
 			}
