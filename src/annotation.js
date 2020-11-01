@@ -142,11 +142,11 @@ function calculateElementProperties(chart, options, defaults) {
 		min = scaleValue(scale, options.value, NaN);
 		max = scaleValue(scale, options.endValue, min);
 		if (scale.isHorizontal()) {
-			x = Math.min(min, max);
-			x2 = Math.max(min, max);
+			x = min;
+			x2 = max;
 		} else {
-			y = Math.min(min, max);
-			y2 = Math.max(min, max);
+			y = min;
+			y2 = max;
 		}
 	} else {
 		const xScale = chart.scales[options.xScaleID];
