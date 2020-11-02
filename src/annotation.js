@@ -27,8 +27,8 @@ export default {
 	beforeUpdate(chart, args, options) {
 		const annotationOptions = options || args;
 
-		const array = new Array();
-		if (!!annotationOptions.annotations) {
+		if (isObject(annotationOptions.annotations)) {
+			const array = new Array();
 			Object.keys(annotationOptions.annotations).forEach(key => {
 				let value = annotationOptions.annotations[key];
 				if (isObject(value)) {
@@ -36,8 +36,8 @@ export default {
 					array.push(value);
 				}
 			});
+			annotationOptions.annotations = array;
 		}
-		annotationOptions.annotations = array;
 
 		if (!args.mode) {
 			bindAfterDataLimits(chart, annotationOptions);

@@ -121,8 +121,8 @@
 					plugins: {
 						annotation: {
 							drawTime: 'beforeDatasetsDraw',
-							annotations: {
-								box: {
+							annotations: [
+								{
 									type: 'box',
 									xScaleID: 'x',
 									yScaleID: 'y',
@@ -137,7 +137,7 @@
 										console.log('Box', context);
 									}
 								}
-							}
+							]
 						}
 					}
 				}
