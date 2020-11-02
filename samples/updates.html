@@ -93,7 +93,7 @@
 		});
 
 		const lines = {
-			myHorizontlLine: {
+			myHorizontlLine0: {
 				type: 'line',
 				mode: 'horizontal',
 				scaleID: 'y',
@@ -102,6 +102,7 @@
 				borderWidth: 5
 			}
 		};
+		let counter = 0;
 
 		window.onload = function() {
 			const ctx = document.getElementById('canvas').getContext('2d');
@@ -153,7 +154,9 @@
 		};
 
 		function addLine() {
-			window.myScatter.options.plugins.annotation.annotations.myHorizontlLine = {
+			let id = 'myHorizontlLine'+(++counter);
+			console.log(id, counter);
+			window.myScatter.options.plugins.annotation.annotations[id] = {
 				type: 'line',
 				mode: 'horizontal',
 				scaleID: 'y',
@@ -165,8 +168,11 @@
 		}
 
 		function removeLine() {
-			window.myScatter.options.plugins.annotation.annotations.myHorizontlLine = null;
-			window.myScatter.update();
+			if (counter >= 0){
+				let id = 'myHorizontlLine'+(counter--);
+				delete window.myScatter.options.plugins.annotation.annotations[id];
+				window.myScatter.update();
+			}
 		}
 	</script>
 </body>
