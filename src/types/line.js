@@ -105,12 +105,12 @@ LineAnnotation.defaults = {
 function calculateAutoRotation(line, chartArea) {
 	const {x, y, x2, y2} = line;
 	let cathetusAdjacent, cathetusOpposite;
-	if (line.options.mode === 'horizontal'){
+	if (line.options.mode === 'horizontal') {
 		cathetusAdjacent = y2 > y ? chartArea.width : -chartArea.width;
 		cathetusOpposite = Math.abs(y - y2);
 	} else {
 		cathetusAdjacent = Math.abs(x - x2);
-		cathetusOpposite =  x2 > x ? chartArea.height : -chartArea.height;
+		cathetusOpposite = x2 > x ? chartArea.height : -chartArea.height;
 	}
 	return Math.atan(cathetusOpposite / cathetusAdjacent);
 }
