@@ -186,7 +186,7 @@ function draw(chart, options, caller) {
 	for (let i = 0; i < elements.length; i++) {
 		const el = elements[i];
 		if (el._display && (el.options.drawTime || options.drawTime || caller) === caller) {
-			el.draw(ctx, chartArea);
+			el.draw(ctx);
 		}
 	}
 	unclipArea(ctx);
