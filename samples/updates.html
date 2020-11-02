@@ -154,8 +154,7 @@
 		};
 
 		function addLine() {
-			let id = 'myHorizontlLine'+(++counter);
-			console.log(id, counter);
+			const id = 'myHorizontlLine'+(++counter);
 			window.myScatter.options.plugins.annotation.annotations[id] = {
 				type: 'line',
 				mode: 'horizontal',
@@ -168,8 +167,8 @@
 		}
 
 		function removeLine() {
-			if (counter >= 0){
-				let id = 'myHorizontlLine'+(counter--);
+			if (counter >= 0) {
+				const id = 'myHorizontlLine'+(counter--);
 				delete window.myScatter.options.plugins.annotation.annotations[id];
 				window.myScatter.update();
 			}
