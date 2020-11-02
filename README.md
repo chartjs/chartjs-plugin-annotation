@@ -41,7 +41,8 @@ To configure the annotations plugin, you can simply add new config options to yo
                 // context: {chart, element}
             },
 
-            // Array of annotation configuration objects
+            // Array of annotation configuration objects 
+            // or Object with the annotation configuration objects, one for each key
             // See below for detailed descriptions of the annotation options
             annotations: [{
                 drawTime: 'afterDraw', // overrides annotation.drawTime if set
@@ -58,7 +59,7 @@ To configure the annotations plugin, you can simply add new config options to yo
 
                 // Fires when the user clicks this annotation on the chart
                 click: function(context) {
-                    // context: {chart, element}
+                   // context: {chart, element}
                 }
             }]
         }

@@ -1,5 +1,5 @@
 import {Animations} from 'chart.js';
-import {clipArea, unclipArea, isFinite, merge, valueOrDefault, callback as callCallback} from 'chart.js/helpers';
+import {clipArea, unclipArea, isFinite, merge, valueOrDefault, callback as callCallback, isObject} from 'chart.js/helpers';
 import {handleEvent, updateListeners} from './events';
 import BoxAnnotation from './types/box';
 import LineAnnotation from './types/line';
@@ -26,6 +26,19 @@ export default {
 
 	beforeUpdate(chart, args, options) {
 		const annotationOptions = options || args;
+
+		if (isObject(annotationOptions.annotations)) {
+			const array = new Array();
+			Object.keys(annotationOptions.annotations).forEach(key => {
+				let value = annotationOptions.annotations[key];
+				if (isObject(value)) {
+					value.id = key;
+					array.push(value);
+				}
+			});
+			annotationOptions.annotations = array;
+		}
+
 		if (!args.mode) {
 			bindAfterDataLimits(chart, annotationOptions);
 		}
@@ -62,7 +75,7 @@ export default {
 	defaults: {
 		drawTime: 'afterDatasetsDraw',
 		dblClickSpeed: 350, // ms
-		annotations: [],
+		annotations: {},
 		animation: {
 			numbers: {
 				properties: ['x', 'y', 'x2', 'y2', 'width', 'height'],
@@ -129,11 +142,11 @@ function calculateElementProperties(chart, options, defaults) {
 		min = scaleValue(scale, options.value, NaN);
 		max = scaleValue(scale, options.endValue, min);
 		if (scale.isHorizontal()) {
-			x = Math.min(min, max);
-			x2 = Math.max(min, max);
+			x = min;
+			x2 = max;
 		} else {
-			y = Math.min(min, max);
-			y2 = Math.max(min, max);
+			y = min;
+			y2 = max;
 		}
 	} else {
 		const xScale = chart.scales[options.xScaleID];

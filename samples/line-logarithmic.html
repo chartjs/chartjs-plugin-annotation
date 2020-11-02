@@ -76,56 +76,60 @@
 				},
 				plugins: {
 					annotation: {
-						annotations: [{
-							drawTime: 'afterDraw',
-							type: 'line',
-							mode: 'horizontal',
-							scaleID: 'y',
-							value: randomScalingFactor(),
-							borderColor: 'black',
-							borderWidth: 5,
-							label: {
-								backgroundColor: 'red',
-								content: 'Test Label',
-								enabled: true
+						annotations: {
+							myHorizontalLine: {
+								drawTime: 'afterDraw',
+								type: 'line',
+								mode: 'horizontal',
+								scaleID: 'y',
+								value: randomScalingFactor(),
+								borderColor: 'black',
+								borderWidth: 5,
+								label: {
+									backgroundColor: 'red',
+									content: 'Test Label',
+									enabled: true
+								},
+								click(context) {
+									// The annotation is is bound to the `this` variable
+									console.log('Annotation', context);
+								}
 							},
-							click(context) {
-								// The annotation is is bound to the `this` variable
-								console.log('Annotation', context);
-							}
-						}, {
-							drawTime: 'afterDraw',
-							type: 'line',
-							mode: 'vertical',
-							scaleID: 'x',
-							value: 'May',
-							borderColor: 'black',
-							borderWidth: 5,
-							label: {
-								backgroundColor: 'red',
-								content: 'Test Label',
-								enabled: true
+							myVerticalLine: {
+								drawTime: 'afterDraw',
+								type: 'line',
+								mode: 'vertical',
+								scaleID: 'x',
+								value: 'May',
+								borderColor: 'black',
+								borderWidth: 5,
+								label: {
+									backgroundColor: 'red',
+									content: 'Test Label',
+									enabled: true
+								},
+								click(context) {
+									// The annotation is is bound to the `this` variable
+									console.log('Annotation', context);
+								}
 							},
-							click(context) {
-								// The annotation is is bound to the `this` variable
-								console.log('Annotation', context);
+							myBox: {
+								drawTime: 'beforeDatasetsDraw',
+								type: 'box',
+								xScaleID: 'x',
+								yScaleID: 'y',
+								xMin: 'February',
+								xMax: 'April',
+								yMin: randomScalingFactor(),
+								yMax: randomScalingFactor(),
+								backgroundColor: 'rgba(101, 33, 171, 0.5)',
+								borderColor: 'rgb(101, 33, 171)',
+								borderWidth: 1,
+								click(context) {
+									console.log('Box', context);
+								}
 							}
-						}, {
-							drawTime: 'beforeDatasetsDraw',
-							type: 'box',
-							xScaleID: 'x',
-							yScaleID: 'y',
-							xMin: 'February',
-							xMax: 'April',
-							yMin: randomScalingFactor(),
-							yMax: randomScalingFactor(),
-							backgroundColor: 'rgba(101, 33, 171, 0.5)',
-							borderColor: 'rgb(101, 33, 171)',
-							borderWidth: 1,
-							click(context) {
-								console.log('Box', context);
-							}
-						}]
+						}
 					}
 				}
 			}

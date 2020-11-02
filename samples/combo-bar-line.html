@@ -89,32 +89,35 @@
 							click(context) {
 								console.log('Annotation', context);
 							},
-							annotations: [{
-								drawTime: 'afterDatasetsDraw',
-								type: 'line',
-								mode: 'horizontal',
-								scaleID: 'y',
-								value: randomScalingFactor(),
-								borderColor: 'black',
-								borderWidth: 5,
-								label: {
-									backgroundColor: 'red',
-									content: 'Test Label',
-									enabled: true
+							annotations: {
+								myLine: {
+									drawTime: 'afterDatasetsDraw',
+									type: 'line',
+									mode: 'horizontal',
+									scaleID: 'y',
+									value: randomScalingFactor(),
+									borderColor: 'black',
+									borderWidth: 5,
+									label: {
+										backgroundColor: 'red',
+										content: 'Test Label',
+										enabled: true
+									},
 								},
-							}, {
-								drawTime: 'beforeDatasetsDraw',
-								type: 'box',
-								xScaleID: 'x',
-								yScaleID: 'y',
-								xMin: 'February',
-								xMax: 'April',
-								yMin: randomScalingFactor(),
-								yMax: randomScalingFactor(),
-								backgroundColor: 'rgba(101, 33, 171, 0.5)',
-								borderColor: 'rgb(101, 33, 171)',
-								borderWidth: 1,
-							}]
+								myBox: {
+									drawTime: 'beforeDatasetsDraw',
+									type: 'box',
+									xScaleID: 'x',
+									yScaleID: 'y',
+									xMin: 'February',
+									xMax: 'April',
+									yMin: randomScalingFactor(),
+									yMax: randomScalingFactor(),
+									backgroundColor: 'rgba(101, 33, 171, 0.5)',
+									borderColor: 'rgb(101, 33, 171)',
+									borderWidth: 1,
+								}
+							}
 						}
 					}
 				}

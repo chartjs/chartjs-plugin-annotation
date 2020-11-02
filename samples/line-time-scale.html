@@ -122,56 +122,60 @@
 				plugins: {
 					annotation: {
 						drawTime: 'afterDatasetsDraw',
-						annotations: [{
-							type: 'line',
-							mode: 'horizontal',
-							scaleID: 'y',
-							value: randomScalingFactor(),
-							borderColor: 'black',
-							borderWidth: 5,
-							label: {
-								backgroundColor: 'red',
-								content: 'Test Label',
-								enabled: true
+						annotations: {
+							myHorizontalLine: {
+								type: 'line',
+								mode: 'horizontal',
+								scaleID: 'y',
+								value: randomScalingFactor(),
+								borderColor: 'black',
+								borderWidth: 5,
+								label: {
+									backgroundColor: 'red',
+									content: 'Test Label',
+									enabled: true
+								},
+								click(context) {
+									// The annotation is is bound to the `this` variable
+									// eslint-disable-next-line no-console
+									console.log(context.element.options.id, context);
+								}
 							},
-							click(context) {
-								// The annotation is is bound to the `this` variable
-								// eslint-disable-next-line no-console
-								console.log('Annotation', context);
-							}
-						}, {
-							type: 'line',
-							mode: 'vertical',
-							scaleID: 'x',
-							value: newDate(2),
-							borderColor: 'black',
-							borderWidth: 5,
-							label: {
-								backgroundColor: 'red',
-								content: 'Test Label',
-								enabled: true
+							myVerticalLine: {
+								type: 'line',
+								mode: 'vertical',
+								scaleID: 'x',
+								value: newDate(2),
+								borderColor: 'black',
+								borderWidth: 5,
+								label: {
+									backgroundColor: 'red',
+									content: 'Test Label',
+									enabled: true
+								},
+								click(context) {
+									// The annotation is is bound to the `this` variable
+									// eslint-disable-next-line no-console
+									console.log(context.element.options.id, context);
+								}
 							},
-							click(context) {
-								// The annotation is is bound to the `this` variable
-								// eslint-disable-next-line no-console
-								console.log('Annotation', context);
+							myBox: {
+								type: 'box',
+								xScaleID: 'x',
+								yScaleID: 'y',
+								xMin: newDate(1),
+								xMax: newDate(4),
+								yMin: randomScalingFactor(),
+								yMax: randomScalingFactor(),
+								backgroundColor: 'rgba(101, 33, 171, 0.5)',
+								borderColor: 'rgb(101, 33, 171)',
+								borderWidth: 1,
+								click(context) {
+									// eslint-disable-next-line no-console
+									console.log(context.element.options.id, context);
+								}
 							}
-						}, {
-							type: 'box',
-							xScaleID: 'x',
-							yScaleID: 'y',
-							xMin: newDate(1),
-							xMax: newDate(4),
-							yMin: randomScalingFactor(),
-							yMax: randomScalingFactor(),
-							backgroundColor: 'rgba(101, 33, 171, 0.5)',
-							borderColor: 'rgb(101, 33, 171)',
-							borderWidth: 1,
-							click(context) {
-								// eslint-disable-next-line no-console
-								console.log('Box', context);
-							}
-						}]
+						}
 					}
 				}
 			}

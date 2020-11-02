@@ -121,21 +121,23 @@
 					plugins: {
 						annotation: {
 							drawTime: 'beforeDatasetsDraw',
-							annotations: [{
-								type: 'box',
-								xScaleID: 'x',
-								yScaleID: 'y',
-								xMin: randomScalingFactor(),
-								xMax: randomScalingFactor(),
-								yMin: randomScalingFactor(),
-								yMax: randomScalingFactor(),
-								backgroundColor: 'rgba(101, 33, 171, 0.5)',
-								borderColor: 'rgb(101, 33, 171)',
-								borderWidth: 1,
-								dblclick(context) {
-									console.log('Box', context);
+							annotations: [
+								{
+									type: 'box',
+									xScaleID: 'x',
+									yScaleID: 'y',
+									xMin: randomScalingFactor(),
+									xMax: randomScalingFactor(),
+									yMin: randomScalingFactor(),
+									yMax: randomScalingFactor(),
+									backgroundColor: 'rgba(101, 33, 171, 0.5)',
+									borderColor: 'rgb(101, 33, 171)',
+									borderWidth: 1,
+									dblclick(context) {
+										console.log('Box', context);
+									}
 								}
-							}]
+							]
 						}
 					}
 				}

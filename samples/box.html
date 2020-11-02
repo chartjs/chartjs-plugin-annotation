@@ -130,21 +130,23 @@
 					plugins: {
 						annotation: {
 							drawTime: 'afterDraw',
-							annotations: [{
-								type: 'box',
-								xScaleID: 'x',
-								yScaleID: 'y',
-								xMin: -120,
-								xMax: 20,
-								yMin: -120,
-								yMax: 20,
-								backgroundColor: 'rgba(101, 33, 171, 0.5)',
-								borderColor: 'rgb(101, 33, 171)',
-								borderWidth: 1,
-								click(context) {
-									console.log('Annotation', context);
-								},
-							}]
+							annotations: {
+								box: {
+									type: 'box',
+									xScaleID: 'x',
+									yScaleID: 'y',
+									xMin: -120,
+									xMax: 20,
+									yMin: -120,
+									yMax: 20,
+									backgroundColor: 'rgba(101, 33, 171, 0.5)',
+									borderColor: 'rgb(101, 33, 171)',
+									borderWidth: 1,
+									click(context) {
+										console.log('Annotation', context);
+									}
+								}
+							}
 						}
 					}
 				}
