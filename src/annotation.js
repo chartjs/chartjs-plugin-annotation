@@ -25,30 +25,27 @@ export default {
 	},
 
 	beforeUpdate(chart, args, options) {
-		const annotationOptions = options || args;
-
-		if (isObject(annotationOptions.annotations)) {
+		if (isObject(options.annotations)) {
 			const array = new Array();
-			Object.keys(annotationOptions.annotations).forEach(key => {
-				let value = annotationOptions.annotations[key];
+			Object.keys(options.annotations).forEach(key => {
+				const value = options.annotations[key];
 				if (isObject(value)) {
 					value.id = key;
 					array.push(value);
 				}
 			});
-			annotationOptions.annotations = array;
+			options.annotations = array;
 		}
 
 		if (!args.mode) {
-			bindAfterDataLimits(chart, annotationOptions);
+			bindAfterDataLimits(chart, options);
 		}
 	},
 
 	afterUpdate(chart, args, options) {
-		const annotationOptions = options || args;
 		const state = chartStates.get(chart);
-		updateListeners(chart, state, annotationOptions);
-		updateElements(chart, state, annotationOptions, args.mode);
+		updateListeners(chart, state, options);
+		updateElements(chart, state, options, args.mode);
 	},
 
 	beforeDatasetsDraw(chart, options) {
