@@ -19,13 +19,13 @@
     "test": "npm run lint"
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^9.0.0",
-    "chart.js": "^3.0.0-beta.4",
-    "eslint": "^7.11.0",
+    "@rollup/plugin-node-resolve": "^10.0.0",
+    "chart.js": "^3.0.0-beta.5",
+    "eslint": "^7.12.1",
     "eslint-config-chartjs": "^0.2.0",
     "eslint-config-esnext": "^4.1.0",
     "eslint-plugin-html": "^6.1.0",
-    "rollup": "^2.32.1",
+    "rollup": "^2.33.1",
     "rollup-plugin-terser": "^7.0.2"
   },
   "peerDependencies": {
