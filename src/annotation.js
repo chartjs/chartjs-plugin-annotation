@@ -133,7 +133,7 @@ function calculateElementProperties(chart, options, defaults) {
 	const scale = chart.scales[options.scaleID];
 
 	let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
-	let min, max, oblique = false;
+	let min, max;
 
 	if (scale) {
 		min = scaleValue(scale, options.value, NaN);
@@ -141,11 +141,9 @@ function calculateElementProperties(chart, options, defaults) {
 		if (scale.isHorizontal()) {
 			x = min;
 			x2 = max;
-			oblique = !(x === x2);
 		} else {
 			y = min;
 			y2 = max;
-			oblique = !(y === y2);
 		}
 	} else {
 		const xScale = chart.scales[options.xScaleID];
@@ -176,8 +174,7 @@ function calculateElementProperties(chart, options, defaults) {
 		y2,
 		width: x2 - x,
 		height: y2 - y,
-		options: merge(Object.create(null), [defaults, options]),
-		_obliqueLine: oblique
+		options: merge(Object.create(null), [defaults, options])
 	};
 }
 

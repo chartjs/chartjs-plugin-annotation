@@ -90,7 +90,7 @@ canvas {
 									borderColor: 'black',
 									borderWidth: 5,
 									label: {
-										autoRotation: true,
+										rotation: 'auto',
 										backgroundColor: 'red',
 										content: 'Test Label',
 										enabled: true
@@ -105,7 +105,7 @@ canvas {
 									borderColor: 'black',
 									borderWidth: 5,
 									label: {
-										autoRotation: true,
+										rotation: 'auto',
 										backgroundColor: 'red',
 										content: 'Test Label',
 										enabled: true
@@ -131,11 +131,11 @@ canvas {
 		});
 
 		document.getElementById('autoRotation').addEventListener('click', () => {
-			const myHorAutoRot = !window.myBar.options.plugins.annotation.annotations.myHorizontal.label.autoRotation;
-			const myVerAutoRot = !window.myBar.options.plugins.annotation.annotations.myVertical.label.autoRotation;
+			const label = window.myBar.options.plugins.annotation.annotations.myHorizontal.label;
+			const rotation = label.rotation === 'auto' ? 0 : 'auto';
 
-			window.myBar.options.plugins.annotation.annotations.myHorizontal.label.autoRotation = myHorAutoRot;
-			window.myBar.options.plugins.annotation.annotations.myVertical.label.autoRotation = myVerAutoRot;
+			window.myBar.options.plugins.annotation.annotations.myHorizontal.label.rotation = rotation;
+			window.myBar.options.plugins.annotation.annotations.myVertical.label.rotation = rotation;
 			window.myBar.update();
 		});
 

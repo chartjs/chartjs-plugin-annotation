@@ -1,5 +1,5 @@
 import {Element, defaults} from 'chart.js';
-import {isArray, fontString} from 'chart.js/helpers';
+import {isArray, fontString, toRadians} from 'chart.js/helpers';
 
 const PI = Math.PI;
 const HALF_PI = PI / 2;
@@ -92,7 +92,6 @@ LineAnnotation.defaults = {
 		xPadding: 6,
 		yPadding: 6,
 		rotation: 0,
-		autoRotation: false,
 		cornerRadius: 6,
 		position: 'center',
 		xAdjust: 0,
@@ -127,7 +126,7 @@ function drawLabel(ctx, line, chartArea) {
 
 	const {width, height} = measureLabel(ctx, label);
 	const pos = calculateLabelPosition(line, width, height);
-	const rotation = line._obliqueLine && !label.rotation && !!label.autoRotation ? calculateAutoRotation(line, chartArea) : label.rotation * PI / 180;
+	const rotation = label.rotation == 'auto' ? calculateAutoRotation(line, chartArea) : toRadians(label.rotation);
 
 	line.labelRect = {x: pos.x, y: pos.y, width, height};
 
