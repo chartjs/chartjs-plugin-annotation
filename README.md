@@ -41,10 +41,10 @@ To configure the annotations plugin, you can simply add new config options to yo
                 // context: {chart, element}
             },
 
-            // Object with the annotation configuration objects, one for each key
+            // Array of annotation configuration objects 
+            // or Object with the annotation configuration objects, one for each key
             // See below for detailed descriptions of the annotation options
-            annotations: {
-                myLine: {
+            annotations: [{
                     drawTime: 'afterDraw', // overrides annotation.drawTime if set
                     type: 'line',
                     mode: 'horizontal',
@@ -61,8 +61,7 @@ To configure the annotations plugin, you can simply add new config options to yo
                     click: function(context) {
                        // context: {chart, element}
                     }
-                }
-            }
+             }]
         }
     }
 }

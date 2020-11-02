@@ -92,17 +92,14 @@
 			dataset.pointBorderWidth = 1;
 		});
 
-		const lines = {
-			myHorizontlLine0: {
-				type: 'line',
-				mode: 'horizontal',
-				scaleID: 'y',
-				value: randomScalingFactor() + 50,
-				borderColor: randomColor(0.75),
-				borderWidth: 5
-			}
-		};
-		let counter = 0;
+		const lines = [{
+			type: 'line',
+			mode: 'horizontal',
+			scaleID: 'y',
+			value: randomScalingFactor() + 50,
+			borderColor: randomColor(0.75),
+			borderWidth: 5
+		}];
 
 		window.onload = function() {
 			const ctx = document.getElementById('canvas').getContext('2d');
@@ -154,24 +151,20 @@
 		};
 
 		function addLine() {
-			const id = 'myHorizontlLine' + (++counter);
-			window.myScatter.options.plugins.annotation.annotations[id] = {
+			window.myScatter.options.plugins.annotation.annotations.push({
 				type: 'line',
 				mode: 'horizontal',
 				scaleID: 'y',
 				value: randomScalingFactor(),
 				borderColor: randomColor(0.75),
 				borderWidth: 5
-			};
+			});
 			window.myScatter.update();
 		}
 
 		function removeLine() {
-			if (counter >= 0) {
-				const id = 'myHorizontlLine' + (counter--);
-				delete window.myScatter.options.plugins.annotation.annotations[id];
-				window.myScatter.update();
-			}
+			window.myScatter.options.plugins.annotation.annotations.pop();
+			window.myScatter.update();
 		}
 	</script>
 </body>
