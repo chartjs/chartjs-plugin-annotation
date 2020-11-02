@@ -152,7 +152,10 @@ Vertical or horizontal lines are supported.
         content: "Test label",
 
         // Rotation of label, in degrees, default is 0
-        rotation: 90
+        rotation: 90,
+        
+        // if set to true and rotation is missing, use the degrees of the oblique line to rotate the label, default is false 
+        autoRotation: false
     },
 
     // Event hooks - context: {chart, element}

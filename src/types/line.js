@@ -50,7 +50,7 @@ export default class LineAnnotation extends Element {
 		};
 	}
 
-	draw(ctx) {
+	draw(ctx, chartArea) {
 		const {x, y, x2, y2, options} = this;
 		ctx.save();
 
@@ -69,7 +69,7 @@ export default class LineAnnotation extends Element {
 		ctx.stroke();
 
 		if (this.labelIsVisible()) {
-			drawLabel(ctx, this);
+			drawLabel(ctx, this, chartArea);
 		}
 
 		ctx.restore();
@@ -92,6 +92,7 @@ LineAnnotation.defaults = {
 		xPadding: 6,
 		yPadding: 6,
 		rotation: 0,
+		autoRotation: false,
 		cornerRadius: 6,
 		position: 'center',
 		xAdjust: 0,
@@ -101,7 +102,20 @@ LineAnnotation.defaults = {
 	}
 };
 
-function drawLabel(ctx, line) {
+function calculateAutoRotation(line, chartArea) {
+	const {x, y, x2, y2} = line;
+	let cathetusAdjacent, cathetusOpposite;
+	if (line.options.mode === 'horizontal'){
+		cathetusAdjacent = y2 > y ? chartArea.width : -chartArea.width;
+		cathetusOpposite = Math.abs(y - y2);
+	} else {
+		cathetusAdjacent = Math.abs(x - x2);
+		cathetusOpposite =  x2 > x ? chartArea.height : -chartArea.height;
+	}
+	return Math.atan(cathetusOpposite / cathetusAdjacent);
+}
+
+function drawLabel(ctx, line, chartArea) {
 	const label = line.options.label;
 
 	ctx.font = fontString(
@@ -113,10 +127,12 @@ function drawLabel(ctx, line) {
 
 	const {width, height} = measureLabel(ctx, label);
 	const pos = calculateLabelPosition(line, width, height);
+	const rotation = line._obliqueLine && !label.rotation && !!label.autoRotation ? calculateAutoRotation(line, chartArea) : label.rotation * PI / 180;
+
 	line.labelRect = {x: pos.x, y: pos.y, width, height};
 
 	ctx.translate(pos.x, pos.y);
-	ctx.rotate(label.rotation * PI / 180);
+	ctx.rotate(rotation);
 
 	ctx.fillStyle = label.backgroundColor;
 	roundedRect(ctx, -(width / 2), -(height / 2), width, height, label.cornerRadius);

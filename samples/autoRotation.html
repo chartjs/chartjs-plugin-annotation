@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+
+<head>
+<title>AutoRotation on Bar Chart</title>
+<script src="../node_modules/chart.js/dist/chart.js"></script>
+<script src="../dist/chartjs-plugin-annotation.js"></script>
+<script src="https://chartjs.org/samples/master/utils.js"></script>
+<style>
+canvas {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+</style>
+</head>
+
+<body>
+	<div id="container" style="width: 75%;">
+		<canvas id="canvas"></canvas>
+	</div>
+	<button id="straightLine">Straight Line</button>
+	<button id="obliqueLine" >Oblique Line</button>
+	<button id="autoRotation">Auto Rotation</button>
+	<script>
+		/* eslint-disable no-undef,no-console */
+		const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+		const color = Chart.helpers.color;
+		const lineValue = randomScalingFactor();
+		const barChartData = {
+			labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+			datasets: [{
+				label: 'Dataset 1',
+				backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+				borderColor: window.chartColors.red,
+				borderWidth: 1,
+				data: [
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor()
+				]
+			}, {
+				label: 'Dataset 2',
+				backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+				borderColor: window.chartColors.blue,
+				borderWidth: 1,
+				data: [
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor()
+				]
+			}]
+
+		};
+
+		window.onload = function() {
+			const ctx = document.getElementById('canvas').getContext('2d');
+			window.myBar = new Chart(ctx, {
+				type: 'bar',
+				data: barChartData,
+				options: {
+					responsive: true,
+					legend: {
+						position: 'top',
+					},
+					title: {
+						display: true,
+						text: 'Chart.js Bar Chart'
+					},
+					plugins: {
+						annotation: {
+							drawTime: 'afterDatasetsDraw',
+							click(context) {
+								console.log('Annotation', context);
+							},
+							annotations: {
+								myHorizontal: {
+									type: 'line',
+									mode: 'horizontal',
+									scaleID: 'y',
+									value: lineValue,
+									endValue: lineValue + 30,
+									borderColor: 'black',
+									borderWidth: 5,
+									label: {
+										autoRotation: true,
+										backgroundColor: 'red',
+										content: 'Test Label',
+										enabled: true
+									},
+								},
+								myVertical: {
+									type: 'line',
+									mode: 'vertical',
+									scaleID: 'x',
+									value: 'May',
+									endValue: 'April',
+									borderColor: 'black',
+									borderWidth: 5,
+									label: {
+										autoRotation: true,
+										backgroundColor: 'red',
+										content: 'Test Label',
+										enabled: true
+									},
+								}
+							}
+						}
+					}
+				}
+			});
+		};
+
+		document.getElementById('straightLine').addEventListener('click', () => {
+			delete window.myBar.options.plugins.annotation.annotations.myHorizontal.endValue;
+			delete window.myBar.options.plugins.annotation.annotations.myVertical.endValue;
+			window.myBar.update();
+		});
+
+		document.getElementById('obliqueLine').addEventListener('click', () => {
+			window.myBar.options.plugins.annotation.annotations.myHorizontal.endValue = lineValue + 30;
+			window.myBar.options.plugins.annotation.annotations.myVertical.endValue = 'April';
+			window.myBar.update();
+		});
+
+		document.getElementById('autoRotation').addEventListener('click', () => {
+			const myHorAutoRot = !window.myBar.options.plugins.annotation.annotations.myHorizontal.label.autoRotation;
+			const myVerAutoRot = !window.myBar.options.plugins.annotation.annotations.myVertical.label.autoRotation;
+
+			window.myBar.options.plugins.annotation.annotations.myHorizontal.label.autoRotation = myHorAutoRot;
+			window.myBar.options.plugins.annotation.annotations.myVertical.label.autoRotation = myVerAutoRot;
+			window.myBar.update();
+		});
+
+	</script>
+</body>
+
+</html>
