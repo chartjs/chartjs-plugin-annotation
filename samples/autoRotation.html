@@ -125,9 +125,9 @@ canvas {
 
 		document.getElementById('obliqueLine').addEventListener('click', () => {
 			const increment = window.myBar.options.plugins.annotation.annotations.myHorizontal.endValue > 0;
-			
-			window.myBar.options.plugins.annotation.annotations.myHorizontal.endValue = increment ? - 40 : + 40
-			window.myBar.options.plugins.annotation.annotations.myVertical.endValue  = increment ? 'March' : 'January';
+
+			window.myBar.options.plugins.annotation.annotations.myHorizontal.endValue = increment ? -40 : +40;
+			window.myBar.options.plugins.annotation.annotations.myVertical.endValue = increment ? 'March' : 'January';
 			window.myBar.update();
 		});
 
