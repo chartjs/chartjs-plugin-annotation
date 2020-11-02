@@ -126,7 +126,7 @@ function drawLabel(ctx, line, chartArea) {
 
 	const {width, height} = measureLabel(ctx, label);
 	const pos = calculateLabelPosition(line, width, height);
-	const rotation = label.rotation == 'auto' ? calculateAutoRotation(line, chartArea) : toRadians(label.rotation);
+	const rotation = label.rotation === 'auto' ? calculateAutoRotation(line, chartArea) : toRadians(label.rotation);
 
 	line.labelRect = {x: pos.x, y: pos.y, width, height};
 
