@@ -77,7 +77,7 @@ Vertical or horizontal lines are supported.
     type: 'line',
 
     // If true, display the the annotation, default is true
-    // A function that is called and can also be used:
+    // A callback can also be used:
     //   display(context) {
     //     // context: {chart, element}
     //     return true;
@@ -182,7 +182,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
     type: 'box',
 
     // If true, display the the annotation, default is true
-    // A function that is called and can also be used:
+    // A callback can also be used:
     //   display(context) {
     //     // context: {chart, element}
     //     return true;

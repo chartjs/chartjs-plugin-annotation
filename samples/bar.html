@@ -112,9 +112,8 @@
 								third: {
 									type: 'line',
 									mode: 'vertical',
-									display(ctx) {
-										console.log(ctx);
-										return ctx.chart.data.datasets.length > 0 ? ctx.chart.isDatasetVisible(0) : false;
+									display(context) {
+										return context.chart.data.datasets.length > 0 ? context.chart.isDatasetVisible(0) : false;
 									},
 									scaleID: 'x',
 									value: 'June',
@@ -130,9 +129,8 @@
 								fourth: {
 									drawTime: 'beforeDatasetsDraw',
 									type: 'box',
-									display(ctx) {
-										console.log(ctx);
-										return ctx.chart.data.datasets.length > 1 ? ctx.chart.isDatasetVisible(1) : false;
+									display(context) {
+										return context.chart.data.datasets.length > 1 ? context.chart.isDatasetVisible(1) : false;
 									},
 									xScaleID: 'x',
 									yScaleID: 'y',
