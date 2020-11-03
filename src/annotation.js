@@ -116,11 +116,11 @@ function updateElements(chart, state, options, mode) {
 		if (!el || !(el instanceof elType)) {
 			el = elements[i] = new elType();
 		}
-		const display = typeof annotation.display === 'function' ? callCallback(annotation.display, [chart, annotation], this) : valueOrDefault(annotation.display, true);
-		el._display = !!display;
-
 		const properties = calculateElementProperties(chart, annotation, elType.defaults);
 		animations.update(el, properties);
+
+		const display = typeof annotation.display === 'function' ? callCallback(annotation.display, [{chart, element:el}], this) : valueOrDefault(annotation.display, true);
+		el._display = !!display;
 	}
 }
 
