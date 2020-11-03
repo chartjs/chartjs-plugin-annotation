@@ -150,8 +150,8 @@ Vertical or horizontal lines are supported.
         // Text to display in label - default is null. Provide an array to display values on a new line
         content: "Test label",
 
-        // Rotation of label, in degrees, default is 0
-        rotation: 90
+        // Rotation of label, in degrees, or 'auto' to use the degrees of the line, default is 0
+        rotation: 90,
     },
 
     // Event hooks - context: {chart, element}

@@ -1,5 +1,5 @@
 import {Element, defaults} from 'chart.js';
-import {isArray, fontString} from 'chart.js/helpers';
+import {isArray, fontString, toRadians} from 'chart.js/helpers';
 
 const PI = Math.PI;
 const HALF_PI = PI / 2;
@@ -101,6 +101,19 @@ LineAnnotation.defaults = {
 	}
 };
 
+function calculateAutoRotation(line) {
+	const {x, y, x2, y2} = line;
+	let cathetusAdjacent, cathetusOpposite;
+	if (line.options.mode === 'horizontal') {
+		cathetusAdjacent = y2 > y ? x2 - x : -(x2 - x);
+		cathetusOpposite = Math.abs(y - y2);
+	} else {
+		cathetusAdjacent = Math.abs(x - x2);
+		cathetusOpposite = x2 > x ? y2 - y : -(y2 - y);
+	}
+	return Math.atan(cathetusOpposite / cathetusAdjacent);
+}
+
 function drawLabel(ctx, line) {
 	const label = line.options.label;
 
@@ -113,10 +126,12 @@ function drawLabel(ctx, line) {
 
 	const {width, height} = measureLabel(ctx, label);
 	const pos = calculateLabelPosition(line, width, height);
+	const rotation = label.rotation === 'auto' ? calculateAutoRotation(line) : toRadians(label.rotation);
+
 	line.labelRect = {x: pos.x, y: pos.y, width, height};
 
 	ctx.translate(pos.x, pos.y);
-	ctx.rotate(label.rotation * PI / 180);
+	ctx.rotate(rotation);
 
 	ctx.fillStyle = label.backgroundColor;
 	roundedRect(ctx, -(width / 2), -(height / 2), width, height, label.cornerRadius);
