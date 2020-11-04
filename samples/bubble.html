@@ -4,8 +4,8 @@
 <head>
 	<title>Bubble Chart</title>
 	<script src="../node_modules/chart.js/dist/Chart.bundle.js"></script>
-	<script src="../chartjs-plugin-annotation.js"></script>
-	<script src="../node_modules/chart.js/samples/utils.js"></script>
+	<script src="../dist/chartjs-plugin-annotation.js"></script>
+	<script src="./utils.js"></script>
 	<style type="text/css">
 	canvas{
 		-moz-user-select: none;
@@ -158,7 +158,7 @@
 		document.getElementById('addDataset').addEventListener('click', function() {
 			++addedCount;
 			var colorName = colorNames[bubbleChartData.datasets.length % colorNames.length];
-	var dsColor = window.chartColors[colorName];
+			var dsColor = window.chartColors[colorName];
 			var newDataset = {
 				label: 'My added dataset ' + addedCount,
 				backgroundColor: color(dsColor).alpha(0.5).rgbString(),
