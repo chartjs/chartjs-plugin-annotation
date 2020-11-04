@@ -89,15 +89,6 @@
 			dataset.pointBorderWidth = 1;
 		});
 
-		var lines = [{
-			type: 'line',
-			mode: 'horizontal',
-			scaleID: 'y-axis-1',
-			value: randomScalingFactor() + 50,
-			borderColor: randomColor(0.75),
-			borderWidth: 5
-		}];
-
 		window.onload = function() {
 			var ctx = document.getElementById('canvas').getContext('2d');
 			window.myScatter = Chart.Scatter(ctx, {
@@ -140,14 +131,23 @@
 					},
 					annotation: {
 						drawTime: 'afterDraw',
-						annotations: lines
+						annotations: [
+							{
+								type: 'line',
+								mode: 'horizontal',
+								scaleID: 'y-axis-1',
+								value: randomScalingFactor() + 50,
+								borderColor: randomColor(0.75),
+								borderWidth: 5
+							}
+						]
 					}
 				}
 			});
 		};
 
 		function addLine() {
-			lines.push({
+			window.myScatter.options.annotation.annotations.push({
 				type: 'line',
 				mode: 'horizontal',
 				scaleID: 'y-axis-1',
@@ -159,7 +159,7 @@
 		}
 
 		function removeLine() {
-			lines.pop();
+			window.myScatter.options.annotation.annotations.pop();
 			window.myScatter.update(0);
 		}
 	</script>
