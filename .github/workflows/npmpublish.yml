@@ -5,6 +5,16 @@ on:
     types: [published]
 
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.trim.outputs.version }}
+    steps:
+      - id: trim
+        run: echo "::set-output name=version::${TAG:1}"
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -16,7 +26,7 @@ jobs:
       - run: npm test
 
   publish-npm:
-    needs: test
+    needs: [test, setup]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -33,7 +43,7 @@ jobs:
           npm run build
           npm pack
         env:
-          VERSION: ${{ github.event.release.tag_name }}
+          VERSION: ${{ needs.setup.outputs.version }}
       - name: Publish @next
         run: npm publish --tag next --dry-run
         if: "github.event.release.prerelease"
