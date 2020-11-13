@@ -7,10 +7,6 @@ export interface AnnotationTypeRegistry {
 
 export type AnnotationType = keyof AnnotationTypeRegistry;
 
-export type AnnotationTypeOptions<TYPE extends AnnotationType = AnnotationType> = {
-	[key in TYPE]: AnnotationTypeRegistry[key];
-};
-
 type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDatasetsDraw';
 type Mode = 'horizontal' | 'vertical';
 
