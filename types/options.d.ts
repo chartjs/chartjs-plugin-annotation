@@ -1,6 +1,9 @@
-import {  Color, DeepPartial } from "chart.js";
+import { Color, DeepPartial } from "chart.js";
 import { AnnotationEvents } from "./events";
 import { LabelOptions } from "./label";
+
+export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDatasetsDraw';
+export type Mode = 'horizontal' | 'vertical';
 
 export interface AnnotationTypeRegistry {
 	line: LineAnnotationOptions
@@ -8,10 +11,6 @@ export interface AnnotationTypeRegistry {
 }
 
 export type AnnotationType = keyof AnnotationTypeRegistry;
-
-type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDatasetsDraw';
-type Mode = 'horizontal' | 'vertical';
-
 
 export type AnnotationOptions<TYPE extends AnnotationType = AnnotationType> = DeepPartial<
 	{ [key in TYPE]: { type: key } & AnnotationTypeRegistry[key] }[TYPE]
@@ -43,8 +42,6 @@ export interface LineAnnotationOptions extends AnnotationElementOptions {
 export interface BoxAnnotationOptions extends AnnotationElementOptions {
 	backgroundColor?: Color,
 }
-
-
 
 export interface AnnotationPluginOptions extends AnnotationEvents {
 	annotations: AnnotationOptions[]
