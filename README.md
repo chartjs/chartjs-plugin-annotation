@@ -46,6 +46,7 @@ To configure the annotations plugin, you can simply add new config options to yo
             // See below for detailed descriptions of the annotation options
             annotations: [{
                 drawTime: 'afterDraw', // overrides annotation.drawTime if set
+                display: true,
                 type: 'line',
                 mode: 'horizontal',
                 scaleID: 'y',
@@ -74,6 +75,14 @@ Vertical or horizontal lines are supported.
 ```javascript
 {
     type: 'line',
+
+    // If true, display the annotation, default is true
+    // A callback can also be used:
+    //   display(context) {
+    //     // context: {chart, element}
+    //     return true;
+    //   },
+    display: true,
 
     // optional drawTime to control layering, overrides global drawTime setting
     drawTime: 'afterDatasetsDraw',
@@ -171,6 +180,14 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 ```javascript
 {
     type: 'box',
+
+    // If true, display the annotation, default is true
+    // A callback can also be used:
+    //   display(context) {
+    //     // context: {chart, element}
+    //     return true;
+    //   },
+    display: true,
 
     // optional drawTime to control layering, overrides global drawTime setting
     drawTime: 'beforeDatasetsDraw',
