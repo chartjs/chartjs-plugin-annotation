@@ -3,12 +3,18 @@ import {clipArea, unclipArea, isFinite, merge, valueOrDefault, callback as callC
 import {handleEvent, updateListeners} from './events';
 import BoxAnnotation from './types/box';
 import LineAnnotation from './types/line';
+import EllipseAnnotation from './types/ellipse';
+import TriangleAnnotation from './types/triangle';
+import PointAnnotation from './types/point';
 
 const chartStates = new Map();
 
 const annotationTypes = {
 	box: BoxAnnotation,
-	line: LineAnnotation
+	line: LineAnnotation,
+	ellipse: EllipseAnnotation,
+	triangle: TriangleAnnotation,
+	point: PointAnnotation
 };
 
 export default {
@@ -116,11 +122,11 @@ function updateElements(chart, state, options, mode) {
 		if (!el || !(el instanceof elType)) {
 			el = elements[i] = new elType();
 		}
-		const display = typeof annotation.display === 'function' ? callCallback(annotation.display, [chart, annotation], this) : valueOrDefault(annotation.display, true);
-		el._display = !!display;
-
-		const properties = calculateElementProperties(chart, annotation, elType.defaults);
+		const properties = calculateElementProperties(chart, el, annotation, elType.defaults);
 		animations.update(el, properties);
+
+		const display = typeof annotation.display === 'function' ? callCallback(annotation.display, [{chart, element:el}], this) : valueOrDefault(annotation.display, true);
+		el._display = !!display;
 	}
 }
 
@@ -129,53 +135,10 @@ function scaleValue(scale, value, fallback) {
 	return isFinite(value) ? scale.getPixelForValue(value) : fallback;
 }
 
-function calculateElementProperties(chart, options, defaults) {
-	const scale = chart.scales[options.scaleID];
-
-	let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
-	let min, max;
-
-	if (scale) {
-		min = scaleValue(scale, options.value, NaN);
-		max = scaleValue(scale, options.endValue, min);
-		if (scale.isHorizontal()) {
-			x = min;
-			x2 = max;
-		} else {
-			y = min;
-			y2 = max;
-		}
-	} else {
-		const xScale = chart.scales[options.xScaleID];
-		const yScale = chart.scales[options.yScaleID];
-		if (!xScale && !yScale) {
-			return {options: {}};
-		}
-
-		if (xScale) {
-			min = scaleValue(xScale, options.xMin, x);
-			max = scaleValue(xScale, options.xMax, x2);
-			x = Math.min(min, max);
-			x2 = Math.max(min, max);
-		}
-
-		if (yScale) {
-			min = scaleValue(yScale, options.yMin, y2);
-			max = scaleValue(yScale, options.yMax, y);
-			y = Math.min(min, max);
-			y2 = Math.max(min, max);
-		}
-	}
-
-	return {
-		x,
-		y,
-		x2,
-		y2,
-		width: x2 - x,
-		height: y2 - y,
-		options: merge(Object.create(null), [defaults, options])
-	};
+function calculateElementProperties(chart, element, options, defaults) {
+	const elementProperties = element.resolveElementProperties(chart, options);
+	elementProperties.options = merge(Object.create(null), [defaults, options]);
+	return elementProperties
 }
 
 function draw(chart, options, caller) {
@@ -248,7 +211,7 @@ function getScaleLimits(scale, annotations) {
 	let min = valueOrDefault(scale.min, Number.NEGATIVE_INFINITY);
 	let max = valueOrDefault(scale.max, Number.POSITIVE_INFINITY);
 	scaleAnnotations.forEach(annotation => {
-		['value', 'endValue', axis + 'Min', axis + 'Max'].forEach(prop => {
+		['value', 'endValue', axis + 'Min', axis + 'Max', 'xValue', 'yValue'].forEach(prop => {
 			if (prop in annotation) {
 				const value = annotation[prop];
 				min = Math.min(min, value);

@@ -6,7 +6,7 @@ An annotation plugin for Chart.js >= 3.0.0
 
 For Chart.js 2.4.0 to 2.9.x support, use [version 0.5.7 of this plugin](https://github.com/chartjs/chartjs-plugin-annotation/releases/tag/v0.5.7)
 
-This plugin draws lines and boxes on the chart area.
+This plugin draws lines, boxes, points, ellipses and triangles on the chart area.
 
 Annotations work with line, bar, scatter and bubble charts that use linear, logarithmic, time, or category scales. Annotations will not work on any chart that does not have exactly two axes, including pie, radar, and polar area charts.
 
@@ -198,6 +198,154 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 
     // Stroke width
     borderWidth: 2,
+    
+    // Radius of box rectangle, default below
+    cornerRadius: 0,
+
+    // Fill color
+    backgroundColor: 'green',
+
+    // Event hooks - context: {chart, element}
+    enter: function(context) {},
+    leave: function(context) {},
+    click: function(context) {},
+    dblclick: function(context) {}
+}
+```
+
+### Ellipse Annotations
+
+Ellipse annotations are supported. If one of the axes is not specified, the ellipse will take the entire chart dimension.
+
+The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the ellipse is expanded out to the edges
+
+```javascript
+{
+    type: 'ellipse',
+
+    // optional drawTime to control layering, overrides global drawTime setting
+    drawTime: 'beforeDatasetsDraw',
+
+    // ID of the X scale to bind onto
+    xScaleID: 'x',
+
+    // ID of the Y scale to bind onto
+    yScaleID: 'y',
+
+    // Left edge of the box. in units along the x axis
+    xMin: 25,
+
+    // Right edge of the box
+    xMax: 40,
+
+    // Top edge of the box in units along the y axis
+    yMax: 20,
+
+    // Bottom edge of the box
+    yMin:  15,
+
+    // Stroke color
+    borderColor: 'red',
+
+    // Stroke width
+    borderWidth: 2,
+
+    // Fill color
+    backgroundColor: 'green',
+
+    // Event hooks - context: {chart, element}
+    enter: function(context) {},
+    leave: function(context) {},
+    click: function(context) {},
+    dblclick: function(context) {}
+}
+```
+
+### Triangle Annotations
+
+Triangle annotations are supported. If one of the axes is not specified, the triangle will take the entire chart dimension.
+
+The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the triangle is expanded out to the edges
+
+```javascript
+{
+    type: 'triangle',
+
+    // optional drawTime to control layering, overrides global drawTime setting
+    drawTime: 'beforeDatasetsDraw',
+
+    // ID of the X scale to bind onto
+    xScaleID: 'x',
+
+    // ID of the Y scale to bind onto
+    yScaleID: 'y',
+
+    // Left edge of the box. in units along the x axis
+    xMin: 25,
+
+    // Right edge of the box
+    xMax: 40,
+
+    // Top edge of the box in units along the y axis
+    yMax: 20,
+
+    // Bottom edge of the box
+    yMin:  15,
+
+    // Stroke color
+    borderColor: 'red',
+
+    // Stroke width
+    borderWidth: 2,
+
+    // Fill color
+    backgroundColor: 'green',
+    
+    // Orientation of triangle to draw, can be one of: top, bottom, left, right, topLeft, topRight, bottomLeft, bottomRight (last 4 values in order to have a right triangle).
+    // Default below.
+    orientation: 'top',
+
+    // Event hooks - context: {chart, element}
+    enter: function(context) {},
+    leave: function(context) {},
+    click: function(context) {},
+    dblclick: function(context) {}
+}
+```
+
+### Point Annotations
+
+Point annotations are supported. If one of the axes is not specified, the point will take the entire chart dimension.
+
+The 2 coordinates, xValue, yValue are optional. If not specified, the point is expanded out to the edges
+
+```javascript
+{
+    type: 'point',
+
+    // optional drawTime to control layering, overrides global drawTime setting
+    drawTime: 'beforeDatasetsDraw',
+
+    // ID of the X scale to bind onto
+    xScaleID: 'x',
+
+    // ID of the Y scale to bind onto
+    yScaleID: 'y',
+
+    // Center point X value of the point. in units along the x axis
+    xValue: 25,
+
+    // Center point Y value of the point. in units along the y axis
+    yValue: 20,
+
+    // Stroke color
+    borderColor: 'red',
+
+    // Stroke width
+    borderWidth: 2,
+    
+    // Radius of the point, default below
+    radius: 10,
 
     // Fill color
     backgroundColor: 'green',
@@ -215,7 +363,6 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 The following features still need to be done:
 
 * Box annotation labels
-* Point annotations
 * Text annotations
 
 ## Installation
