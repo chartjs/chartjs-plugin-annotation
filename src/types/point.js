@@ -3,13 +3,13 @@ import {scaleValue} from '../helpers';
 
 export default class PointAnnotation extends Element {
 
-	inRange(x, y, useFinalPosition) {
+	inRange(x, y) {
 		return pointInCircle({x, y}, this);
 	}
 
 	getCenterPoint(useFinalPosition) {
 		const {x, y} = this.getProps(['x', 'y'], useFinalPosition);
-		return {x , y};
+		return {x, y};
 	}
 
 	draw(ctx) {
@@ -22,14 +22,14 @@ export default class PointAnnotation extends Element {
 		ctx.fillStyle = options.backgroundColor;
 
 		ctx.beginPath();
-    	ctx.arc(x, y, width / 2, 0, Math.PI * 2);
+		ctx.arc(x, y, width / 2, 0, Math.PI * 2);
 		ctx.fill();
 		ctx.stroke();
 
 		ctx.restore();
 	}
 
-	resolveElementProperties(chart, options) {
+	resolveElementProperties(chart, options) { // eslint-disable-line class-methods-use-this
 		const xScale = chart.scales[options.xScaleID];
 		const yScale = chart.scales[options.yScaleID];
 		let x = chart.chartArea.width / 2;
@@ -72,7 +72,7 @@ PointAnnotation.defaultRoutes = {
 };
 
 function pointInCircle(p, point) {
-	const {x, y, width} = point;
+	const {width} = point;
 	const center = point.getCenterPoint(true);
 	const radius = width / 2;
 
@@ -80,5 +80,5 @@ function pointInCircle(p, point) {
 		return false;
 	}
 
-	return (Math.pow(p.x - center.x, 2) + Math.pow(p.y - center.y, 2)) <=  Math.pow(radius, 2);
+	return (Math.pow(p.x - center.x, 2) + Math.pow(p.y - center.y, 2)) <= Math.pow(radius, 2);
 }

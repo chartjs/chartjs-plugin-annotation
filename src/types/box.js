@@ -35,13 +35,13 @@ export default class BoxAnnotation extends Element {
 
 		ctx.restore();
 	}
-	
+
 	resolveElementProperties(chart, options) {
 		const xScale = chart.scales[options.xScaleID];
 		const yScale = chart.scales[options.yScaleID];
 		let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
 		let min, max;
-		
+
 		if (!xScale && !yScale) {
 			return {options: {}};
 		}

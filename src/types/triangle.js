@@ -2,7 +2,7 @@ import BoxAnnotation from './box';
 
 export default class TriangleAnnotation extends BoxAnnotation {
 
-	inRange(x, y, useFinalPosition) {
+	inRange(x, y) {
 		return pointInTriangle({x, y}, this._points.apex1, this._points.apex2, this._points.apex3);
 	}
 
@@ -18,9 +18,9 @@ export default class TriangleAnnotation extends BoxAnnotation {
 		ctx.strokeStyle = options.borderColor;
 		ctx.fillStyle = options.backgroundColor;
 
-	    ctx.moveTo(this._points.apex1.x, this._points.apex1.y);
-   		ctx.lineTo(this._points.apex2.x, this._points.apex2.y);
-   		ctx.lineTo(this._points.apex3.x, this._points.apex3.y);
+		ctx.moveTo(this._points.apex1.x, this._points.apex1.y);
+		ctx.lineTo(this._points.apex2.x, this._points.apex2.y);
+		ctx.lineTo(this._points.apex3.x, this._points.apex3.y);
 
 		ctx.fill();
 		ctx.stroke();
@@ -75,7 +75,7 @@ function calculateApexes(triangle) {
 		break;
 	case 'bottomLeft':
 		result.apex1 = {x, y};
-		result.apex2 = {x, y: y + height}
+		result.apex2 = {x, y: y + height};
 		result.apex3 = {x: x + width, y: y + height};
 		break;
 	case 'bottomRight':
@@ -93,10 +93,11 @@ function calculateApexes(triangle) {
 }
 
 function pointInTriangle(p, p0, p1, p2) {
-	var A = 1/2 * (-p1.y * p2.x + p0.y * (-p1.x + p2.x) + p0.x * (p1.y - p2.y) + p1.x * p2.y);
-	var sign = A < 0 ? -1 : 1;
-	var s = (p0.y * p2.x - p0.x * p2.y + (p2.y - p0.y) * p.x + (p0.x - p2.x) * p.y) * sign;
-	var t = (p0.x * p1.y - p0.y * p1.x + (p0.y - p1.y) * p.x + (p1.x - p0.x) * p.y) * sign;
+	// see https://en.wikipedia.org/wiki/Barycentric_coordinate_system 
+	let A = 1 / 2 * (-p1.y * p2.x + p0.y * (-p1.x + p2.x) + p0.x * (p1.y - p2.y) + p1.x * p2.y);
+	let sign = A < 0 ? -1 : 1;
+	let s = (p0.y * p2.x - p0.x * p2.y + (p2.y - p0.y) * p.x + (p0.x - p2.x) * p.y) * sign;
+	let t = (p0.x * p1.y - p0.y * p1.x + (p0.y - p1.y) * p.x + (p1.x - p0.x) * p.y) * sign;
 
 	return s > 0 && t > 0 && (s + t) < 2 * A * sign;
 }
