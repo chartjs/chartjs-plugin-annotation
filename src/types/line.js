@@ -72,8 +72,8 @@ export default class LineAnnotation extends Element {
 
 		ctx.restore();
 	}
-	
-	resolveElementProperties(chart, options) {
+
+	resolveElementProperties(chart, options) { // eslint-disable-line class-methods-use-this
 		const scale = chart.scales[options.scaleID];
 		let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
 		let min, max;
