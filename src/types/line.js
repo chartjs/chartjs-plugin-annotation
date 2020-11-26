@@ -26,7 +26,7 @@ export default class LineAnnotation extends Element {
 	}
 
 	isOnLabel(x, y) {
-		const {options, labelRect} = this;
+		const {labelRect} = this;
 
 		if (!labelRect) {
 			return false;
@@ -234,7 +234,7 @@ function calculateLabelPosition(line, width, height) {
 	return {x, y};
 }
 
-function loadCornersOfRotatedLabelRect(labelRect, angle){
+function loadCornersOfRotatedLabelRect(labelRect, angle) {
 	const {x, y, width, height} = labelRect;
 
 	labelRect.a = {x: x - ((width / 2) * Math.cos(angle)) - ((height / 2) * Math.sin(angle)), y: y - ((width / 2) * Math.sin(angle)) + ((height / 2) * Math.cos(angle))};
