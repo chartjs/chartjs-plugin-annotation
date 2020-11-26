@@ -1,6 +1,6 @@
 import {Element, defaults} from 'chart.js';
 import {isArray, fontString, toRadians} from 'chart.js/helpers';
-import {scaleValue, roundedRect, InTriangle} from '../helpers';
+import {scaleValue, roundedRect, inTriangle} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
@@ -33,7 +33,7 @@ export default class LineAnnotation extends Element {
 		}
 
 		const eventPoint = {x, y};
-		return InTriangle(eventPoint, labelRect.a, labelRect.b, labelRect.c) || InTriangle(eventPoint, labelRect.b, labelRect.c, labelRect.d);
+		return inTriangle(eventPoint, labelRect.a, labelRect.b, labelRect.c) || inTriangle(eventPoint, labelRect.b, labelRect.c, labelRect.d);
 	}
 
 	inRange(x, y) {

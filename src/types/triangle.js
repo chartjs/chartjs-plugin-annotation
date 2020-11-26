@@ -1,10 +1,10 @@
 import BoxAnnotation from './box';
-import {InTriangle} from '../helpers';
+import {inTriangle} from '../helpers';
 
 export default class TriangleAnnotation extends BoxAnnotation {
 
 	inRange(x, y) {
-		return InTriangle({x, y}, this._vertices.a, this._vertices.b, this._vertices.c);
+		return inTriangle({x, y}, this._vertices.a, this._vertices.b, this._vertices.c);
 	}
 
 	draw(ctx) {

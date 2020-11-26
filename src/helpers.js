@@ -50,7 +50,7 @@ export function roundedRect(ctx, x, y, width, height, radius) {
 	}
 }
 
-export function InTriangle(point, a, b, c) {
+export function inTriangle(point, a, b, c) {
 	// see https://en.wikipedia.org/wiki/Barycentric_coordinate_system
 	const A = 1 / 2 * (-b.y * c.x + a.y * (-b.x + c.x) + a.x * (b.y - c.y) + b.x * c.y);
 	const sign = A < 0 ? -1 : 1;
