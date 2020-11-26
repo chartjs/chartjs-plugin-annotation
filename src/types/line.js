@@ -1,6 +1,6 @@
 import {Element, defaults} from 'chart.js';
 import {isArray, fontString, toRadians} from 'chart.js/helpers';
-import {scaleValue, roundedRect} from '../helpers';
+import {scaleValue, roundedRect, InTriangle} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
@@ -26,14 +26,14 @@ export default class LineAnnotation extends Element {
 	}
 
 	isOnLabel(x, y) {
-		const labelRect = this.labelRect || {};
-		const w2 = labelRect.width / 2;
-		const h2 = labelRect.height / 2;
-		return this.labelIsVisible() &&
-			x >= labelRect.x - w2 &&
-			x <= labelRect.x + w2 &&
-			y >= labelRect.y - h2 &&
-			y <= labelRect.y + h2;
+		const {options, labelRect} = this;
+
+		if (!labelRect) {
+			return false;
+		}
+
+		const eventPoint = {x, y};
+		return InTriangle(eventPoint, labelRect.a, labelRect.b, labelRect.c) || InTriangle(eventPoint, labelRect.b, labelRect.c, labelRect.d);
 	}
 
 	inRange(x, y) {
@@ -153,6 +153,7 @@ function drawLabel(ctx, line) {
 	const rotation = label.rotation === 'auto' ? calculateAutoRotation(line) : toRadians(label.rotation);
 
 	line.labelRect = {x: pos.x, y: pos.y, width, height};
+	loadCornersOfRotatedLabelRect(line.labelRect, rotation);
 
 	ctx.translate(pos.x, pos.y);
 	ctx.rotate(rotation);
@@ -231,4 +232,13 @@ function calculateLabelPosition(line, width, height) {
 		y = pt.y + yAdjust;
 	}
 	return {x, y};
+}
+
+function loadCornersOfRotatedLabelRect(labelRect, angle){
+	const {x, y, width, height} = labelRect;
+
+	labelRect.a = {x: x - ((width / 2) * Math.cos(angle)) - ((height / 2) * Math.sin(angle)), y: y - ((width / 2) * Math.sin(angle)) + ((height / 2) * Math.cos(angle))};
+	labelRect.b = {x: x + ((width / 2) * Math.cos(angle)) - ((height / 2) * Math.sin(angle)), y: y + ((width / 2) * Math.sin(angle)) + ((height / 2) * Math.cos(angle))};
+	labelRect.c = {x: x - ((width / 2) * Math.cos(angle)) + ((height / 2) * Math.sin(angle)), y: y - ((width / 2) * Math.sin(angle)) - ((height / 2) * Math.cos(angle))};
+	labelRect.d = {x: x + ((width / 2) * Math.cos(angle)) + ((height / 2) * Math.sin(angle)), y: y + ((width / 2) * Math.sin(angle)) - ((height / 2) * Math.cos(angle))};
 }

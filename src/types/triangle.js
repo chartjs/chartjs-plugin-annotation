@@ -1,14 +1,15 @@
 import BoxAnnotation from './box';
+import {InTriangle} from '../helpers';
 
 export default class TriangleAnnotation extends BoxAnnotation {
 
 	inRange(x, y) {
-		return pointInTriangle({x, y}, this._points.apex1, this._points.apex2, this._points.apex3);
+		return InTriangle({x, y}, this._vertices.a, this._vertices.b, this._vertices.c);
 	}
 
 	draw(ctx) {
 		const {options} = this;
-		this._points = calculateApexes(this);
+		this._vertices = calculateVertices(this);
 
 		ctx.save();
 
@@ -18,10 +19,10 @@ export default class TriangleAnnotation extends BoxAnnotation {
 		ctx.strokeStyle = options.borderColor;
 		ctx.fillStyle = options.backgroundColor;
 
-		ctx.moveTo(this._points.apex1.x, this._points.apex1.y);
-		ctx.lineTo(this._points.apex2.x, this._points.apex2.y);
-		ctx.lineTo(this._points.apex3.x, this._points.apex3.y);
-		ctx.lineTo(this._points.apex1.x, this._points.apex1.y);
+		ctx.moveTo(this._vertices.a.x, this._vertices.a.y);
+		ctx.lineTo(this._vertices.b.x, this._vertices.b.y);
+		ctx.lineTo(this._vertices.c.x, this._vertices.c.y);
+		ctx.lineTo(this._vertices.a.x, this._vertices.a.y);
 
 		ctx.fill();
 		ctx.stroke();
@@ -43,62 +44,52 @@ TriangleAnnotation.defaultRoutes = {
 	backgroundColor: 'color'
 };
 
-function calculateApexes(triangle) {
+function calculateVertices(triangle) {
 	const {x, y, width, height, options} = triangle;
 	const center = triangle.getCenterPoint(true);
 	const result = {};
 
 	switch (options.orientation) {
 	case 'bottom':
-		result.apex1 = {x: center.x, y: y + height};
-		result.apex2 = {x, y};
-		result.apex3 = {x: x + width, y};
+		result.a = {x: center.x, y: y + height};
+		result.b = {x, y};
+		result.c = {x: x + width, y};
 		break;
 	case 'left':
-		result.apex1 = {x, y: center.y};
-		result.apex2 = {x: x + width, y};
-		result.apex3 = {x: x + width, y: y + height};
+		result.a = {x, y: center.y};
+		result.b = {x: x + width, y};
+		result.c = {x: x + width, y: y + height};
 		break;
 	case 'right':
-		result.apex1 = {x: x + width, y: center.y};
-		result.apex2 = {x, y};
-		result.apex3 = {x, y: y + height};
+		result.a = {x: x + width, y: center.y};
+		result.b = {x, y};
+		result.c = {x, y: y + height};
 		break;
 	case 'topLeft':
-		result.apex1 = {x, y};
-		result.apex2 = {x: x + width, y};
-		result.apex3 = {x, y: y + height};
+		result.a = {x, y};
+		result.b = {x: x + width, y};
+		result.c = {x, y: y + height};
 		break;
 	case 'topRight':
-		result.apex1 = {x, y};
-		result.apex2 = {x: x + width, y};
-		result.apex3 = {x: x + width, y: y + height};
+		result.a = {x, y};
+		result.b = {x: x + width, y};
+		result.c = {x: x + width, y: y + height};
 		break;
 	case 'bottomLeft':
-		result.apex1 = {x, y};
-		result.apex2 = {x, y: y + height};
-		result.apex3 = {x: x + width, y: y + height};
+		result.a = {x, y};
+		result.b = {x, y: y + height};
+		result.c = {x: x + width, y: y + height};
 		break;
 	case 'bottomRight':
-		result.apex1 = {x: x + width, y};
-		result.apex2 = {x: x + width, y: y + height};
-		result.apex3 = {x, y: y + height};
+		result.a = {x: x + width, y};
+		result.b = {x: x + width, y: y + height};
+		result.c = {x, y: y + height};
 		break;
 	default:
 		// default is top
-		result.apex1 = {x: center.x, y};
-		result.apex2 = {x: x + width, y: y + height};
-		result.apex3 = {x, y: y + height};
+		result.a = {x: center.x, y};
+		result.b = {x: x + width, y: y + height};
+		result.c = {x, y: y + height};
 	}
 	return result;
-}
-
-function pointInTriangle(p, p0, p1, p2) {
-	// see https://en.wikipedia.org/wiki/Barycentric_coordinate_system
-	const A = 1 / 2 * (-p1.y * p2.x + p0.y * (-p1.x + p2.x) + p0.x * (p1.y - p2.y) + p1.x * p2.y);
-	const sign = A < 0 ? -1 : 1;
-	const s = (p0.y * p2.x - p0.x * p2.y + (p2.y - p0.y) * p.x + (p0.x - p2.x) * p.y) * sign;
-	const t = (p0.x * p1.y - p0.y * p1.x + (p0.y - p1.y) * p.x + (p1.x - p0.x) * p.y) * sign;
-
-	return s > 0 && t > 0 && (s + t) < 2 * A * sign;
 }

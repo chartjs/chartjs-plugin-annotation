@@ -77,7 +77,7 @@ canvas {
 						annotation: {
 							drawTime: 'afterDatasetsDraw',
 							click(context) {
-								console.log('Annotation', context);
+								console.log('Annotation '+context.element.options.id, context);
 							},
 							annotations: {
 								myHorizontal: {
@@ -85,7 +85,7 @@ canvas {
 									mode: 'horizontal',
 									scaleID: 'y',
 									value: 0,
-									endValue: 40,
+									endValue: 80,
 									borderColor: 'black',
 									borderWidth: 5,
 									label: {
@@ -106,7 +106,7 @@ canvas {
 									label: {
 										rotation: 'auto',
 										backgroundColor: 'red',
-										content: 'Test Label',
+										content: ['Test Multi', 'Line Label'],
 										enabled: true
 									},
 								}
@@ -126,7 +126,7 @@ canvas {
 		document.getElementById('obliqueLine').addEventListener('click', () => {
 			const increment = window.myBar.options.plugins.annotation.annotations.myHorizontal.endValue > 0;
 
-			window.myBar.options.plugins.annotation.annotations.myHorizontal.endValue = increment ? -40 : +40;
+			window.myBar.options.plugins.annotation.annotations.myHorizontal.endValue = increment ? -60 : +80;
 			window.myBar.options.plugins.annotation.annotations.myVertical.endValue = increment ? 'March' : 'January';
 			window.myBar.update();
 		});
