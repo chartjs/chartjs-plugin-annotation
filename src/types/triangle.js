@@ -21,6 +21,7 @@ export default class TriangleAnnotation extends BoxAnnotation {
 		ctx.moveTo(this._points.apex1.x, this._points.apex1.y);
 		ctx.lineTo(this._points.apex2.x, this._points.apex2.y);
 		ctx.lineTo(this._points.apex3.x, this._points.apex3.y);
+		ctx.lineTo(this._points.apex1.x, this._points.apex1.y);
 
 		ctx.fill();
 		ctx.stroke();
