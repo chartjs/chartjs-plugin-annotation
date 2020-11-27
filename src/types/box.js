@@ -36,7 +36,8 @@ export default class BoxAnnotation extends Element {
 		ctx.restore();
 	}
 
-	resolveElementProperties(chart, options) { // eslint-disable-line class-methods-use-this
+	resolveElementProperties(chart) {
+		const {options} = this;
 		const xScale = chart.scales[options.xScaleID];
 		const yScale = chart.scales[options.yScaleID];
 		let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
@@ -68,6 +69,14 @@ export default class BoxAnnotation extends Element {
 			width: x2 - x,
 			height: y2 - y
 		};
+	}
+
+	/**
+	 * @param {chart} chart - chart instance
+	 * @todo temporaly empty waiting to implement callbacks
+	 */
+	resolveOptions() { // eslint-disable-line class-methods-use-this
+		// nothing
 	}
 }
 

@@ -1,5 +1,5 @@
-import {Element, defaults} from 'chart.js';
-import {isArray, fontString, toRadians} from 'chart.js/helpers';
+import {Element} from 'chart.js';
+import {isArray, toFontString, toRadians, mergeIf} from 'chart.js/helpers';
 import {scaleValue, roundedRect, inTriangle} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
@@ -73,7 +73,8 @@ export default class LineAnnotation extends Element {
 		ctx.restore();
 	}
 
-	resolveElementProperties(chart, options) { // eslint-disable-line class-methods-use-this
+	resolveElementProperties(chart) {
+		const {options} = this;
 		const scale = chart.scales[options.scaleID];
 		let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
 		let min, max;
@@ -98,6 +99,12 @@ export default class LineAnnotation extends Element {
 			height: y2 - y
 		};
 	}
+
+	resolveOptions(chart) {
+		const {options} = this;
+
+		options.label.font = mergeIf(options.label.font, chart.options.font);
+	}
 }
 
 LineAnnotation.id = 'lineAnnotation';
@@ -108,8 +115,6 @@ LineAnnotation.defaults = {
 	label: {
 		backgroundColor: 'rgba(0,0,0,0.8)',
 		font: {
-			family: defaults.font.family,
-			size: defaults.font.size,
 			style: 'bold',
 			color: '#fff',
 		},
@@ -141,11 +146,7 @@ function calculateAutoRotation(line) {
 function drawLabel(ctx, line) {
 	const label = line.options.label;
 
-	ctx.font = fontString(
-		label.font.size,
-		label.font.style,
-		label.font.family
-	);
+	ctx.font = toFontString(label.font);
 	ctx.textAlign = 'center';
 
 	const {width, height} = measureLabel(ctx, label);
