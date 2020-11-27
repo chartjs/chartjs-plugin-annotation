@@ -4,7 +4,6 @@ import {handleEvent, updateListeners} from './events';
 import BoxAnnotation from './types/box';
 import LineAnnotation from './types/line';
 import EllipseAnnotation from './types/ellipse';
-import TriangleAnnotation from './types/triangle';
 import PointAnnotation from './types/point';
 
 const chartStates = new Map();
@@ -13,7 +12,6 @@ const annotationTypes = {
 	box: BoxAnnotation,
 	line: LineAnnotation,
 	ellipse: EllipseAnnotation,
-	triangle: TriangleAnnotation,
 	point: PointAnnotation
 };
 
@@ -125,20 +123,15 @@ function updateElements(chart, state, options, mode) {
 		const properties = calculateElementProperties(chart, el, annotation, elType.defaults);
 		animations.update(el, properties);
 
-		const display = typeof annotation.display === 'function' ? callCallback(annotation.display, [{chart, element:el}], this) : valueOrDefault(annotation.display, true);
+		const display = typeof annotation.display === 'function' ? callCallback(annotation.display, [{chart, element: el}]) : valueOrDefault(annotation.display, true);
 		el._display = !!display;
 	}
-}
-
-function scaleValue(scale, value, fallback) {
-	value = scale.parse(value);
-	return isFinite(value) ? scale.getPixelForValue(value) : fallback;
 }
 
 function calculateElementProperties(chart, element, options, defaults) {
 	const elementProperties = element.resolveElementProperties(chart, options);
 	elementProperties.options = merge(Object.create(null), [defaults, options]);
-	return elementProperties
+	return elementProperties;
 }
 
 function draw(chart, options, caller) {

@@ -112,8 +112,8 @@
 								third: {
 									type: 'line',
 									mode: 'vertical',
-									display(context) {
-										return context.chart.data.datasets.length > 0 ? context.chart.isDatasetVisible(0) : false;
+									display(chart) {
+										return chart.data.datasets.length > 0 ? chart.isDatasetVisible(0) : false;
 									},
 									scaleID: 'x',
 									value: 'June',
@@ -129,8 +129,8 @@
 								fourth: {
 									drawTime: 'beforeDatasetsDraw',
 									type: 'box',
-									display(context) {
-										return context.chart.data.datasets.length > 1 ? context.chart.isDatasetVisible(1) : false;
+									display(chart) {
+										return chart.data.datasets.length > 1 ? chart.isDatasetVisible(1) : false;
 									},
 									xScaleID: 'x',
 									yScaleID: 'y',
