@@ -89,6 +89,7 @@ export default class LineAnnotation extends Element {
 				y = min;
 				y2 = max;
 			}
+			options._horizontal = !scale.isHorizontal();
 		}
 		return {
 			x,
@@ -133,7 +134,7 @@ LineAnnotation.defaults = {
 function calculateAutoRotation(line) {
 	const {x, y, x2, y2} = line;
 	let cathetusAdjacent, cathetusOpposite;
-	if (line.options.mode === 'horizontal') {
+	if (line.options._horizontal) {
 		cathetusAdjacent = y2 > y ? x2 - x : -(x2 - x);
 		cathetusOpposite = Math.abs(y - y2);
 	} else {
@@ -203,26 +204,27 @@ function measureLabel(ctx, label) {
 }
 
 function calculateLabelPosition(line, width, height) {
+	const horizontal = line.options._horizontal;
 	const label = line.options.label;
-	const {xPadding, xAdjust, yPadding, yAdjust} = label;
+	const {xPadding, xAdjust, yPadding, yAdjust, position} = label;
 	const p1 = {x: line.x, y: line.y};
 	const p2 = {x: line.x2, y: line.y2};
 	let x, y, pt;
 
-	switch (label.position) {
-	case 'top':
+	switch (true) {
+	case position === 'top' && !horizontal:
 		y = line.y + (height / 2) + yPadding + yAdjust;
 		x = interpolateX(y, p1, p2) + xAdjust;
 		break;
-	case 'bottom':
+	case position === 'bottom' && !horizontal:
 		y = line.y2 - (height / 2) - yPadding + yAdjust;
 		x = interpolateX(y, p1, p2) + xAdjust;
 		break;
-	case 'left':
+	case position === 'left' && horizontal:
 		x = line.x + (width / 2) + xPadding + xAdjust;
 		y = interpolateY(x, p1, p2) + yAdjust;
 		break;
-	case 'right':
+	case position === 'right' && horizontal:
 		x = line.x2 - (width / 2) - xPadding + xAdjust;
 		y = interpolateY(x, p1, p2) + yAdjust;
 		break;

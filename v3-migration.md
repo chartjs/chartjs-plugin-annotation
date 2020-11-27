@@ -22,7 +22,6 @@ const Chart = new Chart(ctx, {
                 annotations: [{
                     // annotation element options
                     type: 'line',
-                    mode: 'horizontal',
                     scaleID: 'y',
                     value: 25,
                     borderColor: 'red',
@@ -55,6 +54,10 @@ const Chart = new Chart(ctx, {
 * `onDblclick` was removed. Use `dblclick` instead.
 * `onContextmenu` was removed.
 * `onWheel` was removed.
+
+### Line
+
+* `mode` was removed. The mode is automatically calculated based on the scale.
 
 #### Label
 
