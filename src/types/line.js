@@ -3,8 +3,8 @@ import {isArray, toFontString, toRadians, mergeIf} from 'chart.js/helpers';
 import {scaleValue, roundedRect, inTriangle} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
-const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
-const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
+const interpolateX = (y, p1, p2) => pointInLine(p1, p2, y / (p2.y + p1.y)).x;
+const interpolateY = (x, p1, p2) => pointInLine(p1, p2, x / (p2.x + p1.x)).y;
 
 export default class LineAnnotation extends Element {
 	intersects(x, y, epsilon) {
@@ -26,7 +26,7 @@ export default class LineAnnotation extends Element {
 	}
 
 	isOnLabel(x, y) {
-		const {labelRect} = this;
+		const labelRect = this.labelRect;
 
 		if (!labelRect) {
 			return false;
@@ -74,7 +74,7 @@ export default class LineAnnotation extends Element {
 	}
 
 	resolveElementProperties(chart) {
-		const {options} = this;
+		const options = this.options;
 		const scale = chart.scales[options.scaleID];
 		let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
 		let min, max;
@@ -101,7 +101,7 @@ export default class LineAnnotation extends Element {
 	}
 
 	resolveOptions(chart) {
-		const {options} = this;
+		const options = this.options;
 
 		options.label.font = mergeIf(options.label.font, chart.options.font);
 	}
@@ -173,7 +173,6 @@ function drawLabel(ctx, line) {
 				-(width / 2) + (width / 2),
 				textYPosition
 			);
-
 			textYPosition += label.font.size + label.yPadding;
 		}
 	} else {
@@ -212,20 +211,20 @@ function calculateLabelPosition(line, width, height) {
 
 	switch (label.position) {
 	case 'top':
-		y = yPadding + yAdjust;
-		x = interpolateX(y, p1, p2);
+		y = line.y + (height / 2) + yPadding + yAdjust;
+		x = interpolateX(y, p1, p2) + xAdjust;
 		break;
 	case 'bottom':
-		y = height - yPadding + yAdjust;
-		x = interpolateX(y, p1, p2);
+		y = line.y2 - (height / 2) - yPadding + yAdjust;
+		x = interpolateX(y, p1, p2) + xAdjust;
 		break;
 	case 'left':
-		x = xPadding + xAdjust;
-		y = interpolateY(x, p1, p2);
+		x = line.x + (width / 2) + xPadding + xAdjust;
+		y = interpolateY(x, p1, p2) + yAdjust;
 		break;
 	case 'right':
-		x = width - xPadding + xAdjust;
-		y = interpolateY(x, p1, p2);
+		x = line.x2 - (width / 2) - xPadding + xAdjust;
+		y = interpolateY(x, p1, p2) + yAdjust;
 		break;
 	default:
 		pt = pointInLine(p1, p2, 0.5);

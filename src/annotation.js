@@ -98,7 +98,7 @@ function resolveAnimations(chart, animOpts, mode) {
 }
 
 function initElement(chart, element, animations) {
-	const {options} = element;
+	const options = element.options;
 	const display = typeof options.display === 'function' ? callCallback(options.display, [{chart, element}]) : valueOrDefault(options.display, true);
 
 	options.display = !!display;

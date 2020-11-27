@@ -37,7 +37,7 @@ export default class BoxAnnotation extends Element {
 	}
 
 	resolveElementProperties(chart) {
-		const {options} = this;
+		const options = this.options;
 		const xScale = chart.scales[options.xScaleID];
 		const yScale = chart.scales[options.yScaleID];
 		let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;

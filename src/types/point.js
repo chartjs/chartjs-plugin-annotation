@@ -30,7 +30,7 @@ export default class PointAnnotation extends Element {
 	}
 
 	resolveElementProperties(chart) {
-		const {options} = this;
+		const options = this.options;
 		const xScale = chart.scales[options.xScaleID];
 		const yScale = chart.scales[options.yScaleID];
 		let x = chart.chartArea.width / 2;
@@ -81,7 +81,7 @@ PointAnnotation.defaultRoutes = {
 };
 
 function pointInCircle(p, point) {
-	const {width} = point;
+	const width = point.width;
 	const center = point.getCenterPoint(true);
 	const radius = width / 2;
 
