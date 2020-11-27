@@ -43,7 +43,6 @@ const Chart = new Chart(ctx, {
 
 ### Element options
 
-* `id` was removed.
 * `onMouseenter` was removed. Use `enter` instead.
 * `onMouseleave` was removed. Use `leave` instead.
 * `onMouseover` was removed. Use `enter` instead.
