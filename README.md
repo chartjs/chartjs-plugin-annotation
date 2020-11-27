@@ -218,6 +218,9 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 
     // Fill color
     backgroundColor: 'green',
+    
+    // Radius of box rectangle, default below
+    cornerRadius: 0,
 
     // Event hooks - context: {chart, element}
     enter: function(context) {},
