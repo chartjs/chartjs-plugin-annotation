@@ -119,7 +119,7 @@ function updateElements(chart, state, options, mode) {
 		const properties = calculateElementProperties(chart, annotation, elType.defaults);
 		animations.update(el, properties);
 
-		const display = typeof annotation.display === 'function' ? callCallback(annotation.display, [{chart, element:el}], this) : valueOrDefault(annotation.display, true);
+		const display = typeof annotation.display === 'function' ? callCallback(annotation.display, [{chart, element: el}]) : valueOrDefault(annotation.display, true);
 		el._display = !!display;
 	}
 }
