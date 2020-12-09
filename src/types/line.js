@@ -66,11 +66,15 @@ export default class LineAnnotation extends Element {
 		ctx.lineTo(x2, y2);
 		ctx.stroke();
 
-		if (this.labelIsVisible()) {
-			drawLabel(ctx, this);
-		}
-
 		ctx.restore();
+	}
+
+	drawLabel(ctx) {
+		if (this.labelIsVisible()) {
+			ctx.save();
+			drawLabel(ctx, this);
+			ctx.restore();
+		}
 	}
 
 	resolveElementProperties(chart, options) {
@@ -153,6 +157,7 @@ function drawLabel(ctx, line) {
 	line.labelRect = {x: pos.x, y: pos.y, width, height};
 	loadCornersOfRotatedLabelRect(line.labelRect, rotation);
 
+	ctx.beginPath();
 	ctx.translate(pos.x, pos.y);
 	ctx.rotate(rotation);
 

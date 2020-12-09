@@ -30,6 +30,10 @@ To configure the annotations plugin, you can simply add new config options to yo
             // See http://www.chartjs.org/docs/#advanced-usage-creating-plugins
             drawTime: 'afterDatasetsDraw', // (default)
 
+            // Defines when annotations' labels are drawn.  Defaults to
+            // drawTime.
+            labelDrawTime: 'afterDatasetsDraw', // (default)
+
             // Double-click speed in ms used to distinguish single-clicks from
             // double-clicks whenever you need to capture both. When listening for
             // both click and dblclick, click events will be delayed by this
@@ -41,7 +45,7 @@ To configure the annotations plugin, you can simply add new config options to yo
                 // context: {chart, element}
             },
 
-            // Array of annotation configuration objects 
+            // Array of annotation configuration objects
             // or Object with the annotation configuration objects, one for each key
             // See below for detailed descriptions of the annotation options
             annotations: [{
@@ -85,6 +89,9 @@ Vertical or horizontal lines are supported.
 
     // optional drawTime to control layering, overrides global drawTime setting
     drawTime: 'afterDatasetsDraw',
+
+    // optional drawTime to control labels' layering; defaults to this element's drawTime
+    labelDrawTime: 'afterDatasetsDraw',
 
     // ID of the scale to bind onto
     scaleID: 'y',
@@ -214,7 +221,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 
     // Fill color
     backgroundColor: 'green',
-    
+
     // Radius of box rectangle, default below
     cornerRadius: 0,
 
@@ -304,7 +311,7 @@ The 2 coordinates, xValue, yValue are optional. If not specified, the point is e
 
     // Stroke width
     borderWidth: 2,
-    
+
     // Radius of the point, default below
     radius: 10,
 
@@ -397,7 +404,7 @@ The 2 coordinates, xValue, yValue are optional. If not specified, the point is e
 
     // Stroke width
     borderWidth: 2,
-    
+
     // Radius of the point, default below
     radius: 10,
 
