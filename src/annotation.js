@@ -28,6 +28,11 @@ export default {
 		});
 	},
 
+	afterDataLimits(chart, args, options) {
+		const state = chartStates.get(chart);
+		adjustScaleRange(args.scale, state, options);
+	},
+
 	beforeUpdate(chart, args, options) {
 		if (isObject(options.annotations)) {
 			const array = new Array();
@@ -40,10 +45,6 @@ export default {
 			});
 			options.annotations = array;
 		}
-
-		if (!args.mode) {
-			bindAfterDataLimits(chart, options);
-		}
 	},
 
 	afterUpdate(chart, args, options) {
@@ -52,21 +53,21 @@ export default {
 		updateElements(chart, state, options, args.mode);
 	},
 
-	beforeDatasetsDraw(chart, options) {
+	beforeDatasetsDraw(chart, _args, options) {
 		draw(chart, options, 'beforeDatasetsDraw');
 	},
 
-	afterDatasetsDraw(chart, options) {
+	afterDatasetsDraw(chart, _args, options) {
 		draw(chart, options, 'afterDatasetsDraw');
 	},
 
-	afterDraw(chart, options) {
+	afterDraw(chart, _args, options) {
 		draw(chart, options, 'afterDraw');
 	},
 
-	beforeEvent(chart, event, _replay, options) {
+	beforeEvent(chart, args, options) {
 		const state = chartStates.get(chart);
-		handleEvent(chart, state, event, options);
+		handleEvent(chart, state, args.event, options);
 	},
 
 	destroy(chart) {
@@ -151,26 +152,6 @@ function draw(chart, options, caller) {
 	unclipArea(ctx);
 }
 
-function bindAfterDataLimits(chart, options) {
-	const state = chartStates.get(chart);
-	const scaleSet = state.scales;
-	const scales = chart.scales || {};
-	Object.keys(scales).forEach(id => {
-		const scale = chart.scales[id];
-		if (scaleSet.has(scale)) {
-			return;
-		}
-		const originalHook = scale.afterDataLimits;
-		scale.afterDataLimits = function(...args) {
-			if (originalHook) {
-				originalHook.apply(scale, [...args]);
-			}
-			adjustScaleRange(scale, state, options);
-		};
-		scaleSet.add(scale);
-	});
-}
-
 function getAnnotationOptions(elements, options) {
 	if (elements && elements.length) {
 		return elements.map(el => el.options);
@@ -185,14 +166,14 @@ function adjustScaleRange(scale, state, options) {
 	if (isFinite(range.min) &&
 		typeof scale.options.min === 'undefined' &&
 		typeof scale.options.suggestedMin === 'undefined') {
+		changed = scale.min !== range.min;
 		scale.min = range.min;
-		changed = true;
 	}
 	if (isFinite(range.max) &&
 		typeof scale.options.max === 'undefined' &&
 		typeof scale.options.suggestedMax === 'undefined') {
+		changed = scale.max !== range.max;
 		scale.max = range.max;
-		changed = true;
 	}
 	if (changed && typeof scale.handleTickRangeOptions === 'function') {
 		scale.handleTickRangeOptions();
