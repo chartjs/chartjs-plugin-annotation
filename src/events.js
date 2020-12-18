@@ -7,6 +7,7 @@ const hooks = clickHooks.concat(moveHooks);
 export function updateListeners(chart, state, options) {
 	const annotations = options.annotations || [];
 	state.listened = false;
+	state.moveListened = false;
 
 	hooks.forEach(hook => {
 		if (typeof options[hook] === 'function') {
