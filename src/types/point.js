@@ -29,8 +29,7 @@ export default class PointAnnotation extends Element {
 		ctx.restore();
 	}
 
-	resolveElementProperties(chart) {
-		const options = this.options;
+	resolveElementProperties(chart, options) { // eslint-disable-line class-methods-use-this
 		const xScale = chart.scales[options.xScaleID];
 		const yScale = chart.scales[options.yScaleID];
 		let x = chart.chartArea.width / 2;

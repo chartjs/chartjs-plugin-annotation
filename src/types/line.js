@@ -1,4 +1,4 @@
-import {Element} from 'chart.js';
+import {Element, defaults} from 'chart.js';
 import {isArray, toFontString, toRadians} from 'chart.js/helpers';
 import {scaleValue, roundedRect, inTriangle} from '../helpers';
 
@@ -73,8 +73,7 @@ export default class LineAnnotation extends Element {
 		ctx.restore();
 	}
 
-	resolveElementProperties(chart) {
-		const options = this.options;
+	resolveElementProperties(chart, options) {
 		const scale = chart.scales[options.scaleID];
 		let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
 		let min, max;
@@ -89,7 +88,7 @@ export default class LineAnnotation extends Element {
 				y = min;
 				y2 = max;
 			}
-			options._horizontal = !scale.isHorizontal();
+			this._horizontal = !scale.isHorizontal();
 		}
 		return {
 			x,
@@ -111,6 +110,8 @@ LineAnnotation.defaults = {
 	label: {
 		backgroundColor: 'rgba(0,0,0,0.8)',
 		font: {
+			family: defaults.font.family,
+			size: defaults.font.size,
 			style: 'bold',
 			color: '#fff',
 		},
@@ -129,7 +130,7 @@ LineAnnotation.defaults = {
 function calculateAutoRotation(line) {
 	const {x, y, x2, y2} = line;
 	let cathetusAdjacent, cathetusOpposite;
-	if (line.options._horizontal) {
+	if (line._horizontal) {
 		cathetusAdjacent = y2 > y ? x2 - x : -(x2 - x);
 		cathetusOpposite = Math.abs(y - y2);
 	} else {
@@ -199,7 +200,7 @@ function measureLabel(ctx, label) {
 }
 
 function calculateLabelPosition(line, width, height) {
-	const horizontal = line.options._horizontal;
+	const horizontal = line._horizontal;
 	const label = line.options.label;
 	const {xPadding, xAdjust, yPadding, yAdjust, position} = label;
 	const p1 = {x: line.x, y: line.y};

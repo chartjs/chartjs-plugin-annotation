@@ -98,14 +98,15 @@ function resolveAnimations(chart, animOpts, mode) {
 	return new Animations(chart, animOpts);
 }
 
-function initElement(chart, element, animations) {
-	const options = element.options;
+function initElement(chart, element, elementType, options, animations) {
 	const display = typeof options.display === 'function' ? callCallback(options.display, [{chart, element}]) : valueOrDefault(options.display, true);
 
 	options.display = !!display;
 
 	if (options.display) {
-		animations.update(element, element.resolveElementProperties(chart));
+		const properties = element.resolveElementProperties(chart, options);
+		properties.options = merge(Object.create(null), [elementType.defaults, options]);
+		animations.update(element, properties);
 	}
 }
 
@@ -132,8 +133,7 @@ function updateElements(chart, state, options, mode) {
 		if (!el || !(el instanceof elType)) {
 			el = elements[i] = new elType();
 		}
-		el.options = merge(Object.create(null), [elType.defaults, annotation]);
-		initElement(chart, el, animations);
+		initElement(chart, el, elType, annotation, animations);
 	}
 }
 
