@@ -45,12 +45,12 @@ jobs:
         env:
           VERSION: ${{ needs.setup.outputs.version }}
       - name: Publish @next
-        run: npm publish --tag next --dry-run
+        run: npm publish --tag next
         if: "github.event.release.prerelease"
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
       - name: Publish @latest
         run: npm publish --tag latest --dry-run
         if: "!github.event.release.prerelease"
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
