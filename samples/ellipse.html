@@ -6,11 +6,11 @@
 	<script src="../node_modules/chart.js/dist/chart.js"></script>
 	<script src="../dist/chartjs-plugin-annotation.js"></script>
 	<style>
-		canvas {
-			-moz-user-select: none;
-			-webkit-user-select: none;
-			-ms-user-select: none;
-		}
+	canvas {
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+	}
 	</style>
 </head>
 
@@ -129,59 +129,21 @@
 					},
 					plugins: {
 						annotation: {
+							drawTime: 'afterDraw',
 							annotations: {
-								myLine: {
-									type: 'line',
-									mode: 'horizontal',
-									scaleID: 'y',
-									value: 80,
-									borderColor: 'rgba(255, 0, 0, 0.5)',
-									borderWidth: 4,
-									label: {
-										enabled: false,
-										content: 'Test label'
-									},
+								ellipse: {
+									type: 'ellipse',
+									xScaleID: 'x',
+									yScaleID: 'y',
+									xMin: -120,
+									xMax: 20,
+									yMin: -120,
+									yMax: 20,
+									backgroundColor: 'rgba(101, 33, 171, 0.5)',
+									borderColor: 'rgb(101, 33, 171, 0.7)',
+									borderWidth: 2,
 									click(context) {
-										const element = context.element;
-										element.options.borderColor = 'rgba(255, 0, 0, 1.0)';
-										element.options.label.enabled = true;
-										element.options.label.content = 'click';
-										context.chart.draw();
-										setTimeout(() => {
-											element.options.borderColor = 'rgba(255, 0, 0, 0.5)';
-											context.chart.draw();
-										}, 500);
-									},
-									dblclick(context) {
-										const element = context.element;
-										element.options.borderColor = 'rgba(0, 255, 0, 1.0)';
-										element.options.label.enabled = true;
-										element.options.label.content = 'dblclick';
-										context.chart.draw();
-										setTimeout(() => {
-											element.options.borderColor = 'rgba(255, 0, 0, 0.5)';
-											context.chart.draw();
-										}, 500);
-									},
-									enter(context) {
-										const element = context.element;
-										element.options.borderWidth = 7;
-										element.options.label.enabled = true;
-										element.options.label.content = 'enter';
-										context.chart.draw();
-										context.chart.canvas.style.cursor = 'pointer';
-									},
-									leave(context) {
-										const element = context.element;
-										element.options.borderWidth = 4;
-										element.options.label.enabled = true;
-										element.options.label.content = 'leave';
-										context.chart.draw();
-										setTimeout(() => {
-											element.options.label.enabled = false;
-											context.chart.draw();
-										}, 500);
-										context.chart.canvas.style.cursor = 'initial';
+										console.log('Annotation', context);
 									}
 								}
 							}
