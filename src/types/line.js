@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {isArray, toFontString, toRadians, mergeIf} from 'chart.js/helpers';
+import {isArray, toFontString, toRadians} from 'chart.js/helpers';
 import {scaleValue, roundedRect, inTriangle} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
