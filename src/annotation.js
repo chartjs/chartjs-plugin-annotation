@@ -53,21 +53,21 @@ export default {
 		updateElements(chart, state, options, args.mode);
 	},
 
-	beforeDatasetsDraw(chart, options) {
+	beforeDatasetsDraw(chart, _args, options) {
 		draw(chart, options, 'beforeDatasetsDraw');
 	},
 
-	afterDatasetsDraw(chart, options) {
+	afterDatasetsDraw(chart, _args, options) {
 		draw(chart, options, 'afterDatasetsDraw');
 	},
 
-	afterDraw(chart, options) {
+	afterDraw(chart, _args, options) {
 		draw(chart, options, 'afterDraw');
 	},
 
-	beforeEvent(chart, event, _replay, options) {
+	beforeEvent(chart, args, options) {
 		const state = chartStates.get(chart);
-		handleEvent(chart, state, event, options);
+		handleEvent(chart, state, args.event, options);
 	},
 
 	destroy(chart) {
