@@ -58,13 +58,6 @@ export default class PointAnnotation extends Element {
 		};
 	}
 
-	/**
-	 * @param {chart} chart - chart instance
-	 * @todo temporaly empty waiting to implement callbacks
-	 */
-	resolveOptions() { // eslint-disable-line class-methods-use-this
-		// nothing
-	}
 }
 
 PointAnnotation.id = 'pointAnnotation';

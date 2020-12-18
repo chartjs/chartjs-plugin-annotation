@@ -101,11 +101,6 @@ export default class LineAnnotation extends Element {
 		};
 	}
 
-	resolveOptions(chart) {
-		const options = this.options;
-
-		options.label.font = mergeIf(options.label.font, chart.options.font);
-	}
 }
 
 LineAnnotation.id = 'lineAnnotation';

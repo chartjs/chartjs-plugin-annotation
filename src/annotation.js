@@ -105,7 +105,6 @@ function initElement(chart, element, animations) {
 	options.display = !!display;
 
 	if (options.display) {
-		element.resolveOptions(chart);
 		animations.update(element, element.resolveElementProperties(chart));
 	}
 }
