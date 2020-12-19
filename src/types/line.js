@@ -97,6 +97,7 @@ export default class LineAnnotation extends Element {
 			y2,
 			width: x2 - x,
 			height: y2 - y,
+			_chartArea: chart.chartArea,
 			_horizontal
 		};
 	}
