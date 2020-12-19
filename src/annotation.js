@@ -98,18 +98,6 @@ function resolveAnimations(chart, animOpts, mode) {
 	return new Animations(chart, animOpts);
 }
 
-function initElement(chart, element, elementType, options, animations) {
-	const display = typeof options.display === 'function' ? callCallback(options.display, [{chart, element}]) : valueOrDefault(options.display, true);
-
-	options.display = !!display;
-
-	if (options.display) {
-		const properties = element.resolveElementProperties(chart, options);
-		properties.options = merge(Object.create(null), [elementType.defaults, options]);
-		animations.update(element, properties);
-	}
-}
-
 function updateElements(chart, state, options, mode) {
 	const chartAnims = chart.options.animation;
 	const animOpts = chartAnims && merge({}, [chartAnims, options.animation]);
@@ -133,7 +121,14 @@ function updateElements(chart, state, options, mode) {
 		if (!el || !(el instanceof elType)) {
 			el = elements[i] = new elType();
 		}
-		initElement(chart, el, elType, annotation, animations);
+		const display = typeof options.display === 'function' ? callCallback(options.display, [{chart, el}]) : valueOrDefault(options.display, true);
+		el._display = !!display;
+
+		if (el._display) {
+			const properties = el.resolveElementProperties(chart, annotation);
+			properties.options = merge(Object.create(null), [elType.defaults, annotation]);
+			animations.update(el, properties);
+		}
 	}
 }
 
@@ -144,7 +139,7 @@ function draw(chart, options, caller) {
 	clipArea(ctx, chartArea);
 	for (let i = 0; i < elements.length; i++) {
 		const el = elements[i];
-		if (el.options.display && (el.options.drawTime || options.drawTime || caller) === caller) {
+		if (el._display && (el.options.drawTime || options.drawTime || caller) === caller) {
 			el.draw(ctx);
 		}
 	}

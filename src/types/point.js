@@ -29,7 +29,7 @@ export default class PointAnnotation extends Element {
 		ctx.restore();
 	}
 
-	resolveElementProperties(chart, options) { // eslint-disable-line class-methods-use-this
+	resolveElementProperties(chart, options) {
 		const xScale = chart.scales[options.xScaleID];
 		const yScale = chart.scales[options.yScaleID];
 		let x = chart.chartArea.width / 2;
@@ -56,7 +56,6 @@ export default class PointAnnotation extends Element {
 			height: options.radius * 2
 		};
 	}
-
 }
 
 PointAnnotation.id = 'pointAnnotation';
@@ -73,7 +72,7 @@ PointAnnotation.defaultRoutes = {
 };
 
 function pointInCircle(p, point) {
-	const width = point.width;
+	const {width} = point;
 	const center = point.getCenterPoint(true);
 	const radius = width / 2;
 

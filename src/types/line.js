@@ -26,7 +26,7 @@ export default class LineAnnotation extends Element {
 	}
 
 	isOnLabel(x, y) {
-		const labelRect = this.labelRect;
+		const {labelRect} = this;
 
 		if (!labelRect) {
 			return false;
@@ -76,7 +76,7 @@ export default class LineAnnotation extends Element {
 	resolveElementProperties(chart, options) {
 		const scale = chart.scales[options.scaleID];
 		let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
-		let min, max;
+		let min, max, _horizontal;
 
 		if (scale) {
 			min = scaleValue(scale, options.value, NaN);
@@ -88,7 +88,7 @@ export default class LineAnnotation extends Element {
 				y = min;
 				y2 = max;
 			}
-			this._horizontal = !scale.isHorizontal();
+			_horizontal = !scale.isHorizontal();
 		}
 		return {
 			x,
@@ -96,10 +96,10 @@ export default class LineAnnotation extends Element {
 			x2,
 			y2,
 			width: x2 - x,
-			height: y2 - y
+			height: y2 - y,
+			_horizontal
 		};
 	}
-
 }
 
 LineAnnotation.id = 'lineAnnotation';
