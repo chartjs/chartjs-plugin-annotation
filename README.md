@@ -48,7 +48,6 @@ To configure the annotations plugin, you can simply add new config options to yo
                 drawTime: 'afterDraw', // overrides annotation.drawTime if set
                 display: true,
                 type: 'line',
-                mode: 'horizontal',
                 scaleID: 'y',
                 value: '25',
                 borderColor: 'red',
@@ -86,9 +85,6 @@ Vertical or horizontal lines are supported.
 
     // optional drawTime to control layering, overrides global drawTime setting
     drawTime: 'afterDatasetsDraw',
-
-    // set to 'vertical' to draw a vertical line
-    mode: 'horizontal',
 
     // ID of the scale to bind onto
     scaleID: 'y',

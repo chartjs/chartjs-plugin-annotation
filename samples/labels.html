@@ -136,12 +136,12 @@
 							annotations: {
 								myHorizontalLine: {
 									type: 'line',
-									mode: 'horizontal',
 									scaleID: 'y',
 									value: 25,
 									borderColor: 'black',
 									borderWidth: 5,
 									label: {
+										position: 'left',
 										yAdjust: -20,
 										backgroundColor: 'red',
 										content: 'This is a long test label',
@@ -154,15 +154,13 @@
 								},
 								myVerticalLine: {
 									type: 'line',
-									mode: 'vertical',
 									scaleID: 'x',
 									value: 25,
 									endValue: 45,
 									borderColor: 'red',
 									borderWidth: 5,
 									label: {
-										position: 'bottom',
-										yAdjust: 100,
+										position: 'top',
 										content: 'This is another test label',
 										enabled: true
 									},

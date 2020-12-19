@@ -121,18 +121,15 @@ function updateElements(chart, state, options, mode) {
 		if (!el || !(el instanceof elType)) {
 			el = elements[i] = new elType();
 		}
-		const properties = calculateElementProperties(chart, el, annotation, elType.defaults);
-		animations.update(el, properties);
-
-		const display = typeof annotation.display === 'function' ? callCallback(annotation.display, [{chart, element: el}]) : valueOrDefault(annotation.display, true);
+		const display = typeof options.display === 'function' ? callCallback(options.display, [{chart, element: el}]) : valueOrDefault(options.display, true);
 		el._display = !!display;
-	}
-}
 
-function calculateElementProperties(chart, element, options, defaults) {
-	const elementProperties = element.resolveElementProperties(chart, options);
-	elementProperties.options = merge(Object.create(null), [defaults, options]);
-	return elementProperties;
+		if (el._display) {
+			const properties = el.resolveElementProperties(chart, annotation);
+			properties.options = merge(Object.create(null), [elType.defaults, annotation]);
+			animations.update(el, properties);
+		}
+	}
 }
 
 function draw(chart, options, caller) {
