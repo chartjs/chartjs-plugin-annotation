@@ -103,17 +103,9 @@ function updateElements(chart, state, options, mode) {
 	const animOpts = chartAnims && merge({}, [chartAnims, options.animation]);
 	const animations = resolveAnimations(chart, animOpts, mode);
 
-	const elements = state.elements;
 	const annotations = options.annotations || [];
-	const count = annotations.length;
-	const start = elements.length;
+	const elements = resyncElements(state.elements, annotations);
 
-	if (start < count) {
-		const add = count - start;
-		elements.splice(start, 0, ...new Array(add));
-	} else if (start > count) {
-		elements.splice(count, start - count);
-	}
 	for (let i = 0; i < annotations.length; i++) {
 		const annotation = annotations[i];
 		let el = elements[i];
@@ -129,6 +121,18 @@ function updateElements(chart, state, options, mode) {
 			properties.options = merge(Object.create(null), [elType.defaults, annotation]);
 			animations.update(el, properties);
 		}
+	}
+}
+
+function resyncElements(elements, annotations) {
+	const count = annotations.length;
+	const start = elements.length;
+
+	if (start < count) {
+		const add = count - start;
+		elements.splice(start, 0, ...new Array(add));
+	} else if (start > count) {
+		elements.splice(count, start - count);
 	}
 }
 
