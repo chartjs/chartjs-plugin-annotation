@@ -147,13 +147,12 @@ function drawLabel(ctx, line) {
 	ctx.textAlign = 'center';
 
 	const {width, height} = measureLabel(ctx, label);
-	const pos = calculateLabelPosition(line, width, height);
 	const rotation = label.rotation === 'auto' ? calculateAutoRotation(line) : toRadians(label.rotation);
 
-	line.labelRect = {x: pos.x, y: pos.y, width, height};
-	loadCornersOfRotatedLabelRect(line.labelRect, rotation);
+	line.labelRect = calculateLabelPosition(line, width, height, rotation);
+	adjustLabelPosition(line, rotation);
 
-	ctx.translate(pos.x, pos.y);
+	ctx.translate(line.labelRect.x, line.labelRect.y);
 	ctx.rotate(rotation);
 
 	ctx.fillStyle = label.backgroundColor;
@@ -199,12 +198,12 @@ function measureLabel(ctx, label) {
 	};
 }
 
-function calculateLabelPosition(line, width, height) {
+function calculateLabelPosition(line, width, height, angle) {
 	const label = line.options.label;
 	const {xPadding, xAdjust, yPadding, yAdjust, position} = label;
 	const p1 = {x: line.x, y: line.y};
 	const p2 = {x: line.x2, y: line.y2};
-	let x, y, pt;
+	let x, y, a, b, c, d, pt;
 
 	switch (validPosition(position, line._horizontal)) {
 	case 'top':
@@ -228,7 +227,70 @@ function calculateLabelPosition(line, width, height) {
 		x = pt.x + xAdjust;
 		y = pt.y + yAdjust;
 	}
-	return {x, y};
+
+	a = {x: x - ((width / 2) * Math.cos(angle)) - ((height / 2) * Math.sin(angle)), y: y - ((width / 2) * Math.sin(angle)) + ((height / 2) * Math.cos(angle))};
+	b = {x: x + ((width / 2) * Math.cos(angle)) - ((height / 2) * Math.sin(angle)), y: y + ((width / 2) * Math.sin(angle)) + ((height / 2) * Math.cos(angle))};
+	c = {x: x - ((width / 2) * Math.cos(angle)) + ((height / 2) * Math.sin(angle)), y: y - ((width / 2) * Math.sin(angle)) - ((height / 2) * Math.cos(angle))};
+	d = {x: x + ((width / 2) * Math.cos(angle)) + ((height / 2) * Math.sin(angle)), y: y + ((width / 2) * Math.sin(angle)) - ((height / 2) * Math.cos(angle))};
+
+	const minX = Math.min(a.x, b.x, c.x, d.x);
+	const maxX = Math.max(a.x, b.x, c.x, d.x);
+	const minY = Math.min(a.y, b.y, c.y, d.y);
+	const maxY = Math.max(a.y, b.y, c.y, d.y);
+
+	return {
+		x,
+		y,
+		width,
+		height,
+		a,
+		b,
+		c,
+		d,
+		adjustedWidth: maxX - minX,
+		adjustedHeight: maxY - minY
+	};
+
+}
+
+function adjustLabelPosition(line, angle) {
+	const {options, labelRect} = line;
+	const {adjustedHeight, adjustedWidth, height, width} = labelRect;
+	const label = options.label;
+	const {xPadding, xAdjust, yPadding, yAdjust, position} = label;
+	const p1 = {x: line.x, y: line.y};
+	const p2 = {x: line.x2, y: line.y2};
+	let x, y, pt;
+
+	switch (validPosition(position, line._horizontal)) {
+	case 'top':
+		y = line.y + (adjustedHeight / 2) + yPadding + yAdjust;
+		x = adjustXLabelPosition(line, interpolateX(y, p1, p2) + xAdjust);
+		break;
+	case 'bottom':
+		y = line.y2 - (adjustedHeight / 2) - yPadding + yAdjust;
+		x = adjustXLabelPosition(line, interpolateX(y, p1, p2) + xAdjust);
+		break;
+	case 'left':
+		x = line.x + (adjustedWidth / 2) + xPadding + xAdjust;
+		y = adjustYLabelPosition(line, interpolateY(x, p1, p2) + yAdjust);
+		break;
+	case 'right':
+		x = line.x2 - (adjustedWidth / 2) - xPadding + xAdjust;
+		y = adjustYLabelPosition(line, interpolateY(x, p1, p2) + yAdjust);
+		break;
+	default:
+		pt = pointInLine(p1, p2, 0.5);
+		x = adjustXLabelPosition(line, pt.x + xAdjust);
+		y = adjustYLabelPosition(line, pt.y + yAdjust);
+	}
+
+	labelRect.x = x;
+	labelRect.y = y;
+	labelRect.a = {x: x - ((width / 2) * Math.cos(angle)) - ((height / 2) * Math.sin(angle)), y: y - ((width / 2) * Math.sin(angle)) + ((height / 2) * Math.cos(angle))};
+	labelRect.b = {x: x + ((width / 2) * Math.cos(angle)) - ((height / 2) * Math.sin(angle)), y: y + ((width / 2) * Math.sin(angle)) + ((height / 2) * Math.cos(angle))};
+	labelRect.c = {x: x - ((width / 2) * Math.cos(angle)) + ((height / 2) * Math.sin(angle)), y: y - ((width / 2) * Math.sin(angle)) - ((height / 2) * Math.cos(angle))};
+	labelRect.d = {x: x + ((width / 2) * Math.cos(angle)) + ((height / 2) * Math.sin(angle)), y: y + ((width / 2) * Math.sin(angle)) - ((height / 2) * Math.cos(angle))};
 }
 
 function validPosition(position, horizontal) {
@@ -237,11 +299,32 @@ function validPosition(position, horizontal) {
 		? 'center' : position;
 }
 
-function loadCornersOfRotatedLabelRect(labelRect, angle) {
-	const {x, y, width, height} = labelRect;
+function adjustXLabelPosition(line, x) {
+	const {options, labelRect, _chartArea} = line;
+	const {xPadding, xAdjust} = options.label;
+	let adjustedX = x;
 
-	labelRect.a = {x: x - ((width / 2) * Math.cos(angle)) - ((height / 2) * Math.sin(angle)), y: y - ((width / 2) * Math.sin(angle)) + ((height / 2) * Math.cos(angle))};
-	labelRect.b = {x: x + ((width / 2) * Math.cos(angle)) - ((height / 2) * Math.sin(angle)), y: y + ((width / 2) * Math.sin(angle)) + ((height / 2) * Math.cos(angle))};
-	labelRect.c = {x: x - ((width / 2) * Math.cos(angle)) + ((height / 2) * Math.sin(angle)), y: y - ((width / 2) * Math.sin(angle)) - ((height / 2) * Math.cos(angle))};
-	labelRect.d = {x: x + ((width / 2) * Math.cos(angle)) + ((height / 2) * Math.sin(angle)), y: y + ((width / 2) * Math.sin(angle)) - ((height / 2) * Math.cos(angle))};
+	if ((x - labelRect.adjustedWidth / 2) < (_chartArea.left + xPadding + xAdjust)) {
+		adjustedX = _chartArea.left + (labelRect.adjustedWidth / 2) + xPadding + xAdjust;
+	}
+	if ((x + labelRect.adjustedWidth / 2) > (_chartArea.right - xPadding - xAdjust)) {
+		adjustedX = _chartArea.right - (labelRect.adjustedWidth / 2) - xPadding + xAdjust;
+	}
+
+	return adjustedX;
+}
+
+function adjustYLabelPosition(line, y) {
+	const {options, labelRect, _chartArea} = line;
+	const {yPadding, yAdjust} = options.label;
+	let adjustedY = y;
+
+	if ((y - labelRect.adjustedHeight / 2) < (_chartArea.top + yPadding + yAdjust)) {
+		adjustedY = _chartArea.top + (labelRect.adjustedHeight / 2) + yPadding + yAdjust;
+	}
+	if ((y + labelRect.adjustedHeight / 2) > (_chartArea.bottom - yPadding - yAdjust)) {
+		adjustedY = _chartArea.bottom - (labelRect.adjustedHeight / 2) - yPadding + yAdjust;
+	}
+
+	return adjustedY;
 }
