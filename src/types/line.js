@@ -200,27 +200,26 @@ function measureLabel(ctx, label) {
 }
 
 function calculateLabelPosition(line, width, height) {
-	const horizontal = line._horizontal;
 	const label = line.options.label;
 	const {xPadding, xAdjust, yPadding, yAdjust, position} = label;
 	const p1 = {x: line.x, y: line.y};
 	const p2 = {x: line.x2, y: line.y2};
 	let x, y, pt;
 
-	switch (true) {
-	case position === 'top' && !horizontal:
+	switch (validPosition(position, line._horizontal)) {
+	case 'top':
 		y = line.y + (height / 2) + yPadding + yAdjust;
 		x = interpolateX(y, p1, p2) + xAdjust;
 		break;
-	case position === 'bottom' && !horizontal:
+	case 'bottom':
 		y = line.y2 - (height / 2) - yPadding + yAdjust;
 		x = interpolateX(y, p1, p2) + xAdjust;
 		break;
-	case position === 'left' && horizontal:
+	case 'left':
 		x = line.x + (width / 2) + xPadding + xAdjust;
 		y = interpolateY(x, p1, p2) + yAdjust;
 		break;
-	case position === 'right' && horizontal:
+	case 'right':
 		x = line.x2 - (width / 2) - xPadding + xAdjust;
 		y = interpolateY(x, p1, p2) + yAdjust;
 		break;
@@ -230,6 +229,12 @@ function calculateLabelPosition(line, width, height) {
 		y = pt.y + yAdjust;
 	}
 	return {x, y};
+}
+
+function validPosition(position, horizontal) {
+	return ((horizontal && (position === 'top' || position === 'bottom')) ||
+		(!horizontal && (position === 'left' || position === 'right')))
+		? 'center' : position;
 }
 
 function loadCornersOfRotatedLabelRect(labelRect, angle) {
