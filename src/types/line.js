@@ -1,5 +1,5 @@
 import {Element, defaults} from 'chart.js';
-import {isArray, fontString, toRadians} from 'chart.js/helpers';
+import {isArray, toFontString, toRadians} from 'chart.js/helpers';
 import {scaleValue, roundedRect, inTriangle} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
@@ -73,10 +73,10 @@ export default class LineAnnotation extends Element {
 		ctx.restore();
 	}
 
-	resolveElementProperties(chart, options) { // eslint-disable-line class-methods-use-this
+	resolveElementProperties(chart, options) {
 		const scale = chart.scales[options.scaleID];
 		let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
-		let min, max;
+		let min, max, _horizontal;
 
 		if (scale) {
 			min = scaleValue(scale, options.value, NaN);
@@ -88,6 +88,7 @@ export default class LineAnnotation extends Element {
 				y = min;
 				y2 = max;
 			}
+			_horizontal = !scale.isHorizontal();
 		}
 		return {
 			x,
@@ -95,7 +96,8 @@ export default class LineAnnotation extends Element {
 			x2,
 			y2,
 			width: x2 - x,
-			height: y2 - y
+			height: y2 - y,
+			_horizontal
 		};
 	}
 }
@@ -128,7 +130,7 @@ LineAnnotation.defaults = {
 function calculateAutoRotation(line) {
 	const {x, y, x2, y2} = line;
 	let cathetusAdjacent, cathetusOpposite;
-	if (line.options.mode === 'horizontal') {
+	if (line._horizontal) {
 		cathetusAdjacent = y2 > y ? x2 - x : -(x2 - x);
 		cathetusOpposite = Math.abs(y - y2);
 	} else {
@@ -141,11 +143,7 @@ function calculateAutoRotation(line) {
 function drawLabel(ctx, line) {
 	const label = line.options.label;
 
-	ctx.font = fontString(
-		label.font.size,
-		label.font.style,
-		label.font.family
-	);
+	ctx.font = toFontString(label.font);
 	ctx.textAlign = 'center';
 
 	const {width, height} = measureLabel(ctx, label);
@@ -172,7 +170,6 @@ function drawLabel(ctx, line) {
 				-(width / 2) + (width / 2),
 				textYPosition
 			);
-
 			textYPosition += label.font.size + label.yPadding;
 		}
 	} else {
@@ -203,28 +200,29 @@ function measureLabel(ctx, label) {
 }
 
 function calculateLabelPosition(line, width, height) {
+	const horizontal = line._horizontal;
 	const label = line.options.label;
-	const {xPadding, xAdjust, yPadding, yAdjust} = label;
+	const {xPadding, xAdjust, yPadding, yAdjust, position} = label;
 	const p1 = {x: line.x, y: line.y};
 	const p2 = {x: line.x2, y: line.y2};
 	let x, y, pt;
 
-	switch (label.position) {
-	case 'top':
-		y = yPadding + yAdjust;
-		x = interpolateX(y, p1, p2);
+	switch (true) {
+	case position === 'top' && !horizontal:
+		y = line.y + (height / 2) + yPadding + yAdjust;
+		x = interpolateX(y, p1, p2) + xAdjust;
 		break;
-	case 'bottom':
-		y = height - yPadding + yAdjust;
-		x = interpolateX(y, p1, p2);
+	case position === 'bottom' && !horizontal:
+		y = line.y2 - (height / 2) - yPadding + yAdjust;
+		x = interpolateX(y, p1, p2) + xAdjust;
 		break;
-	case 'left':
-		x = xPadding + xAdjust;
-		y = interpolateY(x, p1, p2);
+	case position === 'left' && horizontal:
+		x = line.x + (width / 2) + xPadding + xAdjust;
+		y = interpolateY(x, p1, p2) + yAdjust;
 		break;
-	case 'right':
-		x = width - xPadding + xAdjust;
-		y = interpolateY(x, p1, p2);
+	case position === 'right' && horizontal:
+		x = line.x2 - (width / 2) - xPadding + xAdjust;
+		y = interpolateY(x, p1, p2) + yAdjust;
 		break;
 	default:
 		pt = pointInLine(p1, p2, 0.5);

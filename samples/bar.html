@@ -85,7 +85,6 @@
 							annotations: {
 								first: {
 									type: 'line',
-									mode: 'horizontal',
 									scaleID: 'y',
 									value: randomScalingFactor(),
 									borderColor: 'black',
@@ -98,7 +97,6 @@
 								},
 								second: {
 									type: 'line',
-									mode: 'vertical',
 									scaleID: 'x',
 									value: 'May',
 									borderColor: 'black',
@@ -111,7 +109,6 @@
 								},
 								third: {
 									type: 'line',
-									mode: 'vertical',
 									display(context) {
 										return context.chart.data.datasets.length > 0 ? context.chart.isDatasetVisible(0) : false;
 									},
