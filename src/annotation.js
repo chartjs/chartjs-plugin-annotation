@@ -134,6 +134,7 @@ function resyncElements(elements, annotations) {
 	} else if (start > count) {
 		elements.splice(count, start - count);
 	}
+	return elements;
 }
 
 function draw(chart, options, caller) {
