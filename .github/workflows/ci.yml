@@ -31,3 +31,4 @@ jobs:
         else
           xvfb-run --auto-servernum npm test
         fi
+      shell: bash
