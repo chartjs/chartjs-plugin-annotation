@@ -30,10 +30,6 @@ To configure the annotations plugin, you can simply add new config options to yo
             // See http://www.chartjs.org/docs/#advanced-usage-creating-plugins
             drawTime: 'afterDatasetsDraw', // (default)
 
-            // Defines when annotations' labels are drawn.  Defaults to
-            // drawTime.
-            labelDrawTime: 'afterDatasetsDraw', // (default)
-
             // Double-click speed in ms used to distinguish single-clicks from
             // double-clicks whenever you need to capture both. When listening for
             // both click and dblclick, click events will be delayed by this
@@ -43,6 +39,12 @@ To configure the annotations plugin, you can simply add new config options to yo
             // Fires when an annotation is hovered.
             enter: function(context) {
                 // context: {chart, element}
+            },
+
+            label: {
+                // Defines when annotations' labels are drawn.  Defaults to
+                // drawTime.
+                drawTime: 'afterDatasetsDraw', // (default)
             },
 
             // Array of annotation configuration objects

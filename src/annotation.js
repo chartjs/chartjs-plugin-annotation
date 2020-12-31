@@ -148,7 +148,7 @@ function draw(chart, options, caller) {
 		}
 	});
 	elements.forEach(el => {
-		if ('drawLabel' in el && (el.options.labelDrawTime || el.options.drawTime || options.labelDrawTime || options.drawTime || caller) === caller) {
+		if ('drawLabel' in el && el.options.label && (el.options.label.drawTime || el.options.drawTime || options.drawTime || caller) === caller) {
 			el.drawLabel(ctx);
 		}
 	});
