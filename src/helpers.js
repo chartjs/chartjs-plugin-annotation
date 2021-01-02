@@ -20,6 +20,7 @@ export function scaleValue(scale, value, fallback) {
  * @todo handle `radius` as top-left, top-right, bottom-right, bottom-left array/object?
  */
 export function roundedRect(ctx, x, y, width, height, radius) {
+	ctx.beginPath();
 	if (radius) {
 		const r = Math.min(radius, height / 2, width / 2);
 		const left = x + r;
