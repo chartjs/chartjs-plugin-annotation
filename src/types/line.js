@@ -157,7 +157,6 @@ function drawLabel(ctx, line) {
 	line.labelRect = {x: pos.x, y: pos.y, width, height};
 	loadCornersOfRotatedLabelRect(line.labelRect, rotation);
 
-	ctx.beginPath();
 	ctx.translate(pos.x, pos.y);
 	ctx.rotate(rotation);
 

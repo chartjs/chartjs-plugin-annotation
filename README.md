@@ -41,12 +41,6 @@ To configure the annotations plugin, you can simply add new config options to yo
                 // context: {chart, element}
             },
 
-            label: {
-                // Defines when annotations' labels are drawn.  Defaults to
-                // drawTime.
-                drawTime: 'afterDatasetsDraw', // (default)
-            },
-
             // Array of annotation configuration objects
             // or Object with the annotation configuration objects, one for each key
             // See below for detailed descriptions of the annotation options
@@ -92,9 +86,6 @@ Vertical or horizontal lines are supported.
     // optional drawTime to control layering, overrides global drawTime setting
     drawTime: 'afterDatasetsDraw',
 
-    // optional drawTime to control labels' layering; defaults to this element's drawTime
-    labelDrawTime: 'afterDatasetsDraw',
-
     // ID of the scale to bind onto
     scaleID: 'y',
 
@@ -121,6 +112,9 @@ Vertical or horizontal lines are supported.
     label: {
         // Background color of label, default below
         backgroundColor: 'rgba(0,0,0,0.8)',
+
+        // optional drawTime to control labels' layering; defaults to this element's drawTime
+        drawTime: 'afterDatasetsDraw',
 
         font: {
             // Font family of text, inherits from global

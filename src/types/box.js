@@ -28,7 +28,6 @@ export default class BoxAnnotation extends Element {
 		ctx.strokeStyle = options.borderColor;
 		ctx.fillStyle = options.backgroundColor;
 
-		ctx.beginPath();
 		roundedRect(ctx, x, y, width, height, options.cornerRadius);
 		ctx.fill();
 		ctx.stroke();
