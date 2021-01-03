@@ -1,7 +1,9 @@
 import { Color, FontSpec } from "chart.js";
+import { DrawTime } from "./options";
 
 export interface LabelOptions {
 	backgroundColor?: Color,
+	drawTime?: DrawTime,
 	font?: FontSpec
 	/**
 	 * Padding of label to add left/right, default below

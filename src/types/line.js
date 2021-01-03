@@ -66,11 +66,15 @@ export default class LineAnnotation extends Element {
 		ctx.lineTo(x2, y2);
 		ctx.stroke();
 
-		if (this.labelIsVisible()) {
-			drawLabel(ctx, this);
-		}
-
 		ctx.restore();
+	}
+
+	drawLabel(ctx) {
+		if (this.labelIsVisible()) {
+			ctx.save();
+			drawLabel(ctx, this);
+			ctx.restore();
+		}
 	}
 
 	resolveElementProperties(chart, options) {

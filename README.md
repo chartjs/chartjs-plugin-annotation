@@ -41,7 +41,7 @@ To configure the annotations plugin, you can simply add new config options to yo
                 // context: {chart, element}
             },
 
-            // Array of annotation configuration objects 
+            // Array of annotation configuration objects
             // or Object with the annotation configuration objects, one for each key
             // See below for detailed descriptions of the annotation options
             annotations: [{
@@ -112,6 +112,9 @@ Vertical or horizontal lines are supported.
     label: {
         // Background color of label, default below
         backgroundColor: 'rgba(0,0,0,0.8)',
+
+        // optional drawTime to control labels' layering; defaults to this element's drawTime
+        drawTime: 'afterDatasetsDraw',
 
         font: {
             // Font family of text, inherits from global
@@ -215,6 +218,9 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
     // Fill color
     backgroundColor: 'green',
 
+    // Radius of box rectangle, default below
+    cornerRadius: 0,
+
     // Event hooks - context: {chart, element}
     enter: function(context) {},
     leave: function(context) {},
@@ -301,7 +307,100 @@ The 2 coordinates, xValue, yValue are optional. If not specified, the point is e
 
     // Stroke width
     borderWidth: 2,
-    
+
+    // Radius of the point, default below
+    radius: 10,
+
+    // Fill color
+    backgroundColor: 'green',
+
+    // Event hooks - context: {chart, element}
+    enter: function(context) {},
+    leave: function(context) {},
+    click: function(context) {},
+    dblclick: function(context) {}
+}
+```
+
+### Ellipse Annotations
+
+Ellipse annotations are supported. If one of the axes is not specified, the ellipse will take the entire chart dimension.
+
+The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the ellipse is expanded out to the edges
+
+```javascript
+{
+    type: 'ellipse',
+
+    // optional drawTime to control layering, overrides global drawTime setting
+    drawTime: 'beforeDatasetsDraw',
+
+    // ID of the X scale to bind onto
+    xScaleID: 'x',
+
+    // ID of the Y scale to bind onto
+    yScaleID: 'y',
+
+    // Left edge of the box. in units along the x axis
+    xMin: 25,
+
+    // Right edge of the box
+    xMax: 40,
+
+    // Top edge of the box in units along the y axis
+    yMax: 20,
+
+    // Bottom edge of the box
+    yMin:  15,
+
+    // Stroke color
+    borderColor: 'red',
+
+    // Stroke width
+    borderWidth: 2,
+
+    // Fill color
+    backgroundColor: 'green',
+
+    // Event hooks - context: {chart, element}
+    enter: function(context) {},
+    leave: function(context) {},
+    click: function(context) {},
+    dblclick: function(context) {}
+}
+```
+
+### Point Annotations
+
+Point annotations are supported. If one of the axes is not specified, the point will take the entire chart dimension.
+
+The 2 coordinates, xValue, yValue are optional. If not specified, the point is expanded out to the edges
+
+```javascript
+{
+    type: 'point',
+
+    // optional drawTime to control layering, overrides global drawTime setting
+    drawTime: 'beforeDatasetsDraw',
+
+    // ID of the X scale to bind onto
+    xScaleID: 'x',
+
+    // ID of the Y scale to bind onto
+    yScaleID: 'y',
+
+    // Center point X value of the point. in units along the x axis
+    xValue: 25,
+
+    // Center point Y value of the point. in units along the y axis
+    yValue: 20,
+
+    // Stroke color
+    borderColor: 'red',
+
+    // Stroke width
+    borderWidth: 2,
+
     // Radius of the point, default below
     radius: 10,
 

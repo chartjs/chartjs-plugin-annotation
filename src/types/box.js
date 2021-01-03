@@ -28,8 +28,7 @@ export default class BoxAnnotation extends Element {
 		ctx.strokeStyle = options.borderColor;
 		ctx.fillStyle = options.backgroundColor;
 
-		ctx.beginPath();
-		roundedRect(ctx, x, y, width, height);
+		roundedRect(ctx, x, y, width, height, options.cornerRadius);
 		ctx.fill();
 		ctx.stroke();
 
@@ -75,7 +74,8 @@ BoxAnnotation.id = 'boxAnnotation';
 
 BoxAnnotation.defaults = {
 	display: true,
-	borderWidth: 1
+	borderWidth: 1,
+	cornerRadius: 0
 };
 
 BoxAnnotation.defaultRoutes = {

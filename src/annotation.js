@@ -139,15 +139,19 @@ function resyncElements(elements, annotations) {
 
 function draw(chart, options, caller) {
 	const {ctx, chartArea} = chart;
-	const elements = chartStates.get(chart).elements;
+	const elements = chartStates.get(chart).elements.filter(el => el._display);
 
 	clipArea(ctx, chartArea);
-	for (let i = 0; i < elements.length; i++) {
-		const el = elements[i];
-		if (el._display && (el.options.drawTime || options.drawTime || caller) === caller) {
+	elements.forEach(el => {
+		if ((el.options.drawTime || options.drawTime || caller) === caller) {
 			el.draw(ctx);
 		}
-	}
+	});
+	elements.forEach(el => {
+		if ('drawLabel' in el && el.options.label && (el.options.label.drawTime || el.options.drawTime || options.drawTime || caller) === caller) {
+			el.drawLabel(ctx);
+		}
+	});
 	unclipArea(ctx);
 }
 
