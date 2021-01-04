@@ -249,7 +249,7 @@ function calculateLabelPosition(line, width, height, angle) {
 }
 
 function adjustLabelPosition(line, angle) {
-	const {options, labelRect} = line;
+	const {options, labelRect, _chartArea} = line;
 	const {rotatedHeight, rotatedWidth, height, width} = labelRect;
 	const label = options.label;
 	const {xPadding, xAdjust, yPadding, yAdjust, position} = label;
@@ -259,25 +259,25 @@ function adjustLabelPosition(line, angle) {
 
 	switch (validPosition(position, line._horizontal)) {
 	case 'top':
-		y = adjustYLabelPosition(line, line.y + (rotatedHeight / 2) + yPadding + yAdjust);
-		x = adjustXLabelPosition(line, interpolateX(y, p1, p2) + xAdjust);
+		y = adjustLabelCoordinate(line.y + (rotatedHeight / 2) + yPadding + yAdjust, rotatedHeight, _chartArea.top, _chartArea.bottom, yPadding, yAdjust);
+		x = adjustLabelCoordinate(interpolateX(y, p1, p2) + xAdjust, rotatedWidth, _chartArea.left, _chartArea.right, xPadding, xAdjust);
 		break;
 	case 'bottom':
-		y = adjustYLabelPosition(line, line.y2 - (rotatedHeight / 2) - yPadding + yAdjust);
-		x = adjustXLabelPosition(line, interpolateX(y, p1, p2) + xAdjust);
+		y = adjustLabelCoordinate(line.y2 - (rotatedHeight / 2) - yPadding + yAdjust, rotatedHeight, _chartArea.top, _chartArea.bottom, yPadding, yAdjust);
+		x = adjustLabelCoordinate(interpolateX(y, p1, p2) + xAdjust, rotatedWidth, _chartArea.left, _chartArea.right, xPadding, xAdjust);
 		break;
 	case 'left':
-		x = adjustXLabelPosition(line, line.x + (rotatedWidth / 2) + xPadding + xAdjust);
-		y = adjustYLabelPosition(line, interpolateY(x, p1, p2) + yAdjust);
+		x = adjustLabelCoordinate(line.x + (rotatedWidth / 2) + xPadding + xAdjust, rotatedWidth, _chartArea.left, _chartArea.right, xPadding, xAdjust);
+		y = adjustLabelCoordinate(interpolateY(x, p1, p2) + yAdjust, rotatedHeight, _chartArea.top, _chartArea.bottom, yPadding, yAdjust);
 		break;
 	case 'right':
-		x = adjustXLabelPosition(line, line.x2 - (rotatedWidth / 2) - xPadding + xAdjust);
-		y = adjustYLabelPosition(line, interpolateY(x, p1, p2) + yAdjust);
+		x = adjustLabelCoordinate(line.x2 - (rotatedWidth / 2) - xPadding + xAdjust, rotatedWidth, _chartArea.left, _chartArea.right, xPadding, xAdjust);
+		y = adjustLabelCoordinate(interpolateY(x, p1, p2) + yAdjust, rotatedHeight, _chartArea.top, _chartArea.bottom, yPadding, yAdjust);
 		break;
 	default:
 		pt = pointInLine(p1, p2, 0.5);
-		x = adjustXLabelPosition(line, pt.x + xAdjust);
-		y = adjustYLabelPosition(line, pt.y + yAdjust);
+		x = adjustLabelCoordinate(pt.x + xAdjust, rotatedWidth, _chartArea.left, _chartArea.right, xPadding, xAdjust);
+		y = adjustLabelCoordinate(pt.y + yAdjust, rotatedHeight, _chartArea.top, _chartArea.bottom, yPadding, yAdjust);
 	}
 
 	labelRect.x = x;
@@ -294,32 +294,16 @@ function validPosition(position, horizontal) {
 		? 'center' : position;
 }
 
-function adjustXLabelPosition(line, x) {
-	const {options, labelRect, _chartArea} = line;
-	const {xPadding, xAdjust} = options.label;
-	let adjustedX = x;
+function adjustLabelCoordinate(coordinate, size, minSize, maxSize, padding, adjust) {
+	let value = coordinate;
+	const halfSize = size / 2;
 
-	if (_chartArea.left >= (x + xPadding + xAdjust - labelRect.rotatedWidth / 2)) {
-		adjustedX = _chartArea.left + xPadding - xAdjust + (labelRect.rotatedWidth / 2);
+	if (minSize >= (coordinate + padding + adjust - halfSize)) {
+		value = minSize + padding - adjust + halfSize;
 	}
-	if (_chartArea.right <= (x - xPadding + xAdjust + labelRect.rotatedWidth / 2)) {
-		adjustedX = _chartArea.right - xPadding + xAdjust - (labelRect.rotatedWidth / 2);
-	}
-
-	return adjustedX;
-}
-
-function adjustYLabelPosition(line, y) {
-	const {options, labelRect, _chartArea} = line;
-	const {yPadding, yAdjust} = options.label;
-	let adjustedY = y;
-
-	if (_chartArea.top >= (y + yPadding + yAdjust - labelRect.rotatedHeight / 2)) {
-		adjustedY = _chartArea.top + yPadding - yAdjust + (labelRect.rotatedHeight / 2);
-	}
-	if (_chartArea.bottom <= (y - yPadding + yAdjust + labelRect.rotatedHeight / 2)) {
-		adjustedY = _chartArea.bottom - yPadding + yAdjust - (labelRect.rotatedHeight / 2);
+	if (maxSize <= (coordinate - padding + adjust + halfSize)) {
+		value = maxSize - padding + adjust - halfSize;
 	}
 
-	return adjustedY;
+	return value;
 }
