@@ -3,5 +3,6 @@ globals:
   randomScalingFactor: true
 
 rules:
-  no-console: 0
-  consistent-this: 0
+  indent: ["error", "tab", {flatTernaryExpressions: true}]
+  no-console: "off"
+  consistent-this: "off"
