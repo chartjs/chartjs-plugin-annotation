@@ -4,9 +4,9 @@ window.devicePixelRatio = 1;
 jasmine.fixtures = specsFromFixtures;
 
 beforeEach(function() {
-	addMatchers();
+  addMatchers();
 });
 
 afterEach(function() {
-	releaseCharts();
+  releaseCharts();
 });

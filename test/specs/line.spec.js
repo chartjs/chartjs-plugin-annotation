@@ -1,3 +1,3 @@
 describe('Line annotation', function() {
-	describe('auto', jasmine.fixtures('line'));
+  describe('auto', jasmine.fixtures('line'));
 });

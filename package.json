@@ -17,14 +17,13 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "karma start --auto-watch --no-single-run --browsers chrome --grep",
-    "lint": "eslint samples/**/*.html src/**/*.js",
+    "lint": "eslint samples/**/*.html test/**/*.js src/**/*.js",
     "test": "concurrently \"npm:test-*\"",
     "test-types": "tsc -p types/test/",
     "test-lint": "npm run lint",
     "test-karma": "karma start --auto-watch --single-run --coverage --grep"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.1",
     "chart.js": "^3.0.0-beta.7",
     "chartjs-test-utils": "^0.1.1",
