@@ -12,62 +12,62 @@ const banner = `/*!
 const input = 'src/index.js';
 const inputESM = 'src/index.esm.js';
 const external = [
-	'chart.js',
-	'chart.js/helpers'
+  'chart.js',
+  'chart.js/helpers'
 ];
 const globals = {
-	'chart.js': 'Chart',
-	'chart.js/helpers': 'Chart.helpers'
+  'chart.js': 'Chart',
+  'chart.js/helpers': 'Chart.helpers'
 };
 
 module.exports = [
-	{
-		input,
-		plugins: [
-			resolve(),
-		],
-		output: {
-			name,
-			file: main,
-			banner,
-			format: 'umd',
-			indent: false,
-			globals
-		},
-		external
-	},
-	{
-		input,
-		plugins: [
-			resolve(),
-			terser({
-				output: {
-					preamble: banner
-				}
-			})
-		],
-		output: {
-			name,
-			file: main.replace('.js', '.min.js'),
-			format: 'umd',
-			sourcemap: true,
-			indent: false,
-			globals
-		},
-		external
-	},
-	{
-		input: inputESM,
-		plugins: [
-			resolve()
-		],
-		output: {
-			name,
-			file: _module,
-			banner,
-			format: 'esm',
-			indent: false
-		},
-		external
-	},
+  {
+    input,
+    plugins: [
+      resolve(),
+    ],
+    output: {
+      name,
+      file: main,
+      banner,
+      format: 'umd',
+      indent: false,
+      globals
+    },
+    external
+  },
+  {
+    input,
+    plugins: [
+      resolve(),
+      terser({
+        output: {
+          preamble: banner
+        }
+      })
+    ],
+    output: {
+      name,
+      file: main.replace('.js', '.min.js'),
+      format: 'umd',
+      sourcemap: true,
+      indent: false,
+      globals
+    },
+    external
+  },
+  {
+    input: inputESM,
+    plugins: [
+      resolve()
+    ],
+    output: {
+      name,
+      file: _module,
+      banner,
+      format: 'esm',
+      indent: false
+    },
+    external
+  },
 ];
