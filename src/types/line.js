@@ -246,7 +246,6 @@ function calculateLabelPosition(line, width, height, angle) {
 		rotatedWidth,
 		rotatedHeight
 	};
-
 }
 
 function adjustLabelPosition(line, angle) {
@@ -260,19 +259,19 @@ function adjustLabelPosition(line, angle) {
 
 	switch (validPosition(position, line._horizontal)) {
 	case 'top':
-		y = line.y + (rotatedHeight / 2) + yPadding + yAdjust;
+		y = adjustYLabelPosition(line, line.y + (rotatedHeight / 2) + yPadding + yAdjust);
 		x = adjustXLabelPosition(line, interpolateX(y, p1, p2) + xAdjust);
 		break;
 	case 'bottom':
-		y = line.y2 - (rotatedHeight / 2) - yPadding + yAdjust;
+		y = adjustYLabelPosition(line, line.y2 - (rotatedHeight / 2) - yPadding + yAdjust);
 		x = adjustXLabelPosition(line, interpolateX(y, p1, p2) + xAdjust);
 		break;
 	case 'left':
-		x = line.x + (rotatedWidth / 2) + xPadding + xAdjust;
+		x = adjustXLabelPosition(line, line.x + (rotatedWidth / 2) + xPadding + xAdjust);
 		y = adjustYLabelPosition(line, interpolateY(x, p1, p2) + yAdjust);
 		break;
 	case 'right':
-		x = line.x2 - (rotatedWidth / 2) - xPadding + xAdjust;
+		x = adjustXLabelPosition(line, line.x2 - (rotatedWidth / 2) - xPadding + xAdjust);
 		y = adjustYLabelPosition(line, interpolateY(x, p1, p2) + yAdjust);
 		break;
 	default:
@@ -300,11 +299,11 @@ function adjustXLabelPosition(line, x) {
 	const {xPadding, xAdjust} = options.label;
 	let adjustedX = x;
 
-	if ((x - labelRect.rotatedWidth / 2) < (_chartArea.left + xPadding + xAdjust)) {
-		adjustedX = _chartArea.left + (labelRect.rotatedWidth / 2) + xPadding + xAdjust;
+	if (_chartArea.left >= (x + xPadding + xAdjust - labelRect.rotatedWidth / 2)) {
+		adjustedX = _chartArea.left + xPadding - xAdjust + (labelRect.rotatedWidth / 2);
 	}
-	if ((x + labelRect.rotatedWidth / 2) > (_chartArea.right - xPadding - xAdjust)) {
-		adjustedX = _chartArea.right - (labelRect.rotatedWidth / 2) - xPadding + xAdjust;
+	if (_chartArea.right <= (x - xPadding + xAdjust + labelRect.rotatedWidth / 2)) {
+		adjustedX = _chartArea.right - xPadding + xAdjust - (labelRect.rotatedWidth / 2);
 	}
 
 	return adjustedX;
@@ -315,11 +314,11 @@ function adjustYLabelPosition(line, y) {
 	const {yPadding, yAdjust} = options.label;
 	let adjustedY = y;
 
-	if ((y - labelRect.rotatedHeight / 2) < (_chartArea.top + yPadding + yAdjust)) {
-		adjustedY = _chartArea.top + (labelRect.rotatedHeight / 2) + yPadding + yAdjust;
+	if (_chartArea.top >= (y + yPadding + yAdjust - labelRect.rotatedHeight / 2)) {
+		adjustedY = _chartArea.top + yPadding - yAdjust + (labelRect.rotatedHeight / 2);
 	}
-	if ((y + labelRect.rotatedHeight / 2) > (_chartArea.bottom - yPadding - yAdjust)) {
-		adjustedY = _chartArea.bottom - (labelRect.rotatedHeight / 2) - yPadding + yAdjust;
+	if (_chartArea.bottom <= (y - yPadding + yAdjust + labelRect.rotatedHeight / 2)) {
+		adjustedY = _chartArea.bottom - yPadding + yAdjust - (labelRect.rotatedHeight / 2);
 	}
 
 	return adjustedY;
