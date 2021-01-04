@@ -255,37 +255,43 @@ function adjustLabelPosition(line, angle) {
 	const {xPadding, xAdjust, yPadding, yAdjust, position} = label;
 	const p1 = {x: line.x, y: line.y};
 	const p2 = {x: line.x2, y: line.y2};
+	const xCoordinateSizes = {size: rotatedWidth, min: _chartArea.left, max: _chartArea.right, padding: xPadding, adjust: xAdjust};
+	const yCoordinateSizes = {size: rotatedHeight, min: _chartArea.top, max: _chartArea.bottom, padding: yPadding, adjust: yAdjust};
+	const xApexFactor = (width / 2 * Math.cos(angle)) - (height / 2 * Math.sin(angle));
+	const yApexFactor = (width / 2 * Math.sin(angle)) + (height / 2 * Math.cos(angle));
+	const xApexAdjust = (rotatedWidth / 2) + xAdjust;
+	const yApexAdjust = (rotatedHeight / 2) + yAdjust;
 	let x, y, pt;
 
 	switch (validPosition(position, line._horizontal)) {
 	case 'top':
-		y = adjustLabelCoordinate(line.y + (rotatedHeight / 2) + yPadding + yAdjust, rotatedHeight, _chartArea.top, _chartArea.bottom, yPadding, yAdjust);
-		x = adjustLabelCoordinate(interpolateX(y, p1, p2) + xAdjust, rotatedWidth, _chartArea.left, _chartArea.right, xPadding, xAdjust);
+		y = adjustLabelCoordinate(line.y + yApexAdjust + yPadding, yCoordinateSizes);
+		x = adjustLabelCoordinate(interpolateX(y, p1, p2) + xAdjust, xCoordinateSizes);
 		break;
 	case 'bottom':
-		y = adjustLabelCoordinate(line.y2 - (rotatedHeight / 2) - yPadding + yAdjust, rotatedHeight, _chartArea.top, _chartArea.bottom, yPadding, yAdjust);
-		x = adjustLabelCoordinate(interpolateX(y, p1, p2) + xAdjust, rotatedWidth, _chartArea.left, _chartArea.right, xPadding, xAdjust);
+		y = adjustLabelCoordinate(line.y2 - yApexAdjust - yPadding, yCoordinateSizes);
+		x = adjustLabelCoordinate(interpolateX(y, p1, p2) + xAdjust, xCoordinateSizes);
 		break;
 	case 'left':
-		x = adjustLabelCoordinate(line.x + (rotatedWidth / 2) + xPadding + xAdjust, rotatedWidth, _chartArea.left, _chartArea.right, xPadding, xAdjust);
-		y = adjustLabelCoordinate(interpolateY(x, p1, p2) + yAdjust, rotatedHeight, _chartArea.top, _chartArea.bottom, yPadding, yAdjust);
+		x = adjustLabelCoordinate(line.x + xApexAdjust + xPadding, xCoordinateSizes);
+		y = adjustLabelCoordinate(interpolateY(x, p1, p2) + yAdjust, yCoordinateSizes);
 		break;
 	case 'right':
-		x = adjustLabelCoordinate(line.x2 - (rotatedWidth / 2) - xPadding + xAdjust, rotatedWidth, _chartArea.left, _chartArea.right, xPadding, xAdjust);
-		y = adjustLabelCoordinate(interpolateY(x, p1, p2) + yAdjust, rotatedHeight, _chartArea.top, _chartArea.bottom, yPadding, yAdjust);
+		x = adjustLabelCoordinate(line.x2 - xApexAdjust - xPadding, xCoordinateSizes);
+		y = adjustLabelCoordinate(interpolateY(x, p1, p2) + yAdjust, yCoordinateSizes);
 		break;
 	default:
 		pt = pointInLine(p1, p2, 0.5);
-		x = adjustLabelCoordinate(pt.x + xAdjust, rotatedWidth, _chartArea.left, _chartArea.right, xPadding, xAdjust);
-		y = adjustLabelCoordinate(pt.y + yAdjust, rotatedHeight, _chartArea.top, _chartArea.bottom, yPadding, yAdjust);
+		x = adjustLabelCoordinate(pt.x + xAdjust, xCoordinateSizes);
+		y = adjustLabelCoordinate(pt.y + yAdjust, yCoordinateSizes);
 	}
 
 	labelRect.x = x;
 	labelRect.y = y;
-	labelRect.a = {x: x - ((width / 2) * Math.cos(angle)) - ((height / 2) * Math.sin(angle)), y: y - ((width / 2) * Math.sin(angle)) + ((height / 2) * Math.cos(angle))};
-	labelRect.b = {x: x + ((width / 2) * Math.cos(angle)) - ((height / 2) * Math.sin(angle)), y: y + ((width / 2) * Math.sin(angle)) + ((height / 2) * Math.cos(angle))};
-	labelRect.c = {x: x - ((width / 2) * Math.cos(angle)) + ((height / 2) * Math.sin(angle)), y: y - ((width / 2) * Math.sin(angle)) - ((height / 2) * Math.cos(angle))};
-	labelRect.d = {x: x + ((width / 2) * Math.cos(angle)) + ((height / 2) * Math.sin(angle)), y: y + ((width / 2) * Math.sin(angle)) - ((height / 2) * Math.cos(angle))};
+	labelRect.a = {x: x - xApexFactor, y: y - yApexFactor};
+	labelRect.b = {x: x + xApexFactor, y: y + yApexFactor};
+	labelRect.c = {x: x - xApexFactor, y: y - yApexFactor};
+	labelRect.d = {x: x + xApexFactor, y: y + yApexFactor};
 }
 
 function validPosition(position, horizontal) {
@@ -294,15 +300,16 @@ function validPosition(position, horizontal) {
 		? 'center' : position;
 }
 
-function adjustLabelCoordinate(coordinate, size, minSize, maxSize, padding, adjust) {
+function adjustLabelCoordinate(coordinate, labelSizes) {
+	const {size, min, max, padding, adjust} = labelSizes;
 	let value = coordinate;
 	const halfSize = size / 2;
 
-	if (minSize >= (coordinate + padding + adjust - halfSize)) {
-		value = minSize + padding - adjust + halfSize;
+	if (min >= (coordinate + padding + adjust - halfSize)) {
+		value = min + padding - adjust + halfSize;
 	}
-	if (maxSize <= (coordinate - padding + adjust + halfSize)) {
-		value = maxSize - padding + adjust - halfSize;
+	if (max <= (coordinate - padding + adjust + halfSize)) {
+		value = max - padding + adjust - halfSize;
 	}
 
 	return value;
