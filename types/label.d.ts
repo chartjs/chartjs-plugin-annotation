@@ -6,26 +6,26 @@ export interface LabelOptions {
 	drawTime?: DrawTime,
 	font?: FontSpec
 	/**
-	 * Padding of label to add left/right, default below
+	 * Padding of label to add left/right
 	 * @default 6
 	 */
-	xPadding: number,
+	xPadding?: number,
 	/**
-	 * Padding of label to add top/bottom, default below
+	 * Padding of label to add top/bottom
 	 * @default 6
 	 */
-	yPadding: number,
+	yPadding?: number,
 	/**
 	 * Corner radius of the label rectangle
 	 * @default 6
 	 */
-	cornerRadius: number,
+	cornerRadius?: number,
 
 	/**
 	 * Anchor position of label on line.
 	 * @default 'center'
 	 */
-	position: LabelPosition,
+	position?: LabelPosition,
 
 	/**
 	 * Adjustment along x-axis (left-right) of label relative to above number (can be negative)
@@ -33,7 +33,7 @@ export interface LabelOptions {
 	 * the label toward the edge, and positive values toward the center.
 	 * @default 0
 	 */
-	xAdjust: number,
+	xAdjust?: number,
 
 	/**
 	 * Adjustment along y-axis (top-bottom) of label relative to above number (can be negative)
@@ -41,24 +41,24 @@ export interface LabelOptions {
 	 * the label toward the edge, and positive values toward the center.
 	 * @default 0
 	 */
-	yAdjust: number,
+	yAdjust?: number,
 
 	/**
 	 * Whether the label is enabled and should be displayed
 	 * @default true
 	 */
-	enabled: boolean,
+	enabled?: boolean,
 
 	/**
 	 * Text to display in label. Provide an array to display multiple lines
 	 */
-	content: string | string[]
+	content: string | string[] | null,
 
 	/**
 	 * Rotation of label, in degrees, or 'auto' to use the degrees of the line, default is 0
 	 * @default 90
 	 */
-	rotation: number
+	rotation?: number | 'auto'
 }
 
 export type LabelPosition = 'top' | 'bottom' | 'left' | 'right' | 'center';

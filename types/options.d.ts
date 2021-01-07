@@ -1,5 +1,5 @@
 import { Color, DeepPartial } from "chart.js";
-import { AnnotationEvents } from "./events";
+import {AnnotationEvents, EventContext} from "./events";
 import { LabelOptions } from "./label";
 
 export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDatasetsDraw';
@@ -17,6 +17,7 @@ export type AnnotationOptions<TYPE extends AnnotationType = AnnotationType> = De
 >;
 
 export interface AnnotationElementOptions extends AnnotationEvents {
+  display?: boolean | ((context: EventContext) => boolean);
 	borderColor?: Color,
 	borderWidth?: number,
 	drawTime?: DrawTime,
