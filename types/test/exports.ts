@@ -1,8 +1,8 @@
 import { Chart } from 'chart.js';
-import Plugin from '../index';
+import { Annotation } from '../index';
 
-Chart.register(Plugin);
-Chart.unregister(Plugin);
+Chart.register(Annotation);
+Chart.unregister(Annotation);
 
 const chart = new Chart('id', {
 	type: 'bar',
@@ -28,5 +28,5 @@ const chart = new Chart('id', {
 			}
 		}
 	},
-	plugins: [Plugin]
+	plugins: [Annotation]
 });
