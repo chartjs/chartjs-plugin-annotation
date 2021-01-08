@@ -8,6 +8,8 @@ export type Mode = 'horizontal' | 'vertical';
 export interface AnnotationTypeRegistry {
 	line: LineAnnotationOptions
 	box: BoxAnnotationOptions
+  ellipse: EllipseAnnotationOptions
+  point: PointAnnotationOptions
 }
 
 export type AnnotationType = keyof AnnotationTypeRegistry;
@@ -25,22 +27,36 @@ export interface CoreAnnotationOptions extends AnnotationEvents {
 	mode?: Mode,
 	scaleID?: string,
 	value?: any,
-	xMax?: any,
-	xMin?: any,
 	xScaleID?: string,
-	yMax?: any,
-	yMin?: any,
 	yScaleID?: string,
 }
 
-export interface LineAnnotationOptions extends CoreAnnotationOptions {
+interface AnnotationCoordinates {
+  xMax?: any,
+  xMin?: any,
+  yMax?: any,
+  yMin?: any,
+}
+
+export interface LineAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
 	borderDash?: [number, number],
 	borderDashOffset?: number,
 	label?: LabelOptions
 }
 
-export interface BoxAnnotationOptions extends CoreAnnotationOptions {
+export interface BoxAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
 	backgroundColor?: Color,
+}
+
+interface EllipseAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
+	backgroundColor?: Color,
+}
+
+interface PointAnnotationOptions {
+	backgroundColor: Color,
+	radius?: number,
+	xValue?: any;
+	yValue?: any;
 }
 
 export interface AnnotationPluginOptions extends AnnotationEvents {
