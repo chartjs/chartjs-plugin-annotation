@@ -52,7 +52,7 @@ interface EllipseAnnotationOptions extends CoreAnnotationOptions, AnnotationCoor
 	backgroundColor?: Color,
 }
 
-interface PointAnnotationOptions {
+interface PointAnnotationOptions extends CoreAnnotationOptions {
 	backgroundColor: Color,
 	radius?: number,
 	xValue?: any;
