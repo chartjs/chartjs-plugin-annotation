@@ -16,7 +16,7 @@ export type AnnotationOptions<TYPE extends AnnotationType = AnnotationType> = De
 	{ [key in TYPE]: { type: key } & AnnotationTypeRegistry[key] }[TYPE]
 >;
 
-export interface AnnotationElementOptions extends AnnotationEvents {
+export interface CoreAnnotationOptions extends AnnotationEvents {
   display?: boolean | ((context: EventContext) => boolean);
 	borderColor?: Color,
 	borderWidth?: number,
@@ -24,7 +24,6 @@ export interface AnnotationElementOptions extends AnnotationEvents {
 	endValue?: any,
 	mode?: Mode,
 	scaleID?: string,
-	type?: AnnotationType,
 	value?: any,
 	xMax?: any,
 	xMin?: any,
@@ -34,13 +33,13 @@ export interface AnnotationElementOptions extends AnnotationEvents {
 	yScaleID?: string,
 }
 
-export interface LineAnnotationOptions extends AnnotationElementOptions {
+export interface LineAnnotationOptions extends CoreAnnotationOptions {
 	borderDash?: [number, number],
 	borderDashOffset?: number,
 	label?: LabelOptions
 }
 
-export interface BoxAnnotationOptions extends AnnotationElementOptions {
+export interface BoxAnnotationOptions extends CoreAnnotationOptions {
 	backgroundColor?: Color,
 }
 
