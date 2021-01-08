@@ -9,4 +9,4 @@ declare module 'chart.js' {
 
 declare const Annotation: Plugin;
 
-export default Annotation;
+export { Annotation };

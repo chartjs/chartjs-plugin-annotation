@@ -1,5 +1,5 @@
 import { Color, DeepPartial } from "chart.js";
-import { AnnotationEvents } from "./events";
+import {AnnotationEvents, EventContext} from "./events";
 import { LabelOptions } from "./label";
 
 export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDatasetsDraw';
@@ -8,6 +8,8 @@ export type Mode = 'horizontal' | 'vertical';
 export interface AnnotationTypeRegistry {
 	line: LineAnnotationOptions
 	box: BoxAnnotationOptions
+  ellipse: EllipseAnnotationOptions
+  point: PointAnnotationOptions
 }
 
 export type AnnotationType = keyof AnnotationTypeRegistry;
@@ -16,31 +18,45 @@ export type AnnotationOptions<TYPE extends AnnotationType = AnnotationType> = De
 	{ [key in TYPE]: { type: key } & AnnotationTypeRegistry[key] }[TYPE]
 >;
 
-export interface AnnotationElementOptions extends AnnotationEvents {
+export interface CoreAnnotationOptions extends AnnotationEvents {
+  display?: boolean | ((context: EventContext) => boolean);
 	borderColor?: Color,
 	borderWidth?: number,
 	drawTime?: DrawTime,
 	endValue?: any,
 	mode?: Mode,
 	scaleID?: string,
-	type?: AnnotationType,
 	value?: any,
-	xMax?: any,
-	xMin?: any,
 	xScaleID?: string,
-	yMax?: any,
-	yMin?: any,
 	yScaleID?: string,
 }
 
-export interface LineAnnotationOptions extends AnnotationElementOptions {
+interface AnnotationCoordinates {
+  xMax?: any,
+  xMin?: any,
+  yMax?: any,
+  yMin?: any,
+}
+
+export interface LineAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
 	borderDash?: [number, number],
 	borderDashOffset?: number,
 	label?: LabelOptions
 }
 
-export interface BoxAnnotationOptions extends AnnotationElementOptions {
+export interface BoxAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
 	backgroundColor?: Color,
+}
+
+interface EllipseAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
+	backgroundColor?: Color,
+}
+
+interface PointAnnotationOptions {
+	backgroundColor: Color,
+	radius?: number,
+	xValue?: any;
+	yValue?: any;
 }
 
 export interface AnnotationPluginOptions extends AnnotationEvents {
