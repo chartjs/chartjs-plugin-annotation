@@ -113,14 +113,12 @@ function updateElements(chart, state, options, mode) {
     if (!el || !(el instanceof elType)) {
       el = elements[i] = new elType();
     }
+    const properties = el.resolveElementProperties(chart, annotation);
+    properties.options = merge(Object.create(null), [elType.defaults, annotation]);
+    animations.update(el, properties);
+
     const display = typeof annotation.display === 'function' ? callCallback(annotation.display, [{chart, element: el}]) : valueOrDefault(annotation.display, true);
     el._display = !!display;
-
-    if (el._display) {
-      const properties = el.resolveElementProperties(chart, annotation);
-      properties.options = merge(Object.create(null), [elType.defaults, annotation]);
-      animations.update(el, properties);
-    }
   }
 }
 
@@ -157,7 +155,7 @@ function draw(chart, options, caller) {
 
 function getAnnotationOptions(elements, options) {
   if (elements && elements.length) {
-    return elements.map(el => el.options);
+    return elements.filter(el => el._display).map(el => el.options);
   }
   return options.annotations || [];
 }
