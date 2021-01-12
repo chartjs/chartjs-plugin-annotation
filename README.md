@@ -69,8 +69,6 @@ To configure the annotations plugin, you can simply add new config options to yo
 
 ### Line Annotations
 
-Vertical or horizontal lines are supported.
-
 ```javascript
 {
     type: 'line',
@@ -94,6 +92,14 @@ Vertical or horizontal lines are supported.
 
     // Optional value at which the line draw should end
     endValue: 26,
+
+    // Alternative configuration of values, using two scales
+    xScaleID: 'x',
+    yScaleID: 'y',
+    xMin: 'January',
+    yMin: 25,
+    xMax: 'February',
+    yMax: 26,
 
     // Line color
     borderColor: 'red',
@@ -139,17 +145,15 @@ Vertical or horizontal lines are supported.
         // Radius of label rectangle, default below
         cornerRadius: 6,
 
-        // Anchor position of label on line, can be one of: top, bottom, left, right, center. Default below.
+        // Anchor position of label on line, can be one of: 'start', 'center', 'end'. Default 'center'.
         position: "center",
 
         // Adjustment along x-axis (left-right) of label relative to above number (can be negative)
-        // For horizontal lines positioned left or right, negative values move
-        // the label toward the edge, and positive values toward the center.
+        // Negative values move the label left, postitive right.
         xAdjust: 0,
 
-        // Adjustment along y-axis (top-bottom) of label relative to above number (can be negative)
-        // For vertical lines positioned top or bottom, negative values move
-        // the label toward the edge, and positive values toward the center.
+        // Adjustment along y-axis (top-bottom) of label, in pixels. (can be negative)
+        // Negative values move the label up, positive down.
         yAdjust: 0,
 
         // Whether the label is enabled and should be displayed

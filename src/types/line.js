@@ -1,6 +1,6 @@
 import {Element, defaults} from 'chart.js';
 import {isArray, toFontString, toRadians} from 'chart.js/helpers';
-import {scaleValue, roundedRect, inTriangle} from '../helpers';
+import {scaleValue, roundedRect, rotated} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
@@ -25,15 +25,18 @@ export default class LineAnnotation extends Element {
     return label && label.enabled && label.content;
   }
 
-  isOnLabel(x, y) {
+  isOnLabel(mouseX, mouseY) {
     const {labelRect} = this;
 
     if (!labelRect) {
       return false;
     }
 
-    const eventPoint = {x, y};
-    return inTriangle(eventPoint, labelRect.a, labelRect.b, labelRect.c) || inTriangle(eventPoint, labelRect.b, labelRect.c, labelRect.d);
+    const {x, y} = rotated({x: mouseX, y: mouseY}, labelRect, -labelRect.angle);
+    const w2 = labelRect.width / 2;
+    const h2 = labelRect.height / 2;
+    return x >= labelRect.x - w2 && x <= labelRect.x + w2 &&
+      y >= labelRect.y - h2 && y <= labelRect.y + h2;
   }
 
   inRange(x, y) {
@@ -80,7 +83,7 @@ export default class LineAnnotation extends Element {
   resolveElementProperties(chart, options) {
     const scale = chart.scales[options.scaleID];
     let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
-    let min, max, _horizontal;
+    let min, max;
 
     if (scale) {
       min = scaleValue(scale, options.value, NaN);
@@ -92,7 +95,19 @@ export default class LineAnnotation extends Element {
         y = min;
         y2 = max;
       }
-      _horizontal = !scale.isHorizontal();
+    } else {
+      const xScale = chart.scales[options.xScaleID];
+      const yScale = chart.scales[options.yScaleID];
+
+      if (xScale) {
+        x = scaleValue(xScale, options.xMin, x);
+        x2 = scaleValue(xScale, options.xMax, x2);
+      }
+
+      if (yScale) {
+        y = scaleValue(yScale, options.yMin, y);
+        y2 = scaleValue(yScale, options.yMax, y2);
+      }
     }
     return {
       x,
@@ -100,9 +115,7 @@ export default class LineAnnotation extends Element {
       x2,
       y2,
       width: x2 - x,
-      height: y2 - y,
-      _chartArea: chart.chartArea,
-      _horizontal
+      height: y2 - y
     };
   }
 }
@@ -134,15 +147,7 @@ LineAnnotation.defaults = {
 
 function calculateAutoRotation(line) {
   const {x, y, x2, y2} = line;
-  let cathetusAdjacent, cathetusOpposite;
-  if (line._horizontal) {
-    cathetusAdjacent = y2 > y ? x2 - x : -(x2 - x);
-    cathetusOpposite = Math.abs(y - y2);
-  } else {
-    cathetusAdjacent = Math.abs(x - x2);
-    cathetusOpposite = x2 > x ? y2 - y : -(y2 - y);
-  }
-  return Math.atan(cathetusOpposite / cathetusAdjacent);
+  return Math.atan2(y2 - y, x2 - x);
 }
 
 function drawLabel(ctx, line) {
@@ -155,7 +160,6 @@ function drawLabel(ctx, line) {
   const rotation = label.rotation === 'auto' ? calculateAutoRotation(line) : toRadians(label.rotation);
 
   line.labelRect = calculateLabelPosition(line, width, height, rotation);
-  adjustLabelPosition(line, rotation);
 
   ctx.translate(line.labelRect.x, line.labelRect.y);
   ctx.rotate(rotation);
@@ -205,114 +209,34 @@ function measureLabel(ctx, label) {
 
 function calculateLabelPosition(line, width, height, angle) {
   const label = line.options.label;
-  const {xPadding, xAdjust, yPadding, yAdjust, position} = label;
+  const {xAdjust, yAdjust, position} = label;
   const p1 = {x: line.x, y: line.y};
   const p2 = {x: line.x2, y: line.y2};
-  let x, y, pt;
+  const start = position === 'start';
+  const end = position === 'end';
+  const tadj = calculateTAdjust(line, width, height, angle);
+  const t = start ? 0 + tadj : end ? 1 - tadj : 0.5;
+  const pt = pointInLine(p1, p2, t);
 
-  switch (validPosition(position, line._horizontal)) {
-  case 'top':
-    y = line.y + (height / 2) + yPadding + yAdjust;
-    x = interpolateX(y, p1, p2) + xAdjust;
-    break;
-  case 'bottom':
-    y = line.y2 - (height / 2) - yPadding + yAdjust;
-    x = interpolateX(y, p1, p2) + xAdjust;
-    break;
-  case 'left':
-    x = line.x + (width / 2) + xPadding + xAdjust;
-    y = interpolateY(x, p1, p2) + yAdjust;
-    break;
-  case 'right':
-    x = line.x2 - (width / 2) - xPadding + xAdjust;
-    y = interpolateY(x, p1, p2) + yAdjust;
-    break;
-  default:
-    pt = pointInLine(p1, p2, 0.5);
-    x = pt.x + xAdjust;
-    y = pt.y + yAdjust;
-  }
+  return {
+    x: pt.x + xAdjust,
+    y: pt.y + yAdjust,
+    width,
+    height,
+    angle
+  };
+}
 
+function calculateTAdjust(line, width, height, angle) {
+  const label = line.options.label;
+  const {xPadding, yPadding} = label;
+  const w = line.x2 - line.x;
+  const h = line.y2 - line.y;
   const cos = Math.cos(angle);
   const sin = Math.sin(angle);
   const rotatedHeight = Math.abs(width * sin) + Math.abs(height * cos);
   const rotatedWidth = Math.abs(width * cos) + Math.abs(height * sin);
-
-  return {
-    x,
-    y,
-    width,
-    height,
-    rotatedWidth,
-    rotatedHeight
-  };
-}
-
-function adjustLabelPosition(line, angle) {
-  const {options, labelRect, _chartArea} = line;
-  const {rotatedHeight, rotatedWidth, height, width} = labelRect;
-  const label = options.label;
-  const {xPadding, xAdjust, yPadding, yAdjust, position} = label;
-  const p1 = {x: line.x, y: line.y};
-  const p2 = {x: line.x2, y: line.y2};
-  const xCoordinateSizes = {size: rotatedWidth, min: _chartArea.left, max: _chartArea.right, padding: xPadding, adjust: xAdjust};
-  const yCoordinateSizes = {size: rotatedHeight, min: _chartArea.top, max: _chartArea.bottom, padding: yPadding, adjust: yAdjust};
-  const xApexFactor = (width / 2 * Math.cos(angle)) - (height / 2 * Math.sin(angle));
-  const yApexFactor = (width / 2 * Math.sin(angle)) + (height / 2 * Math.cos(angle));
-  let x, y, pt;
-
-  switch (validPosition(position, line._horizontal)) {
-  case 'top':
-    y = line.y + (rotatedHeight / 2) + yAdjust + yPadding;
-    break;
-  case 'bottom':
-    y = line.y2 - (rotatedHeight / 2) + yAdjust - yPadding;
-    break;
-  case 'left':
-    x = line.x + (rotatedWidth / 2) + xAdjust + xPadding;
-    break;
-  case 'right':
-    x = line.x2 - (rotatedWidth / 2) + xAdjust - xPadding;
-    break;
-  default:
-    pt = pointInLine(p1, p2, 0.5);
-    x = adjustLabelCoordinate(pt.x + xAdjust, xCoordinateSizes);
-    y = adjustLabelCoordinate(pt.y + yAdjust, yCoordinateSizes);
-  }
-
-  if (!y) {
-    x = adjustLabelCoordinate(x, xCoordinateSizes);
-    y = adjustLabelCoordinate(interpolateY(x, p1, p2) + yAdjust, yCoordinateSizes);
-  } else if (!x) {
-    y = adjustLabelCoordinate(y, yCoordinateSizes);
-    x = adjustLabelCoordinate(interpolateX(y, p1, p2) + xAdjust, xCoordinateSizes);
-  }
-
-  labelRect.x = x;
-  labelRect.y = y;
-  labelRect.a = {x: x - xApexFactor, y: y - yApexFactor};
-  labelRect.b = {x: x + xApexFactor, y: y + yApexFactor};
-  labelRect.c = {x: x - xApexFactor, y: y - yApexFactor};
-  labelRect.d = {x: x + xApexFactor, y: y + yApexFactor};
-}
-
-function validPosition(position, horizontal) {
-  return ((horizontal && (position === 'top' || position === 'bottom')) ||
-		(!horizontal && (position === 'left' || position === 'right')))
-    ? 'center' : position;
-}
-
-function adjustLabelCoordinate(coordinate, labelSizes) {
-  const {size, min, max, padding, adjust} = labelSizes;
-  let value = coordinate;
-  const halfSize = size / 2;
-
-  if (min >= (coordinate + padding + adjust - halfSize)) {
-    value = min + padding - adjust + halfSize;
-  }
-  if (max <= (coordinate - padding + adjust + halfSize)) {
-    value = max - padding + adjust - halfSize;
-  }
-
-  return value;
+  const y = h && ((rotatedHeight / 2 + yPadding) / h);
+  const x = w && ((rotatedWidth / 2 + xPadding) / w);
+  return Math.max(x, y);
 }
