@@ -61,6 +61,10 @@ export default {
     draw(chart, options, 'afterDatasetsDraw');
   },
 
+  beforeDraw(chart, _args, options) {
+    draw(chart, options, 'beforeDraw');
+  },
+
   afterDraw(chart, _args, options) {
     draw(chart, options, 'afterDraw');
   },
