@@ -26,7 +26,7 @@ To configure the annotations plugin, you can simply add new config options to yo
             // This allows positioning of the annotation relative to the other
             // elements of the graph.
             //
-            // Should be one of: afterDraw, afterDatasetsDraw, beforeDatasetsDraw
+            // Should be one of: afterDraw, afterDatasetsDraw, beforeDraw, beforeDatasetsDraw
             // See http://www.chartjs.org/docs/#advanced-usage-creating-plugins
             drawTime: 'afterDatasetsDraw', // (default)
 
