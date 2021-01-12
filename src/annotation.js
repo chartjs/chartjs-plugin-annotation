@@ -108,6 +108,7 @@ module.exports = function(Chart) {
 		},
 		beforeDatasetsDraw: draw('beforeDatasetsDraw'),
 		afterDatasetsDraw: draw('afterDatasetsDraw'),
+		beforeDraw: draw('beforeDraw'),
 		afterDraw: draw('afterDraw'),
 		afterInit: function(chartInstance) {
 			// Detect and intercept events that happen on an annotation element
