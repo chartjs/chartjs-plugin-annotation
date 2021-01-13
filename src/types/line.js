@@ -2,6 +2,7 @@ import {Element, defaults} from 'chart.js';
 import {isArray, toFontString, toRadians} from 'chart.js/helpers';
 import {scaleValue, roundedRect, rotated} from '../helpers';
 
+const PI = Math.PI;
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
@@ -147,7 +148,9 @@ LineAnnotation.defaults = {
 
 function calculateAutoRotation(line) {
   const {x, y, x2, y2} = line;
-  return Math.atan2(y2 - y, x2 - x);
+  const rotation = Math.atan2(y2 - y, x2 - x);
+  // Flip the rotation if it goes > PI/2 or < -PI/2, so label stays upright
+  return rotation > PI / 2 ? rotation - PI : rotation < PI / -2 ? rotation + PI : rotation;
 }
 
 function drawLabel(ctx, line) {
