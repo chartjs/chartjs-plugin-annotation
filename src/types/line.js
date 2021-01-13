@@ -211,19 +211,19 @@ function measureLabel(ctx, label) {
 
 function calculateLabelPosition(line, width, height, chartArea) {
   const label = line.options.label;
-  const {xAdjust, yAdjust, position} = label;
+  const {xAdjust, yAdjust, xPadding, yPadding, position} = label;
   const p1 = {x: line.x, y: line.y};
   const p2 = {x: line.x2, y: line.y2};
-  const start = position === 'start';
-  const end = position === 'end';
   const rotation = label.rotation === 'auto' ? calculateAutoRotation(line) : toRadians(label.rotation);
-  const tadj = calculateTAdjust(line, rotatedSize(width, height, rotation), chartArea);
-  const t = start ? 0 + tadj : end ? 1 - tadj : 0.5;
+  const size = rotatedSize(width, height, rotation);
+  const t = calculateT(line, position, size, chartArea);
   const pt = pointInLine(p1, p2, t);
+  const xCoordinateSizes = {size: size.w, min: chartArea.left, max: chartArea.right, padding: xPadding};
+  const yCoordinateSizes = {size: size.h, min: chartArea.top, max: chartArea.bottom, padding: yPadding};
 
   return {
-    x: pt.x + xAdjust,
-    y: pt.y + yAdjust,
+    x: adjustLabelCoordinate(pt.x, xCoordinateSizes) + xAdjust,
+    y: adjustLabelCoordinate(pt.y, yCoordinateSizes) + yAdjust,
     width,
     height,
     rotation
@@ -239,15 +239,25 @@ function rotatedSize(width, height, rotation) {
   };
 }
 
-function calculateTAdjust(line, size, chartArea) {
-  const label = line.options.label;
-  const {xPadding, yPadding} = label;
-  const lineX = Math.abs(line.x2 - line.x);
-  const lineY = Math.abs(line.y2 - line.y);
+function calculateT(line, position, rotSize, chartArea) {
+  let t = 0.5;
   const space = spaceAround(line, chartArea);
-  const y = ((size.h / 2 + yPadding - space.y) / lineY);
-  const x = ((size.w / 2 + xPadding - space.x) / lineX);
-  return Math.max(x, y);
+  const label = line.options.label;
+  if (position === 'start') {
+    t = calculateTAdjust({w: line.x2 - line.x, h: line.y2 - line.y}, rotSize, label, space);
+  } else if (position === 'end') {
+    t = 1 - calculateTAdjust({w: line.x - line.x2, h: line.y - line.y2}, rotSize, label, space);
+  }
+  return t;
+}
+
+function calculateTAdjust(lineSize, rotSize, label, space) {
+  const {xPadding, yPadding} = label;
+  const w = lineSize.w * space.dx;
+  const h = lineSize.h * space.dy;
+  const x = (w > 0) && ((rotSize.w / 2 + xPadding - space.x) / w);
+  const y = (h > 0) && ((rotSize.h / 2 + yPadding - space.y) / h);
+  return Math.max(Math.min(Math.max(x, y), 0.25), 0);
 }
 
 function spaceAround(line, chartArea) {
@@ -257,8 +267,34 @@ function spaceAround(line, chartArea) {
   const l = Math.min(x, x2);
   const b = Math.max(y, y2);
   const r = Math.max(x, x2);
+  const ll = l - left;
+  const rr = right - r;
+  const tt = t - top;
+  const bb = bottom - b;
   return {
-    x: Math.min(l - left, right - r),
-    y: Math.min(t - top, bottom - b)
+    x: Math.min(ll, rr),
+    y: Math.min(tt, bb),
+    dx: ll < rr ? 1 : -1,
+    dy: tt < bb ? 1 : -1
   };
+}
+
+function adjustLabelCoordinate(coordinate, labelSizes) {
+  const {size, min, max, padding} = labelSizes;
+  const halfSize = size / 2;
+
+  if (size > max - min) {
+    // if it does not fit, display as much as possible
+    return (max + min) / 2;
+  }
+
+  if (min >= (coordinate - padding - halfSize)) {
+    coordinate = min + padding + halfSize;
+  }
+
+  if (max <= (coordinate + padding + halfSize)) {
+    coordinate = max - padding - halfSize;
+  }
+
+  return coordinate;
 }
