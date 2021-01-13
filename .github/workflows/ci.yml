@@ -11,9 +11,6 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
-    outputs:
-      coveralls: ${{ steps.changes.outputs.src }}
-
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -32,3 +29,27 @@ jobs:
           xvfb-run --auto-servernum npm test
         fi
       shell: bash
+    - name: Coveralls Parallel - Chrome
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        path-to-lcov: './coverage/chrome/lcov.info'
+        flag-name: ${{ matrix.os }}-chrome
+        parallel: true
+    - name: Coveralls Parallel - Firefox
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        path-to-lcov: './coverage/firefox/lcov.info'
+        flag-name: ${{ matrix.os }}-firefox
+        parallel: true
+
+  finish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        parallel-finished: true
