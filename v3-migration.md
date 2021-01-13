@@ -57,6 +57,9 @@ const Chart = new Chart(ctx, {
 ### Line
 
 * `mode` was removed. The mode is automatically calculated based on the scale.
+* `position` values were changed to `'start'`, `'center'` and `'end'`.
+  * `'start'` replaces previous `'left'` and `'top'`.
+  * `'end'` replaces previous `'right'` and `'bottom'`.
 
 #### Label
 

@@ -51,12 +51,21 @@ export function roundedRect(ctx, x, y, width, height, radius) {
   }
 }
 
-export function inTriangle(point, a, b, c) {
-  // see https://en.wikipedia.org/wiki/Barycentric_coordinate_system
-  const A = 1 / 2 * (-b.y * c.x + a.y * (-b.x + c.x) + a.x * (b.y - c.y) + b.x * c.y);
-  const sign = A < 0 ? -1 : 1;
-  const s = (a.y * c.x - a.x * c.y + (c.y - a.y) * point.x + (a.x - c.x) * point.y) * sign;
-  const t = (a.x * b.y - a.y * b.x + (a.y - b.y) * point.x + (b.x - a.x) * point.y) * sign;
+/**
+ * Rotate a `point` relative to `center` point by `angle`
+ * @param {{x: number, y: number}} point - the point to rotate
+ * @param {{x: number, y: number}} center - center point for rotation
+ * @param {number} angle - angle for rotation, in radians
+ * @returns {{x: number, y: number}} rotated point
+ */
+export function rotated(point, center, angle) {
+  var cos = Math.cos(angle);
+  var sin = Math.sin(angle);
+  var cx = center.x;
+  var cy = center.y;
 
-  return s > 0 && t > 0 && (s + t) < 2 * A * sign;
+  return {
+    x: cx + cos * (point.x - cx) - sin * (point.y - cy),
+    y: cy + sin * (point.x - cx) + cos * (point.y - cy)
+  };
 }

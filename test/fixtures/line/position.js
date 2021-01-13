@@ -24,9 +24,9 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 5,
               label: {
-                position: 'left',
+                position: 'start',
                 backgroundColor: 'black',
-                content: 'left',
+                content: 'start',
                 enabled: true
               },
             },
@@ -50,9 +50,9 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 5,
               label: {
-                position: 'right',
+                position: 'end',
                 backgroundColor: 'black',
-                content: 'right',
+                content: 'end',
                 enabled: true
               },
             },
@@ -63,9 +63,9 @@ module.exports = {
               borderColor: 'red',
               borderWidth: 5,
               label: {
-                position: 'top',
+                position: 'start',
                 backgroundColor: 'red',
-                content: 'top',
+                content: 'start',
                 enabled: true
               }
             },
@@ -89,9 +89,9 @@ module.exports = {
               borderColor: 'red',
               borderWidth: 5,
               label: {
-                position: 'bottom',
+                position: 'end',
                 backgroundColor: 'red',
-                content: 'bottom',
+                content: 'end',
                 enabled: true
               }
             }
