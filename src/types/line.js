@@ -251,31 +251,26 @@ function calculateT(line, position, rotSize, chartArea) {
   return t;
 }
 
-function calculateTAdjust(lineSize, rotSize, label, space) {
+function calculateTAdjust(lineSize, labelSize, label, space) {
   const {xPadding, yPadding} = label;
-  const w = lineSize.w * space.dx;
-  const h = lineSize.h * space.dy;
-  const x = (w > 0) && ((rotSize.w / 2 + xPadding - space.x) / w);
-  const y = (h > 0) && ((rotSize.h / 2 + yPadding - space.y) / h);
+  const lineW = lineSize.w * space.dx;
+  const lineH = lineSize.h * space.dy;
+  const x = (lineW > 0) && ((labelSize.w / 2 + xPadding - space.x) / lineW);
+  const y = (lineH > 0) && ((labelSize.h / 2 + yPadding - space.y) / lineH);
   return Math.max(Math.min(Math.max(x, y), 0.25), 0);
 }
 
 function spaceAround(line, chartArea) {
   const {x, x2, y, y2} = line;
-  const {top, left, bottom, right} = chartArea;
-  const t = Math.min(y, y2);
-  const l = Math.min(x, x2);
-  const b = Math.max(y, y2);
-  const r = Math.max(x, x2);
-  const ll = l - left;
-  const rr = right - r;
-  const tt = t - top;
-  const bb = bottom - b;
+  const t = Math.min(y, y2) - chartArea.top;
+  const l = Math.min(x, x2) - chartArea.left;
+  const b = chartArea.bottom - Math.max(y, y2);
+  const r = chartArea.right - Math.max(x, x2);
   return {
-    x: Math.min(ll, rr),
-    y: Math.min(tt, bb),
-    dx: ll < rr ? 1 : -1,
-    dy: tt < bb ? 1 : -1
+    x: Math.min(l, r),
+    y: Math.min(t, b),
+    dx: l < r ? 1 : -1,
+    dy: t < b ? 1 : -1
   };
 }
 
