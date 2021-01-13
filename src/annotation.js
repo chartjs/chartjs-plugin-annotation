@@ -153,7 +153,7 @@ function draw(chart, options, caller) {
 
   elements.forEach(el => {
     if ('drawLabel' in el && el.options.label && (el.options.label.drawTime || el.options.drawTime || options.drawTime || caller) === caller) {
-      el.drawLabel(ctx);
+      el.drawLabel(ctx, chartArea);
     }
   });
 }

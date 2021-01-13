@@ -33,7 +33,7 @@ export default class LineAnnotation extends Element {
       return false;
     }
 
-    const {x, y} = rotated({x: mouseX, y: mouseY}, labelRect, -labelRect.angle);
+    const {x, y} = rotated({x: mouseX, y: mouseY}, labelRect, -labelRect.rotation);
     const w2 = labelRect.width / 2;
     const h2 = labelRect.height / 2;
     return x >= labelRect.x - w2 && x <= labelRect.x + w2 &&
@@ -73,10 +73,10 @@ export default class LineAnnotation extends Element {
     ctx.restore();
   }
 
-  drawLabel(ctx) {
+  drawLabel(ctx, chartArea) {
     if (this.labelIsVisible()) {
       ctx.save();
-      drawLabel(ctx, this);
+      drawLabel(ctx, this, chartArea);
       ctx.restore();
     }
   }
@@ -153,19 +153,18 @@ function calculateAutoRotation(line) {
   return rotation > PI / 2 ? rotation - PI : rotation < PI / -2 ? rotation + PI : rotation;
 }
 
-function drawLabel(ctx, line) {
+function drawLabel(ctx, line, chartArea) {
   const label = line.options.label;
 
   ctx.font = toFontString(label.font);
   ctx.textAlign = 'center';
 
   const {width, height} = measureLabel(ctx, label);
-  const rotation = label.rotation === 'auto' ? calculateAutoRotation(line) : toRadians(label.rotation);
 
-  line.labelRect = calculateLabelPosition(line, width, height, rotation);
+  const rect = line.labelRect = calculateLabelPosition(line, width, height, chartArea);
 
-  ctx.translate(line.labelRect.x, line.labelRect.y);
-  ctx.rotate(rotation);
+  ctx.translate(rect.x, rect.y);
+  ctx.rotate(rect.rotation);
 
   ctx.fillStyle = label.backgroundColor;
   roundedRect(ctx, -(width / 2), -(height / 2), width, height, label.cornerRadius);
@@ -210,14 +209,15 @@ function measureLabel(ctx, label) {
   };
 }
 
-function calculateLabelPosition(line, width, height, angle) {
+function calculateLabelPosition(line, width, height, chartArea) {
   const label = line.options.label;
   const {xAdjust, yAdjust, position} = label;
   const p1 = {x: line.x, y: line.y};
   const p2 = {x: line.x2, y: line.y2};
   const start = position === 'start';
   const end = position === 'end';
-  const tadj = calculateTAdjust(line, width, height, angle);
+  const rotation = label.rotation === 'auto' ? calculateAutoRotation(line) : toRadians(label.rotation);
+  const tadj = calculateTAdjust(line, rotatedSize(width, height, rotation), chartArea);
   const t = start ? 0 + tadj : end ? 1 - tadj : 0.5;
   const pt = pointInLine(p1, p2, t);
 
@@ -226,20 +226,39 @@ function calculateLabelPosition(line, width, height, angle) {
     y: pt.y + yAdjust,
     width,
     height,
-    angle
+    rotation
   };
 }
 
-function calculateTAdjust(line, width, height, angle) {
+function rotatedSize(width, height, rotation) {
+  const cos = Math.cos(rotation);
+  const sin = Math.sin(rotation);
+  return {
+    w: Math.abs(width * cos) + Math.abs(height * sin),
+    h: Math.abs(width * sin) + Math.abs(height * cos)
+  };
+}
+
+function calculateTAdjust(line, size, chartArea) {
   const label = line.options.label;
   const {xPadding, yPadding} = label;
-  const w = line.x2 - line.x;
-  const h = line.y2 - line.y;
-  const cos = Math.cos(angle);
-  const sin = Math.sin(angle);
-  const rotatedHeight = Math.abs(width * sin) + Math.abs(height * cos);
-  const rotatedWidth = Math.abs(width * cos) + Math.abs(height * sin);
-  const y = h && ((rotatedHeight / 2 + yPadding) / h);
-  const x = w && ((rotatedWidth / 2 + xPadding) / w);
+  const lineX = Math.abs(line.x2 - line.x);
+  const lineY = Math.abs(line.y2 - line.y);
+  const space = spaceAround(line, chartArea);
+  const y = ((size.h / 2 + yPadding - space.y) / lineY);
+  const x = ((size.w / 2 + xPadding - space.x) / lineX);
   return Math.max(x, y);
+}
+
+function spaceAround(line, chartArea) {
+  const {x, x2, y, y2} = line;
+  const {top, left, bottom, right} = chartArea;
+  const t = Math.min(y, y2);
+  const l = Math.min(x, x2);
+  const b = Math.max(y, y2);
+  const r = Math.max(x, x2);
+  return {
+    x: Math.min(l - left, right - r),
+    y: Math.min(t - top, bottom - b)
+  };
 }
