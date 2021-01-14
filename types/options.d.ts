@@ -2,7 +2,7 @@ import { Color, DeepPartial } from "chart.js";
 import {AnnotationEvents, EventContext} from "./events";
 import { LabelOptions } from "./label";
 
-export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDatasetsDraw';
+export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw';
 export type Mode = 'horizontal' | 'vertical';
 
 export interface AnnotationTypeRegistry {
