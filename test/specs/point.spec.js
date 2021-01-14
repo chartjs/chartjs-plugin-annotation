@@ -30,10 +30,6 @@ describe('Point annotation', function() {
               annotations: {
                 point: {
                   type: 'point',
-                  xScaleID: 'x',
-                  yScaleID: 'y',
-                  xValue: 5,
-                  yValue: 5,
                   radius: 10,
                   borderWidth: 5,
                   enter: enterSpy,
@@ -59,6 +55,10 @@ describe('Point annotation', function() {
       const point = state.elements[0];
       const point2 = state.elements[1];
 
+      // should be centered when there are no scales or values
+      expect(point.x).toEqual(256);
+      expect(point.y).toEqual(256);
+
       expect(enterSpy.calls.count()).toBe(0);
       expect(leaveSpy.calls.count()).toBe(0);
 
@@ -76,7 +76,7 @@ describe('Point annotation', function() {
           expect(leaveSpy.calls.count()).toBe(1);
 
           window.triggerMouseEvent(chart, 'mousemove', {
-            x: point.x + 15,
+            x: point.x + 14.5,
             y: point.y
           });
 
