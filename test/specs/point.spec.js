@@ -30,6 +30,8 @@ describe('Point annotation', function() {
               annotations: {
                 point: {
                   type: 'point',
+                  xScaleID: 'x',
+                  yScaleID: 'y',
                   xValue: 5,
                   yValue: 5,
                   radius: 10,
@@ -39,10 +41,12 @@ describe('Point annotation', function() {
                 },
                 point2: {
                   type: 'point',
+                  xScaleID: 'x',
+                  yScaleID: 'y',
                   xValue: 8,
                   yValue: 8,
                   radius: 0,
-                  borderWidth: 5,
+                  borderWidth: 0,
                   enter: enterSpy
                 }
               }
@@ -82,6 +86,7 @@ describe('Point annotation', function() {
             window.triggerMouseEvent(chart, 'mousemove', point2);
 
             window.afterEvent(chart, 'mousemove', function() {
+              expect(leaveSpy.calls.count()).toBe(2);
               expect(enterSpy.calls.count()).toBe(2);
               done();
             });
