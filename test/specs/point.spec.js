@@ -36,6 +36,14 @@ describe('Point annotation', function() {
                   borderWidth: 5,
                   enter: enterSpy,
                   leave: leaveSpy
+                },
+                point2: {
+                  type: 'point',
+                  xValue: 8,
+                  yValue: 8,
+                  radius: 0,
+                  borderWidth: 5,
+                  enter: enterSpy
                 }
               }
             }
@@ -45,6 +53,7 @@ describe('Point annotation', function() {
 
       const state = Annotation._getState(chart);
       const point = state.elements[0];
+      const point2 = state.elements[1];
 
       expect(enterSpy.calls.count()).toBe(0);
       expect(leaveSpy.calls.count()).toBe(0);
@@ -66,9 +75,16 @@ describe('Point annotation', function() {
             x: point.x + 15,
             y: point.y
           });
+
           window.afterEvent(chart, 'mousemove', function() {
             expect(enterSpy.calls.count()).toBe(2);
-            done();
+
+            window.triggerMouseEvent(chart, 'mousemove', point2);
+
+            window.afterEvent(chart, 'mousemove', function() {
+              expect(enterSpy.calls.count()).toBe(2);
+              done();
+            });
           });
         });
       });
