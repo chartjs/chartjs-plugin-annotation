@@ -131,12 +131,6 @@ function getNearestItem(elements, position) {
 
       return nearestItems;
     }, [])
-    .sort((a, b) => {
-      // If there are multiple elements equally close,
-      // sort them by size, then by index
-      const sizeA = a.getArea();
-      const sizeB = b.getArea();
-      return (sizeA > sizeB || sizeA < sizeB) ? sizeA - sizeB : a._index - b._index;
-    })
+    .sort((a, b) => a._index - b._index)
     .slice(0, 1)[0]; // return only the top item
 }

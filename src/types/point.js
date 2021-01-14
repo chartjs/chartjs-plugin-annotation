@@ -4,7 +4,15 @@ import {scaleValue} from '../helpers';
 export default class PointAnnotation extends Element {
 
   inRange(x, y) {
-    return pointInCircle({x, y}, this);
+    const {width, options} = this;
+    const center = this.getCenterPoint(true);
+    const radius = width / 2 + options.borderWidth;
+
+    if (radius <= 0) {
+      return false;
+    }
+
+    return (Math.pow(x - center.x, 2) + Math.pow(y - center.y, 2)) <= Math.pow(radius, 2);
   }
 
   getCenterPoint(useFinalPosition) {
@@ -30,14 +38,11 @@ export default class PointAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    const xScale = chart.scales[options.xScaleID];
-    const yScale = chart.scales[options.yScaleID];
-    let x = chart.chartArea.width / 2;
-    let y = chart.chartArea.height / 2;
-
-    if (!xScale && !yScale) {
-      return {options: {}};
-    }
+    const {chartArea, scales} = chart;
+    const xScale = scales[options.xScaleID];
+    const yScale = scales[options.yScaleID];
+    let x = chartArea.width / 2;
+    let y = chartArea.height / 2;
 
     if (xScale) {
       x = scaleValue(xScale, options.xValue, x);
@@ -50,8 +55,6 @@ export default class PointAnnotation extends Element {
     return {
       x,
       y,
-      x2: x + (options.radius * 2),
-      y2: y + (options.radius * 2),
       width: options.radius * 2,
       height: options.radius * 2
     };
@@ -63,22 +66,12 @@ PointAnnotation.id = 'pointAnnotation';
 PointAnnotation.defaults = {
   display: true,
   borderWidth: 1,
-  radius: 10
+  radius: 10,
+  xScaleID: 'x',
+  yScaleID: 'y'
 };
 
 PointAnnotation.defaultRoutes = {
   borderColor: 'color',
   backgroundColor: 'color'
 };
-
-function pointInCircle(p, point) {
-  const {width} = point;
-  const center = point.getCenterPoint(true);
-  const radius = width / 2;
-
-  if (radius <= 0) {
-    return false;
-  }
-
-  return (Math.pow(p.x - center.x, 2) + Math.pow(p.y - center.y, 2)) <= Math.pow(radius, 2);
-}
