@@ -78,6 +78,10 @@ export default {
     chartStates.delete(chart);
   },
 
+  _getState(chart) {
+    return chartStates.get(chart);
+  },
+
   defaults: {
     drawTime: 'afterDatasetsDraw',
     dblClickSpeed: 350, // ms
