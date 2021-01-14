@@ -2,14 +2,12 @@ const istanbul = require('rollup-plugin-istanbul');
 const resolve = require('@rollup/plugin-node-resolve').default;
 const builds = require('./rollup.config');
 const yargs = require('yargs');
+const env = process.env.NODE_ENV;
 
 module.exports = function(karma) {
   const args = yargs
     .option('verbose', {default: false})
     .argv;
-
-  const grep = args.grep === true ? '' : args.grep;
-  const specPattern = 'test/specs/**/*' + grep + '*.js';
 
   // Use the same rollup config as our dist files: when debugging (npm run dev),
   // we will prefer the unminified build which is easier to browse and works
@@ -18,7 +16,7 @@ module.exports = function(karma) {
   const regex = karma.autoWatch ? /chartjs-plugin-annotation\.js$/ : /chartjs-plugin-annotation\.min\.js$/;
   const build = builds.filter(v => v.output.file && v.output.file.match(regex))[0];
 
-  if (args.coverage) {
+  if (env === 'test') {
     build.plugins = [
       resolve(),
       istanbul({exclude: ['node_modules/**/*.js', 'package.json']})
@@ -61,7 +59,7 @@ module.exports = function(karma) {
       {pattern: 'node_modules/chart.js/dist/chart.js'},
       {pattern: 'src/index.js', watched: false},
       {pattern: 'test/index.js'},
-      {pattern: specPattern}
+      {pattern: 'test/specs/**/**.js'}
     ],
 
     preprocessors: {
@@ -93,7 +91,7 @@ module.exports = function(karma) {
     browserDisconnectTolerance: 3
   });
 
-  if (args.coverage) {
+  if (env === 'test') {
     karma.reporters.push('coverage');
     karma.coverageReporter = {
       dir: 'coverage/',
