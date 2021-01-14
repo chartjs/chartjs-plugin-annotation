@@ -1,5 +1,5 @@
 import { Chart } from 'chart.js';
-import { Annotation } from '../index';
+import Annotation from '../index';
 
 Chart.register(Annotation);
 Chart.unregister(Annotation);

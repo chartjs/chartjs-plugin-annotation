@@ -1,4 +1,4 @@
-import {Animations} from 'chart.js';
+import {Animations, Chart} from 'chart.js';
 import {clipArea, unclipArea, isFinite, merge, valueOrDefault, callback as callCallback, isObject} from 'chart.js/helpers';
 import {handleEvent, updateListeners} from './events';
 import BoxAnnotation from './types/box';
@@ -17,6 +17,14 @@ const annotationTypes = {
 
 export default {
   id: 'annotation',
+
+  afterRegister() {
+    Chart.register(annotationTypes);
+  },
+
+  afterUnregister() {
+    Chart.unregister(annotationTypes);
+  },
 
   beforeInit(chart) {
     chartStates.set(chart, {
