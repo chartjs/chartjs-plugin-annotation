@@ -8,8 +8,8 @@ export type Mode = 'horizontal' | 'vertical';
 export interface AnnotationTypeRegistry {
 	line: LineAnnotationOptions
 	box: BoxAnnotationOptions
-  ellipse: EllipseAnnotationOptions
-  point: PointAnnotationOptions
+	ellipse: EllipseAnnotationOptions
+	point: PointAnnotationOptions
 }
 
 export type AnnotationType = keyof AnnotationTypeRegistry;
@@ -19,23 +19,23 @@ export type AnnotationOptions<TYPE extends AnnotationType = AnnotationType> = De
 >;
 
 export interface CoreAnnotationOptions extends AnnotationEvents {
-  display?: boolean | ((context: EventContext) => boolean);
+	display?: boolean | ((context: EventContext) => boolean);
 	borderColor?: Color,
 	borderWidth?: number,
 	drawTime?: DrawTime,
-	endValue?: any,
+	endValue?: any | ((context: EventContext) => any);
 	mode?: Mode,
 	scaleID?: string,
-	value?: any,
+	value?: any | ((context: EventContext) => any);
 	xScaleID?: string,
 	yScaleID?: string,
 }
 
 interface AnnotationCoordinates {
-  xMax?: any,
-  xMin?: any,
-  yMax?: any,
-  yMin?: any,
+	xMax?: any | ((context: EventContext) => any);
+	xMin?: any | ((context: EventContext) => any);
+	yMax?: any | ((context: EventContext) => any);
+	yMin?: any | ((context: EventContext) => any);
 }
 
 export interface LineAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
@@ -55,8 +55,8 @@ interface EllipseAnnotationOptions extends CoreAnnotationOptions, AnnotationCoor
 interface PointAnnotationOptions extends CoreAnnotationOptions {
 	backgroundColor: Color,
 	radius?: number,
-	xValue?: any;
-	yValue?: any;
+	xValue?: any | ((context: EventContext) => any);
+	yValue?: any | ((context: EventContext) => any);
 }
 
 export interface AnnotationPluginOptions extends AnnotationEvents {

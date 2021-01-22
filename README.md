@@ -88,17 +88,52 @@ To configure the annotations plugin, you can simply add new config options to yo
     scaleID: 'y',
 
     // Data value to draw the line at
+    // A callback can also be used:
+    //   value(context) {
+    //     // context: {chart, element}
+    //     return value;
+    //   },
     value: 25,
 
     // Optional value at which the line draw should end
+    // A callback can also be used:
+    //   endValue(context) {
+    //     // context: {chart, element}
+    //     return value;
+    //   },
     endValue: 26,
 
     // Alternative configuration of values, using two scales
     xScaleID: 'x',
     yScaleID: 'y',
+    
+    // Optional value for x point of starting line, in units along the x axis
+    // A callback can also be used:
+    //   xMin(context) {
+    //     // context: {chart, element}
+    //     return value;
+    //   },
     xMin: 'January',
+    // Optional value for y point of starting line, in units along the x axis
+    // A callback can also be used:
+    //   yMin(context) {
+    //     // context: {chart, element}
+    //     return value;
+    //   },
     yMin: 25,
+    // Optional value for x point of ending line, in units along the x axis
+    // A callback can also be used:
+    //   xMax(context) {
+    //     // context: {chart, element}
+    //     return value;
+    //   },
     xMax: 'February',
+    // Optional value for y point of ending line, in units along the x axis
+    // A callback can also be used:
+    //   yMax(context) {
+    //     // context: {chart, element}
+    //     return value;
+    //   },
     yMax: 26,
 
     // Line color
@@ -202,15 +237,35 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
     yScaleID: 'y',
 
     // Left edge of the box. in units along the x axis
+    // A callback can also be used:
+    //   xMin(context) {
+    //     // context: {chart, element}
+    //     return value;
+    //   },
     xMin: 25,
 
     // Right edge of the box
+    // A callback can also be used:
+    //   xMax(context) {
+    //     // context: {chart, element}
+    //     return value;
+    //   },
     xMax: 40,
 
     // Top edge of the box in units along the y axis
+    // A callback can also be used:
+    //   yMax(context) {
+    //     // context: {chart, element}
+    //     return value;
+    //   },
     yMax: 20,
 
     // Bottom edge of the box
+    // A callback can also be used:
+    //   yMin(context) {
+    //     // context: {chart, element}
+    //     return value;
+    //   },
     yMin:  15,
 
     // Stroke color
@@ -253,15 +308,35 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the el
     yScaleID: 'y',
 
     // Left edge of the box. in units along the x axis
+    // A callback can also be used:
+    //   xMin(context) {
+    //     // context: {chart, element}
+    //     return value;
+    //   },
     xMin: 25,
 
     // Right edge of the box
+    // A callback can also be used:
+    //   xMax(context) {
+    //     // context: {chart, element}
+    //     return value;
+    //   },
     xMax: 40,
 
     // Top edge of the box in units along the y axis
+    // A callback can also be used:
+    //   yMax(context) {
+    //     // context: {chart, element}
+    //     return value;
+    //   },
     yMax: 20,
 
     // Bottom edge of the box
+    // A callback can also be used:
+    //   yMin(context) {
+    //     // context: {chart, element}
+    //     return value;
+    //   },
     yMin:  15,
 
     // Stroke color
@@ -301,9 +376,19 @@ The 2 coordinates, xValue, yValue are optional. If not specified, the point is e
     yScaleID: 'y',
 
     // Center point X value of the point. in units along the x axis
+    // A callback can also be used:
+    //   xValue(context) {
+    //     // context: {chart, element}
+    //     return value;
+    //   },
     xValue: 25,
 
     // Center point Y value of the point. in units along the y axis
+    // A callback can also be used:
+    //   yValue(context) {
+    //     // context: {chart, element}
+    //     return value;
+    //   },
     yValue: 20,
 
     // Stroke color

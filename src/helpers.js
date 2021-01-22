@@ -1,12 +1,18 @@
-import {isFinite} from 'chart.js/helpers';
+import {isFinite, callback as callCallback} from 'chart.js/helpers';
 
 const PI = Math.PI;
 const HALF_PI = PI / 2;
 
 export function scaleValue(scale, value, fallback) {
+  value = resolveValue(scale.chart, value);
   value = typeof value === 'string' ? scale.parse(value) : value;
   return isFinite(value) ? scale.getPixelForValue(value) : fallback;
 }
+
+export function resolveValue(chart, value) {
+  return typeof value === 'function' ? callCallback(value, [{chart}]) : value;
+}
+
 
 /**
  * Creates a "path" for a rectangle with rounded corners at position (x, y) with a

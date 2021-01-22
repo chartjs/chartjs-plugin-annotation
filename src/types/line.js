@@ -110,6 +110,7 @@ export default class LineAnnotation extends Element {
         y2 = scaleValue(yScale, options.yMax, y2);
       }
     }
+
     return {
       x,
       y,

@@ -137,7 +137,17 @@
 								myHorizontalLine: {
 									type: 'line',
 									scaleID: 'y',
-									value: 25,
+									value(context) {
+										let count = 0;
+										let sum = 0;
+										context.chart.data.datasets.forEach(function(dataset) {
+											dataset.data.forEach(function(data) {
+												count++;
+												sum += data.y;
+											});
+										});
+										return sum / count;
+									},
 									borderColor: 'black',
 									borderWidth: 5,
 									label: {

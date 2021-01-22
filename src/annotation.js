@@ -1,5 +1,6 @@
 import {Animations, Chart} from 'chart.js';
 import {clipArea, unclipArea, isFinite, merge, valueOrDefault, callback as callCallback, isObject} from 'chart.js/helpers';
+import {resolveValue} from './helpers';
 import {handleEvent, updateListeners} from './events';
 import BoxAnnotation from './types/box';
 import LineAnnotation from './types/line';
@@ -206,9 +207,9 @@ function getScaleLimits(scale, annotations) {
   let min = valueOrDefault(scale.min, Number.NEGATIVE_INFINITY);
   let max = valueOrDefault(scale.max, Number.POSITIVE_INFINITY);
   scaleAnnotations.forEach(annotation => {
-    ['value', 'endValue', axis + 'Min', axis + 'Max', 'xValue', 'yValue'].forEach(prop => {
+    ['value', 'endValue', axis + 'Min', axis + 'Max', axis + 'Value'].forEach(prop => {
       if (prop in annotation) {
-        const value = annotation[prop];
+        const value = resolveValue(scale.chart, annotation[prop]);
         min = Math.min(min, value);
         max = Math.max(max, value);
       }
