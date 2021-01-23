@@ -62,6 +62,12 @@ describe('Scriptable values options', function() {
       if (chart.annotationAverage !== average) {
         throw new Error('Average value ' + average + ' is not equals to average calculated by scriptable option ' + chart.annotationAverage);
       }
+      chart.annotationAverage = NaN;
+      chart.options.plugins.annotation.annotations.my.value = 10;
+      chart.update();
+      if (!isNaN(chart.annotationAverage)) {
+        throw new Error('Average value is not equals NaN');
+      }
     }
     expect(createAndUpdateChart).not.toThrow();
   });
