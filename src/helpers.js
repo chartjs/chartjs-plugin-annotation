@@ -13,7 +13,6 @@ export function resolveValue(chart, value) {
   return typeof value === 'function' ? callCallback(value, [{chart}]) : value;
 }
 
-
 /**
  * Creates a "path" for a rectangle with rounded corners at position (x, y) with a
  * given size (width, height) and the same `radius` for all corners.
