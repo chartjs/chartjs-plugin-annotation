@@ -132,8 +132,8 @@ LineAnnotation.defaults = {
       family: defaults.font.family,
       size: defaults.font.size,
       style: 'bold',
-      color: '#fff',
     },
+    color: '#fff',
     xPadding: 6,
     yPadding: 6,
     rotation: 0,
@@ -170,7 +170,7 @@ function drawLabel(ctx, line, chartArea) {
   roundedRect(ctx, -(width / 2), -(height / 2), width, height, label.cornerRadius);
   ctx.fill();
 
-  ctx.fillStyle = label.font.color;
+  ctx.fillStyle = label.color;
   if (isArray(label.content)) {
     let textYPosition = -(height / 2) + label.yPadding;
     for (let i = 0; i < label.content.length; i++) {
