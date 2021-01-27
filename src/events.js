@@ -116,7 +116,7 @@ function getNearestItem(elements, position) {
   let minDistance = Number.POSITIVE_INFINITY;
 
   return elements
-    .filter((element) => element.inRange(position.x, position.y))
+    .filter((element) => element._display && element.inRange(position.x, position.y))
     .reduce((nearestItems, element) => {
       const center = element.getCenterPoint();
       const distance = distanceBetweenPoints(position, center);
