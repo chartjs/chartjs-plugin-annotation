@@ -4,7 +4,7 @@ const PI = Math.PI;
 const HALF_PI = PI / 2;
 
 export function scaleValue(scale, value, fallback) {
-  value = typeof value === 'string' ? scale.parse(value) : value;
+  value = typeof value === 'string' ? scale.parse(value) : value instanceof Date ? value.getTime() : value;
   return isFinite(value) ? scale.getPixelForValue(value) : fallback;
 }
 
