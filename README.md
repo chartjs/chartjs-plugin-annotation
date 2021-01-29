@@ -166,10 +166,10 @@ To configure the annotations plugin, you can simply add new config options to yo
 
             // Font style of text, default below
             style: "bold",
-
-            // Font color of text, default below
-            color: "#fff",
         },
+
+        // Color of label text, default below
+        color: "#fff",
 
         // Padding of label to add left/right, default below
         xPadding: 6,

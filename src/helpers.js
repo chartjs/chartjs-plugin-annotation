@@ -5,7 +5,7 @@ const HALF_PI = PI / 2;
 
 export function scaleValue(scale, value, fallback) {
   value = resolveValue(scale.chart, value);
-  value = typeof value === 'string' ? scale.parse(value) : value;
+  value = typeof value === 'number' ? value : scale.parse(value);
   return isFinite(value) ? scale.getPixelForValue(value) : fallback;
 }
 

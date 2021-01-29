@@ -5,6 +5,7 @@ export interface LabelOptions {
 	backgroundColor?: Color,
 	drawTime?: DrawTime,
 	font?: FontSpec
+	color?: Color,
 	/**
 	 * Padding of label to add left/right
 	 * @default 6

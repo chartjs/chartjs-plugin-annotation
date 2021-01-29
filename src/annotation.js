@@ -38,7 +38,9 @@ export default {
   },
 
   afterDataLimits(chart, args, options) {
-    adjustScaleRange(chart, args.scale, options);
+    if (args.scale.type !== 'category') {
+      adjustScaleRange(chart, args.scale, options);
+    }
   },
 
   beforeUpdate(chart, args, options) {
@@ -211,7 +213,8 @@ function getScaleLimits(scale, annotations) {
   scaleAnnotations.forEach(annotation => {
     ['value', 'endValue', axis + 'Min', axis + 'Max', axis + 'Value'].forEach(prop => {
       if (prop in annotation) {
-        const value = resolveValue(scale.chart, annotation[prop]);
+        const resolvedValue = resolveValue(scale.chart, annotation[prop]);
+        const value = scale.parse(resolvedValue);
         min = Math.min(min, value);
         max = Math.max(max, value);
       }
