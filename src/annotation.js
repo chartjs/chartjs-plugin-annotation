@@ -37,8 +37,9 @@ export default {
   },
 
   afterDataLimits(chart, args, options) {
-    const state = chartStates.get(chart);
-    adjustScaleRange(args.scale, state, options);
+    if (args.scale.type !== 'category') {
+      adjustScaleRange(chart, args.scale, options);
+    }
   },
 
   beforeUpdate(chart, args, options) {
@@ -114,6 +115,11 @@ function resolveAnimations(chart, animOpts, mode) {
   return new Animations(chart, animOpts);
 }
 
+function isAnnotationVisible(chart, options, element) {
+  const display = typeof options.display === 'function' ? callCallback(options.display, [{chart, element}]) : valueOrDefault(options.display, true);
+  return !!display;
+}
+
 function updateElements(chart, state, options, mode) {
   const chartAnims = chart.options.animation;
   const animOpts = chartAnims && merge({}, [chartAnims, options.animation]);
@@ -133,8 +139,7 @@ function updateElements(chart, state, options, mode) {
     properties.options = merge(Object.create(null), [elType.defaults, annotation]);
     animations.update(el, properties);
 
-    const display = typeof annotation.display === 'function' ? callCallback(annotation.display, [{chart, element: el}]) : valueOrDefault(annotation.display, true);
-    el._display = !!display;
+    el._display = isAnnotationVisible(chart, annotation, el);
   }
 }
 
@@ -170,15 +175,15 @@ function draw(chart, options, caller) {
   });
 }
 
-function getAnnotationOptions(elements, options) {
-  if (elements && elements.length) {
-    return elements.filter(el => el._display).map(el => el.options);
+function getAnnotationOptions(chart, options) {
+  if (options.annotations && options.annotations.length) {
+    return options.annotations.filter(annotation => isAnnotationVisible(chart, annotation));
   }
-  return options.annotations || [];
+  return [];
 }
 
-function adjustScaleRange(scale, state, options) {
-  const annotations = getAnnotationOptions(state.elements, options);
+function adjustScaleRange(chart, scale, options) {
+  const annotations = getAnnotationOptions(chart, options);
   const range = getScaleLimits(scale, annotations);
   let changed = false;
   if (isFinite(range.min) &&
@@ -208,7 +213,7 @@ function getScaleLimits(scale, annotations) {
   scaleAnnotations.forEach(annotation => {
     ['value', 'endValue', axis + 'Min', axis + 'Max', 'xValue', 'yValue'].forEach(prop => {
       if (prop in annotation) {
-        const value = annotation[prop];
+        const value = scale.parse(annotation[prop]);
         min = Math.min(min, value);
         max = Math.max(max, value);
       }
