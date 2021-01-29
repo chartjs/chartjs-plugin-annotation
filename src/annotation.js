@@ -38,7 +38,7 @@ export default {
   },
 
   afterDataLimits(chart, args, options) {
-    if (scale.type !== 'category') {
+    if (args.scale.type !== 'category') {
       adjustScaleRange(chart, args.scale, options);
     }
   },
