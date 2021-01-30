@@ -124,6 +124,7 @@ export default class LineAnnotation extends Element {
 LineAnnotation.id = 'lineAnnotation';
 LineAnnotation.defaults = {
   display: true,
+  borderWidth: 2,
   borderDash: [],
   borderDashOffset: 0,
   label: {
@@ -145,6 +146,11 @@ LineAnnotation.defaults = {
     content: null
   }
 };
+
+LineAnnotation.defaultRoutes = {
+  borderColor: 'color'
+};
+
 
 function calculateAutoRotation(line) {
   const {x, y, x2, y2} = line;

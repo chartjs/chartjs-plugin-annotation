@@ -31,6 +31,8 @@ EllipseAnnotation.id = 'ellipseAnnotation';
 
 EllipseAnnotation.defaults = {
   display: true,
+  xScaleID: 'x',
+  yScaleID: 'y',
   borderWidth: 1
 };
 
