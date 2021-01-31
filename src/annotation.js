@@ -118,6 +118,10 @@ function resolveAnimations(chart, animOpts, mode) {
   return new Animations(chart, animOpts);
 }
 
+function isAnnotationVisible(chart, element) {
+  return !!(typeof element.options.display === 'function' ? callCallback(element.options.display, [{chart, element}]) : valueOrDefault(element.options.display, true));
+}
+
 function createElements(chart, state, options) {
   const annotations = options.annotations || [];
   const elements = resyncElements(state.elements, annotations);
@@ -130,8 +134,7 @@ function createElements(chart, state, options) {
       el = elements[i] = new elType();
     }
     el.options = merge(Object.create(null), [chart.options.elements[elType.id], annotation]);
-    const display = typeof el.options.display === 'function' ? callCallback(el.options.display, [{chart, element: el}]) : valueOrDefault(el.options.display, true);
-    el._display = !!display;
+    el._display = isAnnotationVisible(chart, el);
   }
 }
 
