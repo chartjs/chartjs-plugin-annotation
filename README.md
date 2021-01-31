@@ -73,7 +73,7 @@ To configure the annotations plugin, you can simply add new config options to yo
 {
     type: 'line',
 
-    // If true, display the annotation, default is true
+    // If true, display the annotation, default is true.
     // A callback can also be used:
     //   display(context) {
     //     // context: {chart, element}
@@ -81,19 +81,19 @@ To configure the annotations plugin, you can simply add new config options to yo
     //   },
     display: true,
 
-    // optional drawTime to control layering, overrides global drawTime setting
+    // optional drawTime to control layering, overrides global drawTime setting.
     drawTime: 'afterDatasetsDraw',
 
-    // ID of the scale to bind onto
+    // ID of the scale to bind onto.
     scaleID: 'y',
 
-    // Data value to draw the line at
+    // Data value to draw the line at.
     value: 25,
 
-    // Optional value at which the line draw should end
+    // Optional value at which the line draw should end.
     endValue: 26,
 
-    // Alternative configuration of values, using two scales
+    // Alternative configuration of values, using two scales.
     xScaleID: 'x',
     yScaleID: 'y',
     xMin: 'January',
@@ -101,25 +101,25 @@ To configure the annotations plugin, you can simply add new config options to yo
     xMax: 'February',
     yMax: 26,
 
-    // Line color
+    // Line color, default is 'options.color'.
     borderColor: 'red',
 
-    // Line width
+    // Line width, default is 2.
     borderWidth: 2,
 
-    // Line dash
+    // Line dash, default is [].
     // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash
     borderDash: [2, 2],
 
-    // Line Dash Offset
+    // Line Dash Offset, default is 0.
     // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset
     borderDashOffset: 5,
 
     label: {
-        // Background color of label, default below
+        // Background color of label, default is 'rgba(0,0,0,0.8)'.
         backgroundColor: 'rgba(0,0,0,0.8)',
 
-        // optional drawTime to control labels' layering; defaults to this element's drawTime
+        // optional drawTime to control labels' layering; defaults to this element's drawTime.
         drawTime: 'afterDatasetsDraw',
 
         font: {
@@ -129,40 +129,40 @@ To configure the annotations plugin, you can simply add new config options to yo
             // Font size of text, inherits from global
             size: 12,
 
-            // Font style of text, default below
+            // Font style of text, default is 'bold'
             style: "bold",
         },
 
-        // Color of label text, default below
-        color: "#fff",
+        // Color of label text, default is '#fff'.
+        color: '#fff',
 
-        // Padding of label to add left/right, default below
+        // Padding of label to add left/right, default is 6.
         xPadding: 6,
 
-        // Padding of label to add top/bottom, default below
+        // Padding of label to add top/bottom, default is 6.
         yPadding: 6,
 
-        // Radius of label rectangle, default below
+        // Radius of label rectangle, default is 6.
         cornerRadius: 6,
 
-        // Anchor position of label on line, can be one of: 'start', 'center', 'end'. Default 'center'.
-        position: "center",
+        // Anchor position of label on line, can be one of: 'start', 'center', 'end', default is 'center'.
+        position: 'center',
 
         // Adjustment along x-axis (left-right) of label relative to above number (can be negative)
-        // Negative values move the label left, postitive right.
+        // Negative values move the label left, positive right, default is 0.
         xAdjust: 0,
 
         // Adjustment along y-axis (top-bottom) of label, in pixels. (can be negative)
-        // Negative values move the label up, positive down.
+        // Negative values move the label up, positive down, default is 0.
         yAdjust: 0,
 
-        // Whether the label is enabled and should be displayed
+        // Whether the label is enabled and should be displayed, default is false.
         enabled: true,
 
-        // Text to display in label - default is null. Provide an array to display values on a new line
+        // Text to display in label - default is null. Provide an array to display values on a new line.
         content: "Test label",
 
-        // Rotation of label, in degrees, or 'auto' to use the degrees of the line, default is 0
+        // Rotation of label, in degrees, or 'auto' to use the degrees of the line, default is 0.
         rotation: 90,
     },
 
@@ -184,7 +184,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 {
     type: 'box',
 
-    // If true, display the annotation, default is true
+    // If true, display the annotation, default is true.
     // A callback can also be used:
     //   display(context) {
     //     // context: {chart, element}
@@ -192,37 +192,37 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
     //   },
     display: true,
 
-    // optional drawTime to control layering, overrides global drawTime setting
+    // optional drawTime to control layering, overrides global drawTime setting.
     drawTime: 'beforeDatasetsDraw',
 
-    // ID of the X scale to bind onto
+    // ID of the X scale to bind onto, default is 'x'.
     xScaleID: 'x',
 
-    // ID of the Y scale to bind onto
+    // ID of the Y scale to bind onto, default is 'y'.
     yScaleID: 'y',
 
-    // Left edge of the box. in units along the x axis
+    // Left edge of the box. in units along the x axis.
     xMin: 25,
 
     // Right edge of the box
     xMax: 40,
 
-    // Top edge of the box in units along the y axis
+    // Top edge of the box in units along the y axis.
     yMax: 20,
 
-    // Bottom edge of the box
+    // Bottom edge of the box.
     yMin:  15,
 
-    // Stroke color
+    // Stroke color, default is 'options.color'.
     borderColor: 'red',
 
-    // Stroke width
+    // Stroke width, default is 1.
     borderWidth: 2,
 
-    // Fill color
+    // Fill color, default is 'options.color'.
     backgroundColor: 'green',
 
-    // Radius of box rectangle, default below
+    // Radius of box rectangle, default is 0.
     cornerRadius: 0,
 
     // Event hooks - context: {chart, element}
@@ -243,34 +243,42 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the el
 {
     type: 'ellipse',
 
-    // optional drawTime to control layering, overrides global drawTime setting
+    // If true, display the annotation, default is true.
+    // A callback can also be used:
+    //   display(context) {
+    //     // context: {chart, element}
+    //     return true;
+    //   },
+    display: true,
+    
+    // optional drawTime to control layering, overrides global drawTime setting.
     drawTime: 'beforeDatasetsDraw',
 
-    // ID of the X scale to bind onto
+    // ID of the X scale to bind onto, default is 'x'.
     xScaleID: 'x',
 
-    // ID of the Y scale to bind onto
+    // ID of the Y scale to bind onto, default is 'y'.
     yScaleID: 'y',
 
-    // Left edge of the box. in units along the x axis
+    // Left edge of the box in units along the x axis.
     xMin: 25,
 
-    // Right edge of the box
+    // Right edge of the box.
     xMax: 40,
 
-    // Top edge of the box in units along the y axis
+    // Top edge of the box in units along the y axis.
     yMax: 20,
 
-    // Bottom edge of the box
+    // Bottom edge of the box.
     yMin:  15,
 
-    // Stroke color
+    // Stroke color, default is 'options.color'.
     borderColor: 'red',
 
-    // Stroke width
+    // Stroke width, default is 1.
     borderWidth: 2,
 
-    // Fill color
+    // Fill color, default is 'options.color'.
     backgroundColor: 'green',
 
     // Event hooks - context: {chart, element}
@@ -290,33 +298,41 @@ The 2 coordinates, xValue, yValue are optional. If not specified, the point is e
 ```javascript
 {
     type: 'point',
+    
+    // If true, display the annotation, default is true.
+    // A callback can also be used:
+    //   display(context) {
+    //     // context: {chart, element}
+    //     return true;
+    //   },
+    display: true,
 
-    // optional drawTime to control layering, overrides global drawTime setting
+    // optional drawTime to control layering, overrides global drawTime setting.
     drawTime: 'beforeDatasetsDraw',
 
-    // ID of the X scale to bind onto
+    // ID of the X scale to bind onto, default is 'x'.
     xScaleID: 'x',
 
-    // ID of the Y scale to bind onto
+    // ID of the Y scale to bind onto, default is 'y'.
     yScaleID: 'y',
 
-    // Center point X value of the point. in units along the x axis
+    // Center point X value of the point. in units along the x axis.
     xValue: 25,
 
-    // Center point Y value of the point. in units along the y axis
+    // Center point Y value of the point. in units along the y axis.
     yValue: 20,
 
-    // Stroke color
+    // Stroke color, default is 'options.color'.
     borderColor: 'red',
 
-    // Stroke width
+    // Stroke width, default is 1.
     borderWidth: 2,
 
-    // Radius of the point, default below
+    // Radius of the point, default is '10'.
     radius: 10,
 
     // Fill color
-    backgroundColor: 'green',
+    backgroundColor: 'green', default is 'options.color'.
 
     // Event hooks - context: {chart, element}
     enter: function(context) {},

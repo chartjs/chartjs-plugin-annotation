@@ -74,6 +74,8 @@ BoxAnnotation.id = 'boxAnnotation';
 
 BoxAnnotation.defaults = {
   display: true,
+  xScaleID: 'x',
+  yScaleID: 'y',
   borderWidth: 1,
   cornerRadius: 0
 };

@@ -135,10 +135,10 @@ function updateElements(chart, state, options, mode) {
     if (!el || !(el instanceof elType)) {
       el = elements[i] = new elType();
     }
-    const properties = el.resolveElementProperties(chart, annotation);
-    properties.options = merge(Object.create(null), [elType.defaults, annotation]);
+    const mergedOptions = merge(Object.create(null), [chart.options.elements[elType.id], annotation]);
+    const properties = el.resolveElementProperties(chart, mergedOptions);
+    properties.options = mergedOptions;
     animations.update(el, properties);
-
     el._display = isAnnotationVisible(chart, annotation, el);
   }
 }
