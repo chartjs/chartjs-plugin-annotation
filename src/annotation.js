@@ -38,7 +38,8 @@ export default {
 
   afterDataLimits(chart, args, options) {
     if (args.scale.type !== 'category') {
-      adjustScaleRange(chart, args.scale, options);
+      const state = chartStates.get(chart);
+      adjustScaleRange(args.scale, state, options);
     }
   },
 
@@ -53,6 +54,8 @@ export default {
         }
       });
       options.annotations = array;
+      const state = chartStates.get(chart);
+      createElements(chart, state, options);
     }
   },
 
@@ -115,16 +118,7 @@ function resolveAnimations(chart, animOpts, mode) {
   return new Animations(chart, animOpts);
 }
 
-function isAnnotationVisible(chart, options, element) {
-  const display = typeof options.display === 'function' ? callCallback(options.display, [{chart, element}]) : valueOrDefault(options.display, true);
-  return !!display;
-}
-
-function updateElements(chart, state, options, mode) {
-  const chartAnims = chart.options.animation;
-  const animOpts = chartAnims && merge({}, [chartAnims, options.animation]);
-  const animations = resolveAnimations(chart, animOpts, mode);
-
+function createElements(chart, state, options) {
   const annotations = options.annotations || [];
   const elements = resyncElements(state.elements, annotations);
 
@@ -135,12 +129,23 @@ function updateElements(chart, state, options, mode) {
     if (!el || !(el instanceof elType)) {
       el = elements[i] = new elType();
     }
-    const mergedOptions = merge(Object.create(null), [chart.options.elements[elType.id], annotation]);
-    const properties = el.resolveElementProperties(chart, mergedOptions);
-    properties.options = mergedOptions;
-    animations.update(el, properties);
-    el._display = isAnnotationVisible(chart, annotation, el);
+    el.options = merge(Object.create(null), [chart.options.elements[elType.id], annotation]);
+    const display = typeof el.options.display === 'function' ? callCallback(el.options.display, [{chart, element: el}]) : valueOrDefault(el.options.display, true);
+    el._display = !!display;
   }
+}
+
+function updateElements(chart, state, options, mode) {
+  const chartAnims = chart.options.animation;
+  const animOpts = chartAnims && merge({}, [chartAnims, options.animation]);
+  const animations = resolveAnimations(chart, animOpts, mode);
+
+  const elements = chartStates.get(chart).elements;
+  elements.forEach(el => {
+    const properties = el.resolveElementProperties(chart, el.options);
+    properties.options = el.options;
+    animations.update(el, properties);
+  });
 }
 
 function resyncElements(elements, annotations) {
@@ -175,15 +180,15 @@ function draw(chart, options, caller) {
   });
 }
 
-function getAnnotationOptions(chart, options) {
-  if (options.annotations && options.annotations.length) {
-    return options.annotations.filter(annotation => isAnnotationVisible(chart, annotation));
+function getAnnotationOptions(elements, options) {
+  if (elements && elements.length) {
+    return elements.filter(el => el._display).map(el => el.options);
   }
-  return [];
+  return options.annotations || [];
 }
 
-function adjustScaleRange(chart, scale, options) {
-  const annotations = getAnnotationOptions(chart, options);
+function adjustScaleRange(scale, state, options) {
+  const annotations = getAnnotationOptions(state.elements, options);
   const range = getScaleLimits(scale, annotations);
   let changed = false;
   if (isFinite(range.min) &&
