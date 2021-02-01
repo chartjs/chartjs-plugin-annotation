@@ -53,8 +53,8 @@ export default {
       });
       state.options.annotations = array;
     } else if (isArray(state.options.annotations)) {
-      for (let i = 0; i < state.options.annotations.length; i++) {
-        state.options.annotations.length[i] = resolveAnnotationOptions(chart, state.options.annotations.length[i]);
+      for (var i = 0; i < state.options.annotations.length; i++) {
+        state.options.annotations[i] = resolveAnnotationOptions(chart, state.options.annotations[i]);
       }
     }
   },
