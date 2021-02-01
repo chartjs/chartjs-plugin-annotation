@@ -169,21 +169,26 @@ LineAnnotation.resolveOptions = function(chart, options) {
     borderWidth: resolveOption(options.borderWidth, elDefaults.borderWidth, context),
     borderDash: resolveOption(options.borderDash, elDefaults.borderDash, context),
     borderDashOffset: resolveOption(options.borderDashOffset, elDefaults.borderDashOffset, context),
-    label: {
-      enabled: resolveOption(options.label.enabled, elDefaults.label.enabled, context),
-      content: resolveOption(options.label.content, elDefaults.label.content, context),
-      backgroundColor: resolveOption(options.label.backgroundColor, elDefaults.label.backgroundColor, context),
-      font: resolveOption(options.label.font, elDefaults.label.font, context),
-      color: resolveOption(options.label.color, elDefaults.label.color, context),
-      xPadding: Math.max(resolveOption(options.label.xPadding, elDefaults.label.xPadding, context), 0),
-      yPadding: Math.max(resolveOption(options.label.yPadding, elDefaults.label.yPadding, context), 0),
-      rotation: resolveOption(options.label.rotation, elDefaults.label.rotation, context),
-      cornerRadius: resolveOption(options.label.cornerRadius, elDefaults.label.cornerRadius, context),
-      position: resolveOption(options.label.position, elDefaults.label.position, context),
-      xAdjust: resolveOption(options.label.xAdjust, elDefaults.label.xAdjust, context),
-      yAdjust: resolveOption(options.label.yAdjust, elDefaults.label.yAdjust, context),
-    }
+    label: LineAnnotation._resolveLabelOptions(options.label, context),
   }, options);
+};
+
+LineAnnotation._resolveLabelOptions = function(options, context) {
+  const elDefaults = LineAnnotation.defaults.label;
+  return {
+    enabled: resolveOption(options.enabled, elDefaults.enabled, context),
+    content: resolveOption(options.content, elDefaults.content, context),
+    backgroundColor: resolveOption(options.backgroundColor, elDefaults.backgroundColor, context),
+    font: resolveOption(options.font, elDefaults.font, context),
+    color: resolveOption(options.color, elDefaults.color, context),
+    xPadding: Math.max(resolveOption(options.xPadding, elDefaults.xPadding, context), 0),
+    yPadding: Math.max(resolveOption(options.yPadding, elDefaults.yPadding, context), 0),
+    rotation: resolveOption(options.rotation, elDefaults.rotation, context),
+    cornerRadius: resolveOption(options.cornerRadius, elDefaults.cornerRadius, context),
+    position: resolveOption(options.position, elDefaults.position, context),
+    xAdjust: resolveOption(options.xAdjust, elDefaults.xAdjust, context),
+    yAdjust: resolveOption(options.yAdjust, elDefaults.yAdjust, context),
+  };
 };
 
 function calculateAutoRotation(line) {
