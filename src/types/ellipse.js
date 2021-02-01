@@ -1,7 +1,4 @@
 import BoxAnnotation from './box';
-import {defaults} from 'chart.js';
-import {mergeIf} from 'chart.js/helpers';
-import {resolveOption} from '../helpers';
 
 export default class EllipseAnnotation extends BoxAnnotation {
 
@@ -42,23 +39,6 @@ EllipseAnnotation.defaults = {
 EllipseAnnotation.defaultRoutes = {
   borderColor: 'color',
   backgroundColor: 'color'
-};
-
-EllipseAnnotation.resolveOptions = function(chart, options) {
-  const context = {chart, options};
-  const elDefaults = EllipseAnnotation.defaults;
-  return mergeIf({
-    display: resolveOption(options.display, elDefaults.display, context),
-    xScaleID: resolveOption(options.xScaleID, elDefaults.xScaleID, context),
-    xMin: resolveOption(options.xMin, elDefaults.xMin, context),
-    xMax: resolveOption(options.xMax, elDefaults.xMax, context),
-    yScaleID: resolveOption(options.yScaleID, elDefaults.yScaleID, context),
-    yMin: resolveOption(options.yMin, elDefaults.yMin, context),
-    yMax: resolveOption(options.yMax, elDefaults.yMax, context),
-    backgroundColor: resolveOption(options.backgroundColor, defaults.color, context),
-    borderColor: resolveOption(options.borderColor, defaults.color, context),
-    borderWidth: resolveOption(options.borderWidth, elDefaults.borderWidth, context),
-  }, options);
 };
 
 function pointInEllipse(p, ellipse) {

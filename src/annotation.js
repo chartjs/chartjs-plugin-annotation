@@ -1,5 +1,6 @@
 import {Animations, Chart} from 'chart.js';
 import {clipArea, unclipArea, isFinite, clone, merge, valueOrDefault, isObject, isArray} from 'chart.js/helpers';
+import {resolveOption} from './helpers';
 import {handleEvent, updateListeners} from './events';
 import BoxAnnotation from './types/box';
 import LineAnnotation from './types/line';
@@ -37,13 +38,6 @@ export default {
     });
   },
 
-  afterDataLimits(chart, args) {
-    if (args.scale.type !== 'category') {
-      const state = chartStates.get(chart);
-      adjustScaleRange(args.scale, state.options);
-    }
-  },
-
   beforeUpdate(chart, args, options) {
     const state = chartStates.get(chart);
     state.options = clone(options);
@@ -62,6 +56,13 @@ export default {
       for (let i = 0; i < state.options.annotations.length; i++) {
         state.options.annotations.length[i] = resolveAnnotationOptions(chart, state.options.annotations.length[i]);
       }
+    }
+  },
+
+  afterDataLimits(chart, args) {
+    if (args.scale.type !== 'category') {
+      const state = chartStates.get(chart);
+      adjustScaleRange(args.scale, state.options);
     }
   },
 
@@ -123,8 +124,9 @@ const directUpdater = {
 
 function resolveAnnotationOptions(chart, options) {
   const elType = annotationTypes[options.type] || annotationTypes.line;
-  const mergedOptions = merge(Object.create(null), [chart.options.elements[elType.id], options]);
-  return elType.resolveOptions(chart, mergedOptions);
+  const elOptions = merge(Object.create(null), [chart.options.elements[elType.id], options]);
+  elOptions.display = !!resolveOption(elOptions.display, true, {chart, options: elOptions});
+  return elOptions;
 }
 
 function resolveAnimations(chart, animOpts, mode) {

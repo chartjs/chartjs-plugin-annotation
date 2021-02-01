@@ -1,6 +1,5 @@
-import {Element, defaults} from 'chart.js';
-import {mergeIf} from 'chart.js/helpers';
-import {scaleValue, roundedRect, resolveOption} from '../helpers';
+import {Element} from 'chart.js';
+import {scaleValue, roundedRect} from '../helpers';
 
 export default class BoxAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
@@ -84,22 +83,4 @@ BoxAnnotation.defaults = {
 BoxAnnotation.defaultRoutes = {
   borderColor: 'color',
   backgroundColor: 'color'
-};
-
-BoxAnnotation.resolveOptions = function(chart, options) {
-  const context = {chart, options};
-  const elDefaults = BoxAnnotation.defaults;
-  return mergeIf({
-    display: resolveOption(options.display, elDefaults.display, context),
-    xScaleID: resolveOption(options.xScaleID, elDefaults.xScaleID, context),
-    xMin: resolveOption(options.xMin, elDefaults.xMin, context),
-    xMax: resolveOption(options.xMax, elDefaults.xMax, context),
-    yScaleID: resolveOption(options.yScaleID, elDefaults.yScaleID, context),
-    yMin: resolveOption(options.yMin, elDefaults.yMin, context),
-    yMax: resolveOption(options.yMax, elDefaults.yMax, context),
-    backgroundColor: resolveOption(options.backgroundColor, defaults.color, context),
-    borderColor: resolveOption(options.borderColor, defaults.color, context),
-    borderWidth: resolveOption(options.borderWidth, elDefaults.borderWidth, context),
-    cornerRadius: resolveOption(options.cornerRadius, elDefaults.cornerRadius, context),
-  }, options);
 };

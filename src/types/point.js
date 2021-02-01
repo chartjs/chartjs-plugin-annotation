@@ -1,6 +1,5 @@
-import {Element, defaults} from 'chart.js';
-import {mergeIf} from 'chart.js/helpers';
-import {scaleValue, resolveOption} from '../helpers';
+import {Element} from 'chart.js';
+import {scaleValue} from '../helpers';
 
 export default class PointAnnotation extends Element {
 
@@ -75,21 +74,4 @@ PointAnnotation.defaults = {
 PointAnnotation.defaultRoutes = {
   borderColor: 'color',
   backgroundColor: 'color'
-};
-
-
-PointAnnotation.resolveOptions = function(chart, options) {
-  const context = {chart, options};
-  const elDefaults = PointAnnotation.defaults;
-  return mergeIf({
-    display: resolveOption(options.display, elDefaults.display, context),
-    xScaleID: resolveOption(options.xScaleID, elDefaults.xScaleID, context),
-    xValue: resolveOption(options.xValue, elDefaults.xValue, context),
-    yScaleID: resolveOption(options.yScaleID, elDefaults.yScaleID, context),
-    yValue: resolveOption(options.yValue, elDefaults.yValue, context),
-    backgroundColor: resolveOption(options.backgroundColor, defaults.color, context),
-    borderColor: resolveOption(options.borderColor, defaults.color, context),
-    borderWidth: resolveOption(options.borderWidth, elDefaults.borderWidth, context),
-    radius: resolveOption(options.radius, elDefaults.radius, context),
-  }, options);
 };
