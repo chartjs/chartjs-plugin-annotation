@@ -1,6 +1,6 @@
 import {Element, defaults} from 'chart.js';
-import {isArray, toFontString, toRadians} from 'chart.js/helpers';
-import {scaleValue, roundedRect, rotated} from '../helpers';
+import {isArray, toFontString, toRadians, mergeIf} from 'chart.js/helpers';
+import {scaleValue, roundedRect, rotated, resolveOption} from '../helpers';
 
 const PI = Math.PI;
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
@@ -151,6 +151,40 @@ LineAnnotation.defaultRoutes = {
   borderColor: 'color'
 };
 
+LineAnnotation.resolveOptions = function(chart, options) {
+  const context = {chart, options};
+  const elDefaults = LineAnnotation.defaults;
+  return mergeIf({
+    display: resolveOption(options.display, elDefaults.display, context),
+    scaleID: resolveOption(options.scaleID, elDefaults.scaleID, context),
+    value: resolveOption(options.value, elDefaults.value, context),
+    endValue: resolveOption(options.endValue, elDefaults.endValue, context),
+    xScaleID: resolveOption(options.xScaleID, elDefaults.xScaleID, context),
+    xMin: resolveOption(options.xMin, elDefaults.xMin, context),
+    xMax: resolveOption(options.xMax, elDefaults.xMax, context),
+    yScaleID: resolveOption(options.yScaleID, elDefaults.yScaleID, context),
+    yMin: resolveOption(options.yMin, elDefaults.yMin, context),
+    yMax: resolveOption(options.yMax, elDefaults.yMax, context),
+    borderColor: resolveOption(options.borderColor, defaults.color, context),
+    borderWidth: resolveOption(options.borderWidth, elDefaults.borderWidth, context),
+    borderDash: resolveOption(options.borderDash, elDefaults.borderDash, context),
+    borderDashOffset: resolveOption(options.borderDashOffset, elDefaults.borderDashOffset, context),
+    label: {
+      enabled: resolveOption(options.label.enabled, elDefaults.label.enabled, context),
+      content: resolveOption(options.label.content, elDefaults.label.content, context),
+      backgroundColor: resolveOption(options.label.backgroundColor, elDefaults.label.backgroundColor, context),
+      font: resolveOption(options.label.font, elDefaults.label.font, context),
+      color: resolveOption(options.label.color, elDefaults.label.color, context),
+      xPadding: Math.max(resolveOption(options.label.xPadding, elDefaults.label.xPadding, context), 0),
+      yPadding: Math.max(resolveOption(options.label.yPadding, elDefaults.label.yPadding, context), 0),
+      rotation: resolveOption(options.label.rotation, elDefaults.label.rotation, context),
+      cornerRadius: resolveOption(options.label.cornerRadius, elDefaults.label.cornerRadius, context),
+      position: resolveOption(options.label.position, elDefaults.label.position, context),
+      xAdjust: resolveOption(options.label.xAdjust, elDefaults.label.xAdjust, context),
+      yAdjust: resolveOption(options.label.yAdjust, elDefaults.label.yAdjust, context),
+    }
+  }, options);
+};
 
 function calculateAutoRotation(line) {
   const {x, y, x2, y2} = line;

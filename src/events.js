@@ -4,7 +4,8 @@ const clickHooks = ['click', 'dblclick'];
 const moveHooks = ['enter', 'leave'];
 const hooks = clickHooks.concat(moveHooks);
 
-export function updateListeners(chart, state, options) {
+export function updateListeners(chart, state) {
+  const options = state.options;
   const annotations = options.annotations || [];
   state.listened = false;
   state.moveListened = false;
@@ -42,7 +43,7 @@ export function updateListeners(chart, state, options) {
   }
 }
 
-export function handleEvent(chart, state, event, options) {
+export function handleEvent(chart, state, event) {
   if (state.listened) {
     switch (event.type) {
     case 'mousemove':
@@ -50,7 +51,7 @@ export function handleEvent(chart, state, event, options) {
       handleMoveEvents(chart, state, event);
       break;
     case 'click':
-      handleClickEvents(chart, state, event, options);
+      handleClickEvents(chart, state, event);
       break;
     default:
     }
@@ -83,7 +84,8 @@ function dispatchMoveEvents(chart, state, previous, element) {
   }
 }
 
-function handleClickEvents(chart, state, event, options) {
+function handleClickEvents(chart, state, event) {
+  const options = state.options;
   const listeners = state.listeners;
   const element = getNearestItem(state.elements, event);
   if (element) {
@@ -116,7 +118,7 @@ function getNearestItem(elements, position) {
   let minDistance = Number.POSITIVE_INFINITY;
 
   return elements
-    .filter((element) => element._display && element.inRange(position.x, position.y))
+    .filter((element) => element.options && element.options.display && element.inRange(position.x, position.y))
     .reduce((nearestItems, element) => {
       const center = element.getCenterPoint();
       const distance = distanceBetweenPoints(position, center);

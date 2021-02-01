@@ -125,8 +125,8 @@ describe('Point annotation', function() {
                     type: 'point',
                     borderWidth: 5,
                     display(context) {
-                      if (context.element) {
-                        context.chart.annotationRadius1 = context.element.options.radius;
+                      if (context.options) {
+                        context.chart.annotationRadius1 = context.options.radius;
                       }
                       return true;
                     },
@@ -139,8 +139,8 @@ describe('Point annotation', function() {
                     yValue: 8,
                     borderWidth: 0,
                     display(context) {
-                      if (context.element) {
-                        context.chart.annotationRadius2 = context.element.options.radius;
+                      if (context.options) {
+                        context.chart.annotationRadius2 = context.options.radius;
                       }
                       return true;
                     },

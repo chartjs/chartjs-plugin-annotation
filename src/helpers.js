@@ -1,4 +1,4 @@
-import {isFinite} from 'chart.js/helpers';
+import {isFinite, resolve} from 'chart.js/helpers';
 
 const PI = Math.PI;
 const HALF_PI = PI / 2;
@@ -6,6 +6,10 @@ const HALF_PI = PI / 2;
 export function scaleValue(scale, value, fallback) {
   value = typeof value === 'number' ? value : scale.parse(value);
   return isFinite(value) ? scale.getPixelForValue(value) : fallback;
+}
+
+export function resolveOption(option, fallback, context) {
+  return resolve([option, option, fallback], context);
 }
 
 /**
