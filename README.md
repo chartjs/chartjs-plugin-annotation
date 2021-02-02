@@ -76,7 +76,7 @@ To configure the annotations plugin, you can simply add new config options to yo
     // If true, display the annotation, default is true.
     // A callback can also be used:
     //   display(context) {
-    //     // context: {chart, element}
+    //     // context: {chart, options}
     //     return true;
     //   },
     display: true,
@@ -187,7 +187,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
     // If true, display the annotation, default is true.
     // A callback can also be used:
     //   display(context) {
-    //     // context: {chart, element}
+    //     // context: {chart, options}
     //     return true;
     //   },
     display: true,
@@ -246,7 +246,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the el
     // If true, display the annotation, default is true.
     // A callback can also be used:
     //   display(context) {
-    //     // context: {chart, element}
+    //     // context: {chart, options}
     //     return true;
     //   },
     display: true,
@@ -302,7 +302,7 @@ The 2 coordinates, xValue, yValue are optional. If not specified, the point is e
     // If true, display the annotation, default is true.
     // A callback can also be used:
     //   display(context) {
-    //     // context: {chart, element}
+    //     // context: {chart, options}
     //     return true;
     //   },
     display: true,

@@ -151,7 +151,6 @@ LineAnnotation.defaultRoutes = {
   borderColor: 'color'
 };
 
-
 function calculateAutoRotation(line) {
   const {x, y, x2, y2} = line;
   const rotation = Math.atan2(y2 - y, x2 - x);
