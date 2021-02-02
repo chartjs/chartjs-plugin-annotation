@@ -34,11 +34,15 @@ EllipseAnnotation.id = 'ellipseAnnotation';
 
 EllipseAnnotation.defaults = {
   display: true,
-  xScaleID: 'x',
-  yScaleID: 'y',
   borderDash: [],
   borderDashOffset: 0,
   borderWidth: 1,
+  xScaleID: 'x',
+  xMin: undefined,
+  xMax: undefined,
+  yScaleID: 'y',
+  yMin: undefined,
+  yMax: undefined
 };
 
 EllipseAnnotation.defaultRoutes = {

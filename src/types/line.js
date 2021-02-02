@@ -1,4 +1,4 @@
-import {Element, defaults} from 'chart.js';
+import {Element} from 'chart.js';
 import {isArray, toFontString, toRadians} from 'chart.js/helpers';
 import {scaleValue, roundedRect, rotated} from '../helpers';
 
@@ -59,7 +59,6 @@ export default class LineAnnotation extends Element {
 
     ctx.lineWidth = options.borderWidth;
     ctx.strokeStyle = options.borderColor;
-
     ctx.setLineDash(options.borderDash);
     ctx.lineDashOffset = options.borderDashOffset;
 
@@ -129,8 +128,6 @@ LineAnnotation.defaults = {
   label: {
     backgroundColor: 'rgba(0,0,0,0.8)',
     font: {
-      family: defaults.font.family,
-      size: defaults.font.size,
       style: 'bold',
     },
     color: '#fff',
@@ -143,7 +140,16 @@ LineAnnotation.defaults = {
     yAdjust: 0,
     enabled: false,
     content: null
-  }
+  },
+  value: undefined,
+  endValue: undefined,
+  scaleID: undefined,
+  xScaleID: 'x',
+  xMin: undefined,
+  xMax: undefined,
+  yScaleID: 'y',
+  yMin: undefined,
+  yMax: undefined
 };
 
 LineAnnotation.defaultRoutes = {
