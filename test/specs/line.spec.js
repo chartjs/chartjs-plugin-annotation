@@ -52,6 +52,15 @@ describe('Line annotation', function() {
 
         var chart = acquireChart(config);
         chart.update();
+
+        chart.options.plugins.annotation.annotations.image.label.resizeRatio = 0.5;
+        chart.update();
+        chart.options.plugins.annotation.annotations.image.label.resizeRatio = 1.5;
+        chart.update();
+        chart.options.plugins.annotation.annotations.image.label.resizeRatio = -1;
+        chart.update();
+        chart.options.plugins.annotation.annotations.image.label.resizeRatio = 'wrong Options';
+        chart.update();
       }
       expect(createAndUpdateChart).not.toThrow();
     });
