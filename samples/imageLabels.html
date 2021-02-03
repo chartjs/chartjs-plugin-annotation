@@ -160,7 +160,7 @@
 										console.log('Annotation', context);
 									}
 								},
-								chartjs: {
+								chartjsPercentage: {
 									type: 'line',
 									scaleID: 'x',
 									value: 25,
@@ -169,12 +169,31 @@
 									label: {
 										backgroundColor: 'rgba(0, 0, 0, 0.4)',
 										rotation: -45,
-										xPadding: 0,
-										yPadding: 0,
+										position: 'start',
+										content: chartjs,
+										enabled: true,
+										width: '51.10%',
+										height: '52.8%'
+									},
+									click(context) {
+										// The annotation is is bound to the `this` variable
+										console.log('Annotation', context);
+									}
+								},
+								chartjsPixel: {
+									type: 'line',
+									scaleID: 'x',
+									value: -30,
+									borderColor: 'rgba(0, 0, 0, 0.2)',
+									borderWidth: 5,
+									label: {
+										backgroundColor: 'rgba(0, 0, 0, 0.4)',
+										rotation: -45,
 										position: 'end',
 										content: chartjs,
 										enabled: true,
-										resizeRatio: 0.5
+										width: 150,
+										height: 100
 									},
 									click(context) {
 										// The annotation is is bound to the `this` variable
