@@ -59,9 +59,7 @@ export default class LineAnnotation extends Element {
     ctx.lineWidth = options.borderWidth;
     ctx.strokeStyle = options.borderColor;
 
-    if (ctx.setLineDash) {
-      ctx.setLineDash(options.borderDash);
-    }
+    ctx.setLineDash(options.borderDash);
     ctx.lineDashOffset = options.borderDashOffset;
 
     // Draw

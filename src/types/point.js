@@ -29,9 +29,7 @@ export default class PointAnnotation extends Element {
     ctx.strokeStyle = options.borderColor;
     ctx.fillStyle = options.backgroundColor;
 
-    if (ctx.setLineDash) {
-      ctx.setLineDash(options.borderDash);
-    }
+    ctx.setLineDash(options.borderDash);
     ctx.lineDashOffset = options.borderDashOffset;
 
     ctx.beginPath();

@@ -18,9 +18,7 @@ export default class EllipseAnnotation extends BoxAnnotation {
     ctx.strokeStyle = options.borderColor;
     ctx.fillStyle = options.backgroundColor;
 
-    if (ctx.setLineDash) {
-      ctx.setLineDash(options.borderDash);
-    }
+    ctx.setLineDash(options.borderDash);
     ctx.lineDashOffset = options.borderDashOffset;
 
     ctx.ellipse(center.x, center.y, height / 2, width / 2, Math.PI / 2, 0, 2 * Math.PI);
