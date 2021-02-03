@@ -189,9 +189,8 @@ function drawLabel(ctx, line, chartArea) {
       textYPosition += label.font.size + label.yPadding;
     }
   } else if (label.content instanceof Image) {
-    const x  = -(width / 2) + label.xPadding;
-    const y  = -(height / 2) + label.yPadding;
-    console.log(width, height, label.content.width, label.content.height);
+    const x = -(width / 2) + label.xPadding;
+    const y = -(height / 2) + label.yPadding;
     ctx.drawImage(label.content, x, y, width - (2 * label.xPadding), height - (2 * label.yPadding));
   } else {
     ctx.textBaseline = 'middle';
@@ -204,9 +203,9 @@ function measureLabel(ctx, label) {
   const content = label.content;
   if (content instanceof Image) {
     return {
-  	  width: content.width * Math.max(label.resizeRatio, 0) + 2 * label.xPadding,
+      width: content.width * Math.max(label.resizeRatio, 0) + 2 * label.xPadding,
       height: content.height * Math.max(label.resizeRatio, 0) + 2 * label.yPadding
-    }
+    };
   }
   const lines = isArray(content) ? content : [content];
   const count = lines.length;

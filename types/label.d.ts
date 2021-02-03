@@ -53,7 +53,12 @@ export interface LabelOptions {
 	/**
 	 * Text to display in label. Provide an array to display multiple lines
 	 */
-	content: string | string[] | null,
+	content: string | string[] | HTMLImageElement | null,
+	
+	/**
+	 * The ratio to apply to the image configured as label content
+	 */
+	resizeRatio: number,
 
 	/**
 	 * Rotation of label, in degrees, or 'auto' to use the degrees of the line, default is 0
