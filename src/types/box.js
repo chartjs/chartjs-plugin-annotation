@@ -28,6 +28,11 @@ export default class BoxAnnotation extends Element {
     ctx.strokeStyle = options.borderColor;
     ctx.fillStyle = options.backgroundColor;
 
+    if (ctx.setLineDash) {
+      ctx.setLineDash(options.borderDash);
+    }
+    ctx.lineDashOffset = options.borderDashOffset;
+
     roundedRect(ctx, x, y, width, height, options.cornerRadius);
     ctx.fill();
     ctx.stroke();
@@ -76,6 +81,8 @@ BoxAnnotation.defaults = {
   display: true,
   xScaleID: 'x',
   yScaleID: 'y',
+  borderDash: [],
+  borderDashOffset: 0,
   borderWidth: 1,
   cornerRadius: 0
 };

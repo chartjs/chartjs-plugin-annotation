@@ -218,6 +218,14 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 
     // Stroke width, default is 1.
     borderWidth: 2,
+    
+    // Border line dash, default is [].
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash
+    borderDash: [2, 2],
+
+    // Border line Dash Offset, default is 0.
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset
+    borderDashOffset: 5,
 
     // Fill color, default is 'options.color'.
     backgroundColor: 'green',
@@ -278,6 +286,14 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the el
     // Stroke width, default is 1.
     borderWidth: 2,
 
+    // Border line dash, default is [].
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash
+    borderDash: [2, 2],
+
+    // Border line Dash Offset, default is 0.
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset
+    borderDashOffset: 5,
+    
     // Fill color, default is 'options.color'.
     backgroundColor: 'green',
 
@@ -328,6 +344,14 @@ The 2 coordinates, xValue, yValue are optional. If not specified, the point is e
     // Stroke width, default is 1.
     borderWidth: 2,
 
+    // Border line dash, default is [].
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash
+    borderDash: [2, 2],
+
+    // Border line Dash Offset, default is 0.
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset
+    borderDashOffset: 5,
+    
     // Radius of the point, default is '10'.
     radius: 10,
 
