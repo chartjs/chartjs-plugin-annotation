@@ -162,9 +162,15 @@ To configure the annotations plugin, you can simply add new config options to yo
         // Content to display in label - default is null. It could be a text, an array of text or an image. Provide an array to display texts on a new line.
         content: "Test label",
         
-        // The ratio to apply to the size of the image, configured as content, default is 1 (size maintained as is).
+        // Overrides the width of the image. Could be set in pixel by a number, or in percentage of current width of image by a string, default is undefined.
+        // If undefined, uses the width of the image.
         // It is used only when the content is an image.
-        resizeRatio: 0.5,
+        width: '50%',
+
+        // Overrides the height of the image. Could be set in pixel by a number, or in percentage of current height of image by a string, default is undefined.
+        // If undefined, uses the height of the image.
+        // It is used only when the content is an image.
+        height: 200,
 
         // Rotation of label, in degrees, or 'auto' to use the degrees of the line, default is 0.
         rotation: 90,

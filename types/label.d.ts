@@ -56,9 +56,16 @@ export interface LabelOptions {
 	content: string | string[] | HTMLImageElement | null,
 	
 	/**
-	 * The ratio to apply to the image configured as label content
+	 * Overrides the width of the image. Could be set in pixel by a number, 
+	 * or in percentage of current width of image by a string
 	 */
-	resizeRatio: number,
+	width: number | string,
+
+	/**
+	 * Overrides the height of the image. Could be set in pixel by a number, 
+	 * or in percentage of current height of image by a string
+	 */
+	height: number | string,
 
 	/**
 	 * Rotation of label, in degrees, or 'auto' to use the degrees of the line, default is 0
