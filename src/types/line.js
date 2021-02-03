@@ -197,7 +197,7 @@ function drawLabel(ctx, line, chartArea) {
   }
 }
 
-function getSize(size, value) {
+function getImageSize(size, value) {
   if (typeof value === 'number') {
     return value;
   } else if (typeof value === 'string') {
@@ -214,8 +214,8 @@ function measureLabel(ctx, label) {
   const content = label.content;
   if (content instanceof Image) {
     return {
-      width: getSize(content.width, label.width) + 2 * label.xPadding,
-      height: getSize(content.height, label.height) + 2 * label.yPadding
+      width: getImageSize(content.width, label.width) + 2 * label.xPadding,
+      height: getImageSize(content.height, label.height) + 2 * label.yPadding
     };
   }
   const lines = isArray(content) ? content : [content];
