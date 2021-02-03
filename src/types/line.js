@@ -198,7 +198,12 @@ function drawLabel(ctx, line, chartArea) {
 }
 
 function getImageSize(size, value) {
-  return typeof value === 'number' ? value : typeof value === 'string' ? toPercent(value) * size : size;
+  if (typeof value === 'number') {
+    return value;
+  } else if (typeof value === 'string') {
+    return toPercent(value) * size;
+  }
+  return size;
 }
 
 const widthCache = new Map();
