@@ -6,7 +6,7 @@ const PI = Math.PI;
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
-const percentageRegex = RegExp('(\\d+(\\.\\d+)?|\\.\\d+)?%');
+const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
 
 export default class LineAnnotation extends Element {
   intersects(x, y, epsilon) {
@@ -198,15 +198,7 @@ function drawLabel(ctx, line, chartArea) {
 }
 
 function getImageSize(size, value) {
-  if (typeof value === 'number') {
-    return value;
-  } else if (typeof value === 'string') {
-    const array = percentageRegex.exec(value);
-    if (array) {
-      return +array[1] / 100 * size;
-    }
-  }
-  return size;
+  return typeof value === 'number' ? value : typeof value === 'string' ? toPercent(value) * size : size;
 }
 
 const widthCache = new Map();
