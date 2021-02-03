@@ -34,9 +34,6 @@
 		'<div xmlns="http://www.w3.org/1999/xhtml" style="color: white;">Here is a <strong style="color: black;">HTML</strong> text, used as image, which can be styled as <em style="font-size: 16px;">YOU</em> like!</div>' +
 		'</foreignObject></svg>';
 
-		const github = new Image();
-		github.src = './img/GitHub-Mark-Light-32px.png';
-
 		const chartjs = new Image();
 		chartjs.src = './img/chartjs-logo.svg';
 		
@@ -163,31 +160,14 @@
 										console.log('Annotation', context);
 									}
 								},
-								github: {
-									type: 'line',
-									scaleID: 'x',
-									value: 25,
-									borderColor: 'black',
-									borderWidth: 5,
-									label: {
-										position: 'start',
-										content: github,
-										enabled: true,
-										resizeRatio: 1.5
-									},
-									click(context) {
-										// The annotation is is bound to the `this` variable
-										console.log('Annotation', context);
-									}
-								},
 								chartjs: {
 									type: 'line',
 									scaleID: 'x',
-									value: -30,
-									borderColor: 'rgb(255, 99, 132)',
+									value: 25,
+									borderColor: 'rgba(0, 0, 0, 0.2)',
 									borderWidth: 5,
 									label: {
-										backgroundColor: 'rgba(0, 0, 0, 0.2)',
+										backgroundColor: 'rgba(0, 0, 0, 0.4)',
 										rotation: -45,
 										xPadding: 0,
 										yPadding: 0,
