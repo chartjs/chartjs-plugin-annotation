@@ -143,7 +143,8 @@ LineAnnotation.defaults = {
     xAdjust: 0,
     yAdjust: 0,
     enabled: false,
-    content: null
+    content: null,
+    resizeRatio: 1
   }
 };
 
@@ -187,6 +188,11 @@ function drawLabel(ctx, line, chartArea) {
       );
       textYPosition += label.font.size + label.yPadding;
     }
+  } else if (label.content instanceof Image) {
+    const x  = -(width / 2) + label.xPadding;
+    const y  = -(height / 2) + label.yPadding;
+    console.log(width, height, label.content.width, label.content.height);
+    ctx.drawImage(label.content, x, y, width - (2 * label.xPadding), height - (2 * label.yPadding));
   } else {
     ctx.textBaseline = 'middle';
     ctx.fillText(label.content, 0, 0);
@@ -196,6 +202,12 @@ function drawLabel(ctx, line, chartArea) {
 const widthCache = new Map();
 function measureLabel(ctx, label) {
   const content = label.content;
+  if (content instanceof Image) {
+    return {
+  	  width: content.width * Math.max(label.resizeRatio, 0) + 2 * label.xPadding,
+      height: content.height * Math.max(label.resizeRatio, 0) + 2 * label.yPadding
+    }
+  }
   const lines = isArray(content) ? content : [content];
   const count = lines.length;
   let width = 0;
