@@ -3,7 +3,6 @@ import {AnnotationEvents, EventContext} from "./events";
 import { LabelOptions } from "./label";
 
 export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw';
-export type Mode = 'horizontal' | 'vertical';
 
 export interface AnnotationTypeRegistry {
 	line: LineAnnotationOptions
@@ -22,9 +21,10 @@ export interface CoreAnnotationOptions extends AnnotationEvents {
   display?: boolean | ((context: EventContext) => boolean);
 	borderColor?: Color,
 	borderWidth?: number,
+	borderDash?: [number, number],
+	borderDashOffset?: number,
 	drawTime?: DrawTime,
 	endValue?: any,
-	mode?: Mode,
 	scaleID?: string,
 	value?: any,
 	xScaleID?: string,
@@ -39,13 +39,12 @@ interface AnnotationCoordinates {
 }
 
 export interface LineAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
-	borderDash?: [number, number],
-	borderDashOffset?: number,
 	label?: LabelOptions
 }
 
 export interface BoxAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
 	backgroundColor?: Color,
+	cornerRadius?: number
 }
 
 interface EllipseAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
