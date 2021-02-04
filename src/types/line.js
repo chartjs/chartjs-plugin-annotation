@@ -6,6 +6,7 @@ const PI = Math.PI;
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
+const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
 
 export default class LineAnnotation extends Element {
   intersects(x, y, epsilon) {
@@ -163,7 +164,6 @@ function drawLabel(ctx, line, chartArea) {
   ctx.textAlign = 'center';
 
   const {width, height} = measureLabel(ctx, label);
-
   const rect = line.labelRect = calculateLabelPosition(line, width, height, chartArea);
 
   ctx.translate(rect.x, rect.y);
@@ -185,15 +185,34 @@ function drawLabel(ctx, line, chartArea) {
       );
       textYPosition += label.font.size + label.yPadding;
     }
+  } else if (label.content instanceof Image) {
+    const x = -(width / 2) + label.xPadding;
+    const y = -(height / 2) + label.yPadding;
+    ctx.drawImage(label.content, x, y, width - (2 * label.xPadding), height - (2 * label.yPadding));
   } else {
     ctx.textBaseline = 'middle';
     ctx.fillText(label.content, 0, 0);
   }
 }
 
+function getImageSize(size, value) {
+  if (typeof value === 'number') {
+    return value;
+  } else if (typeof value === 'string') {
+    return toPercent(value) * size;
+  }
+  return size;
+}
+
 const widthCache = new Map();
 function measureLabel(ctx, label) {
   const content = label.content;
+  if (content instanceof Image) {
+    return {
+      width: getImageSize(content.width, label.width) + 2 * label.xPadding,
+      height: getImageSize(content.height, label.height) + 2 * label.yPadding
+    };
+  }
   const lines = isArray(content) ? content : [content];
   const count = lines.length;
   let width = 0;
