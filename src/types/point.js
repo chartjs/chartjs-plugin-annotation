@@ -29,6 +29,9 @@ export default class PointAnnotation extends Element {
     ctx.strokeStyle = options.borderColor;
     ctx.fillStyle = options.backgroundColor;
 
+    ctx.setLineDash(options.borderDash);
+    ctx.lineDashOffset = options.borderDashOffset;
+
     ctx.beginPath();
     ctx.arc(x, y, width / 2, 0, Math.PI * 2);
     ctx.fill();
@@ -65,6 +68,8 @@ PointAnnotation.id = 'pointAnnotation';
 
 PointAnnotation.defaults = {
   display: true,
+  borderDash: [],
+  borderDashOffset: 0,
   borderWidth: 1,
   radius: 10,
   xScaleID: 'x',
