@@ -74,9 +74,18 @@ export default class LineAnnotation extends Element {
 
   drawLabel(ctx, chartArea) {
     if (this.labelIsVisible()) {
-      ctx.save();
-      drawLabel(ctx, this, chartArea);
-      ctx.restore();
+      const draw = () => {
+        ctx.save();
+        drawLabel(ctx, this, chartArea);
+        ctx.restore();
+      };
+      const content = this.options.label.content;
+      if (content instanceof Image && !content.complete) {
+        // if the image is still loading, draw when it completes.
+        content.onload = draw;
+      } else {
+        draw();
+      }
     }
   }
 
