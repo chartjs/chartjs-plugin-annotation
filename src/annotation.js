@@ -1,4 +1,4 @@
-import {Animations, Chart} from 'chart.js';
+import {Animations, Chart, defaults} from 'chart.js';
 import {clipArea, unclipArea, isFinite, valueOrDefault, isObject} from 'chart.js/helpers';
 import {handleEvent, hooks, updateListeners} from './events';
 import BoxAnnotation from './types/box';
@@ -14,6 +14,12 @@ const annotationTypes = {
   ellipse: EllipseAnnotation,
   point: PointAnnotation
 };
+
+Object.keys(annotationTypes).forEach(key => {
+  defaults.describe(`elements.${annotationTypes[key].id}`, {
+    _fallback: 'plugins.annotation'
+  });
+});
 
 export default {
   id: 'annotation',
@@ -99,13 +105,8 @@ export default {
   },
 
   defaults: {
-    _indexable: false,
-    _scriptable: (prop) => !hooks.includes(prop),
     drawTime: 'afterDatasetsDraw',
     dblClickSpeed: 350, // ms
-    annotations: {
-      _fallback: (prop, opts) => `elements.${annotationTypes[opts.type || 'line'].id}`,
-    },
     animation: {
       numbers: {
         properties: ['x', 'y', 'x2', 'y2', 'width', 'height'],
@@ -113,8 +114,17 @@ export default {
       },
     },
   },
-};
 
+  descriptors: {
+    _indexable: false,
+    _scriptable: (prop) => !hooks.includes(prop),
+    annotations: {
+      _fallback: (prop, opts) => `elements.${annotationTypes[opts.type || 'line'].id}`,
+    },
+  },
+
+  additionalOptionScopes: ['']
+};
 
 const directUpdater = {
   update: Object.assign
