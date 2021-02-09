@@ -134,7 +134,7 @@ To configure the annotations plugin, you can simply add new config options to yo
         },
 
         // Color of label text, default is '#fff'.
-        color: '#fff',
+        fontColor: '#fff',
 
         // Padding of label to add left/right, default is 6.
         xPadding: 6,
