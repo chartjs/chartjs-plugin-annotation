@@ -122,7 +122,7 @@ const directUpdater = {
 
 function resolveAnnotationOptions(chart, options) {
   const elType = annotationTypes[options.type] || annotationTypes.line;
-  const elOptions = merge(Object.create(null), [chart.options.elements[elType.id], options]);
+  const elOptions = merge(Object.create(null), [elType.defaults, chart.options.elements[elType.id], options]);
   elOptions.display = !!resolve([elOptions.display, true], {chart, options: elOptions});
   return elOptions;
 }
