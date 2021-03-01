@@ -119,6 +119,7 @@ export default {
     _indexable: false,
     _scriptable: (prop) => !hooks.includes(prop),
     annotations: {
+      _allKeys: false,
       _fallback: (prop, opts) => `elements.${annotationTypes[opts.type || 'line'].id}`,
     },
   },
