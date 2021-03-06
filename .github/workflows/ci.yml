@@ -22,6 +22,7 @@ jobs:
       uses: actions/setup-node@v1
     - run: |
         npm ci
+        npm run lint
         npm run build
         if [ "${{ runner.os }}" == "Windows" ]; then
           npm test
