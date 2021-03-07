@@ -150,7 +150,7 @@
 		};
 
 		function addLine() {
-			window.myScatter.options.plugins.annotation.annotations.push({
+			lines.push({
 				type: 'line',
 				scaleID: 'y',
 				value: randomScalingFactor(),
@@ -161,7 +161,7 @@
 		}
 
 		function removeLine() {
-			window.myScatter.options.plugins.annotation.annotations.pop();
+			lines.pop();
 			window.myScatter.update();
 		}
 	</script>

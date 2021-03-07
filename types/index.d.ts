@@ -1,8 +1,8 @@
-import { Plugin } from 'chart.js';
+import { Plugin, ChartType } from 'chart.js';
 import { AnnotationPluginOptions } from './options';
 
 declare module 'chart.js' {
-	interface PluginOptionsByType {
+	interface PluginOptionsByType<TType extends ChartType> {
 	  annotation: AnnotationPluginOptions;
 	}
 }

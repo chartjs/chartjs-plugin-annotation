@@ -1,4 +1,4 @@
-import { Color, DeepPartial } from "chart.js";
+import { Color } from "chart.js";
 import {AnnotationEvents, EventContext} from "./events";
 import { LabelOptions } from "./label";
 
@@ -13,9 +13,9 @@ export interface AnnotationTypeRegistry {
 
 export type AnnotationType = keyof AnnotationTypeRegistry;
 
-export type AnnotationOptions<TYPE extends AnnotationType = AnnotationType> = DeepPartial<
+export type AnnotationOptions<TYPE extends AnnotationType = AnnotationType> =
 	{ [key in TYPE]: { type: key } & AnnotationTypeRegistry[key] }[TYPE]
->;
+
 
 export interface CoreAnnotationOptions extends AnnotationEvents {
   display?: boolean | ((context: EventContext) => boolean);

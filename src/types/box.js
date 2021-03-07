@@ -77,12 +77,16 @@ BoxAnnotation.id = 'boxAnnotation';
 
 BoxAnnotation.defaults = {
   display: true,
-  xScaleID: 'x',
-  yScaleID: 'y',
   borderDash: [],
   borderDashOffset: 0,
   borderWidth: 1,
-  cornerRadius: 0
+  cornerRadius: 0,
+  xScaleID: 'x',
+  xMin: undefined,
+  xMax: undefined,
+  yScaleID: 'y',
+  yMin: undefined,
+  yMax: undefined
 };
 
 BoxAnnotation.defaultRoutes = {
