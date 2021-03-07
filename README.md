@@ -1,6 +1,9 @@
 # chartjs-plugin-annotation.js
 
-[![CDNJS version](https://img.shields.io/cdnjs/v/chartjs-plugin-annotation.svg)](https://cdnjs.com/libraries/chartjs-plugin-annotation)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/chartjs/chartjs-plugin-annotation/Node.js%20CI)](https://github.com/chartjs/chartjs-plugin-annotation/actions/workflows/ci.yml)
+[![release](https://img.shields.io/github/v/release/chartjs/chartjs-plugin-annotation?include_prereleases)](https://github.com/chartjs/chartjs-plugin-annotation/releases)
+[![npm (latest)](https://img.shields.io/npm/v/chartjs-plugin-annotation/latest)](https://www.npmjs.com/package/chartjs-plugin-annotation/v/latest)
+[![npm (next)](https://img.shields.io/npm/v/chartjs-plugin-annotation/next)](https://www.npmjs.com/package/chartjs-plugin-annotation/v/next)
 
 An annotation plugin for Chart.js >= 3.0.0
 
@@ -161,7 +164,7 @@ To configure the annotations plugin, you can simply add new config options to yo
 
         // Content to display in label - default is null. It could be a text, an array of text or an image. Provide an array to display texts on a new line.
         content: "Test label",
-        
+
         // Overrides the width of the image. Could be set in pixel by a number, or in percentage of current width of image by a string, default is undefined.
         // If undefined, uses the width of the image.
         // It is used only when the content is an image.
@@ -228,7 +231,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 
     // Stroke width, default is 1.
     borderWidth: 2,
-    
+
     // Border line dash, default is [].
     // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash
     borderDash: [2, 2],
@@ -268,7 +271,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the el
     //     return true;
     //   },
     display: true,
-    
+
     // optional drawTime to control layering, overrides global drawTime setting.
     drawTime: 'beforeDatasetsDraw',
 
@@ -303,7 +306,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the el
     // Border line Dash Offset, default is 0.
     // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset
     borderDashOffset: 5,
-    
+
     // Fill color, default is 'options.color'.
     backgroundColor: 'green',
 
@@ -324,7 +327,7 @@ The 2 coordinates, xValue, yValue are optional. If not specified, the point is e
 ```javascript
 {
     type: 'point',
-    
+
     // If true, display the annotation, default is true.
     // A callback can also be used:
     //   display(context) {
@@ -361,7 +364,7 @@ The 2 coordinates, xValue, yValue are optional. If not specified, the point is e
     // Border line Dash Offset, default is 0.
     // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset
     borderDashOffset: 5,
-    
+
     // Radius of the point, default is '10'.
     radius: 10,
 
