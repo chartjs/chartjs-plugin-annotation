@@ -18,7 +18,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "karma start --auto-watch --no-single-run --browsers chrome",
-    "lint": "eslint samples/**/*.html test/**/*.js src/**/*.js",
+    "lint": "eslint \"samples/**/*.html\" \"test/**/*.js\" \"src/**/*.js\"",
     "test": "cross-env NODE_ENV=test concurrently \"npm:test-*\"",
     "test-types": "tsc -p types/test/",
     "test-lint": "npm run lint",
