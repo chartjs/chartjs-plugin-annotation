@@ -113,6 +113,9 @@ export default {
         type: 'number'
       },
     },
+    label: {
+      drawTime: null
+    }
   },
 
   descriptors: {
@@ -191,14 +194,14 @@ function draw(chart, caller) {
 
   clipArea(ctx, chartArea);
   elements.forEach(el => {
-    if ((el.options.drawTime || caller) === caller) {
+    if (el.options.drawTime === caller) {
       el.draw(ctx);
     }
   });
   unclipArea(ctx);
 
   elements.forEach(el => {
-    if ('drawLabel' in el && el.options.label && (el.options.label.drawTime || caller) === caller) {
+    if ('drawLabel' in el && el.options.label && (el.options.label.drawTime || el.options.drawTime) === caller) {
       el.drawLabel(ctx, chartArea);
     }
   });
