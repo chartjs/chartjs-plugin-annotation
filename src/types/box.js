@@ -33,7 +33,11 @@ export default class BoxAnnotation extends Element {
 
     roundedRect(ctx, x, y, width, height, options.cornerRadius);
     ctx.fill();
-    ctx.stroke();
+
+    // If no border, don't draw it
+    if (options.borderWidth) {
+      ctx.stroke();
+    }
 
     ctx.restore();
   }
