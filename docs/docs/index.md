@@ -1,7 +1,5 @@
 ---
-id: index
-title: Chart.js Annotation Plugin
-sidebar: index
+title: Getting Started
 ---
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
@@ -20,13 +18,6 @@ This plugin draws lines, boxes, points and ellipses on the chart area. Annotatio
 :::tip
 
 **Important Note:** For Chart.js 2.4.0 to 2.9.x support, use [version 0.5.7 of this plugin](https://github.com/chartjs/chartjs-plugin-annotation/releases/tag/v0.5.7)
+Documentation for v0.5.7 can be found on [GitHub](https://github.com/chartjs/chartjs-plugin-annotation/blob/1ab782afce943456f958cac33f67edc5d6eab278/README.md).
 
 :::
-
-## License
-
-chartjs-plugin-annotation is available under the [MIT license](http://opensource.org/licenses/MIT).
-
-## Bugs & issues
-
-When reporting bugs or issues, if you could include a link to a simple [jsbin](http://jsbin.com) or similar demonstrating the issue, that would be really helpful.
