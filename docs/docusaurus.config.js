@@ -1,4 +1,3 @@
-// VERSION replaced by deploy script
 module.exports = {
   title: 'chartjs-plugin-annotation',
   tagline: 'Annotation plugin for Chart.js',
@@ -9,8 +8,8 @@ module.exports = {
   projectName: 'chartjs-plugin-annotation', // Usually your repo name.
   plugins: [],
   scripts: [
-    'https://cdn.jsdelivr.net/npm/chart.js@3.0.0-beta.13/dist/chart.js',
-    'https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.0.0-beta.4/dist/chartjs-plugin-annotation.min.js'
+    'https://cdn.jsdelivr.net/npm/chart.js@next/dist/chart.js',
+    'https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@next/dist/chartjs-plugin-annotation.min.js'
   ],
   themes: ['@docusaurus/theme-live-codeblock'],
   themeConfig: {
@@ -34,7 +33,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Chart.js contributors.`,
+      copyright: `Copyright © ${new Date().getFullYear()} chartjs-plugin-annotation contributors.`,
     },
   },
   presets: [

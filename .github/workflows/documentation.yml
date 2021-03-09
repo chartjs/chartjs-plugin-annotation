@@ -15,10 +15,10 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-          run: |
-            cd docs
-            npm ci
-            npm run build
+        run: |
+          cd docs
+          npm ci
+          npm run build
   gh-release:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
