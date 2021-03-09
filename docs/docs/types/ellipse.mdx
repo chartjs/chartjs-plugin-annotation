@@ -1,8 +1,8 @@
 ---
-title: Box Annotations
+title: Ellipse Annotations
 ---
 
-Box annotations are used to draw rectangles on the chart area. This can be useful for highlighting different areas of a chart.
+Ellipse annotations are used to draw circles on the chart area. This can be useful for highlighting different areas of a chart.
 
 import { useEffect } from 'react';
 
@@ -32,8 +32,8 @@ export const ExampleChart = () => {
         plugins: {
           annotation: {
             annotations: {
-              box1: {
-                type: 'box',
+              ellipse1: {
+                type: 'ellipse',
                 xMin: 1,
                 xMax: 2,
                 yMin: 50,
@@ -55,7 +55,7 @@ export const ExampleChart = () => {
 
 ## Configuration
 
-The following options are available for box annotations.
+The following options are available for ellipse annotations.
 
 | Name | Type | [Scriptable](../options#scriptable-options) | Default
 | ---- | ---- | :----: | ----
@@ -72,11 +72,10 @@ The following options are available for box annotations.
 | [`borderDash`](#styling) | `number[]`| Yes | `[]`
 | [`borderDashOffset`](#styling) | `number`| Yes | `0`
 | [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
-| [`cornerRadius`](#styling) | `number` | Yes | `0`
 
 ### General
 
-If one of the axes does not match an axis in the chart, the box will take the entire chart dimension. The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges in the respective direction.
+If one of the axes does not match an axis in the chart, the ellipse will take the entire chart dimension. The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the ellipse is expanded out to the edges in the respective direction.
 
 | Name | Description |
 | ---- | ---- |
@@ -84,10 +83,10 @@ If one of the axes does not match an axis in the chart, the box will take the en
 | `drawTime` | See [drawTime]('../options#draw-time)
 | `xScaleID` | ID of the X scale to bind onto, default is 'x'.
 | `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
-| `xMin` | Left edge of the box in units along the x axis.
-| `xMax` | Right edge of the box in units along the x axis.
-| `yMin` | Top edge of the box in units along the y axis.
-| `yMax` | Bottom edge of the box in units along the y axis.
+| `xMin` | Left edge of the ellipse in units along the x axis.
+| `xMax` | Right edge of the ellipse in units along the x axis.
+| `yMin` | Top edge of the ellipse in units along the y axis.
+| `yMax` | Bottom edge of the ellipse in units along the y axis.
 
 ### Styling
 
@@ -98,4 +97,3 @@ If one of the axes does not match an axis in the chart, the box will take the en
 | `borderDash` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | Offset for line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
 | `backgroundColor` | Fill color
-| `cornerRadius` | Radius of box rectangle
