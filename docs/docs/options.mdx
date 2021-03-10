@@ -19,6 +19,12 @@ As with most options in chart.js, the annotation plugin options are scriptable. 
 const options: {
   plugins: {
     annotation: {
+      // Allow more time for dblclick
+      dblClickSpeed: 500,
+
+      // Always draw before anything
+      drawTime: ''
+
       annotations: {
         box1: {
           display: (context) => {
