@@ -33,7 +33,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} chartjs-plugin-annotation contributors.`,
+      copyright: `Copyright © 2016-${new Date().getFullYear()} chartjs-plugin-annotation contributors.`,
     },
   },
   presets: [
