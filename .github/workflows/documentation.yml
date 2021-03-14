@@ -31,7 +31,7 @@ jobs:
       - name: Release to GitHub Pages
         env:
           USE_SSH: false
-          GIT_USER: ${{ secrets.GH_AUTH_EMAIL }}
+          GIT_USER: chartjs-ci
           GIT_PASS: ${{ secrets.GH_AUTH_TOKEN }}
         run: |
           cd docs
