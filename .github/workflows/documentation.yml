@@ -17,6 +17,7 @@ jobs:
           node-version: '12.x'    
       - name: Test Build
         run: |
+          cd docs
           npm ci
           npm run build      
   gh-release:
@@ -33,6 +34,7 @@ jobs:
           GIT_USER: ${{ secrets.GH_AUTH_EMAIL }}
           GIT_PASS: ${{ secrets.GH_AUTH_TOKEN }}
         run: |
+          cd docs
           git config --global user.email "${{ secrets.GH_AUTH_EMAIL }}"
           git config --global user.name "Chart.js"
           npm ci
