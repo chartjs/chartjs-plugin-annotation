@@ -19,6 +19,9 @@ module.exports = {
     },
     navbar: {
       title: 'Chart.js Annotation Plugin',
+      items: [
+        {href: './samples', label: 'Samples'},
+      ]
     },
     footer: {
       style: 'dark',
