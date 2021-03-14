@@ -6,14 +6,14 @@ title: Interactions
 
 The following options are available at the top level. They apply to all annotations unless they are overwritten on a per-annotation basis.
 
-| Name | Type | [Scriptable](../options#scriptable-options) | Default | Notes
+| Name | Type | [Scriptable](options#scriptable-options) | Default | Notes
 | ---- | ---- | :----: | ---- | ----
-| `drawTime` | `string` | Yes | `'afterDatasetsDraw'` | See [drawTime]('./options#draw-time)
+| `drawTime` | `string` | Yes | `'afterDatasetsDraw'` | See [drawTime](options#draw-time)
 | `dblClickSpeed` | `number` | Yes | `350` | Time to detect a double click in ms.
 
 The following options are available for all annotation types. These options can be specified per annotation, or at the top level which apply to all annotations.
 
-| Name | Type | [Scriptable](../options#scriptable-options) | Notes
+| Name | Type | [Scriptable](options#scriptable-options) | Notes
 | ---- | ---- | :----: | ----
 | `enter` | `(context) => void` | No | Called when the mouse enters the annotation.
 | `leave` | `(context) => void` | No | Called when the mouse leaves the annotation.

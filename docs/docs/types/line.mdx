@@ -69,7 +69,7 @@ The following options are available for line annotations.
 | [`xMax`](#positioning) | `number` | Yes | `undefined`
 | [`yMin`](#positioning) | `number` | Yes | `undefined`
 | [`YMax`](#positioning) | `number` | Yes | `undefined`
-| [`borderColor`](#styling) | [`Color`](../optionsd#color) | Yes | `options.color`
+| [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
 | [`borderWidth`](#styling) | `number`| Yes | `1`
 | [`borderDash`](#styling) | `number[]`| Yes | `[]`
 | [`borderDashOffset`](#styling) | `number`| Yes | `0`
@@ -82,7 +82,7 @@ If one of the axes does not match an axis in the chart, the box will take the en
 | Name | Description |
 | ---- | ---- |
 | `display` | Whether or not this annotation is visible
-| `drawTime` | See [drawTime]('../options#draw-time)
+| `drawTime` | See [drawTime](../options#draw-time)
 
 ### Positioning
 
@@ -119,11 +119,11 @@ Namespace: `options.annotations[annotationID].label`, it defines options for the
 
 | Name | Type | [Scriptable](../options#scriptable-options) | Default | Notes
 | ---- | ---- | :----: | ---- | ----
-| `backgroundColor` | [`Color`](../optionsd#color) | Yes | `'rgba(0,0,0,0.8)'` | Background color of the label container.
-| `color` | [`Color`](../optionsd#color) | Yes | `'#fff'` | Text color.
+| `backgroundColor` | [`Color`](../options#color) | Yes | `'rgba(0,0,0,0.8)'` | Background color of the label container.
+| `color` | [`Color`](../options#color) | Yes | `'#fff'` | Text color.
 | `content` | `string` \| [`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image) | Yes | `null` | The content to show in the label.
 | `cornerRadius` | `number` | Yes | `6` | Radius of label box in pixels.
-| `drawTime` | `string` | Yes | `options.drawTime` | See [drawTime]('../options#draw-time). Defaults to the line annotation draw time if unset
+| `drawTime` | `string` | Yes | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the line annotation draw time if unset
 | `enabled` | `boolean` | Yes | `false` | Whether or not the label is shown.
 | `font` | [`Font`](../options#font) | Yes | `{ style: 'bold' }` | Label font
 | `xPadding` | `number` | Yes | `6` | Padding of label to add left/right.
