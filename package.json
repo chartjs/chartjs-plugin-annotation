@@ -1,5 +1,6 @@
 {
   "name": "chartjs-plugin-annotation",
+  "homepage": "https://www.chartjs.org/chartjs-plugin-annotation/index",
   "description": "Annotations for Chart.js",
   "version": "1.0.0-beta.4",
   "author": "Evert Timberg <evert.timberg@gmail.com>",

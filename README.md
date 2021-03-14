@@ -4,6 +4,8 @@
 [![release](https://img.shields.io/github/v/release/chartjs/chartjs-plugin-annotation?include_prereleases)](https://github.com/chartjs/chartjs-plugin-annotation/releases)
 [![npm (latest)](https://img.shields.io/npm/v/chartjs-plugin-annotation/latest)](https://www.npmjs.com/package/chartjs-plugin-annotation/v/latest)
 [![npm (next)](https://img.shields.io/npm/v/chartjs-plugin-annotation/next)](https://www.npmjs.com/package/chartjs-plugin-annotation/v/next)
+[![documentation](https://img.shields.io/static/v1?message=Documentation&color=informational)](https://www.chartjs.org/chartjs-plugin-annotation/index)
+<a href="https://github.com/chartjs/awesome"><img src="https://awesome.re/badge-flat2.svg" alt="Awesome"></a>
 
 An annotation plugin for Chart.js >= 3.0.0
 
@@ -29,7 +31,7 @@ The following features still need to be done:
 
 ## Documentation
 
-You can find documentation for chartjs-plugin-annotation at [www.chartjs.org/docs](http://www.chartjs.org/chartjs-plugin-annotation).
+You can find documentation for chartjs-plugin-annotation at [www.chartjs.org/docs](https://www.chartjs.org/chartjs-plugin-annotation/index).
 
 ## Contributing
 
