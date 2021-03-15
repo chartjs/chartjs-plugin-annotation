@@ -107,7 +107,7 @@ export default {
   defaults: {
     drawTime: 'afterDatasetsDraw',
     dblClickSpeed: 350, // ms
-    animation: {
+    animations: {
       numbers: {
         properties: ['x', 'y', 'x2', 'y2', 'width', 'height'],
         type: 'number'
@@ -156,7 +156,7 @@ function resolveAnimations(chart, animOpts, mode) {
 }
 
 function updateElements(chart, state, options, mode) {
-  const animations = resolveAnimations(chart, options.animation, mode);
+  const animations = resolveAnimations(chart, options.animations, mode);
 
   const annotations = state.annotations;
   const elements = resyncElements(state.elements, annotations);
