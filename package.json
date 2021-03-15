@@ -21,7 +21,7 @@
     "dev": "karma start --auto-watch --no-single-run --browsers chrome",
     "samples": "npm run build && vuepress build samples --dest docs/static/samples",
     "samples:dev": "npm run build && vuepress dev samples",
-    "lint": "eslint \"samples/**/*.html\" \"test/**/*.js\" \"src/**/*.js\"",
+    "lint": "eslint \"old_samples/**/*.html\" \"test/**/*.js\" \"src/**/*.js\"",
     "test": "cross-env NODE_ENV=test concurrently \"npm:test-*\"",
     "test-types": "tsc -p types/test/",
     "test-lint": "npm run lint",
