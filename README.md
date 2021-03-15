@@ -31,7 +31,7 @@ The following features still need to be done:
 
 ## Documentation
 
-You can find documentation for chartjs-plugin-annotation at [www.chartjs.org/docs](https://www.chartjs.org/chartjs-plugin-annotation/index).
+You can find documentation for chartjs-plugin-annotation at [www.chartjs.org/chartjs-plugin-annotation](https://www.chartjs.org/chartjs-plugin-annotation/index).
 
 ## Contributing
 
