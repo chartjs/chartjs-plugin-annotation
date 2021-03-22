@@ -7,15 +7,7 @@ Using the annotation plugin is very simple. Once the plugin is [registered](./in
 const config = {
   type: 'line',
   data: {
-    labels: [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July'
-    ],
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
     datasets: [{
       label: 'My First Dataset',
       data: [65, 59, 80, 81, 56, 55, 40],
