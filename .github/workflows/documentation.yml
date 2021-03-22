@@ -18,10 +18,7 @@ jobs:
       - name: Test Build
         run: |
           npm ci
-          npm run samples
-          cd docs
-          npm ci
-          npm run build
+          npm run docs
   gh-release:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
@@ -31,15 +28,8 @@ jobs:
         with:
           node-version: '12.x'
       - name: Release to GitHub Pages
+        uses: jenkey2011/vuepress-deploy@master
         env:
-          USE_SSH: false
-          GIT_USER: chartjs-ci
-          GIT_PASS: ${{ secrets.GH_AUTH_TOKEN }}
-        run: |
-          npm ci
-          npm run samples
-          cd docs
-          git config --global user.email "${{ secrets.GH_AUTH_EMAIL }}"
-          git config --global user.name "Chart.js"
-          npm ci
-          npm run deploy
+          ACCESS_TOKEN: ${{ secrets.GH_AUTH_TOKEN }}
+          BUILD_SCRIPT: npm ci && npm run docs
+          BUID_DIR: dist/docs/
