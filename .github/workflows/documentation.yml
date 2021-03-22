@@ -32,4 +32,4 @@ jobs:
         env:
           ACCESS_TOKEN: ${{ secrets.GH_AUTH_TOKEN }}
           BUILD_SCRIPT: npm ci && npm run docs
-          BUID_DIR: dist/docs/
+          BUILD_DIR: dist/docs/
