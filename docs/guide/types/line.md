@@ -1,65 +1,56 @@
----
-title: Line Annotations
----
+# Line Annotations
 
 Line annotations are used to draw lines on the chart area. This can be useful for highlighting information such as a threshold.
 
-import { useEffect } from 'react';
-
-export const ExampleChart = () => {
-  useEffect(() => {
-    const cfg = {
-      type: 'line',
-      data: {
-        labels: [
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July'
-        ],
-        datasets: [{
-          label: 'My First Dataset',
-          data: [65, 59, 80, 81, 56, 55, 40],
-          fill: false,
-          borderColor: 'rgb(75, 192, 192)',
-          tension: 0.1
-        }]
-      },
-      options: {
-        plugins: {
-          annotation: {
-            annotations: {
-              line1: {
-                type: 'line',
-                yMin: 60,
-                yMax: 60,
-                borderColor: 'rgb(255, 99, 132)',
-                borderWidth: 2,
-              }
-            }
-          }
+```js chart-editor
+/* <block:options:0> */
+const options = {
+  plugins: {
+    annotation: {
+      annotations: {
+        line1: {
+          type: 'line',
+          yMin: 60,
+          yMax: 60,
+          borderColor: 'rgb(255, 99, 132)',
+          borderWidth: 2,
         }
       }
-    };
-    const chart = new Chart(document.getElementById('chartjs-0').getContext('2d'), cfg);
-    return () => chart.destroy();
-  });
-  return <div className="chartjs-wrapper"><canvas id="chartjs-0" className="chartjs"></canvas></div>;
-}
+    }
+  }
+};
+/* </block:options> */
 
-<ExampleChart/>
+/* <block:config:1> */
+const config = {
+  type: 'line',
+  data: {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [{
+      label: 'My First Dataset',
+      data: [65, 59, 80, 81, 56, 55, 40],
+      fill: false,
+      borderColor: 'rgb(75, 192, 192)',
+      tension: 0.1
+    }]
+  },
+  options
+};
+/* </block:config> */
+
+module.exports = {
+  config
+};
+```
 
 ## Configuration
 
-The following options are available for line annotations.
+The following options are available for line annotations. All of these options can be .
 
 | Name | Type | [Scriptable](../options#scriptable-options) | Default
-| ---- | ---- | :----: | ----
+| ---- | ---- | ---- | :----: | ----
 | [`display`](#general) | `boolean` | Yes | `true`
-| [`drawTime](#general) | `string` | Yes | `'afterDatasetsDraw'`
+| [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
 | [`scaleID`](#positioning) | `string` | Yes | `undefined`
 | [`value`](#positioning) | `number` | Yes | `undefined`
 | [`endValue`](#positioning) | `number` | Yes | `undefined`
@@ -70,10 +61,10 @@ The following options are available for line annotations.
 | [`yMin`](#positioning) | `number` | Yes | `undefined`
 | [`YMax`](#positioning) | `number` | Yes | `undefined`
 | [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
-| [`borderWidth`](#styling) | `number`| Yes | `1`
-| [`borderDash`](#styling) | `number[]`| Yes | `[]`
-| [`borderDashOffset`](#styling) | `number`| Yes | `0`
-| [`label`](#label) | `object` | Yes | 
+| [`borderWidth`](#styling) | `number` | Yes | `1`
+| [`borderDash`](#styling) | `number[]` | Yes | `[]`
+| [`borderDashOffset`](#styling) | `number` | Yes | `0`
+| [`label`](#label) | `object` | Yes |
 
 ### General
 

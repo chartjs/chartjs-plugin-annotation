@@ -1,57 +1,48 @@
----
-title: Box Annotations
----
+# Box Annotations
 
 Box annotations are used to draw rectangles on the chart area. This can be useful for highlighting different areas of a chart.
 
-import { useEffect } from 'react';
-
-export const ExampleChart = () => {
-  useEffect(() => {
-    const cfg = {
-      type: 'line',
-      data: {
-        labels: [
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July'
-        ],
-        datasets: [{
-          label: 'My First Dataset',
-          data: [65, 59, 80, 81, 56, 55, 40],
-          fill: false,
-          borderColor: 'rgb(75, 192, 192)',
-          tension: 0.1
-        }]
-      },
-      options: {
-        plugins: {
-          annotation: {
-            annotations: {
-              box1: {
-                type: 'box',
-                xMin: 1,
-                xMax: 2,
-                yMin: 50,
-                yMax: 70,
-                backgroundColor: 'rgba(255, 99, 132, 0.25)'
-              }
-            }
-          }
+```js chart-editor
+/* <block:options:0> */
+const options = {
+  plugins: {
+    annotation: {
+      annotations: {
+        box1: {
+          type: 'box',
+          xMin: 1,
+          xMax: 2,
+          yMin: 50,
+          yMax: 70,
+          backgroundColor: 'rgba(255, 99, 132, 0.25)'
         }
       }
-    };
-    const chart = new Chart(document.getElementById('chartjs-0').getContext('2d'), cfg);
-    return () => chart.destroy();
-  });
-  return <div className="chartjs-wrapper"><canvas id="chartjs-0" className="chartjs"></canvas></div>;
-}
+    }
+  }
+};
+/* </block:options> */
 
-<ExampleChart/>
+/* <block:config:1> */
+const config = {
+  type: 'line',
+  data: {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [{
+      label: 'My First Dataset',
+      data: [65, 59, 80, 81, 56, 55, 40],
+      fill: false,
+      borderColor: 'rgb(75, 192, 192)',
+      tension: 0.1
+    }]
+  },
+  options
+};
+/* </block:config> */
+
+module.exports = {
+  config
+};
+```
 
 ## Configuration
 
@@ -60,7 +51,7 @@ The following options are available for box annotations.
 | Name | Type | [Scriptable](../options#scriptable-options) | Default
 | ---- | ---- | :----: | ----
 | [`display`](#general) | `boolean` | Yes | `true`
-| [`drawTime](#general) | `string` | Yes | `'afterDatasetsDraw'`
+| [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
 | [`xScaleID`](#general) | `string` | Yes | `'x'`
 | [`yScaleID`](#general) | `string` | Yes | `'y'`
 | [`xMin`](#general) | `number` | Yes | `undefined`
