@@ -27,7 +27,7 @@
 		const randomColor = function(opacity) {
 			return 'rgba(' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ',' + Math.round(Math.random() * 255) + ',' + (opacity || '.3') + ')';
 		};
-		
+
 		const htmlText = new Image();
 		htmlText.src = 'data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="80">' +
 		'<foreignObject width="100%" height="100%">' +
@@ -36,7 +36,7 @@
 
 		const chartjs = new Image();
 		chartjs.src = './img/chartjs-logo.svg';
-		
+
 		const scatterChartData = {
 			datasets: [{
 				label: 'My First dataset',
@@ -110,12 +110,12 @@
 					scales: {
 						x: {
 							position: 'top',
-							gridLines: {
+							grid: {
 								zeroLineColor: 'rgba(0,255,0,1)'
 							},
-							scaleLabel: {
+							title: {
 								display: true,
-								labelString: 'x axis'
+								text: 'x axis'
 							},
 							ticks: {
 								maxRotation: 0,
@@ -126,12 +126,12 @@
 						},
 						y: {
 							position: 'right',
-							gridLines: {
+							grid: {
 								zeroLineColor: 'rgba(0,255,0,1)'
 							},
-							scaleLabel: {
+							title: {
 								display: true,
-								labelString: 'y axis'
+								text: 'y axis'
 							},
 							ticks: {
 								reverse: true,
