@@ -10,7 +10,8 @@ Fonts use the same format as [chart.js](https://www.chartjs.org/docs/master/gene
 
 ## Scriptable Options
 
-As with most options in chart.js, the annotation plugin options are scriptable. This means that a function can be passed which returns the value as needed. In the example below, the annotation is hidden when the screen is less than 1000px wide
+As with most options in chart.js, the annotation plugin options are scriptable. This means that a function can be passed which returns the value as needed. In the example below, the annotation is hidden when the screen is less than 1000px wide.
+The function receives 2 arguments, first is the [option context](#option-context) represnting contextual information. An options resolver is passed as second argumet, which can be used to access other option in the same context.
 
 ```js chart-editor
 /* <block:options:0> */
@@ -70,3 +71,31 @@ The `drawTime` option for an annotation determines where in the chart lifecycle 
 | `'beforeDatasetsDraw'` | Occurs after drawing of axes, but before datasets
 | `'afterDatasetsDraw'` | Occurs after drawing of datasets but before items such as the tooltip
 | `'afterDraw'` | After other drawing is completed.
+
+## Option Context
+
+The option context is used to give contextual information when resolving options and only applies to scriptable options. The object is preserved, so it can be used to store and pass information between calls / options.
+
+There are 2 levels of option context objects:
+
+* `chart`
+  * `annotation`
+
+The context object contains the following properties:
+
+### chart
+
+* `chart`: the associated chart
+* `type`: `'chart'`
+
+The [chart](#chart) option context is provided by Chart.js. It is passed to scriptable options when resolving annotation `id`, `type` and `drawTime` or adjusting scale ranges in `afterDataLimits` hook. The options resolved at that time are `scaleID`, `xScaleID`, `yScaleID`, `value`, `endValue`, `xMin`, `xMax`, `yMin`, `yMax`, `xValue` and `yValue`.
+
+### annotation
+
+In addition to [chart](#chart)
+
+* `id`: the annotation id
+* `element`: the annotation element
+* `type`: `'annotation'`
+
+The [annotation](#annotation) option context is passed to scriptable options in all other cases, except when resolving `id`, `type` or adjusting scale ranges. The same values resolved in `afterDataLimits` with [chart](#chart) context are again evaluated in `afterUpdate` with [annotation](#annotation) context.

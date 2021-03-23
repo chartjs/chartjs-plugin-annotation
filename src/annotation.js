@@ -1,5 +1,5 @@
 import {Animations, Chart, defaults} from 'chart.js';
-import {clipArea, unclipArea, isFinite, valueOrDefault, isObject} from 'chart.js/helpers';
+import {clipArea, unclipArea, isFinite, valueOrDefault, isObject, isArray} from 'chart.js/helpers';
 import {handleEvent, hooks, updateListeners} from './events';
 import BoxAnnotation from './types/box';
 import LineAnnotation from './types/line';
@@ -48,19 +48,15 @@ export default {
 
     let annotationOptions = options.annotations;
     if (isObject(annotationOptions)) {
-      const array = new Array();
       Object.keys(annotationOptions).forEach(key => {
         const value = annotationOptions[key];
         if (isObject(value)) {
           value.id = key;
-          array.push(value);
+          annotations.push(value);
         }
       });
-      annotationOptions = array;
-    }
-
-    for (const annotation of annotationOptions) {
-      annotations.push(resolveAnnotationOptions(annotation));
+    } else if (isArray(annotationOptions)) {
+      annotations.push(...annotationOptions);
     }
   },
 
@@ -134,20 +130,6 @@ const directUpdater = {
   update: Object.assign
 };
 
-
-function resolveAnnotationOptions(resolver) {
-  const elType = annotationTypes[resolver.type] || annotationTypes.line;
-  const result = {};
-  for (const name of optionNames(elType)) {
-    result[name] = resolver[name];
-  }
-  return result;
-}
-
-function optionNames(type) {
-  return ['id', 'type', 'drawTime'].concat(Object.keys(type.defaults), Object.keys(type.defaultRoutes), hooks);
-}
-
 function resolveAnimations(chart, animOpts, mode) {
   if (mode === 'reset' || mode === 'none' || mode === 'resize') {
     return directUpdater;
@@ -168,10 +150,19 @@ function updateElements(chart, state, options, mode) {
     if (!el || !(el instanceof elType)) {
       el = elements[i] = new elType();
     }
-    const properties = el.resolveElementProperties(chart, annotation);
-    properties.options = annotation;
+    const opts = annotation.setContext(getContext(chart, el, annotation));
+    const properties = el.resolveElementProperties(chart, opts);
+    properties.options = opts;
     animations.update(el, properties);
   }
+}
+
+function getContext(chart, element, annotation) {
+  return element.$context || (element.$context = Object.assign(Object.create(chart.getContext()), {
+    element,
+    id: annotation.id,
+    type: 'annotation'
+  }));
 }
 
 function resyncElements(elements, annotations) {
