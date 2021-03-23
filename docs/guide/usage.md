@@ -18,6 +18,7 @@ const config = {
   },
   options: {
     plugins: {
+      autocolors: false,
       annotation: {
         annotations: {
           box1: {
