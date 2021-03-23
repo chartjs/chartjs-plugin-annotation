@@ -6,6 +6,7 @@ Box annotations are used to draw rectangles on the chart area. This can be usefu
 /* <block:options:0> */
 const options = {
   plugins: {
+    autocolors: false,
     annotation: {
       annotations: {
         box1: {

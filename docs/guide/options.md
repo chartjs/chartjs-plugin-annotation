@@ -16,6 +16,7 @@ As with most options in chart.js, the annotation plugin options are scriptable. 
 /* <block:options:0> */
 const options = {
   plugins: {
+    autocolors: false,
     annotation: {
       annotations: {
         box1: {
