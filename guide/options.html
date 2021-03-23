@@ -7,7 +7,7 @@
     <meta name="generator" content="VuePress 1.8.2">
     <link rel="icon" href="/chartjs-plugin-annotation/favicon.png">
     <meta name="description" content="Annotations for Chart.js">
-    <link rel="preload" href="/chartjs-plugin-annotation/assets/css/0.styles.9b98f14b.css" as="style"><link rel="preload" href="/chartjs-plugin-annotation/assets/js/app.f7aa93a9.js" as="script"><link rel="preload" href="/chartjs-plugin-annotation/assets/js/2.5965c9c9.js" as="script"><link rel="preload" href="/chartjs-plugin-annotation/assets/js/11.e804b7ff.js" as="script"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/10.582634b9.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/12.ed89b58d.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/13.3b568fb3.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/14.577661f7.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/15.8e9e160d.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/16.174d2803.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/17.d81d7909.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/18.41f3f65e.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/19.5fef630f.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/3.0b752b28.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/4.57a45419.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/5.b0b1780e.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/6.aee27442.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/7.67d10d22.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/8.a85de9ec.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/9.06e9aff3.js">
+    <link rel="preload" href="/chartjs-plugin-annotation/assets/css/0.styles.9b98f14b.css" as="style"><link rel="preload" href="/chartjs-plugin-annotation/assets/js/app.05de62bd.js" as="script"><link rel="preload" href="/chartjs-plugin-annotation/assets/js/2.a83d244c.js" as="script"><link rel="preload" href="/chartjs-plugin-annotation/assets/js/11.66efd733.js" as="script"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/10.913f4bf4.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/12.64ac54c7.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/13.384a2ccf.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/14.4d9918d5.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/15.c609351d.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/16.d0c1274e.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/17.d81d7909.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/18.41f3f65e.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/19.5fef630f.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/3.0b752b28.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/4.57a45419.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/5.b0b1780e.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/6.aee27442.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/7.67d10d22.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/8.a85de9ec.js"><link rel="prefetch" href="/chartjs-plugin-annotation/assets/js/9.06e9aff3.js">
     <link rel="stylesheet" href="/chartjs-plugin-annotation/assets/css/0.styles.9b98f14b.css">
   </head>
   <body>
@@ -33,6 +33,7 @@
         config
       </button></div> <div class="code-editor-tools" data-v-52b0d69e><!----> <a href="https://github.com/chartjs/chartjs-plugin-annotation/blob/master/samples/guide/options.md" title="View on GitHub" target="_blank" class="code-editor-tool fab fa-github fa-lg" data-v-52b0d69e></a></div></div> <div class="code-editor-views" data-v-52b0d69e><div class="editor-textarea ps" data-v-2edaba84 data-v-52b0d69e><div class="editor-textarea-content" data-v-2edaba84><div class="prism-editor-wrapper" data-v-2edaba84><div class="prism-editor__container"><textarea spellCheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" data-gramm="false" placeholder="" data-testid="textarea" class="prism-editor__textarea">const options = {
   plugins: {
+    autocolors: false,
     annotation: {
       annotations: {
         box1: {
@@ -55,6 +56,7 @@
 };
 </textarea><pre data-testid="preview" class="prism-editor__editor"><span class="token keyword">const</span> options <span class="token operator">=</span> <span class="token punctuation">{</span>
   plugins<span class="token operator">:</span> <span class="token punctuation">{</span>
+    autocolors<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
     annotation<span class="token operator">:</span> <span class="token punctuation">{</span>
       annotations<span class="token operator">:</span> <span class="token punctuation">{</span>
         box1<span class="token operator">:</span> <span class="token punctuation">{</span>
@@ -103,7 +105,7 @@
   <span class="token punctuation">}</span><span class="token punctuation">,</span>
   options
 <span class="token punctuation">}</span><span class="token punctuation">;</span>
-<br /></pre></div></div></div></div></div></div></div><h2 id="draw-time"><a href="#draw-time" class="header-anchor">#</a> Draw Time</h2> <p>The <code>drawTime</code> option for an annotation determines where in the chart lifecycle the drawing occurs. Four potential options are available:</p> <table><thead><tr><th>Option</th> <th>Notes</th></tr></thead> <tbody><tr><td><code>'beforeDraw'</code></td> <td>Occurs before any drawing takes place</td></tr> <tr><td><code>'beforeDatasetsDraw'</code></td> <td>Occurs after drawing of axes, but before datasets</td></tr> <tr><td><code>'afterDatasetsDraw'</code></td> <td>Occurs after drawing of datasets but before items such as the tooltip</td></tr> <tr><td><code>'afterDraw'</code></td> <td>After other drawing is completed.</td></tr></tbody></table></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">3/22/2021, 10:18:40 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+<br /></pre></div></div></div></div></div></div></div><h2 id="draw-time"><a href="#draw-time" class="header-anchor">#</a> Draw Time</h2> <p>The <code>drawTime</code> option for an annotation determines where in the chart lifecycle the drawing occurs. Four potential options are available:</p> <table><thead><tr><th>Option</th> <th>Notes</th></tr></thead> <tbody><tr><td><code>'beforeDraw'</code></td> <td>Occurs before any drawing takes place</td></tr> <tr><td><code>'beforeDatasetsDraw'</code></td> <td>Occurs after drawing of axes, but before datasets</td></tr> <tr><td><code>'afterDatasetsDraw'</code></td> <td>Occurs after drawing of datasets but before items such as the tooltip</td></tr> <tr><td><code>'afterDraw'</code></td> <td>After other drawing is completed.</td></tr></tbody></table></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">3/23/2021, 4:30:43 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
       ←
       <a href="/chartjs-plugin-annotation/guide/usage.html" class="prev">
         Usage
@@ -112,6 +114,6 @@
       </a>
       →
     </span></p></div> </main></div><div class="global-ui"></div></div>
-    <script src="/chartjs-plugin-annotation/assets/js/app.f7aa93a9.js" defer></script><script src="/chartjs-plugin-annotation/assets/js/2.5965c9c9.js" defer></script><script src="/chartjs-plugin-annotation/assets/js/11.e804b7ff.js" defer></script>
+    <script src="/chartjs-plugin-annotation/assets/js/app.05de62bd.js" defer></script><script src="/chartjs-plugin-annotation/assets/js/2.a83d244c.js" defer></script><script src="/chartjs-plugin-annotation/assets/js/11.66efd733.js" defer></script>
   </body>
 </html>
