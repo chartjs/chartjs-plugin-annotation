@@ -127,6 +127,7 @@ LineAnnotation.defaults = {
   borderDashOffset: 0,
   label: {
     backgroundColor: 'rgba(0,0,0,0.8)',
+    drawTime: undefined,
     font: {
       family: undefined,
       lineHeight: undefined,
