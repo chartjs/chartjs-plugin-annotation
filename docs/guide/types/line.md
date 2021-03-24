@@ -109,20 +109,22 @@ If `scaleID` is unset, then `xScaleID` and `yScaleID` are used to draw a line fr
 
 Namespace: `options.annotations[annotationID].label`, it defines options for the line annotation label.
 
-| Name | Type | [Scriptable](../options#scriptable-options) | Default | Notes
+All of these options can be [Scriptable](../options#scriptable-options)
+
+| Name | Type | Default | Notes
 | ---- | ---- | :----: | ---- | ----
-| `backgroundColor` | [`Color`](../options#color) | Yes | `'rgba(0,0,0,0.8)'` | Background color of the label container.
-| `color` | [`Color`](../options#color) | Yes | `'#fff'` | Text color.
-| `content` | `string` \| [`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image) | Yes | `null` | The content to show in the label.
-| `cornerRadius` | `number` | Yes | `6` | Radius of label box in pixels.
-| `drawTime` | `string` | Yes | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the line annotation draw time if unset
-| `enabled` | `boolean` | Yes | `false` | Whether or not the label is shown.
-| `font` | [`Font`](../options#font) | Yes | `{ style: 'bold' }` | Label font
-| `xPadding` | `number` | Yes | `6` | Padding of label to add left/right.
-| `yPadding` | `number` | Yes | `6` | Padding of label to add top/bottom.
-| `xAdjust` | `number` | Yes | `0` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
-| `yAdjust` | `number` | Yes | `0` | Adjustment along y-axis (top-bottom) of label relative to computed position. Negative values move the label up, positive down.
-| `position` | `string` | Yes | `'center'` | Anchor position of label on line. Possible options are: `'start'`, `'center'`, `'end'`.
-| `width` | `number` \| `string` | Yes | `undefined` | Overrides the width of the image. Could be set in pixel by a number, or in percentage of current width of image by a string. If undefined, uses the width of the image. It is used only when the content is an image.
-| `height` | `number` \| `string` | Yes | `undefined` | Overrides the height of the image. Could be set in pixel by a number, or in percentage of current height of image by a string. If undefined, uses the height of the image. It is used only when the content is an image.
-| `rotation` | `number` \| `'auto'` | Yes | `0` | Rotation of label, in degrees, or 'auto' to use the degrees of the line
+| `backgroundColor` | [`Color`](../options#color) | `'rgba(0,0,0,0.8)'` | Background color of the label container.
+| `color` | [`Color`](../options#color) | `'#fff'` | Text color.
+| `content` | `string`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image) | `null` | The content to show in the label.
+| `cornerRadius` | `number` | `6` | Radius of label box in pixels.
+| `drawTime` | `string` | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the line annotation draw time if unset
+| `enabled` | `boolean` | `false` | Whether or not the label is shown.
+| `font` | [`Font`](../options#font) | `{ style: 'bold' }` | Label font
+| `xPadding` | `number` | `6` | Padding of label to add left/right.
+| `yPadding` | `number` | `6` | Padding of label to add top/bottom.
+| `xAdjust` | `number` | `0` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
+| `yAdjust` | `number` | `0` | Adjustment along y-axis (top-bottom) of label relative to computed position. Negative values move the label up, positive down.
+| `position` | `string` | `'center'` | Anchor position of label on line. Possible options are: `'start'`, `'center'`, `'end'`.
+| `width` | `number`\|`string` | `undefined` | Overrides the width of the image. Could be set in pixel by a number, or in percentage of current width of image by a string. If undefined, uses the width of the image. It is used only when the content is an image.
+| `height` | `number`\|`string` | `undefined` | Overrides the height of the image. Could be set in pixel by a number, or in percentage of current height of image by a string. If undefined, uses the height of the image. It is used only when the content is an image.
+| `rotation` | `number`\|`'auto'` | `0` | Rotation of label, in degrees, or 'auto' to use the degrees of the line

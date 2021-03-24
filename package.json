@@ -32,9 +32,9 @@
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^11.2.0",
-    "chart.js": "^3.0.0-rc.3",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
+    "chart.js": "^3.0.0-rc.3",
     "chartjs-plugin-autocolors": "0.0.3",
     "chartjs-test-utils": "^0.2.2",
     "concurrently": "^6.0.0",
@@ -59,7 +59,8 @@
     "vue-prism-editor": "^1.2.2",
     "vue2-perfect-scrollbar": "^1.5.0",
     "vuepress": "^1.8.2",
-    "vuepress-plugin-redirect": "^1.2.5"
+    "vuepress-plugin-redirect": "^1.2.5",
+    "vuepress-theme-chartjs": "^0.1.0"
   },
   "peerDependencies": {
     "chart.js": "^3.0.0-rc.3"

@@ -1,8 +1,7 @@
-const ChartEditorPlugin = require('./plugins/chart-editor');
-
 module.exports = {
   title: 'chartjs-plugin-annotation',
   description: 'Annotations for Chart.js',
+  theme: 'chartjs',
   base: '/chartjs-plugin-annotation/',
   head: [
     ['link', {rel: 'icon', href: '/favicon.png'}],
@@ -14,20 +13,20 @@ module.exports = {
         {base: '/samples', alternative: ['types/line']},
       ],
     }],
-    [ChartEditorPlugin, {
-      imports: [
-        ['scripts/register.js'],
-        ['scripts/defaults.js'],
-        ['scripts/utils.js', 'Utils'],
-      ]
-    }],
   ],
   themeConfig: {
     repo: 'chartjs/chartjs-plugin-annotation',
     logo: '/favicon.png',
     lastUpdated: 'Last Updated',
-    editLinks: false,
-    docsDir: 'samples',
+    editLinks: true,
+    docsDir: 'docs',
+    chart: {
+      imports: [
+        ['scripts/register.js'],
+        ['scripts/defaults.js'],
+        ['scripts/utils.js', 'Utils'],
+      ]
+    },
     nav: [
       {text: 'Home', link: '/'},
       {text: 'Guide', link: '/guide/'},
