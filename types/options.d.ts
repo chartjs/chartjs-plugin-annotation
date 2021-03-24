@@ -1,6 +1,6 @@
-import { Color } from "chart.js";
-import {AnnotationEvents, EventContext} from "./events";
-import { LabelOptions } from "./label";
+import { Color } from 'chart.js';
+import { AnnotationEvents, EventContext } from './events';
+import { LabelOptions } from './label';
 
 export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw';
 
