@@ -18,6 +18,7 @@ module.exports = {
     repo: 'chartjs/chartjs-plugin-annotation',
     logo: '/favicon.png',
     lastUpdated: 'Last Updated',
+    searchPlaceholder: 'Search...',
     editLinks: true,
     docsDir: 'docs',
     chart: {
