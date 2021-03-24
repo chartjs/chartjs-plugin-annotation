@@ -150,11 +150,34 @@ function updateElements(chart, state, options, mode) {
     if (!el || !(el instanceof elType)) {
       el = elements[i] = new elType();
     }
-    const opts = annotation.setContext(getContext(chart, el, annotation));
+    const opts = resolveAnnotationOptions(annotation.setContext(getContext(chart, el, annotation)));
     const properties = el.resolveElementProperties(chart, opts);
     properties.options = opts;
     animations.update(el, properties);
   }
+}
+
+function resolveAnnotationOptions(resolver) {
+  const elType = annotationTypes[resolver.type] || annotationTypes.line;
+  const result = {};
+  result.id = resolver.id;
+  result.type = elType.id;
+  result.drawTime = resolver.drawTime;
+  Object.assign(result, resolveObj(resolver, elType.defaults), resolveObj(resolver, elType.defaultRoutes));
+  for (const hook of hooks) {
+    result[hook] = resolver[hook];
+  }
+  return result;
+}
+
+function resolveObj(resolver, defs) {
+  const result = {};
+  for (const name of Object.keys(defs)) {
+    const optDefs = defs[name];
+    const value = resolver[name];
+    result[name] = isObject(optDefs) ? resolveObj(value, optDefs) : value;
+  }
+  return result;
 }
 
 function getContext(chart, element, annotation) {

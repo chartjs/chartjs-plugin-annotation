@@ -128,7 +128,11 @@ LineAnnotation.defaults = {
   label: {
     backgroundColor: 'rgba(0,0,0,0.8)',
     font: {
+      family: undefined,
+      lineHeight: undefined,
+      size: undefined,
       style: 'bold',
+      weight: undefined
     },
     color: '#fff',
     xPadding: 6,
