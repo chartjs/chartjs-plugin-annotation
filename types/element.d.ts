@@ -1,4 +1,4 @@
-import { AnnotationOptions } from "./options";
+import { AnnotationOptions } from './options';
 
 export interface AnnotationElement {
 	x: number,

@@ -1,5 +1,5 @@
-import { Color, FontSpec } from "chart.js";
-import { DrawTime } from "./options";
+import { Color, FontSpec } from 'chart.js';
+import { DrawTime } from './options';
 
 export interface LabelOptions {
 	backgroundColor?: Color,
@@ -54,15 +54,15 @@ export interface LabelOptions {
 	 * Text to display in label. Provide an array to display multiple lines
 	 */
 	content: string | string[] | HTMLImageElement | null,
-	
+
 	/**
-	 * Overrides the width of the image. Could be set in pixel by a number, 
+	 * Overrides the width of the image. Could be set in pixel by a number,
 	 * or in percentage of current width of image by a string
 	 */
 	width: number | string,
 
 	/**
-	 * Overrides the height of the image. Could be set in pixel by a number, 
+	 * Overrides the height of the image. Could be set in pixel by a number,
 	 * or in percentage of current height of image by a string
 	 */
 	height: number | string,

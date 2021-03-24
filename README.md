@@ -19,9 +19,6 @@ Annotations work with line, bar, scatter and bubble charts that use linear, loga
 
 [View this example on CodePen](https://codepen.io/compwright/full/mmQMrZ/)
 
-
-
-
 ## To-do Items
 
 The following features still need to be done:
