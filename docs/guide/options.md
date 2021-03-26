@@ -11,7 +11,7 @@ Fonts use the same format as [chart.js](https://www.chartjs.org/docs/master/gene
 ## Scriptable Options
 
 As with most options in chart.js, the annotation plugin options are scriptable. This means that a function can be passed which returns the value as needed. In the example below, the annotation is hidden when the screen is less than 1000px wide.
-The function receives 2 arguments, first is the [option context](#option-context) representing contextual information. An options resolver is passed as second argumet, which can be used to access other option in the same context.
+The function receives 2 arguments, first is the [option context](#option-context) representing contextual information. An options resolver is passed as second argument, which can be used to access other option in the same context.
 
 ```js chart-editor
 /* <block:options:0> */

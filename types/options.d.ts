@@ -18,7 +18,8 @@ export type AnnotationOptions<TYPE extends AnnotationType = AnnotationType> =
 
 
 export interface CoreAnnotationOptions extends AnnotationEvents {
-  display?: boolean | ((context: EventContext) => boolean);
+	id?: string,
+	display?: boolean | ((context: EventContext) => boolean),
 	borderColor?: Color,
 	borderWidth?: number,
 	borderDash?: [number, number],
@@ -59,7 +60,7 @@ interface PointAnnotationOptions extends CoreAnnotationOptions {
 }
 
 export interface AnnotationPluginOptions extends AnnotationEvents {
-	annotations: AnnotationOptions[]
+	annotations: AnnotationOptions[] | Record<string, AnnotationOptions>,
 	dblClickSpeed?: number,
 	drawTime?: DrawTime,
 }
