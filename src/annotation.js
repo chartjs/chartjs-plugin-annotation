@@ -152,6 +152,7 @@ function updateElements(chart, state, options, mode) {
     }
     const opts = resolveAnnotationOptions(annotation.setContext(getContext(chart, el, annotation)));
     const properties = el.resolveElementProperties(chart, opts);
+    properties.skip = isNaN(properties.x) || isNaN(properties.y);
     properties.options = opts;
     animations.update(el, properties);
   }
@@ -204,7 +205,7 @@ function resyncElements(elements, annotations) {
 function draw(chart, caller) {
   const {ctx, chartArea} = chart;
   const state = chartStates.get(chart);
-  const elements = state.elements.filter(el => el.options.display);
+  const elements = state.elements.filter(el => !el.skip && el.options.display);
 
   clipArea(ctx, chartArea);
   elements.forEach(el => {
