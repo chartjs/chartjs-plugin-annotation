@@ -5,6 +5,7 @@ import BoxAnnotation from './types/box';
 import LineAnnotation from './types/line';
 import EllipseAnnotation from './types/ellipse';
 import PointAnnotation from './types/point';
+import {version} from '../package.json';
 
 const chartStates = new Map();
 
@@ -23,6 +24,8 @@ Object.keys(annotationTypes).forEach(key => {
 
 export default {
   id: 'annotation',
+
+  version,
 
   afterRegister() {
     Chart.register(annotationTypes);
