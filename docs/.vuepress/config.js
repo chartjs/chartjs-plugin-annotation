@@ -1,4 +1,5 @@
 module.exports = {
+  dest: 'dist/docs',
   title: 'chartjs-plugin-annotation',
   description: 'Annotations for Chart.js',
   theme: 'chartjs',
