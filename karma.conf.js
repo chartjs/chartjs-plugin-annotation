@@ -1,4 +1,5 @@
 const istanbul = require('rollup-plugin-istanbul');
+const json = require('@rollup/plugin-json');
 const resolve = require('@rollup/plugin-node-resolve').default;
 const builds = require('./rollup.config');
 const yargs = require('yargs');
@@ -18,6 +19,7 @@ module.exports = function(karma) {
 
   if (env === 'test') {
     build.plugins = [
+      json(),
       resolve(),
       istanbul({exclude: ['node_modules/**/*.js', 'package.json']})
     ];
