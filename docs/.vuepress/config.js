@@ -57,8 +57,9 @@ module.exports = {
           title: 'Types',
           collapsable: false,
           children: [
-            'types/line',
             'types/box',
+            'types/ellipse',
+            'types/line',
           ],
         },
       ]

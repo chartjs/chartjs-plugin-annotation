@@ -8,7 +8,7 @@ export default class EllipseAnnotation extends BoxAnnotation {
 
   draw(ctx) {
     const {width, height, options} = this;
-    const center = this.getCenterPoint(true);
+    const center = this.getCenterPoint();
 
     ctx.save();
 
