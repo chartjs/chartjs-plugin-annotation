@@ -60,6 +60,7 @@ module.exports = {
             'types/box',
             'types/ellipse',
             'types/line',
+            'types/point'
           ],
         },
       ]
