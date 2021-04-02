@@ -35,7 +35,7 @@
     "@rollup/plugin-node-resolve": "^11.2.1",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
-    "chart.js": "^3.0.0",
+    "chart.js": "^3.0.1",
     "chartjs-plugin-autocolors": "0.0.3",
     "chartjs-test-utils": "^0.2.2",
     "concurrently": "^6.0.0",
@@ -62,7 +62,7 @@
     "vuepress-theme-chartjs": "^0.2.0"
   },
   "peerDependencies": {
-    "chart.js": "^3.0.0"
+    "chart.js": "^3.0.1"
   },
   "dependencies": {}
 }
