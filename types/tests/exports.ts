@@ -22,7 +22,8 @@ const chart = new Chart('id', {
           }
         }, {
           type: 'box',
-          backgroundColor: 'red'
+          backgroundColor: 'red',
+          borderColor: (ctx, options) => options.type === 'box' ? 'red' : 'green',
         }
         ]
       }

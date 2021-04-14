@@ -165,7 +165,7 @@ function resolveAnnotationOptions(resolver) {
   const elType = annotationTypes[resolver.type] || annotationTypes.line;
   const result = {};
   result.id = resolver.id;
-  result.type = elType.id;
+  result.type = resolver.type;
   result.drawTime = resolver.drawTime;
   Object.assign(result, resolveObj(resolver, elType.defaults), resolveObj(resolver, elType.defaultRoutes));
   for (const hook of hooks) {
