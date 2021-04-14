@@ -51,7 +51,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
       - name: Publish @latest
-        run: npm publish --tag latest --dry-run
+        run: npm publish --tag latest
         if: "!github.event.release.prerelease"
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
