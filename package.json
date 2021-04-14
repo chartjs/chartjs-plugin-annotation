@@ -2,7 +2,7 @@
   "name": "chartjs-plugin-annotation",
   "homepage": "https://www.chartjs.org/chartjs-plugin-annotation/index",
   "description": "Annotations for Chart.js",
-  "version": "1.0.0-rc",
+  "version": "1.0.0",
   "author": "Evert Timberg <evert.timberg@gmail.com>",
   "license": "MIT",
   "main": "dist/chartjs-plugin-annotation.js",
