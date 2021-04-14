@@ -22,7 +22,7 @@ const options = {
       annotations: {
         box1: {
           drawTime: 'afterDatasetsDraw',
-          display: (context, options) => {
+          display: (context, opts) => {
             const body = document.querySelector('body');
             const rect = body.getBoundingClientRect();
             return rect.width >= 1000;
@@ -59,7 +59,7 @@ const config = {
 
 module.exports = {
   config
-}
+};
 ```
 
 ## Draw Time

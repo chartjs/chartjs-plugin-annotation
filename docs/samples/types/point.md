@@ -72,8 +72,7 @@ const config = {
 // <block:utils:3>
 function value(ctx, datasetIndex, index, prop) {
   const meta = ctx.chart.getDatasetMeta(datasetIndex);
-  const value = meta.controller.getParsed(index)[prop];
-  return value;
+  return meta.controller.getParsed(index)[prop];
 }
 // </block:utils>
 

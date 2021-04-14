@@ -65,12 +65,12 @@ const config = {
 // <block:utils:3>
 function min(ctx, datasetIndex, prop) {
   const dataset = ctx.chart.data.datasets[datasetIndex];
-  return dataset.data.reduce((max, point) => Math.min(point[prop], max), Infinity);
+  return dataset.data.reduce((v, point) => Math.min(point[prop], v), Infinity);
 }
 
 function max(ctx, datasetIndex, prop) {
   const dataset = ctx.chart.data.datasets[datasetIndex];
-  return dataset.data.reduce((max, point) => Math.max(point[prop], max), -Infinity);
+  return dataset.data.reduce((v, point) => Math.max(point[prop], v), -Infinity);
 }
 
 // </block:utils>
