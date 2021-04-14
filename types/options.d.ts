@@ -19,24 +19,26 @@ export type AnnotationOptions<TYPE extends AnnotationType = AnnotationType> =
 
 export interface CoreAnnotationOptions extends AnnotationEvents {
 	id?: string,
-	display?: boolean | ((context: PartialEventContext, options: AnnotationOptions) => boolean),
-	borderColor?: Color,
-	borderWidth?: number,
-	borderDash?: [number, number],
-	borderDashOffset?: number,
-	drawTime?: DrawTime,
-	endValue?: any,
-	scaleID?: string,
-	value?: any,
-	xScaleID?: string,
-	yScaleID?: string,
+	display?: Scriptable<boolean, PartialEventContext>,
+	borderColor?: Scriptable<Color, PartialEventContext>,
+	borderWidth?: Scriptable<number, PartialEventContext>,
+	borderDash?: Scriptable<[number, number], PartialEventContext>,
+	borderDashOffset?: Scriptable<number, PartialEventContext>,
+	drawTime?: Scriptable<DrawTime, PartialEventContext>,
+	endValue?: Scriptable<number|string, PartialEventContext>,
+	scaleID?: Scriptable<string, PartialEventContext>,
+	value?: Scriptable<number|string, PartialEventContext>,
+	xScaleID?: Scriptable<string, PartialEventContext>,
+	yScaleID?: Scriptable<string, PartialEventContext>,
 }
 
+export type Scriptable<T, TContext> = T | ((ctx: TContext, options: AnnotationOptions) => T);
+export type ScaleValue = number | string;
 interface AnnotationCoordinates {
-  xMax?: any,
-  xMin?: any,
-  yMax?: any,
-  yMin?: any,
+  xMax?: Scriptable<ScaleValue, PartialEventContext>,
+  xMin?: Scriptable<ScaleValue, PartialEventContext>,
+  yMax?: Scriptable<ScaleValue, PartialEventContext>,
+  yMin?: Scriptable<ScaleValue, PartialEventContext>,
 }
 
 export interface LineAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
@@ -44,23 +46,23 @@ export interface LineAnnotationOptions extends CoreAnnotationOptions, Annotation
 }
 
 export interface BoxAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
-	backgroundColor?: Color,
-	cornerRadius?: number
+	backgroundColor?: Scriptable<Color, PartialEventContext>,
+	cornerRadius?: Scriptable<number, PartialEventContext>
 }
 
 interface EllipseAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
-	backgroundColor?: Color,
+	backgroundColor?: Scriptable<Color, PartialEventContext>,
 }
 
 interface PointAnnotationOptions extends CoreAnnotationOptions {
-	backgroundColor: Color,
-	radius?: number,
-	xValue?: any;
-	yValue?: any;
+	backgroundColor: Scriptable<Color, PartialEventContext>,
+	radius?: Scriptable<number, PartialEventContext>,
+	xValue?: Scriptable<ScaleValue, PartialEventContext>;
+	yValue?: Scriptable<ScaleValue, PartialEventContext>;
 }
 
 export interface AnnotationPluginOptions extends AnnotationEvents {
 	annotations: AnnotationOptions[] | Record<string, AnnotationOptions>,
-	dblClickSpeed?: number,
-	drawTime?: DrawTime,
+	dblClickSpeed?: Scriptable<number, PartialEventContext>,
+	drawTime?: Scriptable<DrawTime, PartialEventContext>,
 }
