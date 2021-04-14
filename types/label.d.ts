@@ -29,6 +29,12 @@ export interface LabelOptions {
 	position?: LabelPosition,
 
 	/**
+	 * Text alignment when the content of the label is multi-line.
+	 * @default 'center'
+	 */
+	textAlign?: LabelTextAlign,
+
+	/**
 	 * Adjustment along x-axis (left-right) of label relative to above number (can be negative)
 	 * For horizontal lines positioned left or right, negative values move
 	 * the label toward the edge, and positive values toward the center.
@@ -75,3 +81,5 @@ export interface LabelOptions {
 }
 
 export type LabelPosition = 'top' | 'bottom' | 'left' | 'right' | 'center';
+
+export type LabelTextAlign = 'start' | 'center' | 'end';

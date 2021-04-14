@@ -143,6 +143,7 @@ LineAnnotation.defaults = {
     position: 'center',
     xAdjust: 0,
     yAdjust: 0,
+    textAlign: 'center',
     enabled: false,
     content: null
   },
@@ -172,7 +173,6 @@ function drawLabel(ctx, line, chartArea) {
   const label = line.options.label;
 
   ctx.font = toFontString(label.font);
-  ctx.textAlign = 'center';
 
   const {width, height} = measureLabel(ctx, label);
   const rect = line.labelRect = calculateLabelPosition(line, width, height, chartArea);
@@ -186,12 +186,14 @@ function drawLabel(ctx, line, chartArea) {
 
   ctx.fillStyle = label.color;
   if (isArray(label.content)) {
+    ctx.textAlign = label.textAlign;
+    const x = calculateLabelXAlignment(label, width);
     let textYPosition = -(height / 2) + label.yPadding;
     for (let i = 0; i < label.content.length; i++) {
       ctx.textBaseline = 'top';
       ctx.fillText(
         label.content[i],
-        -(width / 2) + (width / 2),
+        x,
         textYPosition
       );
       textYPosition += label.font.size + label.yPadding;
@@ -201,9 +203,20 @@ function drawLabel(ctx, line, chartArea) {
     const y = -(height / 2) + label.yPadding;
     ctx.drawImage(label.content, x, y, width - (2 * label.xPadding), height - (2 * label.yPadding));
   } else {
+    ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(label.content, 0, 0);
   }
+}
+
+function calculateLabelXAlignment(label, width) {
+  const {textAlign, xPadding} = label;
+  if (textAlign === 'start') {
+    return -(width / 2) + xPadding;
+  } else if (textAlign === 'end') {
+    return +(width / 2) - xPadding;
+  }
+  return 0;
 }
 
 function getImageSize(size, value) {
