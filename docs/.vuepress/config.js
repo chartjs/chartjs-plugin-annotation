@@ -63,6 +63,13 @@ module.exports = {
             'types/point'
           ],
         },
+        {
+          title: 'Charts',
+          collapsable: false,
+          children: [
+            'charts/bar',
+          ],
+        },
       ]
     }
   }
