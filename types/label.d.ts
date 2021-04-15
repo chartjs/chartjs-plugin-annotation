@@ -81,6 +81,6 @@ export interface LabelOptions {
 	rotation?: Scriptable<number | 'auto', PartialEventContext>
 }
 
-export type LabelPosition = 'top' | 'bottom' | 'left' | 'right' | 'center';
+export type LabelPosition = 'start' | 'center' | 'end';
 
 export type LabelTextAlign = 'start' | 'center' | 'end';
