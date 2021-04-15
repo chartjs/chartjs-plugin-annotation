@@ -3,7 +3,11 @@ import {isArray, toFontString, toRadians} from 'chart.js/helpers';
 import {scaleValue, roundedRect, rotated} from '../helpers';
 
 const PI = Math.PI;
-const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
+const clamp = (x, from, to) => Math.min(to, Math.max(from, x));
+const pointInLine = (p1, p2, t) => {
+  t = clamp(t, 0, 1);
+  return {x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)};
+};
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
 const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
@@ -303,7 +307,7 @@ function calculateTAdjust(lineSize, labelSize, label, space) {
   const lineH = lineSize.h * space.dy;
   const x = (lineW > 0) && ((labelSize.w / 2 + xPadding - space.x) / lineW);
   const y = (lineH > 0) && ((labelSize.h / 2 + yPadding - space.y) / lineH);
-  return Math.max(Math.min(Math.max(x, y), 0.25), 0);
+  return clamp(Math.max(x, y), 0, 0.25);
 }
 
 function spaceAround(line, chartArea) {
