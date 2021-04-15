@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {isArray, toFontString, toRadians} from 'chart.js/helpers';
-import {scaleValue, roundedRect, rotated} from '../helpers';
+import {scaleRange, scaleValue, roundedRect, rotated} from '../helpers';
 
 const PI = Math.PI;
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
@@ -99,13 +99,11 @@ export default class LineAnnotation extends Element {
       const yScale = chart.scales[options.yScaleID];
 
       if (xScale) {
-        x = scaleValue(xScale, options.xMin, x);
-        x2 = scaleValue(xScale, options.xMax, x2);
+        ([x, x2] = scaleRange(xScale, options.xMin, options.xMax, x, x2));
       }
 
       if (yScale) {
-        y = scaleValue(yScale, options.yMin, y);
-        y2 = scaleValue(yScale, options.yMax, y2);
+        ([y, y2] = scaleRange(yScale, options.yMin, options.yMax, y, y2));
       }
     }
     return {
