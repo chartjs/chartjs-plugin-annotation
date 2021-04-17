@@ -9,7 +9,7 @@ This plugin draws lines, boxes, points and ellipses on the chart area. Annotatio
 ## Installation
 
 ```bash
-> npm install chartjs-plugin-annotation@next
+> npm install chartjs-plugin-annotation
 ```
 
 :::tip
