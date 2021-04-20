@@ -53,7 +53,6 @@ module.exports = [
       name,
       file: main.replace('.js', '.min.js'),
       format: 'umd',
-      sourcemap: true,
       indent: false,
       globals
     },
