@@ -65,7 +65,7 @@ export default {
 
   afterDataLimits(chart, args) {
     const state = chartStates.get(chart);
-    adjustScaleRange(chart, args.scale, state.annotations.filter(a => a.display));
+    adjustScaleRange(chart, args.scale, state.annotations.filter(a => a.display && a.adjustScaleRange));
   },
 
   afterUpdate(chart, args, options) {

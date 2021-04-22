@@ -34,6 +34,7 @@ EllipseAnnotation.id = 'ellipseAnnotation';
 
 EllipseAnnotation.defaults = {
   display: true,
+  adjustScaleRange: true,
   borderDash: [],
   borderDashOffset: 0,
   borderWidth: 1,

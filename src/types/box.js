@@ -81,6 +81,7 @@ BoxAnnotation.id = 'boxAnnotation';
 
 BoxAnnotation.defaults = {
   display: true,
+  adjustScaleRange: true,
   borderDash: [],
   borderDashOffset: 0,
   borderWidth: 1,
