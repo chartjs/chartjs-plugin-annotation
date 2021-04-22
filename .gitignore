@@ -4,6 +4,7 @@
 /custom
 /dist
 /gh-pages
+/docs/.docusaurus
 
 # Node.js
 node_modules/

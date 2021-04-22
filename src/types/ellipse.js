@@ -8,7 +8,7 @@ export default class EllipseAnnotation extends BoxAnnotation {
 
   draw(ctx) {
     const {width, height, options} = this;
-    const center = this.getCenterPoint(true);
+    const center = this.getCenterPoint();
 
     ctx.save();
 
@@ -34,11 +34,15 @@ EllipseAnnotation.id = 'ellipseAnnotation';
 
 EllipseAnnotation.defaults = {
   display: true,
-  xScaleID: 'x',
-  yScaleID: 'y',
   borderDash: [],
   borderDashOffset: 0,
   borderWidth: 1,
+  xScaleID: 'x',
+  xMin: undefined,
+  xMax: undefined,
+  yScaleID: 'y',
+  yMin: undefined,
+  yMax: undefined
 };
 
 EllipseAnnotation.defaultRoutes = {

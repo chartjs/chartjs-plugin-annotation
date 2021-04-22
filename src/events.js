@@ -2,11 +2,10 @@ import {distanceBetweenPoints, callback as callHandler} from 'chart.js/helpers';
 
 const clickHooks = ['click', 'dblclick'];
 const moveHooks = ['enter', 'leave'];
-const hooks = clickHooks.concat(moveHooks);
+export const hooks = clickHooks.concat(moveHooks);
 
-export function updateListeners(chart, state) {
-  const options = state.options;
-  const annotations = options.annotations || [];
+export function updateListeners(chart, state, options) {
+  const annotations = state.annotations || [];
   state.listened = false;
   state.moveListened = false;
 
@@ -43,7 +42,7 @@ export function updateListeners(chart, state) {
   }
 }
 
-export function handleEvent(chart, state, event) {
+export function handleEvent(chart, state, event, options) {
   if (state.listened) {
     switch (event.type) {
     case 'mousemove':
@@ -51,7 +50,7 @@ export function handleEvent(chart, state, event) {
       handleMoveEvents(chart, state, event);
       break;
     case 'click':
-      handleClickEvents(chart, state, event);
+      handleClickEvents(chart, state, event, options);
       break;
     default:
     }
@@ -84,8 +83,7 @@ function dispatchMoveEvents(chart, state, previous, element) {
   }
 }
 
-function handleClickEvents(chart, state, event) {
-  const options = state.options;
+function handleClickEvents(chart, state, event, options) {
   const listeners = state.listeners;
   const element = getNearestItem(state.elements, event);
   if (element) {

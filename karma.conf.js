@@ -1,4 +1,5 @@
 const istanbul = require('rollup-plugin-istanbul');
+const json = require('@rollup/plugin-json');
 const resolve = require('@rollup/plugin-node-resolve').default;
 const builds = require('./rollup.config');
 const yargs = require('yargs');
@@ -18,6 +19,7 @@ module.exports = function(karma) {
 
   if (env === 'test') {
     build.plugins = [
+      json(),
       resolve(),
       istanbul({exclude: ['node_modules/**/*.js', 'package.json']})
     ];
@@ -88,7 +90,10 @@ module.exports = function(karma) {
     // These settings deal with browser disconnects. We had seen test flakiness from Firefox
     // [Firefox 56.0.0 (Linux 0.0.0)]: Disconnected (1 times), because no message in 10000 ms.
     // https://github.com/jasmine/jasmine/issues/1327#issuecomment-332939551
-    browserDisconnectTolerance: 3
+    captureTimeout: 120000,
+    browserDisconnectTimeout: 120000,
+    browserDisconnectTolerance: 3,
+    browserNoActivityTimeout: 120000,
   });
 
   if (env === 'test') {

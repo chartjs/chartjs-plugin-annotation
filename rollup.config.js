@@ -1,3 +1,4 @@
+const json = require('@rollup/plugin-json');
 const resolve = require('@rollup/plugin-node-resolve').default;
 const terser = require('rollup-plugin-terser').terser;
 const {name, version, homepage, main, module: _module} = require('./package.json');
@@ -24,6 +25,7 @@ module.exports = [
   {
     input,
     plugins: [
+      json(),
       resolve(),
     ],
     output: {
@@ -39,6 +41,7 @@ module.exports = [
   {
     input,
     plugins: [
+      json(),
       resolve(),
       terser({
         output: {
@@ -50,7 +53,6 @@ module.exports = [
       name,
       file: main.replace('.js', '.min.js'),
       format: 'umd',
-      sourcemap: true,
       indent: false,
       globals
     },
@@ -59,6 +61,7 @@ module.exports = [
   {
     input: inputESM,
     plugins: [
+      json(),
       resolve()
     ],
     output: {

@@ -1,10 +1,11 @@
-import { Plugin } from 'chart.js';
+import { Plugin, ChartType } from 'chart.js';
 import { AnnotationPluginOptions } from './options';
 
 declare module 'chart.js' {
-	interface PluginOptionsByType {
-	  annotation: AnnotationPluginOptions;
-	}
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface PluginOptionsByType<TType extends ChartType> {
+    annotation: AnnotationPluginOptions;
+  }
 }
 
 declare const Annotation: Plugin;

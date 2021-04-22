@@ -101,12 +101,12 @@
 					scales: {
 						x: {
 							position: 'top',
-							gridLines: {
+							grid: {
 								zeroLineColor: 'rgba(0,255,0,1)'
 							},
-							scaleLabel: {
+							title: {
 								display: true,
-								labelString: 'x axis'
+								text: 'x axis'
 							},
 							ticks: {
 								maxRotation: 0,
@@ -115,12 +115,12 @@
 						},
 						y: {
 							position: 'right',
-							gridLines: {
+							grid: {
 								zeroLineColor: 'rgba(0,255,0,1)'
 							},
-							scaleLabel: {
+							title: {
 								display: true,
-								labelString: 'y axis'
+								text: 'y axis'
 							},
 							ticks: {
 								reverse: true
@@ -131,15 +131,18 @@
 						annotation: {
 							drawTime: 'afterDraw',
 							annotations: {
-								point: {
-									type: 'point',
+								box: {
+									type: 'box',
 									xScaleID: 'x',
 									yScaleID: 'y',
-									xValue: 0,
-									yValue: 0,
+									xMin: -120,
+									xMax: 20,
+									yMin: -120,
+									yMax: 20,
 									backgroundColor: 'rgba(101, 33, 171, 0.5)',
 									borderColor: 'rgb(101, 33, 171)',
-									radius: 50,
+									borderWidth: 1,
+									cornerRadius: 10,
 									click(context) {
 										console.log('Annotation', context);
 									}

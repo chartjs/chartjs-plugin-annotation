@@ -73,7 +73,9 @@ PointAnnotation.defaults = {
   borderWidth: 1,
   radius: 10,
   xScaleID: 'x',
-  yScaleID: 'y'
+  xValue: undefined,
+  yScaleID: 'y',
+  yValue: undefined
 };
 
 PointAnnotation.defaultRoutes = {

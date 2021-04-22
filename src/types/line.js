@@ -1,9 +1,13 @@
-import {Element, defaults} from 'chart.js';
+import {Element} from 'chart.js';
 import {isArray, toFontString, toRadians} from 'chart.js/helpers';
 import {scaleValue, roundedRect, rotated} from '../helpers';
 
 const PI = Math.PI;
-const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
+const clamp = (x, from, to) => Math.min(to, Math.max(from, x));
+const pointInLine = (p1, p2, t) => {
+  t = clamp(t, 0, 1);
+  return {x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)};
+};
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
 const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
@@ -59,7 +63,6 @@ export default class LineAnnotation extends Element {
 
     ctx.lineWidth = options.borderWidth;
     ctx.strokeStyle = options.borderColor;
-
     ctx.setLineDash(options.borderDash);
     ctx.lineDashOffset = options.borderDashOffset;
 
@@ -128,10 +131,13 @@ LineAnnotation.defaults = {
   borderDashOffset: 0,
   label: {
     backgroundColor: 'rgba(0,0,0,0.8)',
+    drawTime: undefined,
     font: {
-      family: defaults.font.family,
-      size: defaults.font.size,
+      family: undefined,
+      lineHeight: undefined,
+      size: undefined,
       style: 'bold',
+      weight: undefined
     },
     color: '#fff',
     xPadding: 6,
@@ -141,9 +147,19 @@ LineAnnotation.defaults = {
     position: 'center',
     xAdjust: 0,
     yAdjust: 0,
+    textAlign: 'center',
     enabled: false,
     content: null
-  }
+  },
+  value: undefined,
+  endValue: undefined,
+  scaleID: undefined,
+  xScaleID: 'x',
+  xMin: undefined,
+  xMax: undefined,
+  yScaleID: 'y',
+  yMin: undefined,
+  yMax: undefined
 };
 
 LineAnnotation.defaultRoutes = {
@@ -161,7 +177,6 @@ function drawLabel(ctx, line, chartArea) {
   const label = line.options.label;
 
   ctx.font = toFontString(label.font);
-  ctx.textAlign = 'center';
 
   const {width, height} = measureLabel(ctx, label);
   const rect = line.labelRect = calculateLabelPosition(line, width, height, chartArea);
@@ -175,12 +190,14 @@ function drawLabel(ctx, line, chartArea) {
 
   ctx.fillStyle = label.color;
   if (isArray(label.content)) {
+    ctx.textAlign = label.textAlign;
+    const x = calculateLabelXAlignment(label, width);
     let textYPosition = -(height / 2) + label.yPadding;
     for (let i = 0; i < label.content.length; i++) {
       ctx.textBaseline = 'top';
       ctx.fillText(
         label.content[i],
-        -(width / 2) + (width / 2),
+        x,
         textYPosition
       );
       textYPosition += label.font.size + label.yPadding;
@@ -190,9 +207,20 @@ function drawLabel(ctx, line, chartArea) {
     const y = -(height / 2) + label.yPadding;
     ctx.drawImage(label.content, x, y, width - (2 * label.xPadding), height - (2 * label.yPadding));
   } else {
+    ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(label.content, 0, 0);
   }
+}
+
+function calculateLabelXAlignment(label, width) {
+  const {textAlign, xPadding} = label;
+  if (textAlign === 'start') {
+    return -(width / 2) + xPadding;
+  } else if (textAlign === 'end') {
+    return +(width / 2) - xPadding;
+  }
+  return 0;
 }
 
 function getImageSize(size, value) {
@@ -279,7 +307,7 @@ function calculateTAdjust(lineSize, labelSize, label, space) {
   const lineH = lineSize.h * space.dy;
   const x = (lineW > 0) && ((labelSize.w / 2 + xPadding - space.x) / lineW);
   const y = (lineH > 0) && ((labelSize.h / 2 + yPadding - space.y) / lineH);
-  return Math.max(Math.min(Math.max(x, y), 0.25), 0);
+  return clamp(Math.max(x, y), 0, 0.25);
 }
 
 function spaceAround(line, chartArea) {

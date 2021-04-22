@@ -16,11 +16,15 @@
 
 <body>
 	<div style="width:75%">
-		<div>
-			<canvas id="canvas"></canvas>
-		</div>
+		<canvas id="canvas"></canvas>
 	</div>
+	<button id="add">Add line</button>
+	<button id="remove">Remove line</button>
+
 	<script>
+		document.getElementById('add').addEventListener('click', addLine);
+		document.getElementById('remove').addEventListener('click', removeLine);
+
 		const randomScalingFactor = function() {
 			return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
 		};
@@ -88,6 +92,14 @@
 			dataset.pointBorderWidth = 1;
 		});
 
+		const lines = [{
+			type: 'line',
+			scaleID: 'y',
+			value: randomScalingFactor() + 50,
+			borderColor: randomColor(0.75),
+			borderWidth: 5
+		}];
+
 		window.onload = function() {
 			const ctx = document.getElementById('canvas').getContext('2d');
 			window.myScatter = new Chart(ctx, {
@@ -101,80 +113,57 @@
 					scales: {
 						x: {
 							position: 'top',
-							gridLines: {
+							grid: {
 								zeroLineColor: 'rgba(0,255,0,1)'
 							},
-							scaleLabel: {
+							title: {
 								display: true,
-								labelString: 'x axis'
+								text: 'x axis'
 							},
 							ticks: {
 								maxRotation: 0,
-								reverse: true,
-								// min: -100,
-								// max: 0
+								reverse: true
 							}
 						},
 						y: {
 							position: 'right',
-							gridLines: {
+							grid: {
 								zeroLineColor: 'rgba(0,255,0,1)'
 							},
-							scaleLabel: {
+							title: {
 								display: true,
-								labelString: 'y axis'
+								text: 'y axis'
 							},
 							ticks: {
-								reverse: true,
-								// min: -100,
-								// max: 0
+								reverse: true
 							}
 						}
 					},
 					plugins: {
 						annotation: {
-							annotations: {
-								myHorizontalLine: {
-									type: 'line',
-									scaleID: 'y',
-									value: 25,
-									borderColor: 'black',
-									borderWidth: 5,
-									label: {
-										position: 'start',
-										yAdjust: -20,
-										backgroundColor: 'red',
-										content: 'This is a long test label',
-										enabled: true
-									},
-									click(context) {
-										// The annotation is is bound to the `this` variable
-										console.log('Annotation', context);
-									}
-								},
-								myVerticalLine: {
-									type: 'line',
-									scaleID: 'x',
-									value: 25,
-									endValue: 45,
-									borderColor: 'red',
-									borderWidth: 5,
-									label: {
-										position: 'start',
-										content: 'This is another test label',
-										enabled: true
-									},
-									click(context) {
-										// The annotation is is bound to the `this` variable
-										console.log('Annotation', context);
-									}
-								}
-							}
+							drawTime: 'afterDraw',
+							annotations: lines
 						}
 					}
 				}
 			});
 		};
+
+		function addLine() {
+			lines.push({
+				type: 'line',
+				scaleID: 'y',
+				value: randomScalingFactor(),
+				borderColor: randomColor(0.75),
+				borderWidth: 5
+			});
+			window.myScatter.update();
+		}
+
+		function removeLine() {
+			lines.pop();
+			window.myScatter.update();
+		}
 	</script>
 </body>
 

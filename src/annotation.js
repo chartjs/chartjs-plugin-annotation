@@ -1,10 +1,11 @@
-import {Animations, Chart} from 'chart.js';
-import {clipArea, unclipArea, isFinite, clone, merge, resolve, valueOrDefault, isObject, isArray} from 'chart.js/helpers';
-import {handleEvent, updateListeners} from './events';
+import {Animations, Chart, defaults} from 'chart.js';
+import {clipArea, unclipArea, isFinite, valueOrDefault, isObject, isArray} from 'chart.js/helpers';
+import {handleEvent, hooks, updateListeners} from './events';
 import BoxAnnotation from './types/box';
 import LineAnnotation from './types/line';
 import EllipseAnnotation from './types/ellipse';
 import PointAnnotation from './types/point';
+import {version} from '../package.json';
 
 const chartStates = new Map();
 
@@ -15,8 +16,16 @@ const annotationTypes = {
   point: PointAnnotation
 };
 
+Object.keys(annotationTypes).forEach(key => {
+  defaults.describe(`elements.${annotationTypes[key].id}`, {
+    _fallback: 'plugins.annotation'
+  });
+});
+
 export default {
   id: 'annotation',
+
+  version,
 
   afterRegister() {
     Chart.register(annotationTypes);
@@ -28,50 +37,41 @@ export default {
 
   beforeInit(chart) {
     chartStates.set(chart, {
+      annotations: [],
       elements: [],
-      options: {},
       listeners: {},
       listened: false,
-      moveListened: false,
-      scales: new Set()
+      moveListened: false
     });
   },
 
   beforeUpdate(chart, args, options) {
     const state = chartStates.get(chart);
-    state.options = clone(options);
-    const annotations = state.options.annotations;
+    const annotations = state.annotations = [];
 
-    if (isObject(annotations)) {
-      const array = new Array();
-      Object.keys(annotations).forEach(key => {
-        let value = annotations[key];
+    let annotationOptions = options.annotations;
+    if (isObject(annotationOptions)) {
+      Object.keys(annotationOptions).forEach(key => {
+        const value = annotationOptions[key];
         if (isObject(value)) {
           value.id = key;
-          array.push(resolveAnnotationOptions(chart, value));
+          annotations.push(value);
         }
       });
-      state.options.annotations = array;
-    } else if (isArray(annotations)) {
-      for (var i = 0; i < annotations.length; i++) {
-        annotations[i] = resolveAnnotationOptions(chart, annotations[i]);
-      }
-    } else {
-      state.options.annotations = [];
+    } else if (isArray(annotationOptions)) {
+      annotations.push(...annotationOptions);
     }
   },
 
   afterDataLimits(chart, args) {
-    if (args.scale.type !== 'category') {
-      const state = chartStates.get(chart);
-      adjustScaleRange(args.scale, state.options);
-    }
+    const state = chartStates.get(chart);
+    adjustScaleRange(chart, args.scale, state.annotations.filter(a => a.display));
   },
 
-  afterUpdate(chart, args) {
+  afterUpdate(chart, args, options) {
     const state = chartStates.get(chart);
-    updateListeners(chart, state);
-    updateElements(chart, state, args.mode);
+    updateListeners(chart, state, options);
+    updateElements(chart, state, options, args.mode);
   },
 
   beforeDatasetsDraw(chart) {
@@ -90,9 +90,9 @@ export default {
     draw(chart, 'afterDraw');
   },
 
-  beforeEvent(chart, args) {
+  beforeEvent(chart, args, options) {
     const state = chartStates.get(chart);
-    handleEvent(chart, state, args.event);
+    handleEvent(chart, state, args.event, options);
   },
 
   destroy(chart) {
@@ -106,26 +106,32 @@ export default {
   defaults: {
     drawTime: 'afterDatasetsDraw',
     dblClickSpeed: 350, // ms
-    annotations: {},
-    animation: {
+    animations: {
       numbers: {
         properties: ['x', 'y', 'x2', 'y2', 'width', 'height'],
         type: 'number'
       },
+    },
+    label: {
+      drawTime: null
     }
   },
+
+  descriptors: {
+    _indexable: false,
+    _scriptable: (prop) => !hooks.includes(prop),
+    annotations: {
+      _allKeys: false,
+      _fallback: (prop, opts) => `elements.${annotationTypes[opts.type || 'line'].id}`,
+    },
+  },
+
+  additionalOptionScopes: ['']
 };
 
 const directUpdater = {
   update: Object.assign
 };
-
-function resolveAnnotationOptions(chart, options) {
-  const elType = annotationTypes[options.type] || annotationTypes.line;
-  const elOptions = merge(Object.create(null), [elType.defaults, chart.options.elements[elType.id], options]);
-  elOptions.display = !!resolve([elOptions.display, true], {chart, options: elOptions});
-  return elOptions;
-}
 
 function resolveAnimations(chart, animOpts, mode) {
   if (mode === 'reset' || mode === 'none' || mode === 'resize') {
@@ -134,13 +140,10 @@ function resolveAnimations(chart, animOpts, mode) {
   return new Animations(chart, animOpts);
 }
 
-function updateElements(chart, state, mode) {
-  const options = state.options;
-  const chartAnims = chart.options.animation;
-  const animOpts = chartAnims && merge({}, [chartAnims, options.animation]);
-  const animations = resolveAnimations(chart, animOpts, mode);
+function updateElements(chart, state, options, mode) {
+  const animations = resolveAnimations(chart, options.animations, mode);
 
-  const annotations = options.annotations || [];
+  const annotations = state.annotations;
   const elements = resyncElements(state.elements, annotations);
 
   for (let i = 0; i < annotations.length; i++) {
@@ -150,10 +153,43 @@ function updateElements(chart, state, mode) {
     if (!el || !(el instanceof elType)) {
       el = elements[i] = new elType();
     }
-    const properties = el.resolveElementProperties(chart, annotation);
-    properties.options = annotation;
+    const opts = resolveAnnotationOptions(annotation.setContext(getContext(chart, el, annotation)));
+    const properties = el.resolveElementProperties(chart, opts);
+    properties.skip = isNaN(properties.x) || isNaN(properties.y);
+    properties.options = opts;
     animations.update(el, properties);
   }
+}
+
+function resolveAnnotationOptions(resolver) {
+  const elType = annotationTypes[resolver.type] || annotationTypes.line;
+  const result = {};
+  result.id = resolver.id;
+  result.type = resolver.type;
+  result.drawTime = resolver.drawTime;
+  Object.assign(result, resolveObj(resolver, elType.defaults), resolveObj(resolver, elType.defaultRoutes));
+  for (const hook of hooks) {
+    result[hook] = resolver[hook];
+  }
+  return result;
+}
+
+function resolveObj(resolver, defs) {
+  const result = {};
+  for (const name of Object.keys(defs)) {
+    const optDefs = defs[name];
+    const value = resolver[name];
+    result[name] = isObject(optDefs) ? resolveObj(value, optDefs) : value;
+  }
+  return result;
+}
+
+function getContext(chart, element, annotation) {
+  return element.$context || (element.$context = Object.assign(Object.create(chart.getContext()), {
+    element,
+    id: annotation.id,
+    type: 'annotation'
+  }));
 }
 
 function resyncElements(elements, annotations) {
@@ -172,26 +208,24 @@ function resyncElements(elements, annotations) {
 function draw(chart, caller) {
   const {ctx, chartArea} = chart;
   const state = chartStates.get(chart);
-  const options = state.options;
-  const elements = state.elements.filter(el => el.options.display);
+  const elements = state.elements.filter(el => !el.skip && el.options.display);
 
   clipArea(ctx, chartArea);
   elements.forEach(el => {
-    if ((el.options.drawTime || options.drawTime || caller) === caller) {
+    if (el.options.drawTime === caller) {
       el.draw(ctx);
     }
   });
   unclipArea(ctx);
 
   elements.forEach(el => {
-    if ('drawLabel' in el && el.options.label && (el.options.label.drawTime || el.options.drawTime || options.drawTime || caller) === caller) {
+    if ('drawLabel' in el && el.options.label && (el.options.label.drawTime || el.options.drawTime) === caller) {
       el.drawLabel(ctx, chartArea);
     }
   });
 }
 
-function adjustScaleRange(scale, options) {
-  const annotations = options.annotations.filter(annotation => annotation.display);
+function adjustScaleRange(chart, scale, annotations) {
   const range = getScaleLimits(scale, annotations);
   let changed = false;
   if (isFinite(range.min) &&
@@ -214,18 +248,29 @@ function adjustScaleRange(scale, options) {
 function getScaleLimits(scale, annotations) {
   const axis = scale.axis;
   const scaleID = scale.id;
-  const scaleIDOption = scale.axis + 'ScaleID';
-  const scaleAnnotations = annotations.filter(annotation => annotation[scaleIDOption] === scaleID || annotation.scaleID === scaleID);
+  const scaleIDOption = axis + 'ScaleID';
   let min = valueOrDefault(scale.min, Number.NEGATIVE_INFINITY);
   let max = valueOrDefault(scale.max, Number.POSITIVE_INFINITY);
-  scaleAnnotations.forEach(annotation => {
-    ['value', 'endValue', axis + 'Min', axis + 'Max', axis + 'Value'].forEach(prop => {
-      if (prop in annotation) {
-        const value = scale.parse(annotation[prop]);
-        min = Math.min(min, value);
-        max = Math.max(max, value);
+  for (const annotation of annotations) {
+    if (annotation.scaleID === scaleID) {
+      for (const prop of ['value', 'endValue']) { //
+        const raw = annotation[prop];
+        if (raw) {
+          const value = scale.parse(raw);
+          min = Math.min(min, value);
+          max = Math.max(max, value);
+        }
       }
-    });
-  });
+    } else if (annotation[scaleIDOption] === scaleID) {
+      for (const prop of [axis + 'Min', axis + 'Max', axis + 'Value']) {
+        const raw = annotation[prop];
+        if (raw) {
+          const value = scale.parse(raw);
+          min = Math.min(min, value);
+          max = Math.max(max, value);
+        }
+      }
+    }
+  }
   return {min, max};
 }
