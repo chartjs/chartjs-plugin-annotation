@@ -12,24 +12,31 @@ const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
 const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
 
-function limitPointToArea({x, y}, p2, {top, right, bottom, left}) {
-  if (x < left) {
-    y = p2.x < left ? NaN : interpolateY(left, {x, y}, p2);
-    x = left;
+/**
+ * Limits p1[prop] to min-max range interpolating the other coordinate at the limit
+ * @param {{x: number, y: number}} p1 - the point to limit
+ * @param {{x: number, y: number}} p2 - other end of the line
+ * @param {'x'|'y'} prop - property to limit
+ * @param {min: number, max: number}} - opts
+ */
+function limit(p1, p2, prop, {min, max}) {
+  const isX = prop === 'x';
+  const interpolate = isX ? interpolateY : interpolateX;
+  const tgt = isX ? 'y' : 'x';
+  if (p1[prop] < min) {
+    p1[tgt] = p2[prop] < min ? NaN : interpolate(min, p1, p2);
+    p1[prop] = min;
   }
-  if (x > right) {
-    y = p2.x > right ? NaN : interpolateY(right, {x, y}, p2);
-    x = right;
+  if (p1[prop] > max) {
+    p1[tgt] = p2[prop] > max ? NaN : interpolate(max, p1, p2);
+    p1[prop] = max;
   }
-  if (y < top) {
-    x = p2.y < top ? NaN : interpolateX(top, {x, y}, p2);
-    y = top;
-  }
-  if (y > bottom) {
-    x = p2.y > bottom ? NaN : interpolateX(bottom, {x, y}, p2);
-    y = bottom;
-  }
-  return {x, y};
+}
+
+function limitPointToArea(p1, p2, {top, right, bottom, left}) {
+  limit(p1, p2, 'x', {min: left, max: right});
+  limit(p1, p2, 'y', {min: top, max: bottom});
+  return p1;
 }
 
 function limitLineToArea(p1, p2, area) {
