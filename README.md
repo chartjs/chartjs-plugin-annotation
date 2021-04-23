@@ -1,6 +1,7 @@
 # chartjs-plugin-annotation.js
 
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/chartjs/chartjs-plugin-annotation/Node.js%20CI)](https://github.com/chartjs/chartjs-plugin-annotation/actions/workflows/ci.yml)
+[![Coverage Status](https://coveralls.io/repos/github/chartjs/chartjs-plugin-annotation/badge.svg?branch=master)](https://coveralls.io/github/chartjs/chartjs-plugin-annotation?branch=master)
 [![release](https://img.shields.io/github/v/release/chartjs/chartjs-plugin-annotation?include_prereleases)](https://github.com/chartjs/chartjs-plugin-annotation/releases)
 [![npm (latest)](https://img.shields.io/npm/v/chartjs-plugin-annotation/latest)](https://www.npmjs.com/package/chartjs-plugin-annotation/v/latest)
 [![npm (next)](https://img.shields.io/npm/v/chartjs-plugin-annotation/next)](https://www.npmjs.com/package/chartjs-plugin-annotation/v/next)
