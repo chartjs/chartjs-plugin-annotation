@@ -12,6 +12,32 @@ const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
 const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
 
+function limitPointToArea({x, y}, p2, {top, right, bottom, left}) {
+  if (x < left) {
+    y = p2.x < left ? NaN : interpolateY(left, {x, y}, p2);
+    x = left;
+  }
+  if (x > right) {
+    y = p2.x > right ? NaN : interpolateY(right, {x, y}, p2);
+    x = right;
+  }
+  if (y < top) {
+    x = p2.y < top ? NaN : interpolateX(top, {x, y}, p2);
+    y = top;
+  }
+  if (y > bottom) {
+    x = p2.y > bottom ? NaN : interpolateX(bottom, {x, y}, p2);
+    y = bottom;
+  }
+  return {x, y};
+}
+
+function limitLineToArea(p1, p2, area) {
+  const {x, y} = limitPointToArea(p1, p2, area);
+  const {x: x2, y: y2} = limitPointToArea(p2, p1, area);
+  return {x, y, x2, y2, width: Math.abs(x2 - x), height: Math.abs(y2 - y)};
+}
+
 export default class LineAnnotation extends Element {
   intersects(x, y, epsilon) {
     epsilon = epsilon || 0.001;
@@ -112,14 +138,7 @@ export default class LineAnnotation extends Element {
         y2 = scaleValue(yScale, options.yMax, y2);
       }
     }
-    return {
-      x,
-      y,
-      x2,
-      y2,
-      width: x2 - x,
-      height: y2 - y
-    };
+    return limitLineToArea({x, y}, {x: x2, y: y2}, chart.chartArea);
   }
 }
 

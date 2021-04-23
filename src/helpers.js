@@ -3,17 +3,9 @@ import {isFinite} from 'chart.js/helpers';
 const PI = Math.PI;
 const HALF_PI = PI / 2;
 
-function inArea(scale, pixel) {
-  const area = scale.chart.chartArea;
-  return scale.isHorizontal()
-    ? pixel >= area.left && pixel <= area.right
-    : pixel >= area.top && pixel <= area.bottom;
-}
-
 export function scaleValue(scale, value, fallback) {
   value = typeof value === 'number' ? value : scale.parse(value);
-  value = isFinite(value) ? scale.getPixelForValue(value) : fallback;
-  return inArea(scale, value) ? value : fallback;
+  return isFinite(value) ? scale.getPixelForValue(value) : fallback;
 }
 
 /**
