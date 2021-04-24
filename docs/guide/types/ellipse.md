@@ -52,6 +52,7 @@ The following options are available for ellipse annotations.
 | Name | Type | [Scriptable](../options#scriptable-options) | Default
 | ---- | ---- | :----: | ----
 | [`display`](#general) | `boolean` | Yes | `true`
+| [`adjustScaleRange`](#general) | `boolean` | Yes | `true`
 | [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
 | [`xScaleID`](#general) | `string` | Yes | `'x'`
 | [`yScaleID`](#general) | `string` | Yes | `'y'`
@@ -72,6 +73,7 @@ If one of the axes does not match an axis in the chart, the ellipse will take th
 | Name | Description |
 | ---- | ---- |
 | `display` | Whether or not this annotation is visible
+| `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range
 | `drawTime` | See [drawTime](../options#draw-time)
 | `xScaleID` | ID of the X scale to bind onto, default is 'x'.
 | `yScaleID` | ID of the Y scale to bind onto, default is 'y'.

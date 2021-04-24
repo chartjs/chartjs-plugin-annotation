@@ -65,7 +65,7 @@ export default {
 
   afterDataLimits(chart, args) {
     const state = chartStates.get(chart);
-    adjustScaleRange(chart, args.scale, state.annotations.filter(a => a.display));
+    adjustScaleRange(chart, args.scale, state.annotations.filter(a => a.display && a.adjustScaleRange));
   },
 
   afterUpdate(chart, args, options) {
@@ -253,7 +253,7 @@ function getScaleLimits(scale, annotations) {
   let max = valueOrDefault(scale.max, Number.POSITIVE_INFINITY);
   for (const annotation of annotations) {
     if (annotation.scaleID === scaleID) {
-      for (const prop of ['value', 'endValue']) { //
+      for (const prop of ['value', 'endValue']) {
         const raw = annotation[prop];
         if (raw) {
           const value = scale.parse(raw);
