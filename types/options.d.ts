@@ -20,6 +20,7 @@ export type AnnotationOptions<TYPE extends AnnotationType = AnnotationType> =
 export interface CoreAnnotationOptions extends AnnotationEvents {
 	id?: string,
 	display?: Scriptable<boolean, PartialEventContext>,
+  adjustScaleRange?: Scriptable<boolean, PartialEventContext>,
 	borderColor?: Scriptable<Color, PartialEventContext>,
 	borderWidth?: Scriptable<number, PartialEventContext>,
 	borderDash?: Scriptable<[number, number], PartialEventContext>,
