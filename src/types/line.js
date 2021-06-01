@@ -12,38 +12,6 @@ const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
 const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
 
-// https://stackoverflow.com/a/6853926/25507
-function distanceBetweenPointAndLineSegment(x, y, x1, y1, x2, y2) {
-  const A = x - x1;
-  const B = y - y1;
-  const C = x2 - x1;
-  const D = y2 - y1;
-
-  const dot = A * C + B * D;
-  const lenSq = C * C + D * D;
-  let param = -1;
-  if (lenSq !== 0) { // in case of 0 length line
-    param = dot / lenSq;
-  }
-
-  var xx, yy;
-
-  if (param < 0) {
-    xx = x1;
-    yy = y1;
-  } else if (param > 1) {
-    xx = x2;
-    yy = y2;
-  } else {
-    xx = x1 + param * C;
-    yy = y1 + param * D;
-  }
-
-  const dx = x - xx;
-  const dy = y - yy;
-  return Math.sqrt(dx * dx + dy * dy);
-}
-
 function limitPointToArea({x, y}, p2, {top, right, bottom, left}) {
   if (x < left) {
     y = p2.x < left ? NaN : interpolateY(left, {x, y}, p2);
@@ -71,9 +39,26 @@ function limitLineToArea(p1, p2, area) {
 }
 
 export default class LineAnnotation extends Element {
-  intersects(x, y, epsilon) {
-    epsilon = epsilon || 0.001;
-    return distanceBetweenPointAndLineSegment(x, y, this.x, this.y, this.x2, this.y2) < epsilon;
+  intersects(x, y, epsilon = 0.001) {
+    // Adapted from https://stackoverflow.com/a/6853926/25507
+    const sqr = v => v * v;
+    const {x: x1, y: y1, x2, y2} = this;
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const lenSq = sqr(dx) + sqr(dy);
+    const t = lenSq === 0 ? -1 : ((x - x1) * dx + (y - y1) * dy) / lenSq;
+    let xx, yy;
+    if (t < 0) {
+      xx = x1;
+      yy = y1;
+    } else if (t > 1) {
+      xx = x2;
+      yy = y2;
+    } else {
+      xx = x1 + t * dx;
+      yy = y1 + t * dy;
+    }
+    return (sqr(x - xx) + sqr(y - yy)) < epsilon;
   }
 
   labelIsVisible() {
@@ -82,13 +67,8 @@ export default class LineAnnotation extends Element {
   }
 
   isOnLabel(mouseX, mouseY) {
-    if (!this.labelIsVisible()) {
-      return false;
-    }
-
     const {labelRect} = this;
-
-    if (!labelRect) {
+    if (!labelRect || !this.labelIsVisible()) {
       return false;
     }
 
