@@ -4,10 +4,7 @@ import {scaleValue, roundedRect, rotated} from '../helpers';
 
 const PI = Math.PI;
 const clamp = (x, from, to) => Math.min(to, Math.max(from, x));
-const pointInLine = (p1, p2, t) => {
-  t = clamp(t, 0, 1);
-  return {x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)};
-};
+const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
 const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
@@ -39,17 +36,26 @@ function limitLineToArea(p1, p2, area) {
 }
 
 export default class LineAnnotation extends Element {
-  intersects(x, y, epsilon) {
-    epsilon = epsilon || 0.001;
-    const me = this;
-    const p1 = {x: me.x, y: me.y};
-    const p2 = {x: me.x2, y: me.y2};
-    const dy = interpolateY(x, p1, p2);
-    const dx = interpolateX(y, p1, p2);
-    return (
-      (!isFinite(dy) || Math.abs(y - dy) < epsilon) &&
-			(!isFinite(dx) || Math.abs(x - dx) < epsilon)
-    );
+  intersects(x, y, epsilon = 0.001) {
+    // Adapted from https://stackoverflow.com/a/6853926/25507
+    const sqr = v => v * v;
+    const {x: x1, y: y1, x2, y2} = this;
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const lenSq = sqr(dx) + sqr(dy);
+    const t = lenSq === 0 ? -1 : ((x - x1) * dx + (y - y1) * dy) / lenSq;
+    let xx, yy;
+    if (t < 0) {
+      xx = x1;
+      yy = y1;
+    } else if (t > 1) {
+      xx = x2;
+      yy = y2;
+    } else {
+      xx = x1 + t * dx;
+      yy = y1 + t * dy;
+    }
+    return (sqr(x - xx) + sqr(y - yy)) < epsilon;
   }
 
   labelIsVisible() {
@@ -59,8 +65,7 @@ export default class LineAnnotation extends Element {
 
   isOnLabel(mouseX, mouseY) {
     const {labelRect} = this;
-
-    if (!labelRect) {
+    if (!labelRect || !this.labelIsVisible()) {
       return false;
     }
 
