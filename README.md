@@ -19,9 +19,9 @@ This plugin draws lines, boxes, points and ellipses on the chart area.
 
 Annotations work with line, bar, scatter and bubble charts that use linear, logarithmic, time, or category scales. Annotations will not work on any chart that does not have exactly two axes, including pie, radar, and polar area charts.
 
-![Example Screenshot from Dropbox](https://www.dropbox.com/s/92cmt8zrth55z55/Screenshot%202017-05-20%2018.26.39.png?raw=1)
+![Example Screenshot](docs/guide/banner.png)
 
-[View this example on CodePen](https://codepen.io/compwright/full/mmQMrZ/)
+[View this example](https://chartjs.org/chartjs-plugin-annotation/samples/intro.html)
 
 ## To-do Items
 
