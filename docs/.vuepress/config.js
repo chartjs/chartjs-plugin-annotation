@@ -53,6 +53,7 @@ module.exports = {
         }
       ],
       '/samples/': [
+        'intro',
         {
           title: 'Types',
           collapsable: false,
