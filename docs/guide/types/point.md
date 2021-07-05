@@ -54,8 +54,8 @@ The following options are available for ellipse annotations.
 | [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
 | [`xScaleID`](#general) | `string` | Yes | `'x'`
 | [`yScaleID`](#general) | `string` | Yes | `'y'`
-| [`xValue`](#general) | `number` | Yes | `undefined`
-| [`yValue`](#general) | `number` | Yes | `undefined`
+| [`xValue`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yValue`](#general) | `number` \| `string` | Yes | `undefined`
 | [`radius`](#general) | `number` | Yes | `10`
 | [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
 | [`borderWidth`](#styling) | `number`| Yes | `1`
