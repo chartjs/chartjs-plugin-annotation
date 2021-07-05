@@ -56,10 +56,10 @@ The following options are available for ellipse annotations.
 | [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
 | [`xScaleID`](#general) | `string` | Yes | `'x'`
 | [`yScaleID`](#general) | `string` | Yes | `'y'`
-| [`xMin`](#general) | `number` | Yes | `undefined`
-| [`xMax`](#general) | `number` | Yes | `undefined`
-| [`yMin`](#general) | `number` | Yes | `undefined`
-| [`YMax`](#general) | `number` | Yes | `undefined`
+| [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
+| [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
+| [`YMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
 | [`borderWidth`](#styling) | `number`| Yes | `1`
 | [`borderDash`](#styling) | `number[]`| Yes | `[]`
