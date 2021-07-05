@@ -58,10 +58,10 @@ The following options are available for line annotations. All of these options c
 | [`endValue`](#positioning) | `number` | Yes | `undefined`
 | [`xScaleID`](#positioning) | `string` | Yes | `'x'`
 | [`yScaleID`](#positioning) | `string` | Yes | `'y'`
-| [`xMin`](#positioning) | `number` | Yes | `undefined`
-| [`xMax`](#positioning) | `number` | Yes | `undefined`
-| [`yMin`](#positioning) | `number` | Yes | `undefined`
-| [`YMax`](#positioning) | `number` | Yes | `undefined`
+| [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
+| [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
+| [`YMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
 | [`borderWidth`](#styling) | `number` | Yes | `1`
 | [`borderDash`](#styling) | `number[]` | Yes | `[]`
