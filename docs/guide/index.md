@@ -18,9 +18,9 @@ This plugin draws lines, boxes, points and ellipses on the chart area. Annotatio
 > npm install chartjs-plugin-annotation
 ```
 
-:::tip
+::: tip Important Note
 
-**Important Note:** For Chart.js 2.4.0 to 2.9.x support, use [version 0.5.7 of this plugin](https://github.com/chartjs/chartjs-plugin-annotation/releases/tag/v0.5.7)
+For Chart.js 2.4.0 to 2.9.x support, use [version 0.5.7 of this plugin](https://github.com/chartjs/chartjs-plugin-annotation/releases/tag/v0.5.7)
 Documentation for v0.5.7 can be found on [GitHub](https://github.com/chartjs/chartjs-plugin-annotation/blob/1ab782afce943456f958cac33f67edc5d6eab278/README.md).
 
 :::
