@@ -133,6 +133,14 @@ export default class LineAnnotation extends Element {
       const xScale = chart.scales[options.xScaleID];
       const yScale = chart.scales[options.yScaleID];
 
+      if (options.xIndex) {
+        options = this._setHorizontalMinMaxBasedOnIndex(options, xScale);
+      }
+
+      if (options.yIndex) {
+        options = this._setHorizontalMinMaxBasedOnIndex(options, yScale);
+      }
+
       if (xScale) {
         x = scaleValue(xScale, options.xMin, x);
         x2 = scaleValue(xScale, options.xMax, x2);
@@ -142,8 +150,52 @@ export default class LineAnnotation extends Element {
         y = scaleValue(yScale, options.yMin, y);
         y2 = scaleValue(yScale, options.yMax, y2);
       }
+
+
+      // Barchart compensation
+      if (chart.config.type === 'bar') {
+        x -= this._compensateAxisForBarchart(chart, xScale, x, true);
+        x2 -= this._compensateAxisForBarchart(chart, xScale, x2, true);
+
+        y -= this._compensateAxisForBarchart(chart, yScale, y, false);
+        y2 -= this._compensateAxisForBarchart(chart, yScale, y2, false);
+      }
     }
     return limitLineToArea({x, y}, {x: x2, y: y2}, chart.chartArea);
+  }
+
+  _compensateAxisForBarchart(chart, scale, axis, shouldBeHorizontal) {
+    const isHorizontal = (chart.config.options.indexAxis !== 'y');
+    const axisBoundary = (isHorizontal) ? chart.chartArea.width : chart.chartArea.height;
+    const isEqualOrBeyondChartWidth = (axis < axisBoundary);
+
+    return ((isHorizontal === shouldBeHorizontal) && isEqualOrBeyondChartWidth)
+      ? (axisBoundary / scale.ticks.length) / 2
+      : 0;
+  }
+
+  _setHorizontalMinMaxBasedOnIndex(options, xScale) {
+    if (
+      typeof options.xMin === 'undefined' &&
+      typeof options.xMax === 'undefined') {
+      options.xMin = options.xIndex;
+      if ((options.xIndex + 1) < xScale.ticks.length) {
+        options.xMax = options.xIndex + 1;
+      }
+    }
+    return options;
+  }
+
+  _setVerticalMinMaxBasedOnIndex(options, yScale) {
+    if (
+      typeof options.yMin === 'undefined' &&
+      typeof options.yMax === 'undefined') {
+      options.yMin = options.yIndex;
+      if ((options.xIndex + 1) < yScale.ticks.length) {
+        options.yMax = options.yIndex + 1;
+      }
+    }
+    return options;
   }
 }
 
@@ -184,7 +236,9 @@ LineAnnotation.defaults = {
   xMax: undefined,
   yScaleID: 'y',
   yMin: undefined,
-  yMax: undefined
+  yMax: undefined,
+  xIndex: undefined,
+  yIndex: undefined
 };
 
 LineAnnotation.defaultRoutes = {

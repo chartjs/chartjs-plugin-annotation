@@ -89,7 +89,9 @@ The context object contains the following properties:
 * `chart`: the associated chart
 * `type`: `'chart'`
 
-The [chart](#chart) option context is provided by Chart.js. It is passed to scriptable options when resolving annotation `id`, `type` and `drawTime` or adjusting scale ranges in `afterDataLimits` hook. The options resolved at that time are `scaleID`, `xScaleID`, `yScaleID`, `value`, `endValue`, `xMin`, `xMax`, `yMin`, `yMax`, `xValue` and `yValue`.
+The [chart](#chart) option context is provided by Chart.js. It is passed to scriptable options when resolving annotation `id`, `type` and `drawTime` or adjusting scale ranges in `afterDataLimits` hook. The options resolved at that time are `scaleID`, `xScaleID`, `yScaleID`, `value`, `endValue`, `xMin`, `xMax`, `xIndex`, `yMin`, `yMax`, `yIndex`, `xValue` and `yValue`.
+
+*note: Index can be used as an alternative for min and max if you're planning on displaying a line on only one dataset* 
 
 ### annotation
 
