@@ -133,13 +133,7 @@ export default class LineAnnotation extends Element {
       const xScale = chart.scales[options.xScaleID];
       const yScale = chart.scales[options.yScaleID];
 
-      if (options.xIndex) {
-        options = this._setHorizontalMinMaxBasedOnIndex(options, xScale);
-      }
-
-      if (options.yIndex) {
-        options = this._setHorizontalMinMaxBasedOnIndex(options, yScale);
-      }
+      options = this._determineMinMaxIfIndexIsPreferred(options, xScale, yScale);
 
       if (xScale) {
         x = scaleValue(xScale, options.xMin, x);
@@ -150,7 +144,6 @@ export default class LineAnnotation extends Element {
         y = scaleValue(yScale, options.yMin, y);
         y2 = scaleValue(yScale, options.yMax, y2);
       }
-
 
       // Barchart compensation
       if (chart.config.type === 'bar') {
@@ -174,29 +167,23 @@ export default class LineAnnotation extends Element {
       : 0;
   }
 
-  _setHorizontalMinMaxBasedOnIndex(options, xScale) {
-    if (
-      typeof options.xMin === 'undefined' &&
-      typeof options.xMax === 'undefined') {
-      options.xMin = options.xIndex;
-      if ((options.xIndex + 1) < xScale.ticks.length) {
-        options.xMax = options.xIndex + 1;
-      }
+  _determineMinMaxIfIndexIsPreferred(options, xScale, yScale) {
+    if (options.xIndex && isFinite(options.xIndex)) {
+      options.xMin = this._setAxisBasedOnIndex(options.xMin, options.xIndex, xScale);
+      options.xMax = this._setAxisBasedOnIndex(options.xMax, options.xIndex + 1, xScale);
     }
+    if (options.yIndex && isFinite(options.yIndex)) {
+      options.yMin = this._setAxisBasedOnIndex(options.yMin, options.yIndex, yScale);
+      options.yMax = this._setAxisBasedOnIndex(options.yMax, options.yIndex + 1, yScale);
+    }
+
     return options;
   }
 
-  _setVerticalMinMaxBasedOnIndex(options, yScale) {
-    if (
-      typeof options.yMin === 'undefined' &&
-      typeof options.yMax === 'undefined') {
-      options.yMin = options.yIndex;
-      if ((options.xIndex + 1) < yScale.ticks.length) {
-        options.yMax = options.yIndex + 1;
-      }
-    }
-    return options;
-  }
+  _setAxisBasedOnIndex(axis, index, scale) {
+      return  (typeof axis === 'undefined' && index < scale.ticks.length)
+        ? index : axis;
+  }  
 }
 
 LineAnnotation.id = 'lineAnnotation';
