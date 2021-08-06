@@ -147,19 +147,19 @@ export default class LineAnnotation extends Element {
 
       // Barchart compensation
       if (chart.config.type === 'bar') {
-        x -= this._compensateAxisForBarchart(chart, xScale, x, true);
-        x2 -= this._compensateAxisForBarchart(chart, xScale, x2, true);
+        x -= this._compensateAxisForBarchart(chart, xScale, x, false);
+        x2 -= this._compensateAxisForBarchart(chart, xScale, x2, false);
 
-        y -= this._compensateAxisForBarchart(chart, yScale, y, false);
-        y2 -= this._compensateAxisForBarchart(chart, yScale, y2, false);
+        y -= this._compensateAxisForBarchart(chart, yScale, y, true);
+        y2 -= this._compensateAxisForBarchart(chart, yScale, y2, true);
       }
     }
     return limitLineToArea({x, y}, {x: x2, y: y2}, chart.chartArea);
   }
 
   _compensateAxisForBarchart(chart, scale, axis, shouldBeHorizontal) {
-    const isHorizontal = (chart.config.options.indexAxis !== 'y');
-    const axisBoundary = (isHorizontal) ? chart.chartArea.width : chart.chartArea.height;
+    const isHorizontal = (chart.config.options.indexAxis === 'y');
+    const axisBoundary = (isHorizontal) ? chart.chartArea.height : chart.chartArea.width;
     const isEqualOrBeyondChartWidth = (axis < axisBoundary);
 
     return ((isHorizontal === shouldBeHorizontal) && isEqualOrBeyondChartWidth)
@@ -181,9 +181,8 @@ export default class LineAnnotation extends Element {
   }
 
   _setAxisBasedOnIndex(axis, index, scale) {
-      return  (typeof axis === 'undefined' && index < scale.ticks.length)
-        ? index : axis;
-  }  
+    return (typeof axis === 'undefined' && index < scale.ticks.length) ? index : axis;
+  }
 }
 
 LineAnnotation.id = 'lineAnnotation';
