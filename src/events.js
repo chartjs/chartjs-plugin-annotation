@@ -71,6 +71,11 @@ function handleMoveEvents(chart, state, event) {
   const previous = state.hovered;
   state.hovered = element;
 
+  dispatchMoveEvents(chart, state, {previous, element}, event);
+}
+
+function dispatchMoveEvents(chart, state, elements, event) {
+  const {previous, element} = elements;
   if (previous && previous !== element) {
     dispatchEvent(chart, previous.options.leave || state.listeners.leave, previous, event);
   }
