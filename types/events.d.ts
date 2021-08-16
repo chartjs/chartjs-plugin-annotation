@@ -16,8 +16,8 @@ export interface PartialEventContext {
 }
 
 export interface AnnotationEvents {
-	enter?(context: EventContext): void,
-	leave?(context: EventContext): void,
-	click?(context: EventContext): void,
-	dblclick?(context: EventContext): void,
+	enter?(context: EventContext, event: Event): void,
+	leave?(context: EventContext, event: Event): void,
+	click?(context: EventContext, event: Event): void,
+	dblclick?(context: EventContext, event: Event): void,
 }
