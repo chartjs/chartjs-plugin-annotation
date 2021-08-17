@@ -71,15 +71,16 @@ function handleMoveEvents(chart, state, event) {
   const previous = state.hovered;
   state.hovered = element;
 
-  dispatchMoveEvents(chart, state, previous, element);
+  dispatchMoveEvents(chart, state, {previous, element}, event);
 }
 
-function dispatchMoveEvents(chart, state, previous, element) {
+function dispatchMoveEvents(chart, state, elements, event) {
+  const {previous, element} = elements;
   if (previous && previous !== element) {
-    dispatchEvent(chart, state, previous.options.leave || state.listeners.leave, previous);
+    dispatchEvent(chart, previous.options.leave || state.listeners.leave, previous, event);
   }
   if (element && element !== previous) {
-    dispatchEvent(chart, state, element.options.enter || state.listeners.enter, element);
+    dispatchEvent(chart, element.options.enter || state.listeners.enter, element, event);
   }
 }
 
@@ -94,22 +95,22 @@ function handleClickEvents(chart, state, event, options) {
       // 2nd click before timeout, so its a double click
       clearTimeout(element.clickTimeout);
       delete element.clickTimeout;
-      dispatchEvent(chart, state, dblclick, element);
+      dispatchEvent(chart, dblclick, element, event);
     } else if (dblclick) {
       // if there is a dblclick handler, wait for dblClickSpeed ms before deciding its a click
       element.clickTimeout = setTimeout(() => {
         delete element.clickTimeout;
-        dispatchEvent(chart, state, click, element);
+        dispatchEvent(chart, click, element, event);
       }, options.dblClickSpeed);
     } else {
       // no double click handler, just call the click handler directly
-      dispatchEvent(chart, state, click, element);
+      dispatchEvent(chart, click, element, event);
     }
   }
 }
 
-function dispatchEvent(chart, _state, handler, element) {
-  callHandler(handler, [{chart, element}]);
+function dispatchEvent(chart, handler, element, event) {
+  callHandler(handler, [{chart, element}, event]);
 }
 
 function getNearestItem(elements, position) {
