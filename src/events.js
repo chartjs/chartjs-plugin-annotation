@@ -110,7 +110,7 @@ function handleClickEvents(chart, state, event, options) {
 }
 
 function dispatchEvent(chart, handler, element, event) {
-  callHandler(handler, [{chart, element}, event]);
+  callHandler(handler, [{chart, element}, event.native]);
 }
 
 function getNearestItem(elements, position) {
