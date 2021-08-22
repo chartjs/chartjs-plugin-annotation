@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
-import {isArray, toFontString, toRadians, valueOrDefault} from 'chart.js/helpers';
-import {scaleValue, roundedRect, rotated} from '../helpers';
+import {addRoundedRectPath, isArray, toFontString, toRadians, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
+import {scaleValue, rotated} from '../helpers';
 
 const PI = Math.PI;
 const clamp = (x, from, to) => Math.min(to, Math.max(from, x));
@@ -232,8 +232,10 @@ function drawLabel(ctx, line, chartArea) {
   ctx.fillStyle = label.backgroundColor;
   const stroke = setBorderStyle(ctx, label);
 
+  ctx.beginPath();
   // TODO: v2 remove support for cornerRadius
-  roundedRect(ctx, -(width / 2), -(height / 2), width, height, valueOrDefault(label.cornerRadius, label.borderRadius));
+  addRoundedRectPath(ctx, {x: -(width / 2), y: -(height / 2), w: width, h: height, radius: toTRBLCorners(valueOrDefault(label.cornerRadius, label.borderRadius))});
+  ctx.closePath();
   ctx.fill();
   if (stroke) {
     ctx.stroke();

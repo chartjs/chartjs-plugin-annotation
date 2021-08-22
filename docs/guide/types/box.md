@@ -65,7 +65,7 @@ The following options are available for box annotations.
 | [`borderDash`](#styling) | `number[]`| Yes | `[]`
 | [`borderDashOffset`](#styling) | `number`| Yes | `0`
 | [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
-| [`borderRadius`](#styling) | `number` | Yes | `0`
+| [`borderRadius`](#styling) | `number` \| `object` | Yes | `0`
 
 ### General
 
@@ -92,4 +92,8 @@ If one of the axes does not match an axis in the chart, the box will take the en
 | `borderDash` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | Offset for line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
 | `backgroundColor` | Fill color
-| `borderRadius` | Radius of box rectangle
+| [`borderRadius`](#borderRadius) | Radius of box rectangle (in pixels)
+
+#### borderRadius
+
+If this value is a number, it is applied to all corners of the rectangle (topLeft, topRight, bottomLeft, bottomRight). If this value is an object, the `topLeft` property defines the top-left corners border radius. Similarly, the `topRight`, `bottomLeft`, and `bottomRight` properties can also be specified. Omitted corners have radius of 0.

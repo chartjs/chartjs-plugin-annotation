@@ -62,6 +62,6 @@
     "vuepress-theme-chartjs": "^0.2.0"
   },
   "peerDependencies": {
-    "chart.js": "^3.0.1"
+    "chart.js": "^3.1.0"
   }
 }
