@@ -66,13 +66,13 @@ export interface LabelOptions {
 	 * Overrides the width of the image. Could be set in pixel by a number,
 	 * or in percentage of current width of image by a string
 	 */
-	width: Scriptable<number | string, PartialEventContext>,
+	width?: Scriptable<number | string, PartialEventContext>,
 
 	/**
 	 * Overrides the height of the image. Could be set in pixel by a number,
 	 * or in percentage of current height of image by a string
 	 */
-	height: Scriptable<number | string, PartialEventContext>,
+	height?: Scriptable<number | string, PartialEventContext>,
 
 	/**
 	 * Rotation of label, in degrees, or 'auto' to use the degrees of the line, default is 0
