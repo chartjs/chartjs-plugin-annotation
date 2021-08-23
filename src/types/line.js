@@ -133,8 +133,6 @@ export default class LineAnnotation extends Element {
       const xScale = chart.scales[options.xScaleID];
       const yScale = chart.scales[options.yScaleID];
 
-      options = this._determineMinMaxIfIndexIsPreferred(options, xScale, yScale);
-
       if (xScale) {
         x = scaleValue(xScale, options.xMin, x);
         x2 = scaleValue(xScale, options.xMax, x2);
@@ -145,43 +143,29 @@ export default class LineAnnotation extends Element {
         y2 = scaleValue(yScale, options.yMax, y2);
       }
 
-      // Barchart compensation
-      if (chart.config.type === 'bar') {
-        x -= this._compensateAxisForBarchart(chart, xScale, x, false);
-        x2 -= this._compensateAxisForBarchart(chart, xScale, x2, false);
+      if (typeof options.offsetScale !== 'undefined' && typeof chart.scales[options.offsetScale]) {
+        const targetScale = chart.scales[options.offsetScale];
 
-        y -= this._compensateAxisForBarchart(chart, yScale, y, true);
-        y2 -= this._compensateAxisForBarchart(chart, yScale, y2, true);
+        x -= this._compensateAxisForBarchart(xScale, targetScale, x);
+        x2 -= this._compensateAxisForBarchart(xScale, targetScale, x2);
+
+        y -= this._compensateAxisForBarchart(yScale, targetScale, y);
+        y2 -= this._compensateAxisForBarchart(yScale, targetScale, y2);
       }
     }
     return limitLineToArea({x, y}, {x: x2, y: y2}, chart.chartArea);
   }
 
-  _compensateAxisForBarchart(chart, scale, axis, shouldBeHorizontal) {
-    const isHorizontal = (chart.config.options.indexAxis === 'y');
-    const axisBoundary = (isHorizontal) ? chart.chartArea.height : chart.chartArea.width;
-    const isEqualOrBeyondChartWidth = (axis < axisBoundary);
+  _compensateAxisForBarchart(axisScale, targetScale, axis) {
+    const isAxisHorizontal = (axisScale.position === 'top' || axisScale.position === 'bottom');
+    const axisBoundary = (isAxisHorizontal) ? targetScale.width : targetScale.height;
 
-    return ((isHorizontal === shouldBeHorizontal) && isEqualOrBeyondChartWidth)
-      ? (axisBoundary / scale.ticks.length) / 2
+    const isScaleHorizontal = targetScale.axis === 'x';
+    const isBelowChartWidth = (axis < axisBoundary);
+
+    return ((isScaleHorizontal === isAxisHorizontal) && isBelowChartWidth)
+      ? (axisBoundary / targetScale.ticks.length) / 2
       : 0;
-  }
-
-  _determineMinMaxIfIndexIsPreferred(options, xScale, yScale) {
-    if (options.xIndex && isFinite(options.xIndex)) {
-      options.xMin = this._setAxisBasedOnIndex(options.xMin, options.xIndex, xScale);
-      options.xMax = this._setAxisBasedOnIndex(options.xMax, options.xIndex + 1, xScale);
-    }
-    if (options.yIndex && isFinite(options.yIndex)) {
-      options.yMin = this._setAxisBasedOnIndex(options.yMin, options.yIndex, yScale);
-      options.yMax = this._setAxisBasedOnIndex(options.yMax, options.yIndex + 1, yScale);
-    }
-
-    return options;
-  }
-
-  _setAxisBasedOnIndex(axis, index, scale) {
-    return (typeof axis === 'undefined' && index < scale.ticks.length) ? index : axis;
   }
 }
 
@@ -223,8 +207,7 @@ LineAnnotation.defaults = {
   yScaleID: 'y',
   yMin: undefined,
   yMax: undefined,
-  xIndex: undefined,
-  yIndex: undefined
+  offsetScale: undefined
 };
 
 LineAnnotation.defaultRoutes = {
