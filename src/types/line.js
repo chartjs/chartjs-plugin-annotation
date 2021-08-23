@@ -9,21 +9,30 @@ const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
 const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
 
+function isLineInArea({x, y, x2, y2}, {top, right, bottom, left}) {
+  return !(
+    (x < left && x2 < left) ||
+    (x > right && x2 > right) ||
+    (y < top && y2 < top) ||
+    (y > bottom && y2 > bottom)
+  );
+}
+
 function limitPointToArea({x, y}, p2, {top, right, bottom, left}) {
   if (x < left) {
-    y = p2.x < left ? NaN : interpolateY(left, {x, y}, p2);
+    y = interpolateY(left, {x, y}, p2);
     x = left;
   }
   if (x > right) {
-    y = p2.x > right ? NaN : interpolateY(right, {x, y}, p2);
+    y = interpolateY(right, {x, y}, p2);
     x = right;
   }
   if (y < top) {
-    x = p2.y < top ? NaN : interpolateX(top, {x, y}, p2);
+    x = interpolateX(top, {x, y}, p2);
     y = top;
   }
   if (y > bottom) {
-    x = p2.y > bottom ? NaN : interpolateX(bottom, {x, y}, p2);
+    x = interpolateX(bottom, {x, y}, p2);
     y = bottom;
   }
   return {x, y};
@@ -58,9 +67,11 @@ export default class LineAnnotation extends Element {
     return (sqr(x - xx) + sqr(y - yy)) < epsilon;
   }
 
-  labelIsVisible() {
+  labelIsVisible(chartArea) {
     const label = this.options.label;
-    return label && label.enabled && label.content;
+
+    const inside = !chartArea || isLineInArea(this, chartArea);
+    return inside && label && label.enabled && label.content;
   }
 
   isOnLabel(mouseX, mouseY) {
@@ -107,7 +118,7 @@ export default class LineAnnotation extends Element {
   }
 
   drawLabel(ctx, chartArea) {
-    if (this.labelIsVisible()) {
+    if (this.labelIsVisible(chartArea)) {
       ctx.save();
       drawLabel(ctx, this, chartArea);
       ctx.restore();
@@ -143,7 +154,10 @@ export default class LineAnnotation extends Element {
         y2 = scaleValue(yScale, options.yMax, y2);
       }
     }
-    return limitLineToArea({x, y}, {x: x2, y: y2}, chart.chartArea);
+    const inside = isLineInArea({x, y, x2, y2}, chart.chartArea);
+    return inside
+      ? limitLineToArea({x, y}, {x: x2, y: y2}, chart.chartArea)
+      : {x, y, x2, y2, width: Math.abs(x2 - x), height: Math.abs(y2 - y)};
   }
 }
 
