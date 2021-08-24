@@ -83,7 +83,8 @@ const config = {
 // <block:utils:3>
 function minValue(ctx) {
   const dataset = ctx.chart.data.datasets[0];
-  return dataset.data.reduce((max, point) => Math.min(point, max), Infinity);
+  const min = dataset.data.reduce((max, point) => Math.min(point, max), Infinity);
+  return isFinite(min) ? min : 0;
 }
 
 function maxValue(ctx) {

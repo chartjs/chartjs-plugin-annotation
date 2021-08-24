@@ -92,27 +92,6 @@ const config = {
 };
 /* </block:config> */
 
-// <block:utils:4>
-function minValue(ctx) {
-  const dataset = ctx.chart.data.datasets[0];
-  return dataset.data.reduce((max, point) => Math.min(point, max), Infinity);
-}
-
-function maxValue(ctx) {
-  const datasets = ctx.chart.data.datasets;
-  const count = datasets[0].data.length;
-  let max = 0;
-  for (let i = 0; i < count; i++) {
-    let sum = 0;
-    for (const dataset of datasets) {
-      sum += dataset.data[i];
-    }
-    max = Math.max(max, sum);
-  }
-  return max;
-}
-// </block:utils>
-
 var actions = [
   {
     name: 'Randomize',
