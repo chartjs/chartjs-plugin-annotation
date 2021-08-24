@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {isArray, toFontString, toRadians} from 'chart.js/helpers';
-import {scaleValue, roundedRect, rotated} from '../helpers';
+import {scaleValue, scaleIndex, roundedRect, rotated} from '../helpers';
 
 const PI = Math.PI;
 const clamp = (x, from, to) => Math.min(to, Math.max(from, x));
@@ -134,38 +134,35 @@ export default class LineAnnotation extends Element {
       const yScale = chart.scales[options.yScaleID];
 
       if (xScale) {
+        if (typeof options.barIndexScaleID !== 'undefined' && this._targetScaleMatchesAxisOrientation(xScale, chart.scales[options.barIndexScaleID])) {
+          options.xMin = scaleIndex(xScale, options.xMin) - 0.5;
+          options.xMax = scaleIndex(xScale, options.xMax) + 0.5;
+        }
+
         x = scaleValue(xScale, options.xMin, x);
         x2 = scaleValue(xScale, options.xMax, x2);
       }
 
       if (yScale) {
+        if (typeof options.barIndexScaleID !== 'undefined' && this._targetScaleMatchesAxisOrientation(yScale, chart.scales[options.barIndexScaleID])) {
+          options.yMin = scaleIndex(options.yMin) - 0.5;
+          options.yMax = scaleIndex(options.yMax) - 0.5;
+        }
+
         y = scaleValue(yScale, options.yMin, y);
         y2 = scaleValue(yScale, options.yMax, y2);
       }
 
-      if (typeof options.offsetScale !== 'undefined' && typeof chart.scales[options.offsetScale]) {
-        const targetScale = chart.scales[options.offsetScale];
 
-        x -= this._compensateAxisForBarchart(xScale, targetScale, x);
-        x2 -= this._compensateAxisForBarchart(xScale, targetScale, x2);
-
-        y -= this._compensateAxisForBarchart(yScale, targetScale, y);
-        y2 -= this._compensateAxisForBarchart(yScale, targetScale, y2);
-      }
     }
     return limitLineToArea({x, y}, {x: x2, y: y2}, chart.chartArea);
   }
 
-  _compensateAxisForBarchart(axisScale, targetScale, axis) {
+  _targetScaleMatchesAxisOrientation(axisScale, targetScale) {
     const isAxisHorizontal = (axisScale.position === 'top' || axisScale.position === 'bottom');
-    const axisBoundary = (isAxisHorizontal) ? targetScale.width : targetScale.height;
-
     const isScaleHorizontal = targetScale.axis === 'x';
-    const isBelowChartWidth = (axis < axisBoundary);
 
-    return ((isScaleHorizontal === isAxisHorizontal) && isBelowChartWidth)
-      ? (axisBoundary / targetScale.ticks.length) / 2
-      : 0;
+    return ((isScaleHorizontal === isAxisHorizontal));
   }
 }
 
@@ -207,7 +204,7 @@ LineAnnotation.defaults = {
   yScaleID: 'y',
   yMin: undefined,
   yMax: undefined,
-  offsetScale: undefined
+  barIndexScaleID: undefined
 };
 
 LineAnnotation.defaultRoutes = {

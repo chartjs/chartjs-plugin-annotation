@@ -3,8 +3,12 @@ import {isFinite} from 'chart.js/helpers';
 const PI = Math.PI;
 const HALF_PI = PI / 2;
 
+export function scaleIndex(scale, value) {
+  return typeof value === 'number' ? value : scale.parse(value);
+}
+
 export function scaleValue(scale, value, fallback) {
-  value = typeof value === 'number' ? value : scale.parse(value);
+  value = scaleIndex(scale, value);
   return isFinite(value) ? scale.getPixelForValue(value) : fallback;
 }
 
