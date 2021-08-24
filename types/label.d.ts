@@ -16,12 +16,19 @@ export interface LabelOptions {
 	 * Padding of label to add top/bottom
 	 * @default 6
 	 */
-	yPadding?: Scriptable<number, PartialEventContext>,
+  yPadding?: Scriptable<number, PartialEventContext>,
+
 	/**
-	 * Corner radius of the label rectangle
+	 * Border radius of the label rectangle
 	 * @default 6
 	 */
-	cornerRadius?: Scriptable<number, PartialEventContext>,
+  borderRadius?: Scriptable<number, PartialEventContext>,
+
+  /**
+   * @deprecated replaced by borderRadius
+   * @todo remove at v2
+   */
+  cornerRadius?: Scriptable<number, PartialEventContext>,
 
 	/**
 	 * Anchor position of label on line.

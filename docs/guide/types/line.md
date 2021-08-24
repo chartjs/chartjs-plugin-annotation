@@ -105,7 +105,7 @@ If `scaleID` is unset, then `xScaleID` and `yScaleID` are used to draw a line fr
 | `borderDash` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | Offset for line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
 | `backgroundColor` | Fill color
-| `cornerRadius` | Radius of box rectangle
+| `borderRadius` | Radius of box rectangle
 
 ### Label
 
@@ -118,7 +118,7 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `backgroundColor` | [`Color`](../options#color) | `'rgba(0,0,0,0.8)'` | Background color of the label container.
 | `color` | [`Color`](../options#color) | `'#fff'` | Text color.
 | `content` | `string`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image) | `null` | The content to show in the label.
-| `cornerRadius` | `number` | `6` | Radius of label box in pixels.
+| `borderRadius` | `number` | `6` | Radius of label box in pixels.
 | `drawTime` | `string` | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the line annotation draw time if unset
 | `enabled` | `boolean` | `false` | Whether or not the label is shown.
 | `font` | [`Font`](../options#font) | `{ style: 'bold' }` | Label font
