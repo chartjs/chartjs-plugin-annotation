@@ -134,17 +134,17 @@ export default class LineAnnotation extends Element {
       const yScale = chart.scales[options.yScaleID];
 
       if (xScale) {
-        const compensation = getIndexCompensation(chart, options.annotationFor, xScale.id);
+        const xComp = getIndexCompensation(chart, options.annotationFor, xScale.id);
 
-        x = scaleValue(xScale, scaleIndex(xScale, options.xMin) + compensation.min, x);
-        x2 = scaleValue(xScale, scaleIndex(xScale, options.xMax) + compensation.max, x2);
+        x = scaleValue(xScale, scaleIndex(xScale, options.xMin) + xComp.min, x);
+        x2 = scaleValue(xScale, scaleIndex(xScale, options.xMax) + xComp.max, x2);
       }
 
       if (yScale) {
-        const compensation = getIndexCompensation(chart, options.annotationFor, yScale.id);
+        const yComp = getIndexCompensation(chart, options.annotationFor, yScale.id);
 
-        y = scaleValue(yScale, scaleIndex(yScale, options.yMin) + compensation.min, y);
-        y2 = scaleValue(yScale, scaleIndex(yScale, options.yMin) + compensation.max, y2);
+        y = scaleValue(yScale, scaleIndex(yScale, options.yMin) + yComp.min, y);
+        y2 = scaleValue(yScale, scaleIndex(yScale, options.yMin) + yComp.max, y2);
       }
 
 
@@ -397,9 +397,9 @@ function getIndexCompensation(chart, targetAxis, scaleId) {
 function barIndexAxisCompensation(chart, targetMetaSet) {
   const {bars, barIndex} = getBarIndex(chart, targetMetaSet.iAxisID, targetMetaSet.label);
 
-  const catWidth = (chart.config._config.options.categoryPercentage) ? chart.config._config.options.categoryPercentage : 0.8;
+  const catWidth = chart.config._config.options.categoryPercentage || 0.8;
+  const barWidth = chart.config._config.options.barPercentage || 0.9;
 
-  const barWidth = (chart.config._config.options.barPercentage) ? chart.config._config.options.barPercentage : 0.9;
   const barMargin = (1 - barWidth) / 2;
 
   return {
