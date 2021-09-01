@@ -134,35 +134,22 @@ export default class LineAnnotation extends Element {
       const yScale = chart.scales[options.yScaleID];
 
       if (xScale) {
-        if (typeof options.barIndexScaleID !== 'undefined' && this._targetScaleMatchesAxisOrientation(xScale, chart.scales[options.barIndexScaleID])) {
-          options.xMin = scaleIndex(xScale, options.xMin) - 0.5;
-          options.xMax = scaleIndex(xScale, options.xMax) + 0.5;
-        }
+        const compensation = getIndexCompensation(chart, options.annotationFor, xScale.id);
 
-        x = scaleValue(xScale, options.xMin, x);
-        x2 = scaleValue(xScale, options.xMax, x2);
+        x = scaleValue(xScale, scaleIndex(xScale, options.xMin) + compensation.min, x);
+        x2 = scaleValue(xScale, scaleIndex(xScale, options.xMax) + compensation.max, x2);
       }
 
       if (yScale) {
-        if (typeof options.barIndexScaleID !== 'undefined' && this._targetScaleMatchesAxisOrientation(yScale, chart.scales[options.barIndexScaleID])) {
-          options.yMin = scaleIndex(options.yMin) - 0.5;
-          options.yMax = scaleIndex(options.yMax) - 0.5;
-        }
+        const compensation = getIndexCompensation(chart, options.annotationFor, yScale.id);
 
-        y = scaleValue(yScale, options.yMin, y);
-        y2 = scaleValue(yScale, options.yMax, y2);
+        y = scaleValue(yScale, scaleIndex(yScale, options.yMin) + compensation.min, y);
+        y2 = scaleValue(yScale, scaleIndex(yScale, options.yMin) + compensation.max, y2);
       }
 
 
     }
     return limitLineToArea({x, y}, {x: x2, y: y2}, chart.chartArea);
-  }
-
-  _targetScaleMatchesAxisOrientation(axisScale, targetScale) {
-    const isAxisHorizontal = (axisScale.position === 'top' || axisScale.position === 'bottom');
-    const isScaleHorizontal = targetScale.axis === 'x';
-
-    return ((isScaleHorizontal === isAxisHorizontal));
   }
 }
 
@@ -204,7 +191,7 @@ LineAnnotation.defaults = {
   yScaleID: 'y',
   yMin: undefined,
   yMax: undefined,
-  barIndexScaleID: undefined
+  annotationFor: undefined
 };
 
 LineAnnotation.defaultRoutes = {
@@ -387,4 +374,59 @@ function adjustLabelCoordinate(coordinate, labelSizes) {
   }
 
   return coordinate;
+}
+
+// BARCHART COMPENSATION
+function getIndexCompensation(chart, targetAxis, scaleId) {
+  let metaSet;
+
+  if (typeof targetAxis === 'number') {
+    metaSet = chart._metasets[targetAxis];
+  }
+
+  if (typeof targetAxis === 'string') {
+    metaSet = chart._metasets.filter(x => x.label === targetAxis)[0];
+  }
+
+  return (metaSet && metaSet.type === 'bar' && (metaSet.iAxisID === scaleId))
+    ? barIndexAxisCompensation(chart, metaSet, scaleId)
+    : {min: 0, max: 0};
+}
+
+
+function barIndexAxisCompensation(chart, targetMetaSet) {
+  const {bars, barIndex} = getBarIndex(chart, targetMetaSet.iAxisID, targetMetaSet.label);
+
+  const catWidth = (chart.config._config.options.categoryPercentage) ? chart.config._config.options.categoryPercentage : 0.8;
+
+  const barWidth = (chart.config._config.options.barPercentage) ? chart.config._config.options.barPercentage : 0.9;
+  const barMargin = (1 - barWidth) / 2;
+
+  return {
+    min: (barIndexCalculation(barIndex, bars, barMargin) * catWidth),
+    max: (barIndexCalculation(barIndex + 1, bars, -barMargin) * catWidth)
+  };
+}
+
+function getBarIndex(chart, IndexScaleID, targetSetLabel) {
+  let barIndex = -1;
+  let bars = 0;
+  let stacked = false;
+
+  chart._metasets.forEach((metaset) => {
+    if (metaset.label === targetSetLabel) {
+      barIndex = bars;
+    }
+    if (metaset.iAxisID === IndexScaleID) {
+      bars++;
+      if (metaset._stacked) {
+        stacked = true;
+      }
+    }
+  });
+  return stacked ? {bars: 1, barIndex: 0} : {bars, barIndex};
+}
+
+function barIndexCalculation(barIndex, bars, barMargin) {
+  return ((barIndex - ((bars) / 2) + barMargin) / bars);
 }
