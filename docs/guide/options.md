@@ -92,29 +92,43 @@ The context object contains the following properties:
 The [chart](#chart) option context is provided by Chart.js. It is passed to scriptable options when resolving annotation `id`, `type` and `drawTime` or adjusting scale ranges in `afterDataLimits` hook. The options resolved at that time are `scaleID`, , `value`, `endValue`, `xMin`, `xMax`, `yMin`, `yMax`, `xValue` and `yValue`.
 
 ### Barcharts
-Default behavior for line annotations in barcharts will work slightly different than default behavior. When encountering a barchart, the `barIndexScaleID` property can be used to define the index scale of the annotation. The annotation will then draw a line on the same location as the bar. The property can be used as followed: 
+Default behavior for line annotations in barcharts will work slightly different than default behavior. When encountering a barchart, the `annotationFor` property can be used to define the target dataset of the annotation. The annotation will then draw a line on the same location as the bar. The property can be used as followed: 
 
 ```js chart-editor
-
-options: {
-  plugins: {
-    annotation: {
-      annotations: {
-        box1: {
-          type: 'line',
-          yMin: 50,
-          yMax: 50,
-          xMin: 'March',
-          xMax: 'March',
-          borderColor: 'rgb(0, 0, 0)',
-          borderWidth: 2,
-          // Defining the scale for the index
-          barIndexScaleID: 'x',
+{
+  data: {
+    datasets: [
+      {
+        label: 'Rood?',
+        data: [10, 30, 50, 20, 25, 44, -10],
+        borderColor: '#F00',
+        yAxisID: 'Freek',
+        xAxisID: 'Berend',
+        backgroundColor: '#F00',
+      }
+    ]
+  },
+  options: {
+    plugins: {
+      annotation: {
+        annotations: {
+          box1: {
+            type: 'line',
+            yMin: 50,
+            yMax: 50,
+            xMin: 'March',
+            xMax: 'March',
+            borderColor: 'rgb(0, 0, 0)',
+            borderWidth: 2,
+            // Defining the dataset for the annotation
+            annotationFor: 'Rood?'|0,
+          }
         }
       }
     }
   }
 }
+
 ```
 
 ### annotation
