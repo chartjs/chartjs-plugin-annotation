@@ -65,7 +65,7 @@ The following options are available for box annotations.
 | [`borderDash`](#styling) | `number[]`| Yes | `[]`
 | [`borderDashOffset`](#styling) | `number`| Yes | `0`
 | [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
-| [`cornerRadius`](#styling) | `number` | Yes | `0`
+| [`borderRadius`](#styling) | `number` | Yes | `0`
 
 ### General
 
@@ -92,4 +92,4 @@ If one of the axes does not match an axis in the chart, the box will take the en
 | `borderDash` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | Offset for line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
 | `backgroundColor` | Fill color
-| `cornerRadius` | Radius of box rectangle
+| `borderRadius` | Radius of box rectangle

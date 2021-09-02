@@ -16,12 +16,19 @@ export interface LabelOptions {
 	 * Padding of label to add top/bottom
 	 * @default 6
 	 */
-	yPadding?: Scriptable<number, PartialEventContext>,
+  yPadding?: Scriptable<number, PartialEventContext>,
+
 	/**
-	 * Corner radius of the label rectangle
+	 * Border radius of the label rectangle
 	 * @default 6
 	 */
-	cornerRadius?: Scriptable<number, PartialEventContext>,
+  borderRadius?: Scriptable<number, PartialEventContext>,
+
+  /**
+   * @deprecated replaced by borderRadius
+   * @todo remove at v2
+   */
+  cornerRadius?: Scriptable<number, PartialEventContext>,
 
 	/**
 	 * Anchor position of label on line.
@@ -66,13 +73,13 @@ export interface LabelOptions {
 	 * Overrides the width of the image. Could be set in pixel by a number,
 	 * or in percentage of current width of image by a string
 	 */
-	width: Scriptable<number | string, PartialEventContext>,
+	width?: Scriptable<number | string, PartialEventContext>,
 
 	/**
 	 * Overrides the height of the image. Could be set in pixel by a number,
 	 * or in percentage of current height of image by a string
 	 */
-	height: Scriptable<number | string, PartialEventContext>,
+	height?: Scriptable<number | string, PartialEventContext>,
 
 	/**
 	 * Rotation of label, in degrees, or 'auto' to use the degrees of the line, default is 0

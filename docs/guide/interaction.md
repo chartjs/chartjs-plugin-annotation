@@ -15,7 +15,7 @@ The following options are available for all annotation types. These options can 
 
 | Name | Type | [Scriptable](options#scriptable-options) | Notes
 | ---- | ---- | :----: | ----
-| `enter` | `(context) => void` | No | Called when the mouse enters the annotation.
-| `leave` | `(context) => void` | No | Called when the mouse leaves the annotation.
-| `click` | `(context) => void` | No | Called when a single click occurs on the annotation.
-| `dblClick` | `(context) => void` | No | Called when a double click occurs on the annotation.
+| `enter` | `(context, event) => void` | No | Called when the mouse enters the annotation.
+| `leave` | `(context, event) => void` | No | Called when the mouse leaves the annotation.
+| `click` | `(context, event) => void` | No | Called when a single click occurs on the annotation.
+| `dblClick` | `(context, event) => void` | No | Called when a double click occurs on the annotation.

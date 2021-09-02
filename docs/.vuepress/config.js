@@ -69,6 +69,7 @@ module.exports = {
           collapsable: false,
           children: [
             'charts/bar',
+            'charts/line',
           ],
         },
       ]

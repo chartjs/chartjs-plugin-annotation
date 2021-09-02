@@ -51,6 +51,10 @@ const annotation2 = {
   label: {
     rotation: 'auto',
     backgroundColor: 'black',
+    borderColor: 'red',
+    borderDash: [6, 3],
+    borderRadius: 10,
+    borderWidth: 2,
     content: (ctx) => 'Upper bound: ' + maxValue(ctx).toFixed(3),
     enabled: true
   }
@@ -83,7 +87,8 @@ const config = {
 // <block:utils:3>
 function minValue(ctx) {
   const dataset = ctx.chart.data.datasets[0];
-  return dataset.data.reduce((max, point) => Math.min(point, max), Infinity);
+  const min = dataset.data.reduce((max, point) => Math.min(point, max), Infinity);
+  return isFinite(min) ? min : 0;
 }
 
 function maxValue(ctx) {

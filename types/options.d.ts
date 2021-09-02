@@ -47,8 +47,13 @@ export interface LineAnnotationOptions extends CoreAnnotationOptions, Annotation
 }
 
 export interface BoxAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
-	backgroundColor?: Scriptable<Color, PartialEventContext>,
-	cornerRadius?: Scriptable<number, PartialEventContext>
+  backgroundColor?: Scriptable<Color, PartialEventContext>,
+  borderRadius?: Scriptable<number, PartialEventContext>,
+  /**
+   * @deprecated replaced by borderRadius
+   * @todo remove at v2
+   */
+  cornerRadius?: Scriptable<number, PartialEventContext>
 }
 
 interface EllipseAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
@@ -65,5 +70,6 @@ interface PointAnnotationOptions extends CoreAnnotationOptions {
 export interface AnnotationPluginOptions extends AnnotationEvents {
 	annotations: AnnotationOptions[] | Record<string, AnnotationOptions>,
 	dblClickSpeed?: Scriptable<number, PartialEventContext>,
-	drawTime?: Scriptable<DrawTime, PartialEventContext>,
+  drawTime?: Scriptable<DrawTime, PartialEventContext>,
+  animations: Record<string, unknown>,
 }
