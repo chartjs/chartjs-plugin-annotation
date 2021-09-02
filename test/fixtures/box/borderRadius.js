@@ -26,7 +26,7 @@ module.exports = {
               yMax: 10,
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
               borderColor: 'rgb(33, 101, 171)',
-              cornerRadius: {topLeft: 16, topRight: 8, bottomRight: 4},
+              borderRadius: {topLeft: 16, topRight: 8, bottomRight: 4},
               borderWidth: 5,
             },
             box2: {

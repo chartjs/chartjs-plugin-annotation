@@ -66,7 +66,7 @@ const annotation3 = {
   borderColor: 'rgba(0,150,0,0.2)',
   drawTime: 'beforeDatasetsDraw',
   borderWidth: 0,
-  cornerRadius: 0,
+  borderRadius: 0,
 };
 // </block:annotation3>
 

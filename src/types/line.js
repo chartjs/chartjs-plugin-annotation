@@ -1,9 +1,8 @@
 import {Element} from 'chart.js';
 import {addRoundedRectPath, isArray, toFontString, toRadians, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
-import {scaleValue, rotated} from '../helpers';
+import {clamp, clampAll, scaleValue, rotated} from '../helpers';
 
 const PI = Math.PI;
-const clamp = (x, from, to) => Math.min(to, Math.max(from, x));
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
@@ -233,8 +232,11 @@ function drawLabel(ctx, line, chartArea) {
   const stroke = setBorderStyle(ctx, label);
 
   ctx.beginPath();
-  // TODO: v2 remove support for cornerRadius
-  addRoundedRectPath(ctx, {x: -(width / 2), y: -(height / 2), w: width, h: height, radius: toTRBLCorners(valueOrDefault(label.cornerRadius, label.borderRadius))});
+  addRoundedRectPath(ctx, {
+    x: -(width / 2), y: -(height / 2), w: width, h: height,
+    // TODO: v2 remove support for cornerRadius
+    radius: clampAll(toTRBLCorners(valueOrDefault(label.cornerRadius, label.borderRadius)), 0, Math.min(width, height) / 2)
+  });
   ctx.closePath();
   ctx.fill();
   if (stroke) {

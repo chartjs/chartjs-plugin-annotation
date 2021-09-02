@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {addRoundedRectPath, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
-import {scaleValue} from '../helpers';
+import {clampAll, scaleValue} from '../helpers';
 
 export default class BoxAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
@@ -33,8 +33,11 @@ export default class BoxAnnotation extends Element {
     ctx.lineDashOffset = options.borderDashOffset;
 
     ctx.beginPath();
-    // TODO: v2 remove support for cornerRadius
-    addRoundedRectPath(ctx, {x, y, w: width, h: height, radius: toTRBLCorners(valueOrDefault(options.cornerRadius, options.borderRadius))});
+    addRoundedRectPath(ctx, {
+      x, y, w: width, h: height,
+      // TODO: v2 remove support for cornerRadius
+      radius: clampAll(toTRBLCorners(valueOrDefault(options.cornerRadius, options.borderRadius)), 0, Math.min(width, height) / 2)
+    });
     ctx.closePath();
     ctx.fill();
 

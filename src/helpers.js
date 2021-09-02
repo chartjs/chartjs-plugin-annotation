@@ -1,5 +1,14 @@
 import {isFinite} from 'chart.js/helpers';
 
+export const clamp = (x, from, to) => Math.min(to, Math.max(from, x));
+
+export function clampAll(obj, from, to) {
+  for (const key of Object.keys(obj)) {
+    obj[key] = clamp(obj[key], from, to);
+  }
+  return obj;
+}
+
 export function scaleValue(scale, value, fallback) {
   value = typeof value === 'number' ? value : scale.parse(value);
   return isFinite(value) ? scale.getPixelForValue(value) : fallback;
