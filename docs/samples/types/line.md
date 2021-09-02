@@ -51,6 +51,10 @@ const annotation2 = {
   label: {
     rotation: 'auto',
     backgroundColor: 'black',
+    borderColor: 'red',
+    borderDash: [6, 3],
+    borderRadius: 10,
+    borderWidth: 2,
     content: (ctx) => 'Upper bound: ' + maxValue(ctx).toFixed(3),
     enabled: true
   }

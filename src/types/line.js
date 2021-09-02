@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {isArray, toFontString, toRadians} from 'chart.js/helpers';
+import {isArray, toFontString, toRadians, valueOrDefault} from 'chart.js/helpers';
 import {scaleValue, roundedRect, rotated} from '../helpers';
 
 const PI = Math.PI;
@@ -156,6 +156,13 @@ LineAnnotation.defaults = {
   borderDashOffset: 0,
   label: {
     backgroundColor: 'rgba(0,0,0,0.8)',
+    borderCapStyle: 'butt',
+    borderColor: 'black',
+    borderDash: [],
+    borderDashOffset: 0,
+    borderJoinStyle: 'miter',
+    borderRadius: 6,
+    borderWidth: 0,
     drawTime: undefined,
     font: {
       family: undefined,
@@ -168,7 +175,6 @@ LineAnnotation.defaults = {
     xPadding: 6,
     yPadding: 6,
     rotation: 0,
-    cornerRadius: 6,
     position: 'center',
     xAdjust: 0,
     yAdjust: 0,
@@ -210,8 +216,14 @@ function drawLabel(ctx, line, chartArea) {
   ctx.rotate(rect.rotation);
 
   ctx.fillStyle = label.backgroundColor;
-  roundedRect(ctx, -(width / 2), -(height / 2), width, height, label.cornerRadius);
+  const stroke = setBorderStyle(ctx, label);
+
+  // TODO: v2 remove support for cornerRadius
+  roundedRect(ctx, -(width / 2), -(height / 2), width, height, valueOrDefault(label.cornerRadius, label.borderRadius));
   ctx.fill();
+  if (stroke) {
+    ctx.stroke();
+  }
 
   ctx.fillStyle = label.color;
   if (isArray(label.content)) {
@@ -235,6 +247,18 @@ function drawLabel(ctx, line, chartArea) {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(label.content, 0, 0);
+  }
+}
+
+function setBorderStyle(ctx, options) {
+  if (options.borderWidth) {
+    ctx.lineCap = options.borderCapStyle;
+    ctx.setLineDash(options.borderDash);
+    ctx.lineDashOffset = options.borderDashOffset;
+    ctx.lineJoin = options.borderJoinStyle;
+    ctx.lineWidth = options.borderWidth;
+    ctx.strokeStyle = options.borderColor;
+    return true;
   }
 }
 
