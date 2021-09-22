@@ -118,7 +118,7 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `backgroundColor` | [`Color`](../options#color) | `'rgba(0,0,0,0.8)'` | Background color of the label container.
 | `color` | [`Color`](../options#color) | `'#fff'` | Text color.
 | `content` | `string`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image) | `null` | The content to show in the label.
-| `borderRadius` | `number` | `6` | Radius of label box in pixels.
+| [`borderRadius`](#borderradius) | `number` \| `object` | `6` | Radius of label box corners in pixels.
 | `drawTime` | `string` | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the line annotation draw time if unset
 | `enabled` | `boolean` | `false` | Whether or not the label is shown.
 | `font` | [`Font`](../options#font) | `{ style: 'bold' }` | Label font
@@ -131,3 +131,7 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `width` | `number`\|`string` | `undefined` | Overrides the width of the image. Could be set in pixel by a number, or in percentage of current width of image by a string. If undefined, uses the width of the image. It is used only when the content is an image.
 | `height` | `number`\|`string` | `undefined` | Overrides the height of the image. Could be set in pixel by a number, or in percentage of current height of image by a string. If undefined, uses the height of the image. It is used only when the content is an image.
 | `rotation` | `number`\|`'auto'` | `0` | Rotation of label, in degrees, or 'auto' to use the degrees of the line
+
+#### borderRadius
+
+If this value is a number, it is applied to all corners of the rectangle (topLeft, topRight, bottomLeft, bottomRight). If this value is an object, the `topLeft` property defines the top-left corners border radius. Similarly, the `topRight`, `bottomLeft`, and `bottomRight` properties can also be specified. Omitted corners have radius of 0.
