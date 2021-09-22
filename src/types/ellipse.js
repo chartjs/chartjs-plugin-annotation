@@ -1,3 +1,4 @@
+import {toRadians} from 'chart.js/helpers';
 import BoxAnnotation from './box';
 
 export default class EllipseAnnotation extends BoxAnnotation {
@@ -12,6 +13,11 @@ export default class EllipseAnnotation extends BoxAnnotation {
 
     ctx.save();
 
+    ctx.translate(center.x, center.y);
+    if (options.rotation) {
+      ctx.rotate(toRadians(options.rotation));
+    }
+
     ctx.beginPath();
 
     ctx.lineWidth = options.borderWidth;
@@ -21,7 +27,7 @@ export default class EllipseAnnotation extends BoxAnnotation {
     ctx.setLineDash(options.borderDash);
     ctx.lineDashOffset = options.borderDashOffset;
 
-    ctx.ellipse(center.x, center.y, height / 2, width / 2, Math.PI / 2, 0, 2 * Math.PI);
+    ctx.ellipse(0, 0, height / 2, width / 2, Math.PI / 2, 0, 2 * Math.PI);
 
     ctx.fill();
     ctx.stroke();
@@ -38,6 +44,7 @@ EllipseAnnotation.defaults = {
   borderDash: [],
   borderDashOffset: 0,
   borderWidth: 1,
+  rotation: 0,
   xScaleID: 'x',
   xMin: undefined,
   xMax: undefined,
