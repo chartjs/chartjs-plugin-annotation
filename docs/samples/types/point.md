@@ -72,7 +72,8 @@ const config = {
 // <block:utils:3>
 function value(ctx, datasetIndex, index, prop) {
   const meta = ctx.chart.getDatasetMeta(datasetIndex);
-  return meta.controller.getParsed(index)[prop];
+  const parsed = meta.controller.getParsed(index);
+  return parsed ? parsed[prop] : NaN;
 }
 // </block:utils>
 

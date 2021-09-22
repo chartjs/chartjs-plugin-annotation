@@ -1,29 +1,37 @@
 import {Element} from 'chart.js';
-import {isArray, toFontString, toRadians} from 'chart.js/helpers';
-import {scaleValue, roundedRect, rotated} from '../helpers';
+import {addRoundedRectPath, isArray, toFontString, toRadians, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
+import {clamp, clampAll, scaleValue, rotated} from '../helpers';
 
 const PI = Math.PI;
-const clamp = (x, from, to) => Math.min(to, Math.max(from, x));
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
 const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
 
+function isLineInArea({x, y, x2, y2}, {top, right, bottom, left}) {
+  return !(
+    (x < left && x2 < left) ||
+    (x > right && x2 > right) ||
+    (y < top && y2 < top) ||
+    (y > bottom && y2 > bottom)
+  );
+}
+
 function limitPointToArea({x, y}, p2, {top, right, bottom, left}) {
   if (x < left) {
-    y = p2.x < left ? NaN : interpolateY(left, {x, y}, p2);
+    y = interpolateY(left, {x, y}, p2);
     x = left;
   }
   if (x > right) {
-    y = p2.x > right ? NaN : interpolateY(right, {x, y}, p2);
+    y = interpolateY(right, {x, y}, p2);
     x = right;
   }
   if (y < top) {
-    x = p2.y < top ? NaN : interpolateX(top, {x, y}, p2);
+    x = interpolateX(top, {x, y}, p2);
     y = top;
   }
   if (y > bottom) {
-    x = p2.y > bottom ? NaN : interpolateX(bottom, {x, y}, p2);
+    x = interpolateX(bottom, {x, y}, p2);
     y = bottom;
   }
   return {x, y};
@@ -58,9 +66,11 @@ export default class LineAnnotation extends Element {
     return (sqr(x - xx) + sqr(y - yy)) < epsilon;
   }
 
-  labelIsVisible() {
+  labelIsVisible(chartArea) {
     const label = this.options.label;
-    return label && label.enabled && label.content;
+
+    const inside = !chartArea || isLineInArea(this, chartArea);
+    return inside && label && label.enabled && label.content;
   }
 
   isOnLabel(mouseX, mouseY) {
@@ -107,7 +117,7 @@ export default class LineAnnotation extends Element {
   }
 
   drawLabel(ctx, chartArea) {
-    if (this.labelIsVisible()) {
+    if (this.labelIsVisible(chartArea)) {
       ctx.save();
       drawLabel(ctx, this, chartArea);
       ctx.restore();
@@ -143,7 +153,10 @@ export default class LineAnnotation extends Element {
         y2 = scaleValue(yScale, options.yMax, y2);
       }
     }
-    return limitLineToArea({x, y}, {x: x2, y: y2}, chart.chartArea);
+    const inside = isLineInArea({x, y, x2, y2}, chart.chartArea);
+    return inside
+      ? limitLineToArea({x, y}, {x: x2, y: y2}, chart.chartArea)
+      : {x, y, x2, y2, width: Math.abs(x2 - x), height: Math.abs(y2 - y)};
   }
 }
 
@@ -156,6 +169,13 @@ LineAnnotation.defaults = {
   borderDashOffset: 0,
   label: {
     backgroundColor: 'rgba(0,0,0,0.8)',
+    borderCapStyle: 'butt',
+    borderColor: 'black',
+    borderDash: [],
+    borderDashOffset: 0,
+    borderJoinStyle: 'miter',
+    borderRadius: 6,
+    borderWidth: 0,
     drawTime: undefined,
     font: {
       family: undefined,
@@ -168,7 +188,6 @@ LineAnnotation.defaults = {
     xPadding: 6,
     yPadding: 6,
     rotation: 0,
-    cornerRadius: 6,
     position: 'center',
     xAdjust: 0,
     yAdjust: 0,
@@ -210,8 +229,19 @@ function drawLabel(ctx, line, chartArea) {
   ctx.rotate(rect.rotation);
 
   ctx.fillStyle = label.backgroundColor;
-  roundedRect(ctx, -(width / 2), -(height / 2), width, height, label.cornerRadius);
+  const stroke = setBorderStyle(ctx, label);
+
+  ctx.beginPath();
+  addRoundedRectPath(ctx, {
+    x: -(width / 2), y: -(height / 2), w: width, h: height,
+    // TODO: v2 remove support for cornerRadius
+    radius: clampAll(toTRBLCorners(valueOrDefault(label.cornerRadius, label.borderRadius)), 0, Math.min(width, height) / 2)
+  });
+  ctx.closePath();
   ctx.fill();
+  if (stroke) {
+    ctx.stroke();
+  }
 
   ctx.fillStyle = label.color;
   if (isArray(label.content)) {
@@ -235,6 +265,18 @@ function drawLabel(ctx, line, chartArea) {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(label.content, 0, 0);
+  }
+}
+
+function setBorderStyle(ctx, options) {
+  if (options.borderWidth) {
+    ctx.lineCap = options.borderCapStyle;
+    ctx.setLineDash(options.borderDash);
+    ctx.lineDashOffset = options.borderDashOffset;
+    ctx.lineJoin = options.borderJoinStyle;
+    ctx.lineWidth = options.borderWidth;
+    ctx.strokeStyle = options.borderColor;
+    return true;
   }
 }
 

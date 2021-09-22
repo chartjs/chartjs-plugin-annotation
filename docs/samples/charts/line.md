@@ -1,4 +1,4 @@
-# Bar Chart
+# Line Chart
 
 ```js chart-editor
 // <block:setup:5>
@@ -8,15 +8,11 @@ const MAX = 100;
 
 Utils.srand(8);
 
-const labels = [];
-for (let i = 0; i < DATA_COUNT; ++i) {
-  labels.push('Label ' + i);
-}
 
 const numberCfg = {count: DATA_COUNT, min: MIN, max: MAX};
 
 const data = {
-  labels: labels,
+  labels: [10, 20, 30, 40, 50, 60, 70, 80],
   datasets: [{
     data: Utils.numbers(numberCfg),
   }, {
@@ -33,9 +29,10 @@ const annotation1 = {
   scaleID: 'x',
   borderWidth: 3,
   borderColor: 'black',
-  value: 0.5,
+  value: 5,
   label: {
-    content: 'Line annotation at x=0.5',
+    rotation: 'auto',
+    content: 'Line at x=5',
     enabled: true
   },
 };
@@ -47,12 +44,12 @@ const annotation2 = {
   scaleID: 'x',
   borderWidth: 3,
   borderColor: 'black',
-  value: 'Label 5',
+  value: 90,
   label: {
     rotation: 'auto',
     position: 'start',
     backgroundColor: 'black',
-    content: 'Line at x=Label 5',
+    content: 'Line at x=90',
     enabled: true
   }
 };
@@ -61,10 +58,10 @@ const annotation2 = {
 // <block:annotation3:3>
 const annotation3 = {
   type: 'box',
-  xMin: 2.5,
-  xMax: 3.5,
-  yMin: 0,
-  yMax: 100,
+  xMin: 75,
+  xMax: 85,
+  yMin: 80,
+  yMax: 90,
   backgroundColor: 'rgba(250,250,0,0.4)',
   borderColor: 'rgba(0,150,0,0.2)',
   drawTime: 'beforeDatasetsDraw',
@@ -76,9 +73,15 @@ const annotation3 = {
 
 /* <block:config:0> */
 const config = {
-  type: 'bar',
+  type: 'line',
   data,
   options: {
+    scales: {
+      x: {
+        type: 'linear',
+        bounds: 'data'
+      }
+    },
     plugins: {
       annotation: {
         annotations: {
@@ -94,34 +97,26 @@ const config = {
 
 var actions = [
   {
-    name: 'Randomize',
+    name: 'Zoom out',
     handler: function(chart) {
-      chart.data.datasets.forEach(function(dataset, i) {
-        dataset.data = dataset.data.map(() => Utils.rand(MIN, MAX));
-      });
-
+      chart.scales.x.options.min = 0;
+      chart.scales.x.options.max = 100;
       chart.update();
     }
   },
   {
-    name: 'Add data',
+    name: 'Zoom in',
     handler: function(chart) {
-      chart.data.labels.push('Label ' + chart.data.labels.length);
-      chart.data.datasets.forEach(function(dataset, i) {
-        dataset.data.push(Utils.rand(MIN, MAX));
-      });
-
+      chart.scales.x.options.min = 10;
+      chart.scales.x.options.max = 80;
       chart.update();
     }
   },
   {
-    name: 'Remove data',
+    name: 'Reset zoom',
     handler: function(chart) {
-      chart.data.labels.shift();
-      chart.data.datasets.forEach(function(dataset, i) {
-        dataset.data.shift();
-      });
-
+      chart.scales.x.options.min = undefined;
+      chart.scales.x.options.max = undefined;
       chart.update();
     }
   }

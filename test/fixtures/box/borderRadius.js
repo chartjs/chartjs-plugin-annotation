@@ -26,7 +26,7 @@ module.exports = {
               yMax: 10,
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
               borderColor: 'rgb(33, 101, 171)',
-              cornerRadius: 8,
+              borderRadius: {topLeft: 16, topRight: 8, bottomRight: 4},
               borderWidth: 5,
             },
             box2: {
@@ -39,7 +39,7 @@ module.exports = {
               yMax: 15,
               backgroundColor: 'rgba(101, 33, 171, 0.5)',
               borderColor: 'rgb(101, 33, 171)',
-              cornerRadius: Infinity,
+              borderRadius: Infinity,
               borderWidth: 5,
             },
             box3: {
@@ -52,7 +52,7 @@ module.exports = {
               yMax: 16,
               backgroundColor: 'rgba(171, 101, 33, 0.5)',
               borderColor: 'rgb(171, 101, 33)',
-              cornerRadius: 4,
+              borderRadius: 4,
               borderWidth: 5,
             }
           }
