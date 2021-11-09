@@ -155,18 +155,12 @@ function drawLabel(ctx, box) {
 }
 
 function calculateXYLabel(box, labels, lineHeight) {
-  const {x, y, width, height, options} = box;
+  const {y, height, options} = box;
   const labelsOpts = options.label;
   const borderWidth = options.borderWidth;
   const {textAlign, position, xPadding, yPadding} = labelsOpts;
   let lblX, lblY;
-  if (textAlign === 'left') {
-    lblX = x + xPadding + borderWidth;
-  } else if (textAlign === 'right') {
-    lblX = x + width - xPadding - borderWidth;
-  } else {
-    lblX = x + width / 2;
-  }
+  lblX = calculateX(box, textAlign, xPadding, borderWidth);
   if (position === 'top') {
     lblY = y + yPadding + borderWidth;
   } else if (position === 'bottom') {
@@ -175,4 +169,13 @@ function calculateXYLabel(box, labels, lineHeight) {
     lblY = y + height / 2 - labels.length * lineHeight / 4;
   }
   return {x: lblX, y: lblY};
+}
+
+function calculateX(box, align, padding, borderWidth) {
+  if (align === 'left') {
+    return box.x + padding + borderWidth;
+  } else if (align === 'right') {
+    return box.x + box.width - padding - borderWidth;
+  }
+  return box.x + box.width / 2;
 }
