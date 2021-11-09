@@ -166,7 +166,7 @@ function calculateXYLabel(box, labels, lineHeight) {
   } else if (position === 'bottom') {
     lblY = y + height - yPadding - borderWidth - (labels.length - 1) * lineHeight;
   } else {
-    lblY = y + height / 2 - labels.length * lineHeight / 4;
+    lblY = y + height / 2 - (labels.length - 1) * lineHeight / 2;
   }
   return {x: lblX, y: lblY};
 }
