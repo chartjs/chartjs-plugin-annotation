@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {addRoundedRectPath, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
+import {addRoundedRectPath, toTRBLCorners, valueOrDefault, isArray, toFont} from 'chart.js/helpers';
 import {clampAll, scaleValue} from '../helpers';
 
 export default class BoxAnnotation extends Element {
@@ -47,6 +47,19 @@ export default class BoxAnnotation extends Element {
     }
 
     ctx.restore();
+  }
+
+  drawLabel(ctx) {
+    const {x, y, width, height, options} = this;
+    const label = options.label;
+    if (label && label.enabled && label.content) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(x, y, width, height);
+      ctx.clip();
+      drawLabel(ctx, this);
+      ctx.restore();
+    }
   }
 
   resolveElementProperties(chart, options) {
@@ -98,10 +111,68 @@ BoxAnnotation.defaults = {
   xMax: undefined,
   yScaleID: 'y',
   yMin: undefined,
-  yMax: undefined
+  yMax: undefined,
+  label: {
+    enabled: false,
+    content: null,
+    drawTime: undefined,
+    font: {
+      family: undefined,
+      lineHeight: undefined,
+      size: undefined,
+      style: undefined,
+      weight: 'bold'
+    },
+    color: 'black',
+    position: 'middle',
+    textAlign: 'center',
+    xPadding: 6,
+    yPadding: 6,
+  }
+
 };
 
 BoxAnnotation.defaultRoutes = {
   borderColor: 'color',
   backgroundColor: 'color'
 };
+
+function drawLabel(ctx, box) {
+  const label = box.options.label;
+  const content = label.content;
+
+  if (content) {
+    const labels = isArray(content) ? content : [content];
+    const font = toFont(label.font);
+    const lh = font.lineHeight;
+    const xyPoint = calculateXYLabel(box, labels, lh);
+    ctx.font = font.string;
+    ctx.textAlign = label.textAlign;
+    ctx.textBaseline = label.position;
+    ctx.fillStyle = label.color;
+    labels.forEach((l, i) => ctx.fillText(l, xyPoint.x, xyPoint.y + i * lh));
+  }
+}
+
+function calculateXYLabel(box, labels, lineHeight) {
+  const {x, y, width, height, options} = box;
+  const labelsOpts = options.label;
+  const borderWidth = options.borderWidth;
+  const {textAlign, position, xPadding, yPadding} = labelsOpts;
+  let lblX, lblY;
+  if (textAlign === 'left') {
+    lblX = x + xPadding + borderWidth;
+  } else if (textAlign === 'right') {
+    lblX = x + width - xPadding - borderWidth;
+  } else {
+    lblX = x + width / 2;
+  }
+  if (position === 'top') {
+    lblY = y + yPadding + borderWidth;
+  } else if (position === 'bottom') {
+    lblY = y + height - yPadding - borderWidth - (labels.length - 1) * lineHeight;
+  } else {
+    lblY = y + height / 2 - labels.length * lineHeight / 4;
+  }
+  return {x: lblX, y: lblY};
+}
