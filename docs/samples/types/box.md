@@ -41,7 +41,12 @@ const annotation2 = {
   xMin: (ctx) => min(ctx, 1, 'x') - 2,
   yMin: (ctx) => min(ctx, 1, 'y') - 2,
   xMax: (ctx) => max(ctx, 1, 'x') + 2,
-  yMax: (ctx) => max(ctx, 1, 'y') + 2
+  yMax: (ctx) => max(ctx, 1, 'y') + 2,
+  label: {
+    enabled: true,
+    content: 'Box annotation',
+    color: 'rgba(150,0,0,0.2)'
+  }
 };
 // </block:annotation2>
 
