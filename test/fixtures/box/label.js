@@ -1,5 +1,5 @@
 module.exports = {
-  tolerance: 0.0055,
+  tolerance: 0.0070,
   config: {
     type: 'bar',
     options: {
@@ -72,6 +72,26 @@ module.exports = {
                 },
                 textAlign: 'right',
                 position: 'bottom'
+              }
+            },
+            box4: {
+              type: 'box',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xMin: 'June',
+              xMax: 'July',
+              yMin: 5,
+              yMax: 9,
+              backgroundColor: 'rgba(255, 99, 132, 0.5)',
+              borderColor: 'rgba(255, 99, 132)',
+              borderDash: [6, 6],
+              borderWidth: 5,
+              label: {
+                enabled: true,
+                content: 'This is the label',
+                color: 'red',
+                textAlign: 'left',
+                position: 'center'
               }
             }
           }
