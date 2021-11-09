@@ -140,18 +140,15 @@ BoxAnnotation.defaultRoutes = {
 function drawLabel(ctx, box) {
   const label = box.options.label;
   const content = label.content;
-
-  if (content) {
-    const labels = isArray(content) ? content : [content];
-    const font = toFont(label.font);
-    const lh = font.lineHeight;
-    const xyPoint = calculateXYLabel(box, labels, lh);
-    ctx.font = font.string;
-    ctx.textAlign = label.textAlign;
-    ctx.textBaseline = label.position;
-    ctx.fillStyle = label.color;
-    labels.forEach((l, i) => ctx.fillText(l, xyPoint.x, xyPoint.y + i * lh));
-  }
+  const labels = isArray(content) ? content : [content];
+  const font = toFont(label.font);
+  const lh = font.lineHeight;
+  const xyPoint = calculateXYLabel(box, labels, lh);
+  ctx.font = font.string;
+  ctx.textAlign = label.textAlign;
+  ctx.textBaseline = label.position;
+  ctx.fillStyle = label.color;
+  labels.forEach((l, i) => ctx.fillText(l, xyPoint.x, xyPoint.y + i * lh));
 }
 
 function calculateXYLabel(box, labels, lineHeight) {
