@@ -27,7 +27,7 @@ export interface BoxLabelOptions {
 	 * Text alignment when the content of the label is multi-line.
 	 * @default 'center'
 	 */
-	textAlign?: Scriptable<BoxLabelTextAlign, PartialEventContext>,
+	align?: Scriptable<BoxLabelAlign, PartialEventContext>,
 
 	/**
 	 * Whether the label is enabled and should be displayed
@@ -43,4 +43,4 @@ export interface BoxLabelOptions {
 
 export type BoxLabelPosition = 'top' | 'middle' | 'bottom';
 
-export type BoxLabelTextAlign = 'left' | 'center' | 'right';
+export type BoxLabelAlign = 'left' | 'center' | 'right';

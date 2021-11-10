@@ -125,7 +125,7 @@ BoxAnnotation.defaults = {
     },
     color: 'black',
     position: 'middle',
-    textAlign: 'center',
+    align: 'center',
     xPadding: 6,
     yPadding: 6,
   }
@@ -145,7 +145,7 @@ function drawLabel(ctx, box) {
   const lh = font.lineHeight;
   const xyPoint = calculateXYLabel(box, labels, lh);
   ctx.font = font.string;
-  ctx.textAlign = label.textAlign;
+  ctx.textAlign = label.align;
   ctx.textBaseline = label.position;
   ctx.fillStyle = label.color;
   labels.forEach((l, i) => ctx.fillText(l, xyPoint.x, xyPoint.y + i * lh));
@@ -155,9 +155,9 @@ function calculateXYLabel(box, labels, lineHeight) {
   const {y, height, options} = box;
   const labelsOpts = options.label;
   const borderWidth = options.borderWidth;
-  const {textAlign, position, xPadding, yPadding} = labelsOpts;
+  const {align, position, xPadding, yPadding} = labelsOpts;
   let lblX, lblY;
-  lblX = calculateX(box, textAlign, xPadding, borderWidth);
+  lblX = calculateX(box, align, xPadding, borderWidth);
   if (position === 'top') {
     lblY = y + yPadding + borderWidth;
   } else if (position === 'bottom') {

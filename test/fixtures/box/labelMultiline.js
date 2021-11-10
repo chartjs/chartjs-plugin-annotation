@@ -24,13 +24,13 @@ module.exports = {
               xMax: 3.5,
               yMin: 5,
               yMax: 10,
-              backgroundColor: 'rgba(255, 99, 132, 0.5)',
-              borderColor: 'rgba(255, 99, 132)',
+              backgroundColor: 'rgba(178, 255, 102, 0.5)',
+              borderColor: 'rgb(178, 255, 102)',
               borderDash: [6, 6],
               borderWidth: 5,
               label: {
                 enabled: true,
-                content: 'This is a label',
+                content: ['This is a label', 'but this is multiline'],
               }
             },
             box2: {
@@ -41,13 +41,13 @@ module.exports = {
               xMax: 'July',
               yMin: 11,
               yMax: 15,
-              backgroundColor: 'rgba(255, 99, 132, 0.5)',
-              borderColor: 'rgba(255, 99, 132)',
+              backgroundColor: 'rgba(178, 255, 102, 0.5)',
+              borderColor: 'rgb(178, 255, 102)',
               borderDash: [6, 6],
               borderWidth: 5,
               label: {
                 enabled: true,
-                content: 'This is a label',
+                content: ['This is a label', 'but this is multiline'],
                 align: 'left',
                 position: 'top'
               }
@@ -60,13 +60,13 @@ module.exports = {
               xMax: 'May',
               yMin: 16,
               yMax: 20,
-              backgroundColor: 'rgba(255, 99, 132, 0.5)',
-              borderColor: 'rgba(255, 99, 132)',
+              backgroundColor: 'rgba(178, 255, 102, 0.5)',
+              borderColor: 'rgb(178, 255, 102)',
               borderDash: [6, 6],
               borderWidth: 5,
               label: {
                 enabled: true,
-                content: 'This is a label created by callback',
+                content: ['This is a label', 'but this is multiline'],
                 font: {
                   size: 18
                 },
@@ -82,13 +82,13 @@ module.exports = {
               xMax: 'July',
               yMin: 5,
               yMax: 9,
-              backgroundColor: 'rgba(255, 99, 132, 0.5)',
-              borderColor: 'rgba(255, 99, 132)',
+              backgroundColor: 'rgba(178, 255, 102, 0.5)',
+              borderColor: 'rgb(178, 255, 102)',
               borderDash: [6, 6],
               borderWidth: 5,
               label: {
                 enabled: true,
-                content: 'This is the label',
+                content: (ctx) => ['This is a label', 'type:' + ctx.type],
                 color: 'red',
                 align: 'left',
                 position: 'center'

@@ -107,12 +107,12 @@ All of these options can be [Scriptable](../options#scriptable-options)
 
 | Name | Type | Default | Notes
 | ---- | ---- | :----: | ---- | ----
+| `align` | `string` | `'center'` | Text alignment of label content in the box. Possible options are: `'left'`, `'center'`, `'right'`.
 | `color` | [`Color`](../options#color) | `'#fff'` | Text color.
 | `content` | `string`\|`string[]` | `null` | The content to show in the label.
 | `drawTime` | `string` | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the box annotation draw time if unset
 | `enabled` | `boolean` | `false` | Whether or not the label is shown.
 | `font` | [`Font`](../options#font) | `{ weight: 'bold' }` | Label font
+| `position` | `string` | `'middle'` | Anchor position of label in the box. Possible options are: `'top'`, `'middle'`, `'bottom'`.
 | `xPadding` | `number` | `6` | Padding of label to add left/right.
 | `yPadding` | `number` | `6` | Padding of label to add top/bottom.
-| `position` | `string` | `'middle'` | Anchor position of label in the box. Possible options are: `'top'`, `'middle'`, `'bottom'`.
-| `textAlign` | `string` | `'center'` | Text alignment of label content in the box. Possible options are: `'left'`, `'center'`, `'right'`.
