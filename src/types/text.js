@@ -160,14 +160,15 @@ function calculateRect(x, y, size, options) {
   const {align, position, xAdjust, yAdjust} = options;
   const {width, height} = size;
   return {
-    x: calculateByOptionValue(x, width, xAdjust, align, alignEnumValues),
-    y: calculateByOptionValue(y, height, yAdjust, position, positionEnumValues),
+    x: calculateByOptionValue({base: x, size: width}, xAdjust, align, alignEnumValues),
+    y: calculateByOptionValue({base: y, size: height}, yAdjust, position, positionEnumValues),
     width,
     height
   };
 }
 
-function calculateByOptionValue(base, size, adjust, option, enumValues) {
+function calculateByOptionValue(area, adjust, option, enumValues) {
+  const {base, size} = area;
   if (option === enumValues[0]) {
     return base - size + adjust;
   } else if (option === enumValues[1]) {
