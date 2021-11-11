@@ -17,6 +17,10 @@ export default class TextAnnotation extends Element {
     return this.options.display && this.options.content;
   }
 
+  boxMustBeDrawn() {
+    return (this.options.backgroundColor && this.options.backgroundColor !== 'transparent') || this.options.borderWidth > 0;
+  }
+
   getCenterPoint(useFinalPosition) {
     const {x, y, width, height} = this.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
     return {
@@ -27,7 +31,9 @@ export default class TextAnnotation extends Element {
 
   draw(ctx) {
     if (this.labelIsVisible()) {
-      drawBox(ctx, this);
+      if (this.boxMustBeDrawn()) {
+        drawBox(ctx, this);
+      }
       ctx.save();
       drawLabel(ctx, this);
       ctx.restore();
@@ -64,6 +70,7 @@ TextAnnotation.defaults = {
   adjustScaleRange: true,
   align: 'center',
   display: true,
+  backgroundColor: 'transparent',
   borderDash: [],
   borderDashOffset: 0,
   borderWidth: 0,
@@ -92,7 +99,6 @@ TextAnnotation.defaults = {
 
 TextAnnotation.defaultRoutes = {
   borderColor: 'color',
-  backgroundColor: 'backgroundColor'
 };
 
 function drawBox(ctx, text) {
@@ -130,8 +136,9 @@ function measureLabel(ctx, label) {
   let width = 0;
   for (let i = 0; i < count; i++) {
     const text = lines[i];
+    const key = font.string + '-' + text;
     const textWidth = ctx.measureText(text).width;
-    widthCache.set(text, textWidth);
+    widthCache.set(key, textWidth);
     width = Math.max(width, textWidth);
   }
   width += xPadding * 2 + borderWidth;
@@ -154,7 +161,7 @@ function drawLabel(ctx, text) {
   ctx.textBaseline = 'top';
   ctx.fillStyle = label.color;
   // adds 1.5 because the baseline to top, add 3 pixels from the line for normal letters
-  labels.forEach((l, i) => ctx.fillText(l, calculateFillTextX(text, widthCache.get(l)), text.y + yPadding + (borderWidth / 2) + 1.5 + i * lh));
+  labels.forEach((l, i) => ctx.fillText(l, calculateFillTextX(text, widthCache.get(font.string + '-' + l)), text.y + yPadding + (borderWidth / 2) + 1.5 + i * lh));
 }
 
 function calculateX(x, width, options) {

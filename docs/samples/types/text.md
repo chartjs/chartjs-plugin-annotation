@@ -34,7 +34,6 @@ const annotation1 = {
   xValue: 0,
   yScaleID: 'y',
   yValue: minValue,
-  backgroundColor: 'transparent',
   position: 'top',
   align: 'right',
   content: (ctx) => 'Lower bound: ' + minValue(ctx).toFixed(3)
@@ -48,7 +47,6 @@ const annotation2 = {
   xValue: 0,
   yScaleID: 'y',
   yValue: maxValue,
-  backgroundColor: 'transparent',
   position: 'bottom',
   align: 'right',
   content: (ctx) => 'Upper bound: ' + maxValue(ctx).toFixed(3)
