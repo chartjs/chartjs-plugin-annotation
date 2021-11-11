@@ -118,9 +118,6 @@ function measureLabel(ctx, label) {
   const lines = isArray(content) ? content : [content];
   const count = lines.length;
   const font = toFont(label.font);
-  const lh = font.lineHeight;
-  const xPadding = label.xPadding;
-  const yPadding = label.yPadding;
   const borderWidth = label.borderWidth;
   ctx.font = font.string;
   let width = 0;
@@ -131,10 +128,10 @@ function measureLabel(ctx, label) {
     widthCache.set(key, textWidth);
     width = Math.max(width, textWidth);
   }
-  width += xPadding * 2 + borderWidth;
+  width += label.xPadding * 2 + borderWidth;
   return {
     width,
-    height: count * lh + yPadding * 2 + borderWidth
+    height: count * font.lineHeight + label.yPadding * 2 + borderWidth
   };
 }
 
@@ -151,7 +148,8 @@ function drawLabel(ctx, text) {
   ctx.textBaseline = 'top';
   ctx.fillStyle = label.color;
   // adds 1.5 because the baseline to top, add 3 pixels from the line for normal letters
-  labels.forEach((l, i) => ctx.fillText(l, calculateFillTextX(text, widthCache.get(font.string + '-' + l)), text.y + yPadding + (borderWidth / 2) + 1.5 + (i * lh)));
+  const topY = text.y + yPadding + (borderWidth / 2) + 1.5;
+  labels.forEach((l, i) => ctx.fillText(l, calculateFillTextX(text, widthCache.get(font.string + '-' + l)), topY + (i * lh)));
 }
 
 const alignEnumValues = ['left', 'right'];
