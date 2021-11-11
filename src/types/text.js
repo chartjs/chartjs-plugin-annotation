@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
-import {isArray, toFont} from 'chart.js/helpers';
-import {scaleValue} from '../helpers';
+import {addRoundedRectPath, toTRBLCorners, isArray, toFont} from 'chart.js/helpers';
+import {clampAll, scaleValue} from '../helpers';
 
 export default class TextAnnotation extends Element {
 
@@ -27,6 +27,7 @@ export default class TextAnnotation extends Element {
 
   draw(ctx) {
     if (this.labelIsVisible()) {
+      drawBox(ctx, this);
       ctx.save();
       drawLabel(ctx, this);
       ctx.restore();
@@ -48,20 +49,26 @@ export default class TextAnnotation extends Element {
       y = scaleValue(yScale, options.yValue, y);
     }
     const size = measureLabel(ctx, options);
-    this.rect = {
-      x: calculateX(x, size.width, options.anchor),
-      y: calculateY(y, size.height, options.position),
+    return {
+      x: calculateX(x, size.width, options),
+      y: calculateY(y, size.height, options),
       width: size.width,
       height: size.height
     };
-    return this.rect;
   }
 }
 
 TextAnnotation.id = 'textAnnotation';
 
 TextAnnotation.defaults = {
+  adjustScaleRange: true,
+  align: 'center',
   display: true,
+  borderDash: [],
+  borderDashOffset: 0,
+  borderWidth: 0,
+  borderRadius: 0,
+  color: 'black',
   content: null,
   drawTime: undefined,
   font: {
@@ -71,18 +78,43 @@ TextAnnotation.defaults = {
     style: undefined,
     weight: undefined
   },
-  color: 'black',
-  anchor: 'center',
   position: 'middle',
   textAlign: 'center',
+  xAdjust: 0,
+  xPadding: 6,
   xScaleID: 'x',
   xValue: undefined,
+  yAdjust: 0,
+  yPadding: 6,
   yScaleID: 'y',
   yValue: undefined
 };
 
 TextAnnotation.defaultRoutes = {
+  borderColor: 'color',
+  backgroundColor: 'backgroundColor'
 };
+
+function drawBox(ctx, text) {
+  const {x, y, width, height, options} = text.getProps(['x', 'y', 'width', 'height', 'options']);
+  ctx.save();
+  ctx.lineWidth = options.borderWidth;
+  ctx.strokeStyle = options.borderColor;
+  ctx.fillStyle = options.backgroundColor;
+  ctx.setLineDash(options.borderDash);
+  ctx.lineDashOffset = options.borderDashOffset;
+  ctx.beginPath();
+  addRoundedRectPath(ctx, {
+    x, y, w: width, h: height,
+    radius: clampAll(toTRBLCorners(options.borderRadius), 0, Math.min(width, height) / 2)
+  });
+  ctx.closePath();
+  ctx.fill();
+  if (options.borderWidth) {
+    ctx.stroke();
+  }
+  ctx.restore();
+}
 
 const widthCache = new Map();
 function measureLabel(ctx, label) {
@@ -91,6 +123,9 @@ function measureLabel(ctx, label) {
   const count = lines.length;
   const font = toFont(label.font);
   const lh = font.lineHeight;
+  const xPadding = label.xPadding;
+  const yPadding = label.yPadding;
+  const borderWidth = label.borderWidth;
   ctx.font = font.string;
   let width = 0;
   for (let i = 0; i < count; i++) {
@@ -99,50 +134,56 @@ function measureLabel(ctx, label) {
     widthCache.set(text, textWidth);
     width = Math.max(width, textWidth);
   }
-
+  width += xPadding * 2 + borderWidth;
   return {
     width,
-    height: count * lh
+    height: count * lh + yPadding * 2 + borderWidth
   };
 }
 
 function drawLabel(ctx, text) {
   const label = text.options;
-  const rect = text.rect;
   const content = label.content;
   const labels = isArray(content) ? content : [content];
+  const yPadding = label.yPadding;
+  const borderWidth = label.borderWidth;
   const font = toFont(label.font);
   const lh = font.lineHeight;
   ctx.font = font.string;
   ctx.textAlign = 'left';
   ctx.textBaseline = 'top';
   ctx.fillStyle = label.color;
-  labels.forEach((l, i) => ctx.fillText(l, calculateFillTextX(rect, widthCache.get(l), label.textAlign), rect.y + i * lh));
+  // adds 1.5 because the baseline to top, add 3 pixels from the line for normal letters
+  labels.forEach((l, i) => ctx.fillText(l, calculateFillTextX(text, widthCache.get(l)), text.y + yPadding + (borderWidth / 2) + 1.5 + i * lh));
 }
 
-function calculateX(x, width, anchor) {
-  if (anchor === 'left') {
-    return x - width;
-  } else if (anchor === 'right') {
-    return x;
-  }
-  return x - width / 2;
-}
-
-function calculateY(y, height, position) {
-  if (position === 'top') {
-    return y - height;
-  } else if (position === 'bottom') {
-    return y;
-  }
-  return y - height / 2;
-}
-
-function calculateFillTextX(rect, width, align) {
+function calculateX(x, width, options) {
+  const {align, xAdjust} = options;
   if (align === 'left') {
-    return rect.x;
+    return x - width + xAdjust;
   } else if (align === 'right') {
-    return rect.x + rect.width - width;
+    return x + xAdjust;
   }
-  return rect.x + (rect.width - width) / 2;
+  return x - width / 2 + xAdjust;
+}
+
+function calculateY(y, height, options) {
+  const {position, yAdjust} = options;
+  if (position === 'top') {
+    return y - height + yAdjust;
+  } else if (position === 'bottom') {
+    return y + yAdjust;
+  }
+  return y - height / 2 + yAdjust;
+}
+
+function calculateFillTextX(text, textWidth) {
+  const {x, width, options} = text;
+  const {textAlign, xPadding, borderWidth} = options;
+  if (textAlign === 'start') {
+    return x + xPadding + (borderWidth / 2);
+  } else if (textAlign === 'end') {
+    return x + width - textWidth - xPadding - (borderWidth / 2);
+  }
+  return x + (width - textWidth) / 2;
 }

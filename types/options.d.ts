@@ -1,14 +1,15 @@
-import { Color } from 'chart.js';
+import { Color, FontSpec } from 'chart.js';
 import { AnnotationEvents, PartialEventContext } from './events';
-import { LabelOptions } from './label';
+import { LabelOptions, LabelTextAlign } from './label';
 
 export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw';
 
 export interface AnnotationTypeRegistry {
-	line: LineAnnotationOptions
-	box: BoxAnnotationOptions
+  line: LineAnnotationOptions
+  box: BoxAnnotationOptions
   ellipse: EllipseAnnotationOptions
   point: PointAnnotationOptions
+  text: TextAnnotationOptions
 }
 
 export type AnnotationType = keyof AnnotationTypeRegistry;
@@ -65,6 +66,27 @@ interface PointAnnotationOptions extends CoreAnnotationOptions {
 	radius?: Scriptable<number, PartialEventContext>,
 	xValue?: Scriptable<ScaleValue, PartialEventContext>;
 	yValue?: Scriptable<ScaleValue, PartialEventContext>;
+}
+
+export type TextLabelPosition = 'top' | 'middle' | 'bottom';
+
+export type TextLabelAlign = 'left' | 'center' | 'right';
+
+interface TextAnnotationOptions extends CoreAnnotationOptions {
+  align?: Scriptable<TextLabelAlign, PartialEventContext>,
+  backgroundColor?: Scriptable<Color, PartialEventContext>,
+  borderRadius?: Scriptable<number, PartialEventContext>,
+  color?: Scriptable<Color, PartialEventContext>,
+  content: Scriptable<string | string[] | null, PartialEventContext>,
+  font?: FontSpec
+  position?: Scriptable<TextLabelPosition, PartialEventContext>,
+  textAlign?: Scriptable<LabelTextAlign, PartialEventContext>,
+  xPadding?: Scriptable<number, PartialEventContext>,
+  yPadding?: Scriptable<number, PartialEventContext>,
+  xAdjust?: Scriptable<number, PartialEventContext>,
+  yAdjust?: Scriptable<number, PartialEventContext>,
+  xValue?: Scriptable<ScaleValue, PartialEventContext>;
+  yValue?: Scriptable<ScaleValue, PartialEventContext>;
 }
 
 export interface AnnotationPluginOptions extends AnnotationEvents {

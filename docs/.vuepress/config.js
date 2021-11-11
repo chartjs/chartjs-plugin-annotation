@@ -48,7 +48,8 @@ module.exports = {
             'types/box',
             'types/ellipse',
             'types/line',
-            'types/point'
+            'types/point',
+            'types/text'
           ]
         }
       ],
@@ -61,7 +62,8 @@ module.exports = {
             'types/box',
             'types/ellipse',
             'types/line',
-            'types/point'
+            'types/point',
+            'types/text'
           ],
         },
         {
