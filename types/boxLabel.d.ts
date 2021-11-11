@@ -15,7 +15,7 @@ export interface BoxLabelOptions {
    * Padding of label to add top/bottom
    * @default 6
    */
-    yPadding?: Scriptable<number, PartialEventContext>,
+  yPadding?: Scriptable<number, PartialEventContext>,
 
   /**
    * Anchor position of label on line.
