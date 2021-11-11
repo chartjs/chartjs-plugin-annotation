@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {addRoundedRectPath, toTRBLCorners, isArray, toFont} from 'chart.js/helpers';
-import {clampAll, scaleValue} from '../helpers';
+import {getCenterPoint, clampAll, scaleValue} from '../helpers';
 
 export default class TextAnnotation extends Element {
 
@@ -22,11 +22,7 @@ export default class TextAnnotation extends Element {
   }
 
   getCenterPoint(useFinalPosition) {
-    const {x, y, width, height} = this.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
-    return {
-      x: x + width / 2,
-      y: y + height / 2
-    };
+    return getCenterPoint(this, useFinalPosition);
   }
 
   draw(ctx) {
@@ -54,13 +50,7 @@ export default class TextAnnotation extends Element {
     if (yScale) {
       y = scaleValue(yScale, options.yValue, y);
     }
-    const size = measureLabel(ctx, options);
-    return {
-      x: calculateX(x, size.width, options),
-      y: calculateY(y, size.height, options),
-      width: size.width,
-      height: size.height
-    };
+    return calculateRect(x, y, measureLabel(ctx, options), options);
   }
 }
 
@@ -164,24 +154,30 @@ function drawLabel(ctx, text) {
   labels.forEach((l, i) => ctx.fillText(l, calculateFillTextX(text, widthCache.get(font.string + '-' + l)), text.y + yPadding + (borderWidth / 2) + 1.5 + i * lh));
 }
 
-function calculateX(x, width, options) {
-  const {align, xAdjust} = options;
+function calculateRect(x, y, size, options) {
+  const {align, position, xAdjust, yAdjust} = options;
+  const {width, height} = size;
+  let newX, newY;
   if (align === 'left') {
-    return x - width + xAdjust;
+    newX = x - width + xAdjust;
   } else if (align === 'right') {
-    return x + xAdjust;
+    newX = x + xAdjust;
+  } else {
+    newX = x - width / 2 + xAdjust;
   }
-  return x - width / 2 + xAdjust;
-}
-
-function calculateY(y, height, options) {
-  const {position, yAdjust} = options;
   if (position === 'top') {
-    return y - height + yAdjust;
+    newY = y - height + yAdjust;
   } else if (position === 'bottom') {
-    return y + yAdjust;
+    newY = y + yAdjust;
+  } else {
+    newY = y - height / 2 + yAdjust;
   }
-  return y - height / 2 + yAdjust;
+  return {
+    x: newX,
+    y: newY,
+    width,
+    height
+  };
 }
 
 function calculateFillTextX(text, textWidth) {

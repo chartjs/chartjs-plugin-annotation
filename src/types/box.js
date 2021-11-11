@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {addRoundedRectPath, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
-import {clampAll, scaleValue} from '../helpers';
+import {getCenterPoint, clampAll, scaleValue} from '../helpers';
 
 export default class BoxAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
@@ -13,11 +13,7 @@ export default class BoxAnnotation extends Element {
   }
 
   getCenterPoint(useFinalPosition) {
-    const {x, y, width, height} = this.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
-    return {
-      x: x + width / 2,
-      y: y + height / 2
-    };
+    return getCenterPoint(this, useFinalPosition);
   }
 
   draw(ctx) {
