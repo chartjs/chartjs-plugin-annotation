@@ -2,8 +2,8 @@ import { Chart, ChartEvent } from 'chart.js';
 import { AnnotationElement } from './element';
 
 export interface EventContext {
-	chart: Chart,
-	element: AnnotationElement,
+  chart: Chart,
+  element: AnnotationElement,
 }
 
 /**
@@ -16,8 +16,8 @@ export interface PartialEventContext {
 }
 
 export interface AnnotationEvents {
-	enter?(context: EventContext, event: ChartEvent): void,
-	leave?(context: EventContext, event: ChartEvent): void,
-	click?(context: EventContext, event: ChartEvent): void,
-	dblclick?(context: EventContext, event: ChartEvent): void,
+  enter?(context: EventContext, event: ChartEvent): void,
+  leave?(context: EventContext, event: ChartEvent): void,
+  click?(context: EventContext, event: ChartEvent): void,
+  dblclick?(context: EventContext, event: ChartEvent): void,
 }
