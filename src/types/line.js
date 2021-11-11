@@ -256,8 +256,8 @@ function drawLabel(ctx, line, chartArea) {
     ctx.textBaseline = 'top';
     ctx.textAlign = label.textAlign;
     const x = calculateLabelXAlignment(label, width);
-    // adds 1.5 because the baseline to top, add 3 pixels from the line for normal letters
-    labels.forEach((l, i) => ctx.fillText(l, x, -(height / 2) + yPadding + (borderWidth / 2) + 1.5 + (i * font.lineHeight)));
+    const topY = -(height / 2) + yPadding + (borderWidth / 2);
+    labels.forEach((l, i) => ctx.fillText(l, x, topY + (i * font.lineHeight)));
   }
 }
 
