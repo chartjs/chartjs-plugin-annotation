@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {addRoundedRectPath, isArray, toFontString, toRadians, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
+import {addRoundedRectPath, isArray, toFont, toRadians, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
 import {clamp, clampAll, scaleValue, rotated} from '../helpers';
 
 const PI = Math.PI;
@@ -181,8 +181,8 @@ LineAnnotation.defaults = {
       family: undefined,
       lineHeight: undefined,
       size: undefined,
-      style: 'bold',
-      weight: undefined
+      style: undefined,
+      weight: 'bold'
     },
     color: '#fff',
     xPadding: 6,
@@ -192,6 +192,8 @@ LineAnnotation.defaults = {
     xAdjust: 0,
     yAdjust: 0,
     textAlign: 'center',
+    width: undefined,
+    height: undefined,
     enabled: false,
     content: null
   },
@@ -219,10 +221,11 @@ function calculateAutoRotation(line) {
 
 function drawLabel(ctx, line, chartArea) {
   const label = line.options.label;
+  const {borderWidth, xPadding, yPadding, content} = label;
+  const font = toFont(label.font);
+  ctx.font = font.string;
 
-  ctx.font = toFontString(label.font);
-
-  const {width, height} = measureLabel(ctx, label);
+  const {width, height} = measureLabel(ctx, label, font);
   const rect = line.labelRect = calculateLabelPosition(line, width, height, chartArea);
 
   ctx.translate(rect.x, rect.y);
@@ -244,27 +247,17 @@ function drawLabel(ctx, line, chartArea) {
   }
 
   ctx.fillStyle = label.color;
-  if (isArray(label.content)) {
+  if (content instanceof Image) {
+    const x = -(width / 2) + xPadding + borderWidth / 2;
+    const y = -(height / 2) + yPadding + borderWidth / 2;
+    ctx.drawImage(content, x, y, width - (2 * xPadding) - borderWidth, height - (2 * yPadding) - borderWidth);
+  } else {
+    const labels = isArray(content) ? content : [content];
+    ctx.textBaseline = 'top';
     ctx.textAlign = label.textAlign;
     const x = calculateLabelXAlignment(label, width);
-    let textYPosition = -(height / 2) + label.yPadding;
-    for (let i = 0; i < label.content.length; i++) {
-      ctx.textBaseline = 'top';
-      ctx.fillText(
-        label.content[i],
-        x,
-        textYPosition
-      );
-      textYPosition += label.font.size + label.yPadding;
-    }
-  } else if (label.content instanceof Image) {
-    const x = -(width / 2) + label.xPadding;
-    const y = -(height / 2) + label.yPadding;
-    ctx.drawImage(label.content, x, y, width - (2 * label.xPadding), height - (2 * label.yPadding));
-  } else {
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(label.content, 0, 0);
+    // adds 1.5 because the baseline to top, add 3 pixels from the line for normal letters
+    labels.forEach((l, i) => ctx.fillText(l, x, -(height / 2) + yPadding + (borderWidth / 2) + 1.5 + (i * font.lineHeight)));
   }
 }
 
@@ -281,11 +274,11 @@ function setBorderStyle(ctx, options) {
 }
 
 function calculateLabelXAlignment(label, width) {
-  const {textAlign, xPadding} = label;
+  const {textAlign, xPadding, borderWidth} = label;
   if (textAlign === 'start') {
-    return -(width / 2) + xPadding;
+    return -(width / 2) + xPadding + borderWidth / 2;
   } else if (textAlign === 'end') {
-    return +(width / 2) - xPadding;
+    return +(width / 2) - xPadding - borderWidth / 2;
   }
   return 0;
 }
@@ -300,12 +293,14 @@ function getImageSize(size, value) {
 }
 
 const widthCache = new Map();
-function measureLabel(ctx, label) {
+function measureLabel(ctx, label, font) {
   const content = label.content;
+  const borderWidth = label.borderWidth;
+
   if (content instanceof Image) {
     return {
-      width: getImageSize(content.width, label.width) + 2 * label.xPadding,
-      height: getImageSize(content.height, label.height) + 2 * label.yPadding
+      width: getImageSize(content.width, label.width) + 2 * label.xPadding + borderWidth,
+      height: getImageSize(content.height, label.height) + 2 * label.yPadding + borderWidth
     };
   }
   const lines = isArray(content) ? content : [content];
@@ -313,16 +308,17 @@ function measureLabel(ctx, label) {
   let width = 0;
   for (let i = 0; i < count; i++) {
     const text = lines[i];
-    if (!widthCache.has(text)) {
-      widthCache.set(text, ctx.measureText(text).width);
+    const key = font.string + '-' + text;
+    if (!widthCache.has(key)) {
+      widthCache.set(key, ctx.measureText(text).width);
     }
-    width = Math.max(width, widthCache.get(text));
+    width = Math.max(width, widthCache.get(key));
   }
-  width += 2 * label.xPadding;
+  width += 2 * label.xPadding + borderWidth;
 
   return {
     width,
-    height: count * label.font.size + ((count + 1) * label.yPadding)
+    height: count * font.lineHeight + label.yPadding * 2 + borderWidth
   };
 }
 
