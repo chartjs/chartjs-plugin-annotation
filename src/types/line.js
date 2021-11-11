@@ -258,11 +258,6 @@ function drawLabel(ctx, line, chartArea) {
     ctx.textBaseline = 'middle';
     ctx.textAlign = label.textAlign;
     labels.forEach((l, i) => ctx.fillText(l, x, y + (i * font.lineHeight)));
-    ctx.textBaseline = 'top';
-    ctx.textAlign = label.textAlign;
-    const x = calculateLabelXAlignment(label, width);
-    const topY = -(height / 2) + yPadding + (borderWidth / 2);
-    labels.forEach((l, i) => ctx.fillText(l, x, topY + (i * font.lineHeight)));
   }
 }
 
