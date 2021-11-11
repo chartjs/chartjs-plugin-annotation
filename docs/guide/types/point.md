@@ -65,7 +65,7 @@ The following options are available for point annotations.
 
 ### General
 
-If one of the axes does not match an axis in the chart, the point annotation will take the center of the chart as point. The 2 coordinates, xValue, yValue are optional. If not specified, the point annotation.
+If one of the axes does not match an axis in the chart, the point annotation will take the center of the chart as point. The 2 coordinates, xValue, yValue are optional. If not specified, the point annotation will take the center of the chart as point.
 
 | Name | Description |
 | ---- | ---- |
