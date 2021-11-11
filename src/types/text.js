@@ -112,7 +112,6 @@ function drawBox(ctx, text) {
   ctx.restore();
 }
 
-const widthCache = new Map();
 function measureLabel(ctx, label) {
   const content = label.content;
   const lines = isArray(content) ? content : [content];
@@ -123,10 +122,7 @@ function measureLabel(ctx, label) {
   let width = 0;
   for (let i = 0; i < count; i++) {
     const text = lines[i];
-    const key = font.string + '-' + text;
-    const textWidth = ctx.measureText(text).width;
-    widthCache.set(key, textWidth);
-    width = Math.max(width, textWidth);
+    width = Math.max(width, ctx.measureText(text).width);
   }
   width += label.xPadding * 2 + borderWidth;
   return {
@@ -139,17 +135,15 @@ function drawLabel(ctx, text) {
   const label = text.options;
   const content = label.content;
   const labels = isArray(content) ? content : [content];
-  const yPadding = label.yPadding;
-  const borderWidth = label.borderWidth;
   const font = toFont(label.font);
   const lh = font.lineHeight;
+  const x = calculateLabelXAlignment(text);
+  const y = text.y + label.yPadding + (label.borderWidth / 2) + (lh / 2);
   ctx.font = font.string;
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'top';
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = label.textAlign;
   ctx.fillStyle = label.color;
-  // adds 1.5 because the baseline to top, add 3 pixels from the line for normal letters
-  const topY = text.y + yPadding + (borderWidth / 2) + 1.5;
-  labels.forEach((l, i) => ctx.fillText(l, calculateFillTextX(text, widthCache.get(font.string + '-' + l)), topY + (i * lh)));
+  labels.forEach((l, i) => ctx.fillText(l, x, y + (i * lh)));
 }
 
 const alignEnumValues = ['left', 'right'];
@@ -175,13 +169,14 @@ function calculateByOptionValue(area, adjust, option, enumValues) {
   return base - size / 2 + adjust;
 }
 
-function calculateFillTextX(text, textWidth) {
+
+function calculateLabelXAlignment(text) {
   const {x, width, options} = text;
   const {textAlign, xPadding, borderWidth} = options;
   if (textAlign === 'start') {
     return x + xPadding + (borderWidth / 2);
   } else if (textAlign === 'end') {
-    return x + width - textWidth - xPadding - (borderWidth / 2);
+    return x + width - xPadding - (borderWidth / 2);
   }
-  return x + (width - textWidth) / 2;
+  return x + width / 2;
 }
