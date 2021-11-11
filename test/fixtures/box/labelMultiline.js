@@ -67,9 +67,6 @@ module.exports = {
               label: {
                 enabled: true,
                 content: ['This is a label', 'but this is multiline'],
-                font: {
-                  size: 18
-                },
                 align: 'right',
                 position: 'bottom'
               }

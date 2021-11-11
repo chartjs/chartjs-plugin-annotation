@@ -67,9 +67,6 @@ module.exports = {
               label: {
                 enabled: true,
                 content: 'This is a label created by callback',
-                font: {
-                  size: 18
-                },
                 align: 'right',
                 position: 'bottom'
               }
