@@ -151,33 +151,29 @@ function drawLabel(ctx, text) {
   ctx.textBaseline = 'top';
   ctx.fillStyle = label.color;
   // adds 1.5 because the baseline to top, add 3 pixels from the line for normal letters
-  labels.forEach((l, i) => ctx.fillText(l, calculateFillTextX(text, widthCache.get(font.string + '-' + l)), text.y + yPadding + (borderWidth / 2) + 1.5 + i * lh));
+  labels.forEach((l, i) => ctx.fillText(l, calculateFillTextX(text, widthCache.get(font.string + '-' + l)), text.y + yPadding + (borderWidth / 2) + 1.5 + (i * lh)));
 }
 
+const alignEnumValues = ['left', 'right'];
+const positionEnumValues = ['top', 'bottom'];
 function calculateRect(x, y, size, options) {
   const {align, position, xAdjust, yAdjust} = options;
   const {width, height} = size;
-  let newX, newY;
-  if (align === 'left') {
-    newX = x - width + xAdjust;
-  } else if (align === 'right') {
-    newX = x + xAdjust;
-  } else {
-    newX = x - width / 2 + xAdjust;
-  }
-  if (position === 'top') {
-    newY = y - height + yAdjust;
-  } else if (position === 'bottom') {
-    newY = y + yAdjust;
-  } else {
-    newY = y - height / 2 + yAdjust;
-  }
   return {
-    x: newX,
-    y: newY,
+    x: calculateByOptionValue(x, width, xAdjust, align, alignEnumValues),
+    y: calculateByOptionValue(y, height, yAdjust, position, positionEnumValues),
     width,
     height
   };
+}
+
+function calculateByOptionValue(base, size, adjust, option, enumValues) {
+  if (option === enumValues[0]) {
+    return base - size + adjust;
+  } else if (option === enumValues[1]) {
+    return base + adjust;
+  }
+  return base - size / 2 + adjust;
 }
 
 function calculateFillTextX(text, textWidth) {
