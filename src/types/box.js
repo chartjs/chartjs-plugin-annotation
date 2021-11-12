@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {addRoundedRectPath, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
+import {addRoundedRectPath, toTRBLCorners, valueOrDefault, isArray, toFont} from 'chart.js/helpers';
 import {getCenterPoint, clampAll, scaleValue} from '../helpers';
 
 export default class BoxAnnotation extends Element {

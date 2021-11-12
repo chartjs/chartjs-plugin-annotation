@@ -39,6 +39,7 @@ export function rotated(point, center, angle) {
  * @param {boolean} useFinalPosition - use the element's animation target instead of current position
  * @returns {{x: number, y: number}} center point
  */
+// TODO remove
 export function getCenterPoint(element, useFinalPosition) {
   const {x, y, width, height} = element.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
   return {

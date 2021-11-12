@@ -1,8 +1,8 @@
-import {Element} from 'chart.js';
 import {addRoundedRectPath, toTRBLCorners, isArray, toFont} from 'chart.js/helpers';
-import {getCenterPoint, clampAll, scaleValue} from '../helpers';
+import {clampAll} from '../helpers';
+import PointAnnotation from './point';
 
-export default class LabelAnnotation extends Element {
+export default class LabelAnnotation extends PointAnnotation {
 
   inRange(mouseX, mouseY) {
     const {x, y, width, height} = this.getProps(['x', 'y', 'width', 'height']);
@@ -21,36 +21,56 @@ export default class LabelAnnotation extends Element {
     return (this.options.backgroundColor && this.options.backgroundColor !== 'transparent') || this.options.borderWidth > 0;
   }
 
-  getCenterPoint(useFinalPosition) {
-    return getCenterPoint(this, useFinalPosition);
+  /**
+   * Gets the center point an annotation (used by box and label).
+   * @param Object element - element where to get the center point
+   * @param {boolean} useFinalPosition - use the element's animation target instead of current position
+   * @returns {{x: number, y: number}} center point
+   */
+  getCenterPoint(element, useFinalPosition) {
+    const {x, y, width, height} = element.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
+    return {
+      x: x + width / 2,
+      y: y + height / 2
+    };
   }
 
   draw(ctx) {
     if (this.labelIsVisible()) {
-      if (this.boxMustBeDrawn()) {
-        drawBox(ctx, this);
-      }
+      this.drawBox(ctx, this);
       ctx.save();
       drawLabel(ctx, this);
       ctx.restore();
     }
   }
+  
+  drawBox(ctx, element) {
+    if (!this.boxMustBeDrawn()) {
+      return;
+    }
+    const {x, y, width, height, options} = element.getProps(['x', 'y', 'width', 'height', 'options']);
+    ctx.save();
+    ctx.lineWidth = options.borderWidth;
+    ctx.strokeStyle = options.borderColor;
+    ctx.fillStyle = options.backgroundColor;
+    ctx.setLineDash(options.borderDash);
+    ctx.lineDashOffset = options.borderDashOffset;
+    ctx.beginPath();
+    addRoundedRectPath(ctx, {
+      x, y, w: width, h: height,
+      radius: clampAll(toTRBLCorners(options.borderRadius), 0, Math.min(width, height) / 2)
+    });
+    ctx.closePath();
+    ctx.fill();
+    if (options.borderWidth) {
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
 
   resolveElementProperties(chart, options) {
-    const {chartArea, scales, ctx} = chart;
-    const xScale = scales[options.xScaleID];
-    const yScale = scales[options.yScaleID];
-    let x = chartArea.width / 2;
-    let y = chartArea.height / 2;
-
-    if (xScale) {
-      x = scaleValue(xScale, options.xValue, x);
-    }
-
-    if (yScale) {
-      y = scaleValue(yScale, options.yValue, y);
-    }
-    return calculateRect(x, y, measureLabel(ctx, options), options);
+    const point = super.resolveElementProperties(chart, options);
+    return calculateRect(point.x, point.y, measureLabel(chart.ctx, options), options);
   }
 }
 
@@ -90,27 +110,6 @@ LabelAnnotation.defaults = {
 LabelAnnotation.defaultRoutes = {
   borderColor: 'color',
 };
-
-function drawBox(ctx, element) {
-  const {x, y, width, height, options} = element.getProps(['x', 'y', 'width', 'height', 'options']);
-  ctx.save();
-  ctx.lineWidth = options.borderWidth;
-  ctx.strokeStyle = options.borderColor;
-  ctx.fillStyle = options.backgroundColor;
-  ctx.setLineDash(options.borderDash);
-  ctx.lineDashOffset = options.borderDashOffset;
-  ctx.beginPath();
-  addRoundedRectPath(ctx, {
-    x, y, w: width, h: height,
-    radius: clampAll(toTRBLCorners(options.borderRadius), 0, Math.min(width, height) / 2)
-  });
-  ctx.closePath();
-  ctx.fill();
-  if (options.borderWidth) {
-    ctx.stroke();
-  }
-  ctx.restore();
-}
 
 function measureLabel(ctx, label) {
   const content = label.content;
