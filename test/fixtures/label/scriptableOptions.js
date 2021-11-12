@@ -17,7 +17,7 @@ module.exports = {
         annotation: {
           annotations: {
             text1: {
-              type: 'text',
+              type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
               xValue: 'January',
@@ -28,7 +28,7 @@ module.exports = {
               align: () => 'right'
             },
             text2: {
-              type: 'text',
+              type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
               xValue: 'February',
@@ -38,7 +38,7 @@ module.exports = {
               content: () => 'This is my text'
             },
             text3: {
-              type: 'text',
+              type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
               xValue: 'May',

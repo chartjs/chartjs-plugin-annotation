@@ -5,7 +5,7 @@ import BoxAnnotation from './types/box';
 import LineAnnotation from './types/line';
 import EllipseAnnotation from './types/ellipse';
 import PointAnnotation from './types/point';
-import TextAnnotation from './types/text';
+import LabelAnnotation from './types/label';
 import {version} from '../package.json';
 
 const chartStates = new Map();
@@ -15,7 +15,7 @@ const annotationTypes = {
   line: LineAnnotation,
   ellipse: EllipseAnnotation,
   point: PointAnnotation,
-  text: TextAnnotation
+  label: LabelAnnotation
 };
 
 Object.keys(annotationTypes).forEach(key => {

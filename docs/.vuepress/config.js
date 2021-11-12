@@ -49,7 +49,7 @@ module.exports = {
             'types/ellipse',
             'types/line',
             'types/point',
-            'types/text'
+            'types/label'
           ]
         }
       ],
@@ -63,7 +63,7 @@ module.exports = {
             'types/ellipse',
             'types/line',
             'types/point',
-            'types/text'
+            'types/label'
           ],
         },
         {

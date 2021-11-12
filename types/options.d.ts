@@ -9,7 +9,7 @@ export interface AnnotationTypeRegistry {
   box: BoxAnnotationOptions
   ellipse: EllipseAnnotationOptions
   point: PointAnnotationOptions
-  text: TextAnnotationOptions
+  text: LabelAnnotationOptions
 }
 
 export type AnnotationType = keyof AnnotationTypeRegistry;
@@ -68,18 +68,18 @@ interface PointAnnotationOptions extends CoreAnnotationOptions {
 	yValue?: Scriptable<ScaleValue, PartialEventContext>;
 }
 
-export type TextLabelPosition = 'top' | 'middle' | 'bottom';
+export type LabelAnnotationPosition = 'top' | 'middle' | 'bottom';
 
-export type TextLabelAlign = 'left' | 'center' | 'right';
+export type LabelAnnotationAlign = 'left' | 'center' | 'right';
 
-interface TextAnnotationOptions extends CoreAnnotationOptions {
-  align?: Scriptable<TextLabelAlign, PartialEventContext>,
+interface LabelAnnotationOptions extends CoreAnnotationOptions {
+  align?: Scriptable<LabelAnnotationAlign, PartialEventContext>,
   backgroundColor?: Scriptable<Color, PartialEventContext>,
   borderRadius?: Scriptable<number, PartialEventContext>,
   color?: Scriptable<Color, PartialEventContext>,
   content: Scriptable<string | string[] | null, PartialEventContext>,
   font?: FontSpec
-  position?: Scriptable<TextLabelPosition, PartialEventContext>,
+  position?: Scriptable<LabelAnnotationPosition, PartialEventContext>,
   textAlign?: Scriptable<LabelTextAlign, PartialEventContext>,
   xPadding?: Scriptable<number, PartialEventContext>,
   yPadding?: Scriptable<number, PartialEventContext>,

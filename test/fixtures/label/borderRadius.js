@@ -17,39 +17,38 @@ module.exports = {
         annotation: {
           annotations: {
             text1: {
-              type: 'text',
+              type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
               xValue: 3.5,
               yValue: 10,
-              backgroundColor: 'rgba(33, 101, 171, 0.5)',
-              borderColor: 'rgb(33, 101, 171)',
-              borderDash: [6, 6],
+              backgroundColor: 'rgb(245,245,245)',
               borderWidth: 1,
+              borderRadius: {topLeft: 16, topRight: 8, bottomRight: 4},
               content: 'This is my text'
             },
             text2: {
-              type: 'text',
+              type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
               xValue: 'February',
               yValue: 11,
-              backgroundColor: 'rgba(101, 33, 171, 0.5)',
-              borderColor: 'rgb(101, 33, 171)',
+              backgroundColor: 'rgb(245,245,245)',
               borderDash: [6, 6],
               borderWidth: 1,
+              borderRadius: Infinity,
               content: 'This is my text'
             },
             text3: {
-              type: 'text',
+              type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
               xValue: 'July',
               yValue: 20,
-              backgroundColor: 'rgba(101, 33, 171, 0.5)',
-              borderColor: 'rgb(101, 33, 171)',
+              backgroundColor: 'rgb(245,245,245)',
               borderDash: [6, 6],
               borderWidth: 1,
+              borderRadius: 4,
               content: 'This is my text',
               align: 'left'
             }

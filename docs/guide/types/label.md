@@ -1,6 +1,6 @@
-# Text Annotations
+# Label Annotations
 
-Text annotations are used to add text content on the chart area. This can be useful for describing values that are of interest.
+Label annotations are used to add contents on the chart area. This can be useful for describing values that are of interest.
 
 ```js chart-editor
 /* <block:options:0> */
@@ -9,8 +9,8 @@ const options = {
     autocolors: false,
     annotation: {
       annotations: {
-        text1: {
-          type: 'text',
+        label1: {
+          type: 'label',
           xValue: 2.5,
           yValue: 60,
           backgroundColor: 'rgba(245,245,245)',
@@ -49,7 +49,7 @@ module.exports = {
 
 ## Configuration
 
-The following options are available for text annotations.
+The following options are available for label annotations.
 
 | Name | Type | [Scriptable](../options#scriptable-options) | Default
 | ---- | ---- | :----: | ----
@@ -79,7 +79,7 @@ The following options are available for text annotations.
 
 ### General
 
-If one of the axes does not match an axis in the chart, the text will be rendered in the center of the chart. The 2 coordinates, xValue, yValue are optional. If not specified, the text will be rendered in the center of the chart.
+If one of the axes does not match an axis in the chart, the content will be rendered in the center of the chart. The 2 coordinates, xValue, yValue are optional. If not specified, the content will be rendered in the center of the chart.
 
 | Name | Description |
 | ---- | ---- |
@@ -111,19 +111,19 @@ If one of the axes does not match an axis in the chart, the text will be rendere
 
 ### Align
 
-The align property specifies the text horizontal position of the label with respect to the selected point. The possible values are:
+The align property specifies the horizontal position of the label with respect to the selected point. The possible values are:
 
-* `center`: the text is centered. It is the default.
-* `left`: the text is left-aligned with respect to the selected point.
-* `right`: the text is right-aligned with respect to the selected point.
+* `center`: the content is centered. It is the default.
+* `left`: the content is left-aligned with respect to the selected point.
+* `right`: the content is right-aligned with respect to the selected point.
 
 ### Position
 
-The position property specifies the text vertical position of the label with respect to the selected point. The possible values are:
+The position property specifies the vertical position of the label with respect to the selected point. The possible values are:
 
-* `middle`: the text is centered with respect to the selected point. It is the default.
-* `top`: the text is in the top with respect to the selected point.
-* `bottom`: the text is in the bottom with respect to the selected point.
+* `middle`: the content is centered with respect to the selected point. It is the default.
+* `top`: the content is in the top with respect to the selected point.
+* `bottom`: the content is in the bottom with respect to the selected point.
 
 #### borderRadius
 

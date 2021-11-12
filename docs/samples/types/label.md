@@ -1,4 +1,4 @@
-# Text
+# Label
 
 ```js chart-editor
 // <block:setup:4>
@@ -29,7 +29,7 @@ const data = {
 
 // <block:annotation1:1>
 const annotation1 = {
-  type: 'text',
+  type: 'label',
   xScaleID: 'x',
   xValue: 0,
   yScaleID: 'y',
@@ -42,7 +42,7 @@ const annotation1 = {
 
 // <block:annotation2:2>
 const annotation2 = {
-  type: 'text',
+  type: 'label',
   xScaleID: 'x',
   xValue: 0,
   yScaleID: 'y',

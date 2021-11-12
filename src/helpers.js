@@ -34,7 +34,7 @@ export function rotated(point, center, angle) {
 }
 
 /**
- * Gets the center point an annotation (used by box and text).
+ * Gets the center point an annotation (used by box and label).
  * @param Object element - element where to get the center point
  * @param {boolean} useFinalPosition - use the element's animation target instead of current position
  * @returns {{x: number, y: number}} center point

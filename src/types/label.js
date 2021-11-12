@@ -2,7 +2,7 @@ import {Element} from 'chart.js';
 import {addRoundedRectPath, toTRBLCorners, isArray, toFont} from 'chart.js/helpers';
 import {getCenterPoint, clampAll, scaleValue} from '../helpers';
 
-export default class TextAnnotation extends Element {
+export default class LabelAnnotation extends Element {
 
   inRange(mouseX, mouseY) {
     const {x, y, width, height} = this.getProps(['x', 'y', 'width', 'height']);
@@ -54,9 +54,9 @@ export default class TextAnnotation extends Element {
   }
 }
 
-TextAnnotation.id = 'textAnnotation';
+LabelAnnotation.id = 'labelAnnotation';
 
-TextAnnotation.defaults = {
+LabelAnnotation.defaults = {
   adjustScaleRange: true,
   align: 'center',
   display: true,
@@ -87,12 +87,12 @@ TextAnnotation.defaults = {
   yValue: undefined
 };
 
-TextAnnotation.defaultRoutes = {
+LabelAnnotation.defaultRoutes = {
   borderColor: 'color',
 };
 
-function drawBox(ctx, text) {
-  const {x, y, width, height, options} = text.getProps(['x', 'y', 'width', 'height', 'options']);
+function drawBox(ctx, element) {
+  const {x, y, width, height, options} = element.getProps(['x', 'y', 'width', 'height', 'options']);
   ctx.save();
   ctx.lineWidth = options.borderWidth;
   ctx.strokeStyle = options.borderColor;
@@ -131,14 +131,14 @@ function measureLabel(ctx, label) {
   };
 }
 
-function drawLabel(ctx, text) {
-  const label = text.options;
+function drawLabel(ctx, element) {
+  const label = element.options;
   const content = label.content;
   const labels = isArray(content) ? content : [content];
   const font = toFont(label.font);
   const lh = font.lineHeight;
-  const x = calculateLabelXAlignment(text);
-  const y = text.y + label.yPadding + (label.borderWidth / 2) + (lh / 2);
+  const x = calculateLabelXAlignment(element);
+  const y = element.y + label.yPadding + (label.borderWidth / 2) + (lh / 2);
   ctx.font = font.string;
   ctx.textBaseline = 'middle';
   ctx.textAlign = label.textAlign;
@@ -170,8 +170,8 @@ function calculateByOptionValue(area, adjust, option, enumValues) {
 }
 
 
-function calculateLabelXAlignment(text) {
-  const {x, width, options} = text;
+function calculateLabelXAlignment(element) {
+  const {x, width, options} = element;
   const {textAlign, xPadding, borderWidth} = options;
   if (textAlign === 'start') {
     return x + xPadding + (borderWidth / 2);
