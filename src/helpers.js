@@ -32,3 +32,17 @@ export function rotated(point, center, angle) {
     y: cy + sin * (point.x - cx) + cos * (point.y - cy)
   };
 }
+
+/**
+ * Gets the center point an annotation (used by box and label).
+ * @param Object element - element where to get the center point
+ * @param {boolean} useFinalPosition - use the element's animation target instead of current position
+ * @returns {{x: number, y: number}} center point
+ */
+export function getCenterPoint(element, useFinalPosition) {
+  const {x, y, width, height} = element.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
+  return {
+    x: x + width / 2,
+    y: y + height / 2
+  };
+}
