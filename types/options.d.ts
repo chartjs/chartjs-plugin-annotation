@@ -9,7 +9,7 @@ export interface AnnotationTypeRegistry {
   line: LineAnnotationOptions
   box: BoxAnnotationOptions
   ellipse: EllipseAnnotationOptions
-  text: LabelAnnotationOptions
+  label: LabelAnnotationOptions
 }
 
 export type AnnotationType = keyof AnnotationTypeRegistry;
