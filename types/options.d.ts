@@ -1,4 +1,4 @@
-import { Color } from 'chart.js';
+import { Color, FontSpec } from 'chart.js';
 import { AnnotationEvents, PartialEventContext } from './events';
 import { LabelOptions, LabelTextAlign } from './label';
 import { BoxLabelOptions } from './boxLabel';
