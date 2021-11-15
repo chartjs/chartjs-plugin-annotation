@@ -57,10 +57,6 @@ The following options are available for label annotations.
 | [`align`](#align) | `string` | Yes | `'center'`
 | [`display`](#general) | `boolean` | Yes | `true`
 | [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
-| [`xScaleID`](#general) | `string` | Yes | `'x'`
-| [`yScaleID`](#general) | `string` | Yes | `'y'`
-| [`xValue`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yValue`](#general) | `number` \| `string` | Yes | `undefined`
 | [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
 | [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
 | [`borderWidth`](#styling) | `number`| Yes | `1`
@@ -68,14 +64,20 @@ The following options are available for label annotations.
 | [`borderDashOffset`](#styling) | `number`| Yes | `0`
 | [`borderRadius`](#borderradius) | `number` \| `object` | Yes | `6`
 | [`color`](#styling) | [`Color`](../options#color) | Yes | `'#fff'`
-| [`content`](#general) | `string`\|`string[]` | Yes | `null`
+| [`content`](#general) | `string`\|`string[]`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image) | Yes | `null`
+| [`height`](#general) | `number`\|`string` | Yes | `undefined` 
 | [`font`](#styling) | [`Font`](../options#font) | Yes | `{}`
-| [`xPadding`](#general) | `number` | Yes | `6`
-| [`yPadding`](#general) | `number` | Yes | `6`
-| [`xAdjust`](#general) | `number` | Yes | `0`
-| [`yAdjust`](#general) | `number` | Yes | `0`
 | [`position`](#position) | `string` | Yes | `'middle'`
 | [`textAlign`](#general) | `string` | Yes | `'center'`
+| [`xAdjust`](#general) | `number` | Yes | `0`
+| [`xPadding`](#general) | `number` | Yes | `6`
+| [`xScaleID`](#general) | `string` | Yes | `'x'`
+| [`xValue`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yAdjust`](#general) | `number` | Yes | `0`
+| [`yPadding`](#general) | `number` | Yes | `6`
+| [`yScaleID`](#general) | `string` | Yes | `'y'`
+| [`yValue`](#general) | `number` \| `string` | Yes | `undefined`
+| [`width`](#general) | `number`\|`string` | Yes | `undefined`
 
 ### General
 
@@ -87,7 +89,8 @@ If one of the axes does not match an axis in the chart, the content will be rend
 | `content` | The content to show in the text annotation.
 | `display` | Whether or not this annotation is visible
 | `drawTime` | See [drawTime](../options#draw-time).
-| `textAlign` | Text alignment of label content when there's more than one line. Possible options are: `'start'`, `'center'`, `'end'`.
+| `height` | Overrides the height of the image. Could be set in pixel by a number, or in percentage of current height of image by a string. If undefined, uses the height of the image. It is used only when the content is an image.
+| `textAlign` | Text alignment of label content when there's more than one line. Possible options are: `'left'`, `'start'`, `'center'`, `'end'`, `'right'`.
 | `xAdjust` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
 | `xPadding` | Padding of label to add left/right.
 | `xScaleID` | ID of the X scale to bind onto, default is 'x'.
@@ -96,6 +99,7 @@ If one of the axes does not match an axis in the chart, the content will be rend
 | `yPadding` | Padding of label to add top/bottom.
 | `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
 | `yValue` | Y coordinate of the point in units along the y axis.
+| `width` | Overrides the width of the image. Could be set in pixel by a number, or in percentage of current width of image by a string. If undefined, uses the width of the image. It is used only when the content is an image.
 
 ### Styling
 
@@ -121,9 +125,9 @@ The align property specifies the horizontal position of the label with respect t
 
 The position property specifies the vertical position of the label with respect to the selected point. The possible values are:
 
-* `middle`: the content is centered with respect to the selected point. It is the default.
-* `top`: the content is in the top with respect to the selected point.
-* `bottom`: the content is in the bottom with respect to the selected point.
+* `center`: the content is centered with respect to the selected point. It is the default.
+* `start`: the content is in the top with respect to the selected point.
+* `end`: the content is in the bottom with respect to the selected point.
 
 #### borderRadius
 
