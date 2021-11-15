@@ -107,8 +107,8 @@ BoxAnnotation.defaultRoutes = {
 
 function calculateX(box, labelSize) {
   const {x, x2, width, label} = box;
-  const {align, xPadding, borderWidth} = label.options;
-  const margin = xPadding + (borderWidth / 2);
+  const {align, xPadding, xAdjust, borderWidth} = label.options;
+  const margin = xPadding + (borderWidth / 2) + xAdjust;
   if (align === 'left') {
     return x + margin;
   } else if (align === 'right') {
@@ -120,7 +120,7 @@ function calculateX(box, labelSize) {
 function calculateY(box, labelSize) {
   const {y, y2, height, label} = box;
   const {position, yPadding, borderWidth} = label.options;
-  const margin = yPadding + (borderWidth / 2);
+  const margin = yPadding + (borderWidth / 2) + yAdjust;
   if (position === 'start') {
     return y + margin;
   } else if (position === 'end') {
