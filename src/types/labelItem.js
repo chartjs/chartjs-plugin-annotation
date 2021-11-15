@@ -77,7 +77,7 @@ function calculateTextAlignment(label) {
   const textAlign = options.textAlign;
   if (textAlign === 'center') {
     return x + width / 2;
-  } else if (textAlign === 'end') {
+  } else if (textAlign === 'end' || textAlign === 'right') {
     return x + width;
   }
   return x;
