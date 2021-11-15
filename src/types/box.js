@@ -90,7 +90,7 @@ BoxAnnotation.defaults = {
       style: undefined,
       weight: 'bold'
     },
-    position: 'middle',
+    position: 'center',
     textAlign: 'start',
     xAdjust: 0,
     xPadding: 6,
@@ -121,9 +121,9 @@ function calculateY(box, labelSize) {
   const {y, y2, height, label} = box;
   const {position, yPadding, borderWidth} = label.options;
   const margin = yPadding + (borderWidth / 2);
-  if (position === 'top') {
+  if (position === 'start') {
     return y + margin;
-  } else if (position === 'bottom') {
+  } else if (position === 'end') {
     return y2 - labelSize.height - margin;
   }
   return y + (height - labelSize.height) / 2;

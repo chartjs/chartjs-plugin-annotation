@@ -87,7 +87,7 @@ LabelAnnotation.defaults = {
     weight: undefined
   },
   height: undefined,
-  position: 'middle',
+  position: 'center',
   textAlign: 'center',
   xAdjust: 0,
   xPadding: 6,
@@ -105,7 +105,7 @@ LabelAnnotation.defaultRoutes = {
 };
 
 const alignEnumValues = ['left', 'right'];
-const positionEnumValues = ['top', 'bottom'];
+const positionEnumValues = ['start', 'end'];
 function measureDimension(point, size, options) {
   const width = size.width + (2 * options.xPadding) + options.borderWidth;
   const height = size.height + (2 * options.yPadding) + options.borderWidth;

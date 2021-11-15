@@ -91,6 +91,6 @@ export interface LabelOptions {
 
 export type LabelPosition = 'start' | 'center' | 'end';
 
-export type LabelTextAlign = 'start' | 'center' | 'end';
+export type LabelTextAlign = 'left' | 'start' | 'center' | 'right' | 'end';
 
-export type LabelAlign = 'left' | 'start' | 'center' | 'right' | 'end';
+export type LabelAlign = 'left' | 'center' | 'right';
