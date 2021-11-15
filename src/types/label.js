@@ -86,6 +86,7 @@ LabelAnnotation.defaults = {
     style: undefined,
     weight: undefined
   },
+  height: undefined,
   position: 'middle',
   textAlign: 'center',
   xAdjust: 0,
@@ -95,7 +96,8 @@ LabelAnnotation.defaults = {
   yAdjust: 0,
   yPadding: 6,
   yScaleID: 'y',
-  yValue: undefined
+  yValue: undefined,
+  width: undefined
 };
 
 LabelAnnotation.defaultRoutes = {
