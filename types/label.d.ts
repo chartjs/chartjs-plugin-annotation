@@ -3,6 +3,7 @@ import { PartialEventContext } from './events';
 import { DrawTime, Scriptable } from './options';
 
 export interface LabelOptions {
+  align?: Scriptable<LabelAlign, PartialEventContext>,
   backgroundColor?: Scriptable<Color, PartialEventContext>,
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
   font?: FontSpec
@@ -91,3 +92,5 @@ export interface LabelOptions {
 export type LabelPosition = 'start' | 'center' | 'end';
 
 export type LabelTextAlign = 'start' | 'center' | 'end';
+
+export type LabelAlign = 'left' | 'start' | 'center' | 'right' | 'end';
