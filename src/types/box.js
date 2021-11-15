@@ -119,7 +119,7 @@ function calculateX(box, labelSize) {
 
 function calculateY(box, labelSize) {
   const {y, y2, height, label} = box;
-  const {position, yPadding, borderWidth} = label.options;
+  const {position, yPadding, yAdjust, borderWidth} = label.options;
   const margin = yPadding + (borderWidth / 2) + yAdjust;
   if (position === 'start') {
     return y + margin;
