@@ -65,7 +65,7 @@ The following options are available for box annotations.
 | [`borderDash`](#styling) | `number[]`| Yes | `[]`
 | [`borderDashOffset`](#styling) | `number`| Yes | `0`
 | [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
-| [`borderRadius`](#styling) | `number` \| `object` | Yes | `0`
+| [`borderRadius` or `cornerRadius`](#styling) | `number` \| `object` | Yes | `0`
 
 ### General
 
@@ -96,4 +96,4 @@ If one of the axes does not match an axis in the chart, the box will take the en
 
 #### borderRadius
 
-If this value is a number, it is applied to all corners of the rectangle (topLeft, topRight, bottomLeft, bottomRight). If this value is an object, the `topLeft` property defines the top-left corners border radius. Similarly, the `topRight`, `bottomLeft`, and `bottomRight` properties can also be specified. Omitted corners have radius of 0.
+If this value is a number, it is applied to all corners of the rectangle (topLeft, topRight, bottomLeft, bottomRight). If this value is an object, the `topLeft` property defines the top-left corners border radius. Similarly, the `topRight`, `bottomLeft`, and `bottomRight` properties can also be specified. Omitted corners have radius of 0. Note up to 1.0.2 use `cornerRadius` instead of `borderRadius`
