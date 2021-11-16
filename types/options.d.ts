@@ -24,7 +24,7 @@ export interface CoreAnnotationOptions extends AnnotationEvents {
   adjustScaleRange?: Scriptable<boolean, PartialEventContext>,
   borderColor?: Scriptable<Color, PartialEventContext>,
   borderWidth?: Scriptable<number, PartialEventContext>,
-  borderDash?: Scriptable<[number, number], PartialEventContext>,
+  borderDash?: Scriptable<number[], PartialEventContext>,
   borderDashOffset?: Scriptable<number, PartialEventContext>,
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
   endValue?: Scriptable<number|string, PartialEventContext>,
