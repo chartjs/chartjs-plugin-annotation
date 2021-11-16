@@ -30,7 +30,7 @@ jobs:
       - name: Build
         run: |
           npm ci
-          ./scripts/docs-config.sh "$VERSION"
+          ./scripts/docs-config.sh master
           npm run docs
       - name: Release to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
