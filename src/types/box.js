@@ -17,7 +17,7 @@ export default class BoxAnnotation extends LabelAnnotation {
     if (label.isVisible()) {
       ctx.save();
       ctx.beginPath();
-      ctx.rect(x, y, width, height);
+      ctx.rect(x + labelOpts.borderWidth / 2, y + labelOpts.borderWidth / 2, width - labelOpts.borderWidth, height - labelOpts.borderWidth);
       ctx.clip();
       const labelSize = label.size(ctx);
       label.x = calculateX(this, labelSize);

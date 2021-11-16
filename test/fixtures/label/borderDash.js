@@ -25,7 +25,7 @@ module.exports = {
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
               borderColor: 'rgb(33, 101, 171)',
               borderDash: [6, 6],
-              borderWidth: 1,
+              borderWidth: 5,
               content: 'This is my text'
             },
             text2: {
@@ -37,7 +37,7 @@ module.exports = {
               backgroundColor: 'rgba(101, 33, 171, 0.5)',
               borderColor: 'rgb(101, 33, 171)',
               borderDash: [6, 6],
-              borderWidth: 1,
+              borderWidth: 4,
               content: 'This is my text'
             },
             text3: {
@@ -49,7 +49,7 @@ module.exports = {
               backgroundColor: 'rgba(101, 33, 171, 0.5)',
               borderColor: 'rgb(101, 33, 171)',
               borderDash: [6, 6],
-              borderWidth: 1,
+              borderWidth: 5,
               content: 'This is my text',
               align: 'left'
             }

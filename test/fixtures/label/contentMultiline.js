@@ -24,28 +24,29 @@ module.exports = {
               yValue: 20,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: ['This is my text, row 1', 'This is my text, row 2', 'This is my text, row 3'],
-              align: 'right'
+              content: ['This is my text', 'This is my text, row 2, longer than other', 'This is my text, row 3'],
+              align: 'right',
+              textAlign: 'start'
             },
             text2: {
               type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
-              xValue: 'February',
+              xValue: 'April',
               yValue: 10,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: ['This is my text, row 1', 'This is my text, row 2', 'This is my text, row 3'],
+              content: ['This is my text', 'This is my text, row 2, longer than other', 'This is my text, row 3'],
             },
             text3: {
               type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
-              xValue: 'May',
-              yValue: 20,
+              xValue: 'June',
+              yValue: 15,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: ['This is my text, row 1', 'This is my text, row 2', 'This is my text, row 3'],
+              content: ['This is my text', 'This is my text, row 2, longer than other', 'This is my text, row 3'],
               align: 'left'
             }
           }

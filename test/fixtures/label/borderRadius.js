@@ -23,7 +23,7 @@ module.exports = {
               xValue: 3.5,
               yValue: 10,
               backgroundColor: 'rgb(245,245,245)',
-              borderWidth: 1,
+              borderWidth: 5,
               borderRadius: {topLeft: 16, topRight: 8, bottomRight: 4},
               content: 'This is my text'
             },
@@ -35,7 +35,7 @@ module.exports = {
               yValue: 11,
               backgroundColor: 'rgb(245,245,245)',
               borderDash: [6, 6],
-              borderWidth: 1,
+              borderWidth: 4,
               borderRadius: Infinity,
               content: 'This is my text'
             },
@@ -47,7 +47,7 @@ module.exports = {
               yValue: 20,
               backgroundColor: 'rgb(245,245,245)',
               borderDash: [6, 6],
-              borderWidth: 1,
+              borderWidth: 5,
               borderRadius: 4,
               content: 'This is my text',
               align: 'left'
