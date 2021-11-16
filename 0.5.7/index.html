@@ -1,0 +1,224 @@
+<h1 id="chartjs-plugin-annotation-js">chartjs-plugin-annotation.js</h1>
+<p>An annotation plugin for Chart.js &gt;= 2.4.0</p>
+<p>This plugin draws lines and boxes on the chart area.</p>
+<p>Annotations work with line, bar, scatter and bubble charts that use linear, logarithmic, time, or category scales. Annotations will not work on any chart that does not have exactly two axes, including pie, radar, and polar area charts.</p>
+<p><img src="https://www.dropbox.com/s/92cmt8zrth55z55/Screenshot%202017-05-20%2018.26.39.png?dl=1" alt="Example Screenshot from Dropbox"></p>
+<p><a href="https://codepen.io/compwright/full/mmQMrZ/">View this example on CodePen</a></p>
+<h2 id="configuration">Configuration</h2>
+<p>To configure the annotations plugin, you can simply add new config options to your chart config.</p>
+<pre><code class="lang-javascript">{
+    <span class="hljs-attribute">annotation</span>: {
+        <span class="hljs-comment">// Defines when the annotations are drawn.</span>
+        <span class="hljs-comment">// This allows positioning of the annotation relative to the other</span>
+        <span class="hljs-comment">// elements of the graph.</span>
+        <span class="hljs-comment">//</span>
+        <span class="hljs-comment">// Should be one of: afterDraw, afterDatasetsDraw, beforeDatasetsDraw</span>
+        <span class="hljs-comment">// See http://www.chartjs.org/docs/#advanced-usage-creating-plugins</span>
+        <span class="hljs-attribute">drawTime</span>: <span class="hljs-string">'afterDatasetsDraw'</span>, <span class="hljs-comment">// (default)</span>
+
+        <span class="hljs-comment">// Mouse events to enable on each annotation.</span>
+        <span class="hljs-comment">// Should be an array of one or more browser-supported mouse events</span>
+        <span class="hljs-comment">// See https://developer.mozilla.org/en-US/docs/Web/Events</span>
+        <span class="hljs-attribute">events</span>: [<span class="hljs-string">'click'</span>],
+
+        <span class="hljs-comment">// Double-click speed in ms used to distinguish single-clicks from </span>
+        <span class="hljs-comment">// double-clicks whenever you need to capture both. When listening for</span>
+        <span class="hljs-comment">// both click and dblclick, click events will be delayed by this</span>
+        <span class="hljs-comment">// amount.</span>
+        <span class="hljs-attribute">dblClickSpeed</span>: <span class="hljs-number">350</span>, <span class="hljs-comment">// ms (default)</span>
+
+        <span class="hljs-comment">// Array of annotation configuration objects</span>
+        <span class="hljs-comment">// See below for detailed descriptions of the annotation options</span>
+        <span class="hljs-attribute">annotations</span>: [{
+            <span class="hljs-attribute">drawTime</span>: <span class="hljs-string">'afterDraw'</span>, <span class="hljs-comment">// overrides annotation.drawTime if set</span>
+            <span class="hljs-attribute">id</span>: <span class="hljs-string">'a-line-1'</span>, <span class="hljs-comment">// optional</span>
+            <span class="hljs-attribute">type</span>: <span class="hljs-string">'line'</span>,
+            <span class="hljs-attribute">mode</span>: <span class="hljs-string">'horizontal'</span>,
+            <span class="hljs-attribute">scaleID</span>: <span class="hljs-string">'y-axis-0'</span>,
+            <span class="hljs-attribute">value</span>: <span class="hljs-string">'25'</span>,
+            <span class="hljs-attribute">borderColor</span>: <span class="hljs-string">'red'</span>,
+            <span class="hljs-attribute">borderWidth</span>: <span class="hljs-number">2</span>,
+
+            <span class="hljs-comment">// Fires when the user clicks this annotation on the chart</span>
+            <span class="hljs-comment">// (be sure to enable the event in the events array below).</span>
+            <span class="hljs-attribute">onClick</span>: function(e) {
+                <span class="hljs-comment">// `this` is bound to the annotation element</span>
+            }
+        }]
+    }
+}
+</code></pre>
+<h3 id="line-annotations">Line Annotations</h3>
+<p>Vertical or horizontal lines are supported.</p>
+<pre><code class="lang-javascript">{
+    <span class="hljs-built_in">type</span>: <span class="hljs-string">'line'</span>,
+
+    // optional drawTime <span class="hljs-keyword">to</span> control layering, overrides <span class="hljs-keyword">global</span> drawTime setting
+    drawTime: <span class="hljs-string">'afterDatasetsDraw'</span>,
+
+    // optional annotation ID (must <span class="hljs-keyword">be</span> unique)
+    id: <span class="hljs-string">'a-line-1'</span>,
+
+    // <span class="hljs-keyword">set</span> <span class="hljs-keyword">to</span> <span class="hljs-string">'vertical'</span> <span class="hljs-keyword">to</span> draw <span class="hljs-keyword">a</span> <span class="hljs-keyword">vertical</span> <span class="hljs-built_in">line</span>
+    <span class="hljs-keyword">mode</span>: <span class="hljs-string">'horizontal'</span>,
+
+    // ID of the scale <span class="hljs-keyword">to</span> bind onto
+    scaleID: <span class="hljs-string">'y-axis-0'</span>,
+
+    // Data value <span class="hljs-keyword">to</span> draw the <span class="hljs-built_in">line</span> at
+    value: <span class="hljs-number">25</span>,
+
+    // Optional value at which the <span class="hljs-built_in">line</span> draw should end
+    endValue: <span class="hljs-number">26</span>,
+
+    // Line color
+    borderColor: <span class="hljs-string">'red'</span>,
+
+    // Line width
+    borderWidth: <span class="hljs-number">2</span>,
+
+    // Line dash
+    // http<span class="hljs-variable">s:</span>//developer.mozilla.org/<span class="hljs-keyword">en</span>-US/docs/Web/API/CanvasRenderingContext2D/setLineDash
+    borderDash: [<span class="hljs-number">2</span>, <span class="hljs-number">2</span>],
+
+    // Line Dash Offset
+    // http<span class="hljs-variable">s:</span>//developer.mozilla.org/<span class="hljs-keyword">en</span>-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset
+    borderDashOffse<span class="hljs-variable">t:</span> <span class="hljs-number">5</span>,
+
+    labe<span class="hljs-variable">l:</span> {
+        // Background color of label, default below
+        backgroundColor: <span class="hljs-string">'rgba(0,0,0,0.8)'</span>,
+
+        // Font family of text, inherits from <span class="hljs-keyword">global</span>
+        fontFamily: <span class="hljs-string">"sans-serif"</span>,
+
+        // Font size of text, inherits from <span class="hljs-keyword">global</span>
+        fontSize: <span class="hljs-number">12</span>,
+
+        // Font style of text, default below
+        fontStyle: <span class="hljs-string">"bold"</span>,
+
+        // Font color of text, default below
+        fontColor: <span class="hljs-string">"#fff"</span>,
+
+        // Padding of label <span class="hljs-keyword">to</span> <span class="hljs-built_in">add</span> <span class="hljs-keyword">left</span>/<span class="hljs-keyword">right</span>, default below
+        xPaddin<span class="hljs-variable">g:</span> <span class="hljs-number">6</span>,
+
+        // Padding of label <span class="hljs-keyword">to</span> <span class="hljs-built_in">add</span> top/bottom, default below
+        yPaddin<span class="hljs-variable">g:</span> <span class="hljs-number">6</span>,
+
+        // Radius of label rectangle, default below
+        cornerRadiu<span class="hljs-variable">s:</span> <span class="hljs-number">6</span>,
+
+        // Anchor position of label <span class="hljs-keyword">on</span> <span class="hljs-built_in">line</span>, can <span class="hljs-keyword">be</span> one of: top, bottom, <span class="hljs-keyword">left</span>, <span class="hljs-keyword">right</span>, <span class="hljs-keyword">center</span>. Default below.
+        position: <span class="hljs-string">"center"</span>,
+
+        // Adjustment along <span class="hljs-keyword">x</span>-axis (<span class="hljs-keyword">left</span>-<span class="hljs-keyword">right</span>) of label relative <span class="hljs-keyword">to</span> above <span class="hljs-keyword">number</span> (can <span class="hljs-keyword">be</span> negative)
+        // For horizontal lines positioned <span class="hljs-keyword">left</span> <span class="hljs-built_in">or</span> <span class="hljs-keyword">right</span>, negative <span class="hljs-built_in">values</span> <span class="hljs-keyword">move</span>
+        // the label toward the edge, <span class="hljs-built_in">and</span> positive <span class="hljs-built_in">values</span> toward the <span class="hljs-keyword">center</span>.
+        xAdjus<span class="hljs-variable">t:</span> <span class="hljs-number">0</span>,
+
+        // Adjustment along <span class="hljs-keyword">y</span>-axis (top-bottom) of label relative <span class="hljs-keyword">to</span> above <span class="hljs-keyword">number</span> (can <span class="hljs-keyword">be</span> negative)
+        // For <span class="hljs-keyword">vertical</span> lines positioned top <span class="hljs-built_in">or</span> bottom, negative <span class="hljs-built_in">values</span> <span class="hljs-keyword">move</span>
+        // the label toward the edge, <span class="hljs-built_in">and</span> positive <span class="hljs-built_in">values</span> toward the <span class="hljs-keyword">center</span>.
+        yAdjus<span class="hljs-variable">t:</span> <span class="hljs-number">0</span>,
+
+        // Whether the label <span class="hljs-keyword">is</span> enabled <span class="hljs-built_in">and</span> should <span class="hljs-keyword">be</span> displayed
+        enabled: false,
+
+        // Text <span class="hljs-keyword">to</span> <span class="hljs-keyword">display</span> in label - default <span class="hljs-keyword">is</span> null
+        conten<span class="hljs-variable">t:</span> <span class="hljs-string">"Test label"</span>
+    },
+
+    // Mouse event handlers - <span class="hljs-keyword">be</span> sure <span class="hljs-keyword">to</span> enable the corresponding events in the
+    // annotation events array <span class="hljs-built_in">or</span> the event handler will not <span class="hljs-keyword">be</span> called.
+    // See http<span class="hljs-variable">s:</span>//developer.mozilla.org/<span class="hljs-keyword">en</span>-US/docs/Web/Events <span class="hljs-keyword">for</span> <span class="hljs-keyword">a</span> <span class="hljs-keyword">list</span> of
+    // supported mouse events.
+    onMouseenter: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onMouseover: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onMouseleave: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onMouseou<span class="hljs-variable">t:</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onMousemove: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onMousedown: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onMouseup: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onClick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onDblclick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onContextmenu: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onWhee<span class="hljs-variable">l:</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {}</span>
+}
+</code></pre>
+<h3 id="box-annotations">Box Annotations</h3>
+<p>Box annotations are supported. If one of the axes is not specified, the box will take the entire chart dimension.</p>
+<p>The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges</p>
+<pre><code class="lang-javascript">{
+    <span class="hljs-built_in">type</span>: <span class="hljs-string">'box'</span>,
+
+    <span class="hljs-comment">// optional drawTime to control layering, overrides global drawTime setting</span>
+    drawTime: <span class="hljs-string">'beforeDatasetsDraw'</span>,
+
+    <span class="hljs-comment">// optional annotation ID (must be unique)</span>
+    id: <span class="hljs-string">'a-box-1'</span>,
+
+    <span class="hljs-comment">// ID of the X scale to bind onto</span>
+    xScaleID: <span class="hljs-string">'x-axis-0'</span>,
+
+    <span class="hljs-comment">// ID of the Y scale to bind onto</span>
+    yScaleID: <span class="hljs-string">'y-axis-0'</span>,
+
+    <span class="hljs-comment">// Left edge of the box. in units along the x axis</span>
+    xMin: <span class="hljs-number">25</span>,
+
+    <span class="hljs-comment">// Right edge of the box</span>
+    xMax: <span class="hljs-number">40</span>,
+
+    <span class="hljs-comment">// Top edge of the box in units along the y axis</span>
+    yMax: <span class="hljs-number">20</span>,
+
+    <span class="hljs-comment">// Bottom edge of the box</span>
+    yMin:  <span class="hljs-number">15</span>,
+
+    <span class="hljs-comment">// Stroke color</span>
+    borderColor: <span class="hljs-string">'red'</span>,
+
+    <span class="hljs-comment">// Stroke width</span>
+    borderWidth: <span class="hljs-number">2</span>,
+
+    <span class="hljs-comment">// Fill color</span>
+    backgroundColor: <span class="hljs-string">'green'</span>,
+
+    <span class="hljs-comment">// Mouse event handlers - be sure to enable the corresponding events in the</span>
+    <span class="hljs-comment">// annotation events array or the event handler will not be called.</span>
+    <span class="hljs-comment">// See https://developer.mozilla.org/en-US/docs/Web/Events for a list of</span>
+    <span class="hljs-comment">// supported mouse events.</span>
+    onMouseenter: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onMouseover: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onMouseleave: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onMouseout: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onMousemove: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onMousedown: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onMouseup: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onClick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onDblclick: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onContextmenu: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {},</span>
+    onWheel: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {}</span>
+}
+</code></pre>
+<h2 id="to-do-items">To-do Items</h2>
+<p>The following features still need to be done:</p>
+<ul>
+<li>Box annotation labels</li>
+<li>Point annotations</li>
+<li>Text annotations</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<p>To download a zip, go to the Chart.Annotation.js on Github</p>
+<p>To install via npm:</p>
+<pre><code class="lang-bash">npm <span class="hljs-keyword">install</span> chartjs-<span class="hljs-keyword">plugin</span>-annotation <span class="hljs-comment">--save</span>
+</code></pre>
+<p>Prior to v0.2.0 this plugin was known as Chart.Annotation.js. You can still install this old version via NPM.</p>
+<h2 id="documentation">Documentation</h2>
+<p>You can find documentation for Chart.js at <a href="http://www.chartjs.org/docs">www.chartjs.org/docs</a>.</p>
+<h2 id="contributing">Contributing</h2>
+<p>Before submitting an issue or a pull request to the project, please take a moment to look over the <a href="CONTRIBUTING.md">contributing guidelines</a> first.</p>
+<h2 id="license">License</h2>
+<p>Chart.Annotation.js is available under the <a href="http://opensource.org/licenses/MIT">MIT license</a>.</p>
