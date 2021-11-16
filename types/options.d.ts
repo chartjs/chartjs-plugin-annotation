@@ -8,13 +8,15 @@ export interface AnnotationTypeRegistry {
   line: LineAnnotationOptions
   box: BoxAnnotationOptions
   ellipse: EllipseAnnotationOptions
+  point: PointAnnotationOptions
   label: LabelAnnotationOptions
 }
 
 export type AnnotationType = keyof AnnotationTypeRegistry;
 
 export type AnnotationOptions<TYPE extends AnnotationType = AnnotationType> =
-  { [key in TYPE]: { type: key } & AnnotationTypeRegistry[key] }[TYPE]
+	{ [key in TYPE]: { type: key } & AnnotationTypeRegistry[key] }[TYPE]
+
 
 export interface CoreAnnotationOptions extends AnnotationEvents {
   id?: string,
@@ -53,7 +55,6 @@ export interface BoxAnnotationOptions extends CoreAnnotationOptions, AnnotationC
    * @todo remove at v2
    */
   cornerRadius?: Scriptable<number, PartialEventContext>,
-
   label?: LabelOptions
 }
 
