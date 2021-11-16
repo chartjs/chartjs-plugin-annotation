@@ -1,7 +1,16 @@
 module.exports = {
   tolerance: 0.0060,
   config: {
-    type: 'bar',
+    type: 'line',
+    data: {
+      datasets: [
+        {
+          borderWidth: 1,
+          borderColor: 'red',
+          data: [20, 20, 20, 20, 20, 20, 20]
+        }
+      ]
+    },
     options: {
       scales: {
         x: {
@@ -20,33 +29,33 @@ module.exports = {
               type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
-              xValue: 'January',
+              xValue: 'February',
               yValue: 20,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: 'This is my text'
+              content: 'position: undefined'
             },
             text2: {
               type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
-              xValue: 'February',
-              yValue: 10,
+              xValue: 'April',
+              yValue: 20,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: 'This is my text',
-              position: 'bottom'
+              content: 'position: end',
+              position: 'end'
             },
             text3: {
               type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
-              xValue: 'March',
+              xValue: 'June',
               yValue: 20,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: 'This is my text',
-              position: 'top'
+              content: 'position: start',
+              position: 'start'
             }
           }
         }

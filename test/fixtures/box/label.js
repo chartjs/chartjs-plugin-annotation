@@ -49,7 +49,7 @@ module.exports = {
                 enabled: true,
                 content: 'This is a label',
                 align: 'left',
-                position: 'top'
+                position: 'start'
               }
             },
             box3: {
@@ -68,7 +68,7 @@ module.exports = {
                 enabled: true,
                 content: 'This is a label created by callback',
                 align: 'right',
-                position: 'bottom'
+                position: 'end'
               }
             },
             box4: {
