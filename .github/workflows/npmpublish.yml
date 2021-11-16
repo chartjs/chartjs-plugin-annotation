@@ -57,3 +57,30 @@ jobs:
         if: "!github.event.release.prerelease"
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
+      - name: Build docs
+        run: |
+          ./scripts/docs-config.sh "$VERSION" release
+          npm run docs
+        env:
+          VERSION: ${{ needs.setup.outputs.version }}
+      - name: Release to GitHub Pages (version)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GH_AUTH_TOKEN }}
+          publish_dir: dist/docs
+          destination_dir: ${{ needs.setup.outputs.version }}
+      - name: Release to GitHub Pages (latest)
+        if: "!github.event.release.prerelease"
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GH_AUTH_TOKEN }}
+          publish_dir: dist/docs
+          destination_dir: latest
+      - name: Release to GitHub Pages (next)
+        if: "github.event.release.prerelease"
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GH_AUTH_TOKEN }}
+          publish_dir: dist/docs
+          destination_dir: next
+

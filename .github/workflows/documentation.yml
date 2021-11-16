@@ -8,7 +8,7 @@ on:
 
 jobs:
   checks:
-    if: github.event_name != 'push'
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -20,7 +20,7 @@ jobs:
           npm ci
           npm run docs
   gh-release:
-    if: github.event_name != 'pull_request'
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -30,9 +30,11 @@ jobs:
       - name: Build
         run: |
           npm ci
+          ./scripts/docs-config.sh master
           npm run docs
       - name: Release to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GH_AUTH_TOKEN }}
           publish_dir: dist/docs
+          destination_dir: master
