@@ -18,6 +18,7 @@ jobs:
       - name: Test Build
         run: |
           npm ci
+          ./scripts/docs-config.sh master
           npm run docs
   gh-release:
     if: github.event_name == 'push'
