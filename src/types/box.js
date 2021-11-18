@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {addRoundedRectPath, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
-import {clampAll, scaleValue} from '../helpers';
+import {clampAll, scaleValue, setBorderStyle} from '../helpers';
 
 export default class BoxAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
@@ -28,9 +28,7 @@ export default class BoxAnnotation extends Element {
     ctx.lineWidth = options.borderWidth;
     ctx.strokeStyle = options.borderColor;
     ctx.fillStyle = options.backgroundColor;
-
-    ctx.setLineDash(options.borderDash);
-    ctx.lineDashOffset = options.borderDashOffset;
+    const stroke = setBorderStyle(ctx, options);
 
     ctx.beginPath();
     addRoundedRectPath(ctx, {
@@ -40,12 +38,10 @@ export default class BoxAnnotation extends Element {
     });
     ctx.closePath();
     ctx.fill();
-
     // If no border, don't draw it
-    if (options.borderWidth) {
+    if (stroke) {
       ctx.stroke();
     }
-
     ctx.restore();
   }
 
@@ -89,10 +85,12 @@ BoxAnnotation.id = 'boxAnnotation';
 BoxAnnotation.defaults = {
   display: true,
   adjustScaleRange: true,
+  borderCapStyle: 'butt',
   borderDash: [],
   borderDashOffset: 0,
-  borderWidth: 1,
+  borderJoinStyle: 'miter',
   borderRadius: 0,
+  borderWidth: 1,
   xScaleID: 'x',
   xMin: undefined,
   xMax: undefined,

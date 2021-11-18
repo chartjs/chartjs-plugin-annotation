@@ -48,6 +48,26 @@ export interface LineAnnotationOptions extends CoreAnnotationOptions, Annotation
 
 export interface BoxAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
   backgroundColor?: Scriptable<Color, PartialEventContext>,
+  /**
+   * Border line cap style. See MDN.
+   * @default 'butt'
+   */
+  borderCapStyle?: Scriptable<CanvasLineCap, PartialEventContext>,
+  /**
+   * Border line dash. See MDN.
+   * @default []
+   */
+  borderDash?: Scriptable<number[], PartialEventContext>,
+  /**
+   * Border line dash offset. See MDN.
+   * @default 0.0
+   */
+  borderDashOffset?: Scriptable<number, PartialEventContext>,
+  /**
+   * Border line join style. See MDN.
+   * @default 'miter'
+   */
+  borderJoinStyle?: Scriptable<CanvasLineJoin, PartialEventContext>,
   borderRadius?: Scriptable<number, PartialEventContext>,
   /**
    * @deprecated replaced by borderRadius
