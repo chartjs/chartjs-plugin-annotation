@@ -40,7 +40,7 @@ export function rotated(point, center, angle) {
  * @returns {boolean} true is the border options have been applied
  */
 export function setBorderStyle(ctx, options) {
-  if (ctx && options && options.borderWidth) {
+  if (options && options.borderWidth) {
     ctx.lineCap = options.borderCapStyle;
     ctx.setLineDash(options.borderDash);
     ctx.lineDashOffset = options.borderDashOffset;
