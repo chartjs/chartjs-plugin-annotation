@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {addRoundedRectPath, isArray, toFont, toRadians, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
-import {clamp, clampAll, scaleValue, rotated} from '../helpers';
+import {clamp, clampAll, scaleValue, rotated, setBorderStyle} from '../helpers';
 
 const PI = Math.PI;
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
@@ -258,18 +258,6 @@ function drawLabel(ctx, line, chartArea) {
     ctx.textBaseline = 'middle';
     ctx.textAlign = label.textAlign;
     labels.forEach((l, i) => ctx.fillText(l, x, y + (i * font.lineHeight)));
-  }
-}
-
-function setBorderStyle(ctx, options) {
-  if (options.borderWidth) {
-    ctx.lineCap = options.borderCapStyle;
-    ctx.setLineDash(options.borderDash);
-    ctx.lineDashOffset = options.borderDashOffset;
-    ctx.lineJoin = options.borderJoinStyle;
-    ctx.lineWidth = options.borderWidth;
-    ctx.strokeStyle = options.borderColor;
-    return true;
   }
 }
 

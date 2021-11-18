@@ -60,12 +60,14 @@ The following options are available for box annotations.
 | [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
-| [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
-| [`borderWidth`](#styling) | `number`| Yes | `1`
-| [`borderDash`](#styling) | `number[]`| Yes | `[]`
-| [`borderDashOffset`](#styling) | `number`| Yes | `0`
 | [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
+| [`borderCapStyle`](#styling) | `string` | Yes | `'butt'`
+| [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
+| [`borderDash`](#styling) | `number[]` | Yes | `[]`
+| [`borderDashOffset`](#styling) | `number` | Yes | `0`
+| [`borderJoinStyle`](#styling) | `string` | Yes | `'miter'`
 | [`borderRadius`](#styling) | `number` \| `object` | Yes | `0`
+| [`borderWidth`](#styling) | `number`| Yes | `1`
 
 ### General
 
@@ -87,12 +89,14 @@ If one of the axes does not match an axis in the chart, the box will take the en
 
 | Name | Description |
 | ---- | ---- |
-| `borderColor` | Stroke color
-| `borderWidth` | Stroke width
+| `backgroundColor` | Fill color.
+| `borderColor` | Stroke color.
+| `borderCapStyle` | Cap style of the border line. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap).
 | `borderDash` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
-| `borderDashOffset` | Offset for line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
-| `backgroundColor` | Fill color
-| [`borderRadius`](#borderRadius) | Radius of box rectangle (in pixels)
+| `borderDashOffset` | Offset for border line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
+| `borderJoinStyle` | Border line joint style. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
+| [`borderRadius`](#borderradius) | Radius of box rectangle (in pixels)
+| `borderWidth` | Border line width (in pixels).
 
 #### borderRadius
 
