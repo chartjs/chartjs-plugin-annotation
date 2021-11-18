@@ -21,7 +21,7 @@ Annotations work with line, bar, scatter and bubble charts that use linear, loga
 
 ![Example Screenshot](docs/guide/banner.png)
 
-[View this example](https://chartjs.org/chartjs-plugin-annotation/samples/intro.html)
+[View this example](https://www.chartjs.org/chartjs-plugin-annotation/latest/samples/intro.html)
 
 ## To-do Items
 
