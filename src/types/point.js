@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {scaleValue} from '../helpers';
+import {getChartPoint} from '../helpers';
 
 export default class PointAnnotation extends Element {
 
@@ -41,23 +41,10 @@ export default class PointAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    const {chartArea, scales} = chart;
-    const xScale = scales[options.xScaleID];
-    const yScale = scales[options.yScaleID];
-    let x = chartArea.width / 2;
-    let y = chartArea.height / 2;
-
-    if (xScale) {
-      x = scaleValue(xScale, options.xValue, x);
-    }
-
-    if (yScale) {
-      y = scaleValue(yScale, options.yValue, y);
-    }
-
+    const point = getChartPoint(chart, options);
     return {
-      x,
-      y,
+      x: point.x,
+      y: point.y,
       width: options.radius * 2,
       height: options.radius * 2
     };

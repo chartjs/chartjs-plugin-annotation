@@ -1,4 +1,27 @@
-import {isFinite} from 'chart.js/helpers';
+import {isFinite, isArray, toFont, addRoundedRectPath, toTRBLCorners} from 'chart.js/helpers';
+
+const widthCache = new Map();
+const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
+
+function getImageSize(size, value) {
+  if (typeof value === 'number') {
+    return value;
+  } else if (typeof value === 'string') {
+    return toPercent(value) * size;
+  }
+  return size;
+}
+
+function calculateTextAlignment(size, options) {
+  const {x, width} = size;
+  const textAlign = options.textAlign;
+  if (textAlign === 'center') {
+    return x + width / 2;
+  } else if (textAlign === 'end' || textAlign === 'right') {
+    return x + width;
+  }
+  return x;
+}
 
 export const clamp = (x, from, to) => Math.min(to, Math.max(from, x));
 
@@ -49,4 +72,108 @@ export function setBorderStyle(ctx, options) {
     ctx.strokeStyle = options.borderColor;
     return true;
   }
+}
+
+/**
+ * Measure the label size using the label options.
+ * @param {CanvasRenderingContext2D} ctx - chart canvas context
+ * @param {Object} options - options to configure the label
+ * @returns {{width: number, height: number}} the measured size of the label
+ */
+export function measureLabelSize(ctx, options) {
+  const content = options.content;
+  if (content instanceof Image) {
+    return {
+      width: getImageSize(content.width, options.width),
+      height: getImageSize(content.height, options.height)
+    };
+  }
+  const font = toFont(options.font);
+  const lines = isArray(content) ? content : [content];
+  const mapKey = lines.join() + font.string;
+  if (!widthCache.has(mapKey)) {
+    ctx.save();
+    ctx.font = font.string;
+    const count = lines.length;
+    let width = 0;
+    for (let i = 0; i < count; i++) {
+      const text = lines[i];
+      width = Math.max(width, ctx.measureText(text).width);
+    }
+    ctx.restore();
+    const height = count * font.lineHeight;
+    widthCache.set(mapKey, {width, height});
+  }
+  return widthCache.get(mapKey);
+}
+
+/**
+ * Draw a box with the size and the styling options.
+ * @param {CanvasRenderingContext2D} ctx - chart canvas context
+ * @param {{x: number, y: number, width: number, height: number}} size - size of the bow to draw
+ * @param {Object} options - options to style the box
+ * @returns {undefined}
+ */
+export function drawBox(ctx, size, options) {
+  const {x, y, width, height} = size;
+  ctx.strokeStyle = options.borderColor;
+  ctx.fillStyle = options.backgroundColor;
+  const stroke = setBorderStyle(ctx, options);
+  ctx.beginPath();
+  addRoundedRectPath(ctx, {
+    x, y, w: width, h: height,
+    radius: clampAll(toTRBLCorners(options.borderRadius), 0, Math.min(width, height) / 2)
+  });
+  ctx.closePath();
+  ctx.fill();
+  if (stroke) {
+    ctx.stroke();
+  }
+}
+
+export function isLabelVisible(options) {
+  return options && (options.display || options.enabled) && options.content;
+}
+
+export function drawLabel(ctx, size, options) {
+  const content = options.content;
+  if (content instanceof Image) {
+    ctx.drawImage(content, size.x, size.y, size.width, size.height);
+    return;
+  }
+  const labels = isArray(content) ? content : [content];
+  const font = toFont(options.font);
+  const lh = font.lineHeight;
+  const x = calculateTextAlignment(size, options);
+  const y = size.y + (lh / 2);
+  ctx.font = font.string;
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = options.textAlign;
+  ctx.fillStyle = options.color;
+  labels.forEach((l, i) => ctx.fillText(l, x, y + (i * lh)));
+}
+
+export function getChartPoint(chart, options) {
+  const {chartArea, scales} = chart;
+  const xScale = scales[options.xScaleID];
+  const yScale = scales[options.yScaleID];
+  let x = chartArea.width / 2;
+  let y = chartArea.height / 2;
+
+  if (xScale) {
+    x = scaleValue(xScale, options.xValue, x);
+  }
+
+  if (yScale) {
+    y = scaleValue(yScale, options.yValue, y);
+  }
+  return {x, y};
+}
+
+export function getBoxCenterPoint(box, useFinalPosition) {
+  const {x, y, width, height} = box.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
+  return {
+    x: x + width / 2,
+    y: y + height / 2
+  };
 }

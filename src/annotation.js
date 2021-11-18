@@ -4,6 +4,7 @@ import {handleEvent, hooks, updateListeners} from './events';
 import BoxAnnotation from './types/box';
 import LineAnnotation from './types/line';
 import EllipseAnnotation from './types/ellipse';
+import LabelAnnotation from './types/label';
 import PointAnnotation from './types/point';
 import {version} from '../package.json';
 
@@ -13,7 +14,8 @@ const annotationTypes = {
   box: BoxAnnotation,
   line: LineAnnotation,
   ellipse: EllipseAnnotation,
-  point: PointAnnotation
+  point: PointAnnotation,
+  label: LabelAnnotation
 };
 
 Object.keys(annotationTypes).forEach(key => {

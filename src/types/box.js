@@ -1,6 +1,5 @@
 import {Element} from 'chart.js';
-import {addRoundedRectPath, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
-import {clampAll, scaleValue, setBorderStyle} from '../helpers';
+import {scaleValue, drawBox, drawLabel, measureLabelSize, isLabelVisible, getBoxCenterPoint} from '../helpers';
 
 export default class BoxAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
@@ -13,36 +12,35 @@ export default class BoxAnnotation extends Element {
   }
 
   getCenterPoint(useFinalPosition) {
-    const {x, y, width, height} = this.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
-    return {
-      x: x + width / 2,
-      y: y + height / 2
-    };
+    return getBoxCenterPoint(this, useFinalPosition);
   }
 
   draw(ctx) {
-    const {x, y, width, height, options} = this;
-
     ctx.save();
-
-    ctx.lineWidth = options.borderWidth;
-    ctx.strokeStyle = options.borderColor;
-    ctx.fillStyle = options.backgroundColor;
-    const stroke = setBorderStyle(ctx, options);
-
-    ctx.beginPath();
-    addRoundedRectPath(ctx, {
-      x, y, w: width, h: height,
-      // TODO: v2 remove support for cornerRadius
-      radius: clampAll(toTRBLCorners(valueOrDefault(options.cornerRadius, options.borderRadius)), 0, Math.min(width, height) / 2)
-    });
-    ctx.closePath();
-    ctx.fill();
-    // If no border, don't draw it
-    if (stroke) {
-      ctx.stroke();
-    }
+    drawBox(ctx, this, this.options);
     ctx.restore();
+  }
+
+  drawLabel(ctx) {
+    const {x, y, width, height, options} = this;
+    const labelOpts = options.label;
+    if (isLabelVisible(labelOpts)) {
+      // copies borderWidth to label options
+      labelOpts.borderWidth = options.borderWidth;
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(x + labelOpts.borderWidth / 2, y + labelOpts.borderWidth / 2, width - labelOpts.borderWidth, height - labelOpts.borderWidth);
+      ctx.clip();
+      const labelSize = measureLabelSize(ctx, labelOpts);
+      const labelTextRect = {
+        x: calculateX(this, labelSize),
+        y: calculateY(this, labelSize),
+        width: labelSize.width,
+        height: labelSize.height
+      };
+      drawLabel(ctx, labelTextRect, labelOpts);
+      ctx.restore();
+    }
   }
 
   resolveElementProperties(chart, options) {
@@ -96,10 +94,56 @@ BoxAnnotation.defaults = {
   xMax: undefined,
   yScaleID: 'y',
   yMin: undefined,
-  yMax: undefined
+  yMax: undefined,
+  label: {
+    align: 'center',
+    color: 'black',
+    content: null,
+    drawTime: undefined,
+    enabled: false,
+    font: {
+      family: undefined,
+      lineHeight: undefined,
+      size: undefined,
+      style: undefined,
+      weight: 'bold'
+    },
+    height: undefined,
+    position: 'center',
+    textAlign: 'start',
+    xAdjust: 0,
+    xPadding: 6,
+    yAdjust: 0,
+    yPadding: 6,
+    width: undefined
+  }
 };
 
 BoxAnnotation.defaultRoutes = {
   borderColor: 'color',
   backgroundColor: 'color'
 };
+
+function calculateX(box, labelSize) {
+  const {x, x2, width, options} = box;
+  const {align, xPadding, xAdjust, borderWidth} = options.label;
+  const margin = xPadding + (borderWidth / 2) + xAdjust;
+  if (align === 'left') {
+    return x + margin;
+  } else if (align === 'right') {
+    return x2 - labelSize.width - margin;
+  }
+  return x + (width - labelSize.width) / 2;
+}
+
+function calculateY(box, labelSize) {
+  const {y, y2, height, options} = box;
+  const {position, yPadding, yAdjust, borderWidth} = options.label;
+  const margin = yPadding + (borderWidth / 2) + yAdjust;
+  if (position === 'start') {
+    return y + margin;
+  } else if (position === 'end') {
+    return y2 - labelSize.height - margin;
+  }
+  return y + (height - labelSize.height) / 2;
+}
