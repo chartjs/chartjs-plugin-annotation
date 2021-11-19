@@ -12,10 +12,10 @@ const chartStates = new Map();
 
 const annotationTypes = {
   box: BoxAnnotation,
-  line: LineAnnotation,
   ellipse: EllipseAnnotation,
-  point: PointAnnotation,
-  label: LabelAnnotation
+  label: LabelAnnotation,
+  line: LineAnnotation,
+  point: PointAnnotation
 };
 
 Object.keys(annotationTypes).forEach(key => {

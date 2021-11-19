@@ -110,12 +110,12 @@ export function measureLabelSize(ctx, options) {
 /**
  * Draw a box with the size and the styling options.
  * @param {CanvasRenderingContext2D} ctx - chart canvas context
- * @param {{x: number, y: number, width: number, height: number}} size - size of the bow to draw
+ * @param {{x: number, y: number, width: number, height: number}} rect - rect to draw
  * @param {Object} options - options to style the box
  * @returns {undefined}
  */
-export function drawBox(ctx, size, options) {
-  const {x, y, width, height} = size;
+export function drawBox(ctx, rect, options) {
+  const {x, y, width, height} = rect;
   ctx.strokeStyle = options.borderColor;
   ctx.fillStyle = options.backgroundColor;
   const stroke = setBorderStyle(ctx, options);
@@ -135,22 +135,30 @@ export function isLabelVisible(options) {
   return options && (options.display || options.enabled) && options.content;
 }
 
-export function drawLabel(ctx, size, options) {
+export function drawLabel(ctx, rect, options) {
   const content = options.content;
   if (content instanceof Image) {
-    ctx.drawImage(content, size.x, size.y, size.width, size.height);
+    ctx.drawImage(content, rect.x, rect.y, rect.width, rect.height);
     return;
   }
   const labels = isArray(content) ? content : [content];
   const font = toFont(options.font);
   const lh = font.lineHeight;
-  const x = calculateTextAlignment(size, options);
-  const y = size.y + (lh / 2);
+  const x = calculateTextAlignment(rect, options);
+  const y = rect.y + (lh / 2);
   ctx.font = font.string;
   ctx.textBaseline = 'middle';
   ctx.textAlign = options.textAlign;
   ctx.fillStyle = options.color;
   labels.forEach((l, i) => ctx.fillText(l, x, y + (i * lh)));
+}
+
+export function getRectCenterPoint(element, useFinalPosition) {
+  const {x, y, width, height} = element.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
+  return {
+    x: x + width / 2,
+    y: y + height / 2
+  };
 }
 
 export function getChartPoint(chart, options) {
@@ -170,10 +178,36 @@ export function getChartPoint(chart, options) {
   return {x, y};
 }
 
-export function getBoxCenterPoint(box, useFinalPosition) {
-  const {x, y, width, height} = box.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
+export function getChartRect(chart, options) {
+  const xScale = chart.scales[options.xScaleID];
+  const yScale = chart.scales[options.yScaleID];
+  let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
+  let min, max;
+
+  if (!xScale && !yScale) {
+    return {options: {}};
+  }
+
+  if (xScale) {
+    min = scaleValue(xScale, options.xMin, x);
+    max = scaleValue(xScale, options.xMax, x2);
+    x = Math.min(min, max);
+    x2 = Math.max(min, max);
+  }
+
+  if (yScale) {
+    min = scaleValue(yScale, options.yMin, y2);
+    max = scaleValue(yScale, options.yMax, y);
+    y = Math.min(min, max);
+    y2 = Math.max(min, max);
+  }
+
   return {
-    x: x + width / 2,
-    y: y + height / 2
+    x,
+    y,
+    x2,
+    y2,
+    width: x2 - x,
+    height: y2 - y
   };
 }

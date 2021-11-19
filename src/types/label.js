@@ -1,4 +1,4 @@
-import {drawBox, drawLabel, measureLabelSize, isLabelVisible, getChartPoint, getBoxCenterPoint} from '../helpers';
+import {drawBox, drawLabel, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint} from '../helpers';
 import {Element} from 'chart.js';
 
 export default class LabelAnnotation extends Element {
@@ -6,21 +6,21 @@ export default class LabelAnnotation extends Element {
   inRange(mouseX, mouseY) {
     const {x, y, width, height} = this.getProps(['x', 'y', 'width', 'height']);
 
-    return this.labelTextRect && mouseX >= x &&
+    return this.labelRect && mouseX >= x &&
 			mouseX <= x + width &&
 			mouseY >= y &&
 			mouseY <= y + height;
   }
 
   getCenterPoint(useFinalPosition) {
-    return getBoxCenterPoint(this, useFinalPosition);
+    return getRectCenterPoint(this, useFinalPosition);
   }
 
   draw(ctx) {
-    if (this.labelTextRect) {
+    if (this.labelRect) {
       ctx.save();
       drawBox(ctx, this, this.options);
-      drawLabel(ctx, this.labelTextRect, this.options);
+      drawLabel(ctx, this.labelRect, this.options);
       ctx.restore();
     }
   }
@@ -30,8 +30,8 @@ export default class LabelAnnotation extends Element {
 
     if (isLabelVisible(options)) {
       const labelSize = measureLabelSize(chart.ctx, options);
-      const elemDim = measureDimension(point, labelSize, options);
-      this.labelTextRect = {
+      const elemDim = measureRect(point, labelSize, options);
+      this.labelRect = {
         x: elemDim.x + options.xPadding + (options.borderWidth / 2),
         y: elemDim.y + options.yPadding + (options.borderWidth / 2),
         width: labelSize.width,
@@ -39,6 +39,7 @@ export default class LabelAnnotation extends Element {
       };
       return elemDim;
     }
+    this.labelRect = null;
     return point;
   }
 }
@@ -84,7 +85,7 @@ LabelAnnotation.defaultRoutes = {
 
 const alignEnumValues = ['left', 'right'];
 const positionEnumValues = ['start', 'end'];
-function measureDimension(point, size, options) {
+function measureRect(point, size, options) {
   const width = size.width + (2 * options.xPadding) + options.borderWidth;
   const height = size.height + (2 * options.yPadding) + options.borderWidth;
   return {

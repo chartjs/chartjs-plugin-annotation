@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {scaleValue, drawBox, drawLabel, measureLabelSize, isLabelVisible, getBoxCenterPoint} from '../helpers';
+import {drawBox, drawLabel, measureLabelSize, isLabelVisible, getRectCenterPoint, getChartRect} from '../helpers';
 
 export default class BoxAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
@@ -12,7 +12,7 @@ export default class BoxAnnotation extends Element {
   }
 
   getCenterPoint(useFinalPosition) {
-    return getBoxCenterPoint(this, useFinalPosition);
+    return getRectCenterPoint(this, useFinalPosition);
   }
 
   draw(ctx) {
@@ -32,49 +32,19 @@ export default class BoxAnnotation extends Element {
       ctx.rect(x + labelOpts.borderWidth / 2, y + labelOpts.borderWidth / 2, width - labelOpts.borderWidth, height - labelOpts.borderWidth);
       ctx.clip();
       const labelSize = measureLabelSize(ctx, labelOpts);
-      const labelTextRect = {
+      const labelRect = {
         x: calculateX(this, labelSize),
         y: calculateY(this, labelSize),
         width: labelSize.width,
         height: labelSize.height
       };
-      drawLabel(ctx, labelTextRect, labelOpts);
+      drawLabel(ctx, labelRect, labelOpts);
       ctx.restore();
     }
   }
 
   resolveElementProperties(chart, options) {
-    const xScale = chart.scales[options.xScaleID];
-    const yScale = chart.scales[options.yScaleID];
-    let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
-    let min, max;
-
-    if (!xScale && !yScale) {
-      return {options: {}};
-    }
-
-    if (xScale) {
-      min = scaleValue(xScale, options.xMin, x);
-      max = scaleValue(xScale, options.xMax, x2);
-      x = Math.min(min, max);
-      x2 = Math.max(min, max);
-    }
-
-    if (yScale) {
-      min = scaleValue(yScale, options.yMin, y2);
-      max = scaleValue(yScale, options.yMax, y);
-      y = Math.min(min, max);
-      y2 = Math.max(min, max);
-    }
-
-    return {
-      x,
-      y,
-      x2,
-      y2,
-      width: x2 - x,
-      height: y2 - y
-    };
+    return getChartRect(chart, options);
   }
 }
 

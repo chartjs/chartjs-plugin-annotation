@@ -118,7 +118,7 @@ export default class LineAnnotation extends Element {
   drawLabel(ctx, chartArea) {
     if (this.labelIsVisible(chartArea)) {
       ctx.save();
-      drawLabel1(ctx, this, chartArea);
+      applyLabel(ctx, this, chartArea);
       ctx.restore();
     }
   }
@@ -218,7 +218,7 @@ function calculateAutoRotation(line) {
   return rotation > PI / 2 ? rotation - PI : rotation < PI / -2 ? rotation + PI : rotation;
 }
 
-function drawLabel1(ctx, line, chartArea) {
+function applyLabel(ctx, line, chartArea) {
   const label = line.options.label;
   const {borderWidth, xPadding, yPadding} = label;
   const labelSize = measureLabelSize(ctx, label);
