@@ -38,6 +38,24 @@ function getChartDimensionByScale(scale, options) {
   };
 }
 
+/**
+ * Apply border options to the canvas context before drawing a box
+ * @param {CanvasRenderingContext2D} ctx - chart canvas context
+ * @param {Object} options - options with border configuration
+ * @returns {boolean} true is the border options have been applied
+ */
+function setBorderStyle(ctx, options) {
+  if (options && options.borderWidth) {
+    ctx.lineCap = options.borderCapStyle;
+    ctx.setLineDash(options.borderDash);
+    ctx.lineDashOffset = options.borderDashOffset;
+    ctx.lineJoin = options.borderJoinStyle;
+    ctx.lineWidth = options.borderWidth;
+    ctx.strokeStyle = options.borderColor;
+    return true;
+  }
+}
+
 export const clamp = (x, from, to) => Math.min(to, Math.max(from, x));
 
 export function clampAll(obj, from, to) {
@@ -69,24 +87,6 @@ export function rotated(point, center, angle) {
     x: cx + cos * (point.x - cx) - sin * (point.y - cy),
     y: cy + sin * (point.x - cx) + cos * (point.y - cy)
   };
-}
-
-/**
- * Apply border options to the canvas context before drawing a box
- * @param {CanvasRenderingContext2D} ctx - chart canvas context
- * @param {Object} options - options with border configuration
- * @returns {boolean} true is the border options have been applied
- */
-export function setBorderStyle(ctx, options) {
-  if (options && options.borderWidth) {
-    ctx.lineCap = options.borderCapStyle;
-    ctx.setLineDash(options.borderDash);
-    ctx.lineDashOffset = options.borderDashOffset;
-    ctx.lineJoin = options.borderJoinStyle;
-    ctx.lineWidth = options.borderWidth;
-    ctx.strokeStyle = options.borderColor;
-    return true;
-  }
 }
 
 /**
