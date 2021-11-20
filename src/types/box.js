@@ -110,9 +110,9 @@ function calculateY(box, labelSize) {
   const {y, y2, height, options} = box;
   const {position, yPadding, yAdjust, borderWidth} = options.label;
   const margin = yPadding + (borderWidth / 2) + yAdjust;
-  if (position === 'start') {
+  if (position === 'start' || position === 'top') {
     return y + margin;
-  } else if (position === 'end') {
+  } else if (position === 'end' || position === 'bottom') {
     return y2 - labelSize.height - margin;
   }
   return y + (height - labelSize.height) / 2;

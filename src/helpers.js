@@ -23,6 +23,15 @@ function calculateTextAlignment(size, options) {
   return x;
 }
 
+function getChartDimensionByScale(scale, options) {
+  const min = scaleValue(scale, options.min, options.start);
+  const max = scaleValue(scale, options.max, options.end);
+  return {
+    start: Math.min(min, max),
+    end: Math.max(min, max)
+  };
+}
+
 export const clamp = (x, from, to) => Math.min(to, Math.max(from, x));
 
 export function clampAll(obj, from, to) {
@@ -182,24 +191,21 @@ export function getChartRect(chart, options) {
   const xScale = chart.scales[options.xScaleID];
   const yScale = chart.scales[options.yScaleID];
   let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
-  let min, max;
 
   if (!xScale && !yScale) {
     return {options: {}};
   }
 
   if (xScale) {
-    min = scaleValue(xScale, options.xMin, x);
-    max = scaleValue(xScale, options.xMax, x2);
-    x = Math.min(min, max);
-    x2 = Math.max(min, max);
+    const xDim = getChartDimensionByScale(xScale, {min: options.xMin, max: options.xMax, start: x, end: x2});
+    x = xDim.start;
+    x2 = xDim.end;
   }
 
   if (yScale) {
-    min = scaleValue(yScale, options.yMin, y2);
-    max = scaleValue(yScale, options.yMax, y);
-    y = Math.min(min, max);
-    y2 = Math.max(min, max);
+    const yDim = getChartDimensionByScale(yScale, {min: options.yMin, max: options.yMax, start: y, end: y2});
+    y = yDim.start;
+    y2 = yDim.end;
   }
 
   return {
