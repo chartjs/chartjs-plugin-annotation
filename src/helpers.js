@@ -1,4 +1,4 @@
-import {isFinite, isArray, toFont, addRoundedRectPath, toTRBLCorners} from 'chart.js/helpers';
+import {isFinite, isArray, toFont, addRoundedRectPath, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
 
 const widthCache = new Map();
 const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
@@ -137,7 +137,8 @@ export function drawBox(ctx, rect, options) {
   ctx.beginPath();
   addRoundedRectPath(ctx, {
     x, y, w: width, h: height,
-    radius: clampAll(toTRBLCorners(options.borderRadius), 0, Math.min(width, height) / 2)
+    // TODO: v2 remove support for cornerRadius
+    radius: clampAll(toTRBLCorners(valueOrDefault(options.cornerRadius, options.borderRadius)), 0, Math.min(width, height) / 2)
   });
   ctx.closePath();
   ctx.fill();

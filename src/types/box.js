@@ -57,6 +57,7 @@ BoxAnnotation.defaults = {
   borderDashOffset: 0,
   borderJoinStyle: 'miter',
   borderRadius: 0,
+  cornerRadius: undefined, // TODO: v2 remove support for cornerRadius
   borderWidth: 1,
   display: true,
   xScaleID: 'x',

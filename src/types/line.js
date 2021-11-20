@@ -174,6 +174,7 @@ LineAnnotation.defaults = {
     borderDashOffset: 0,
     borderJoinStyle: 'miter',
     borderRadius: 6,
+    cornerRadius: undefined, // TODO: v2 remove support for cornerRadius
     borderWidth: 0,
     drawTime: undefined,
     font: {
