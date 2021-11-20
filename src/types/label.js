@@ -49,15 +49,16 @@ LabelAnnotation.id = 'labelAnnotation';
 LabelAnnotation.defaults = {
   adjustScaleRange: true,
   align: 'center',
-  display: true,
   backgroundColor: 'transparent',
+  borderCapStyle: 'butt',
   borderDash: [],
   borderDashOffset: 0,
-  borderWidth: 0,
+  borderJoinStyle: 'miter',
   borderRadius: 0,
+  borderWidth: 0,
   color: 'black',
   content: null,
-  drawTime: undefined,
+  display: true,
   font: {
     family: undefined,
     lineHeight: undefined,
@@ -68,6 +69,7 @@ LabelAnnotation.defaults = {
   height: undefined,
   position: 'center',
   textAlign: 'center',
+  width: undefined,
   xAdjust: 0,
   xPadding: 6,
   xScaleID: 'x',
@@ -75,8 +77,7 @@ LabelAnnotation.defaults = {
   yAdjust: 0,
   yPadding: 6,
   yScaleID: 'y',
-  yValue: undefined,
-  width: undefined
+  yValue: undefined
 };
 
 LabelAnnotation.defaultRoutes = {

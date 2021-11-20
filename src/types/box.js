@@ -51,7 +51,6 @@ export default class BoxAnnotation extends Element {
 BoxAnnotation.id = 'boxAnnotation';
 
 BoxAnnotation.defaults = {
-  display: true,
   adjustScaleRange: true,
   borderCapStyle: 'butt',
   borderDash: [],
@@ -59,6 +58,7 @@ BoxAnnotation.defaults = {
   borderJoinStyle: 'miter',
   borderRadius: 0,
   borderWidth: 1,
+  display: true,
   xScaleID: 'x',
   xMin: undefined,
   xMax: undefined,

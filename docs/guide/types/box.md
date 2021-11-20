@@ -51,15 +51,7 @@ The following options are available for box annotations.
 
 | Name | Type | [Scriptable](../options#scriptable-options) | Default
 | ---- | ---- | :----: | ----
-| [`display`](#general) | `boolean` | Yes | `true`
 | [`adjustScaleRange`](#general) | `boolean` | Yes | `true`
-| [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
-| [`xScaleID`](#general) | `string` | Yes | `'x'`
-| [`yScaleID`](#general) | `string` | Yes | `'y'`
-| [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
 | [`borderCapStyle`](#styling) | `string` | Yes | `'butt'`
 | [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
@@ -68,6 +60,15 @@ The following options are available for box annotations.
 | [`borderJoinStyle`](#styling) | `string` | Yes | `'miter'`
 | [`borderRadius`](#styling) | `number` \| `object` | Yes | `0`
 | [`borderWidth`](#styling) | `number`| Yes | `1`
+| [`display`](#general) | `boolean` | Yes | `true`
+| [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
+| [`xScaleID`](#general) | `string` | Yes | `'x'`
+| [`yScaleID`](#general) | `string` | Yes | `'y'`
+| [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
+| [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
+| [`label`](#label) | `object` | Yes |
 
 ### General
 
@@ -101,3 +102,26 @@ If one of the axes does not match an axis in the chart, the box will take the en
 #### borderRadius
 
 If this value is a number, it is applied to all corners of the rectangle (topLeft, topRight, bottomLeft, bottomRight). If this value is an object, the `topLeft` property defines the top-left corners border radius. Similarly, the `topRight`, `bottomLeft`, and `bottomRight` properties can also be specified. Omitted corners have radius of 0.
+
+### Label
+
+Namespace: `options.annotations[annotationID].label`, it defines options for the box annotation label.
+
+All of these options can be [Scriptable](../options#scriptable-options)
+
+| Name | Type | Default | Notes
+| ---- | ---- | :----: | ---- | ----
+| `align` | `string` | `'center'` | Text alignment of label content in the box. Possible options are: `'left'`, `'center'`, `'right'`.
+| `color` | [`Color`](../options#color) | `'#fff'` | Text color.
+| `content` | `string`\|`string[]`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image) | `null` | The content to show in the label.
+| `drawTime` | `string` | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the box annotation draw time if unset
+| `enabled` | `boolean` | `false` | Whether or not the label is shown.
+| `font` | [`Font`](../options#font) | `{ weight: 'bold' }` | Label font
+| `height` | `number`\|`string` | `undefined` | Overrides the height of the image. Could be set in pixel by a number, or in percentage of current height of image by a string. If undefined, uses the height of the image. It is used only when the content is an image.
+| `position` | `string` | `'center'` | Anchor position of label in the box. Possible options are: `'start'`, `'top'`, `'center'`, `'end'`, `'bottom'`.
+| `textAlign` | `string` | `'center'` | Text alignment of label content when there's more than one line. Possible options are: `'left'`, `'start'`, `'center'`, `'end'`, `'right'`.
+| `width` | `number`\|`string` | `undefined` | Overrides the width of the image. Could be set in pixel by a number, or in percentage of current width of image by a string. If undefined, uses the width of the image. It is used only when the content is an image.
+| `xPadding` | `number` | `6` | Padding of label to add left/right.
+| `yPadding` | `number` | `6` | Padding of label to add top/bottom.
+| `xAdjust` | `number` | `0` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
+| `yAdjust` | `number` | `0` | Adjustment along y-axis (top-bottom) of label relative to computed position. Negative values move the label up, positive down.
