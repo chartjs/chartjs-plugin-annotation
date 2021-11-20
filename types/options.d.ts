@@ -1,6 +1,6 @@
 import { Color } from 'chart.js';
 import { AnnotationEvents, PartialEventContext } from './events';
-import { LabelOptions, BoxLabelOptions } from './label';
+import { LabelOptions, BoxLabelOptions, LabelTypeOptions } from './label';
 
 export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw';
 
