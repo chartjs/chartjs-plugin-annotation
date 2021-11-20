@@ -24,11 +24,17 @@ function calculateTextAlignment(size, options) {
 }
 
 function getChartDimensionByScale(scale, options) {
-  const min = scaleValue(scale, options.min, options.start);
-  const max = scaleValue(scale, options.max, options.end);
+  if (scale) {
+    const min = scaleValue(scale, options.min, options.start);
+    const max = scaleValue(scale, options.max, options.end);
+    return {
+      start: Math.min(min, max),
+      end: Math.max(min, max)
+    };
+  }
   return {
-    start: Math.min(min, max),
-    end: Math.max(min, max)
+    start: options.start,
+    end: options.end
   };
 }
 
@@ -196,17 +202,12 @@ export function getChartRect(chart, options) {
     return {options: {}};
   }
 
-  if (xScale) {
-    const xDim = getChartDimensionByScale(xScale, {min: options.xMin, max: options.xMax, start: x, end: x2});
-    x = xDim.start;
-    x2 = xDim.end;
-  }
-
-  if (yScale) {
-    const yDim = getChartDimensionByScale(yScale, {min: options.yMin, max: options.yMax, start: y, end: y2});
-    y = yDim.start;
-    y2 = yDim.end;
-  }
+  const xDim = getChartDimensionByScale(xScale, {min: options.xMin, max: options.xMax, start: x, end: x2});
+  x = xDim.start;
+  x2 = xDim.end;
+  const yDim = getChartDimensionByScale(yScale, {min: options.yMin, max: options.yMax, start: y, end: y2});
+  y = yDim.start;
+  y2 = yDim.end;
 
   return {
     x,
