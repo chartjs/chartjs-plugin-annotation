@@ -25,7 +25,9 @@ module.exports = {
               backgroundColor: () => 'transparent',
               borderWidth: () => 0,
               content: () => 'This is my text',
-              align: () => 'right'
+              position() {
+                return {x: 'end'};
+              }
             },
             text2: {
               type: 'label',
@@ -46,7 +48,9 @@ module.exports = {
               backgroundColor: () => 'transparent',
               borderWidth: () => 0,
               content: () => 'This is my text',
-              align: () => 'left'
+              position() {
+                return {x: 'start'};
+              }
             }
           }
         }

@@ -50,7 +50,9 @@ module.exports = {
               borderWidth: 5,
               borderRadius: 4,
               content: 'This is my text',
-              align: 'left'
+              position: {
+                x: 'start'
+              }
             }
           }
         }

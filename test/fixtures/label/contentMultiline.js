@@ -25,7 +25,10 @@ module.exports = {
               backgroundColor: 'transparent',
               borderWidth: 0,
               content: ['This is my text', 'This is my text, row 2, longer than other', 'This is my text, row 3'],
-              align: 'right',
+              position: {
+                x: 'end',
+                y: 'center'
+              },
               textAlign: 'start'
             },
             text2: {
@@ -47,7 +50,9 @@ module.exports = {
               backgroundColor: 'transparent',
               borderWidth: 0,
               content: ['This is my text', 'This is my text, row 2, longer than other', 'This is my text, row 3'],
-              align: 'left'
+              position: {
+                x: 'start'
+              }
             }
           }
         }

@@ -1,4 +1,4 @@
-import {drawBox, drawLabel, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint} from '../helpers';
+import {drawBox, drawLabel, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition} from '../helpers';
 import {color as getColor} from 'chart.js/helpers';
 import {Element} from 'chart.js';
 
@@ -59,7 +59,6 @@ LabelAnnotation.id = 'labelAnnotation';
 
 LabelAnnotation.defaults = {
   adjustScaleRange: true,
-  align: 'center',
   backgroundColor: 'transparent',
   borderCapStyle: 'butt',
   borderDash: [],
@@ -95,25 +94,24 @@ LabelAnnotation.defaultRoutes = {
   borderColor: 'color',
 };
 
-const alignEnumValues = ['left', 'right'];
-const positionEnumValues = ['start', 'end'];
 function measureRect(point, size, options) {
   const width = size.width + (2 * options.xPadding) + options.borderWidth;
   const height = size.height + (2 * options.yPadding) + options.borderWidth;
+  const position = toPosition(options.position);
+
   return {
-    x: calculateByOptionValue({base: point.x, size: width}, options.xAdjust, options.align, alignEnumValues),
-    y: calculateByOptionValue({base: point.y, size: height}, options.yAdjust, options.position, positionEnumValues),
+    x: calculatePosition(point.x, width, options.xAdjust, position.x),
+    y: calculatePosition(point.y, height, options.yAdjust, position.y),
     width,
     height
   };
 }
 
-function calculateByOptionValue(area, adjust, option, enumValues) {
-  const {base, size} = area;
-  if (option === enumValues[0]) {
-    return base - size + adjust;
-  } else if (option === enumValues[1]) {
-    return base + adjust;
+function calculatePosition(start, size, adjust, position) {
+  if (position === 'start') {
+    return start - size + adjust;
+  } else if (position === 'end') {
+    return start + adjust;
   }
-  return base - size / 2 + adjust;
+  return start - size / 2 + adjust;
 }

@@ -48,7 +48,6 @@ module.exports = {
               label: {
                 enabled: true,
                 content: 'This is a label',
-                align: 'left',
                 position: 'start'
               }
             },
@@ -67,7 +66,6 @@ module.exports = {
               label: {
                 enabled: true,
                 content: 'This is a label created by callback',
-                align: 'right',
                 position: 'end'
               }
             },
@@ -87,8 +85,9 @@ module.exports = {
                 enabled: true,
                 content: 'This is the label',
                 color: 'red',
-                align: 'left',
-                position: 'center'
+                position: {
+                  x: 'start'
+                }
               }
             }
           }

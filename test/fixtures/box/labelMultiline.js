@@ -48,7 +48,6 @@ module.exports = {
               label: {
                 enabled: true,
                 content: ['This is a label', 'but this is multiline'],
-                align: 'left',
                 position: 'start'
               }
             },
@@ -67,7 +66,6 @@ module.exports = {
               label: {
                 enabled: true,
                 content: ['This is a label', 'but this is multiline'],
-                align: 'right',
                 position: 'end'
               }
             },
@@ -87,8 +85,9 @@ module.exports = {
                 enabled: true,
                 content: (ctx) => ['This is a label', 'type:' + ctx.type],
                 color: 'red',
-                align: 'left',
-                position: 'center'
+                position: {
+                  x: 'start'
+                }
               }
             }
           }

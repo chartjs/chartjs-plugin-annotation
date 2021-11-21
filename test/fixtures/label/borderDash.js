@@ -51,7 +51,9 @@ module.exports = {
               borderDash: [6, 6],
               borderWidth: 5,
               content: 'This is my text',
-              align: 'left'
+              position: {
+                x: 'start'
+              }
             }
           }
         }

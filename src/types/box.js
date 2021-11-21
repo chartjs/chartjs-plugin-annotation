@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {drawBox, drawLabel, measureLabelSize, isLabelVisible, getRectCenterPoint, getChartRect} from '../helpers';
+import {drawBox, drawLabel, measureLabelSize, isLabelVisible, getRectCenterPoint, getChartRect, toPosition} from '../helpers';
 
 export default class BoxAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
@@ -31,10 +31,11 @@ export default class BoxAnnotation extends Element {
       ctx.beginPath();
       ctx.rect(x + labelOpts.borderWidth / 2, y + labelOpts.borderWidth / 2, width - labelOpts.borderWidth, height - labelOpts.borderWidth);
       ctx.clip();
+      const position = toPosition(labelOpts.position);
       const labelSize = measureLabelSize(ctx, labelOpts);
       const labelRect = {
-        x: calculateX(this, labelSize),
-        y: calculateY(this, labelSize),
+        x: calculateX(this, labelSize, position),
+        y: calculateY(this, labelSize, position),
         width: labelSize.width,
         height: labelSize.height
       };
@@ -67,7 +68,6 @@ BoxAnnotation.defaults = {
   yMin: undefined,
   yMax: undefined,
   label: {
-    align: 'center',
     color: 'black',
     content: null,
     drawTime: undefined,
@@ -95,26 +95,27 @@ BoxAnnotation.defaultRoutes = {
   backgroundColor: 'color'
 };
 
-function calculateX(box, labelSize) {
-  const {x, x2, width, options} = box;
-  const {align, xPadding, xAdjust, borderWidth} = options.label;
-  const margin = xPadding + (borderWidth / 2) + xAdjust;
-  if (align === 'left') {
-    return x + margin;
-  } else if (align === 'right') {
-    return x2 - labelSize.width - margin;
-  }
-  return x + (width - labelSize.width) / 2;
+function calculateX(box, labelSize, position) {
+  const {x: start, x2: end, width: size, options} = box;
+  const {xPadding: padding, xAdjust: adjust, borderWidth} = options.label;
+  return calculatePosition({start, end, size}, {position: position.x, padding, adjust, borderWidth, size: labelSize.width});
 }
 
-function calculateY(box, labelSize) {
-  const {y, y2, height, options} = box;
-  const {position, yPadding, yAdjust, borderWidth} = options.label;
-  const margin = yPadding + (borderWidth / 2) + yAdjust;
-  if (position === 'start' || position === 'top') {
-    return y + margin;
-  } else if (position === 'end' || position === 'bottom') {
-    return y2 - labelSize.height - margin;
-  }
-  return y + (height - labelSize.height) / 2;
+function calculateY(box, labelSize, position) {
+  const {y: start, y2: end, height: size, options} = box;
+  const {yPadding: padding, yAdjust: adjust, borderWidth} = options.label;
+  return calculatePosition({start, end, size}, {position: position.y, padding, adjust, borderWidth, size: labelSize.height});
 }
+
+function calculatePosition(boxOpts, labelOpts) {
+  const {start, end, size} = boxOpts;
+  const {position, padding, adjust, borderWidth} = labelOpts;
+  const margin = padding + (borderWidth / 2) + adjust;
+  if (position === 'start') {
+    return start + margin;
+  } else if (position === 'end') {
+    return end - labelOpts.size - margin;
+  }
+  return start + (size - labelOpts.size) / 2;
+}
+

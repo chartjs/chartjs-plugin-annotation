@@ -25,7 +25,9 @@ module.exports = {
               backgroundColor: 'missing',
               borderWidth: 0,
               content: 'This is my text',
-              align: 'right'
+              position: {
+                x: 'end'
+              }
             },
             text3: {
               type: 'label',
@@ -34,9 +36,11 @@ module.exports = {
               xValue: 'May',
               yValue: 20,
               backgroundColor: 'rgba(250,250,250,0)',
-              borderWidth: 5,
+              borderWidth: 0,
               content: 'This is my text',
-              align: 'left'
+              position: {
+                x: 'start'
+              }
             }
           }
         }

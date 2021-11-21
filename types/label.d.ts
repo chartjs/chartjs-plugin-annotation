@@ -102,12 +102,7 @@ export interface LabelOptions extends ContainedLabelOptions {
 }
 
 export interface BoxLabelOptions extends CoreLabelOptions {
-  align?: Scriptable<LabelAlign, PartialEventContext>,
-  /**
-   * Anchor position of label on line.
-   * @default 'center'
-   */
-  position?: Scriptable<BoxLabelPosition, PartialEventContext>,
+  position?: Scriptable<LabelPosition | LabelPositionObject, PartialEventContext>,
   /**
    * Whether the label is enabled and should be displayed
    * @default true
@@ -116,18 +111,15 @@ export interface BoxLabelOptions extends CoreLabelOptions {
 }
 
 export interface LabelTypeOptions extends ContainedLabelOptions {
-  align?: Scriptable<LabelAlign, PartialEventContext>,
-  /**
-   * Anchor position of label on line.
-   * @default 'center'
-   */
-  position?: Scriptable<BoxLabelPosition, PartialEventContext>,
+  position?: Scriptable<LabelPosition | LabelPositionObject, PartialEventContext>,
 }
 
 export type LabelPosition = 'start' | 'center' | 'end';
 
 export type LabelTextAlign = 'left' | 'start' | 'center' | 'right' | 'end';
 
-export type BoxLabelPosition = 'start' | 'center' | 'end' | 'top' | 'bottom';
+interface LabelPositionObject {
+  x?: LabelPosition,
+  y?: LabelPosition
+}
 
-export type LabelAlign = 'left' | 'center' | 'right';

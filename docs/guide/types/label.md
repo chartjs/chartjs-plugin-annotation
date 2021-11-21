@@ -54,7 +54,6 @@ The following options are available for label annotations.
 | Name | Type | [Scriptable](../options#scriptable-options) | Default
 | ---- | ---- | :----: | ----
 | [`adjustScaleRange`](#general) | `boolean` | Yes | `true`
-| [`align`](#align) | `string` | Yes | `'center'`
 | [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `transparent`
 | [`borderCapStyle`](#styling) | `string` | Yes | `'butt'`
 | [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
@@ -69,7 +68,7 @@ The following options are available for label annotations.
 | [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
 | [`font`](#styling) | [`Font`](../options#font) | Yes | `{}`
 | [`height`](#general) | `number`\|`string` | Yes | `undefined` 
-| [`position`](#position) | `string` | Yes | `'center'`
+| [`position`](#position) | `string`\|`{x: string, y: string}` | Yes | `'center'`
 | [`textAlign`](#general) | `string` | Yes | `'center'`
 | [`width`](#general) | `number`\|`string` | Yes | `undefined`
 | [`xAdjust`](#general) | `number` | Yes | `0`
@@ -117,21 +116,12 @@ If one of the axes does not match an axis in the chart, the content will be rend
 | `color` | Text color.
 | `font` | Text font.
 
-### Align
-
-The align property specifies the horizontal position of the label with respect to the selected point. The possible values are:
-
-* `center`: the content is centered. It is the default.
-* `left`: the content is left-aligned with respect to the selected point.
-* `right`: the content is right-aligned with respect to the selected point.
 
 ### Position
 
-The position property specifies the vertical position of the label with respect to the selected point. The possible values are:
+If this value is a string (possible options are `'start'`, `'center'`, `'end'`), it is applied to vertical and horizontal position in the box. 
 
-* `center`: the content is centered with respect to the selected point. It is the default.
-* `top` or `start`: the content is in the top with respect to the selected point.
-* `bottom` or `end`: the content is in the bottom with respect to the selected point.
+If this value is an object, the `x` property defines the horizontal alignment in the box. Similarly, the `y` property defines the vertical alignment in the box. Possible options for both properties are `'start'`, `'center'`, `'end'`. Omitted property have value of the default, `'center'`.
 
 #### borderRadius
 

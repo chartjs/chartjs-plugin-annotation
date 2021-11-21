@@ -1,4 +1,4 @@
-import {isFinite, isArray, toFont, addRoundedRectPath, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
+import {isFinite, isArray, isObject, toFont, addRoundedRectPath, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
 
 const widthCache = new Map();
 const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
@@ -54,6 +54,26 @@ function setBorderStyle(ctx, options) {
     ctx.strokeStyle = options.borderColor;
     return true;
   }
+}
+
+function readValueToProps(value, props, defValue) {
+  const ret = {};
+  const objProps = isObject(props);
+  const keys = objProps ? Object.keys(props) : props;
+  const read = isObject(value)
+    ? objProps
+      ? prop => valueOrDefault(value[prop], value[props[prop]])
+      : prop => value[prop]
+    : () => value;
+
+  for (const prop of keys) {
+    ret[prop] = valueOrDefault(read(prop), defValue);
+  }
+  return ret;
+}
+
+export function toPosition(value) {
+  return readValueToProps(value, ['x', 'y'], 'center');
 }
 
 export const clamp = (x, from, to) => Math.min(to, Math.max(from, x));
