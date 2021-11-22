@@ -9,9 +9,9 @@ export default class LabelAnnotation extends Element {
       const {x, y, width, height} = this.isBoxVisible() ? this.getProps(['x', 'y', 'width', 'height']) : this.labelRect;
 
       return mouseX >= x &&
-			mouseX <= x + width &&
-			mouseY >= y &&
-			mouseY <= y + height;
+             mouseX <= x + width &&
+             mouseY >= y &&
+             mouseY <= y + height;
     }
     return false;
   }
@@ -109,9 +109,9 @@ function measureRect(point, size, options) {
 
 function calculatePosition(start, size, adjust, position) {
   if (position === 'start') {
-    return start - size + adjust;
-  } else if (position === 'end') {
     return start + adjust;
+  } else if (position === 'end') {
+    return start - size + adjust;
   }
   return start - size / 2 + adjust;
 }

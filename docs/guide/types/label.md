@@ -119,9 +119,9 @@ If one of the axes does not match an axis in the chart, the content will be rend
 
 ### Position
 
-If this value is a string (possible options are `'start'`, `'center'`, `'end'`), it is applied to vertical and horizontal position in the box. 
+If this value is a string (possible options are `'start'`, `'center'`, `'end'`), it is applied to vertical and horizontal position of the label, with respect to the selected point.
 
-If this value is an object, the `x` property defines the horizontal alignment in the box. Similarly, the `y` property defines the vertical alignment in the box. Possible options for both properties are `'start'`, `'center'`, `'end'`. Omitted property have value of the default, `'center'`.
+If this value is an object, the `x` property defines the horizontal alignment of the label, with respect to the selected point. Similarly, the `y` property defines the vertical alignment of the label, with respect to the selected point. Possible options for both properties are `'start'`, `'center'`, `'end'`. Omitted property have value of the default, `'center'`.
 
 #### borderRadius
 

@@ -6,9 +6,9 @@ export default class BoxAnnotation extends Element {
     const {x, y, width, height} = this.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
 
     return mouseX >= x &&
-			mouseX <= x + width &&
-			mouseY >= y &&
-			mouseY <= y + height;
+           mouseX <= x + width &&
+           mouseY >= y &&
+           mouseY <= y + height;
   }
 
   getCenterPoint(useFinalPosition) {

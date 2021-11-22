@@ -24,32 +24,32 @@ module.exports = {
               yValue: 20,
               backgroundColor: () => 'transparent',
               borderWidth: () => 0,
-              content: () => 'This is my text',
+              content: (ctx, opts) => 'xValue: ' + opts.xValue + ', position: ' + JSON.stringify(opts.position),
               position() {
-                return {x: 'end'};
+                return {x: 'start'};
               }
             },
             text2: {
               type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
-              xValue: 'February',
+              xValue: 'April',
               yValue: 10,
               backgroundColor: () => 'transparent',
               borderWidth: () => 0,
-              content: () => 'This is my text'
+              content: (ctx, opts) => 'xValue: ' + opts.xValue + ', position: ' + JSON.stringify(opts.position),
             },
             text3: {
               type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
               xValue: 'May',
-              yValue: 20,
+              yValue: 15,
               backgroundColor: () => 'transparent',
               borderWidth: () => 0,
               content: (ctx, opts) => 'xValue: ' + opts.xValue + ', position: ' + JSON.stringify(opts.position),
               position() {
-                return {x: 'start'};
+                return {x: 'end'};
               }
             }
           }

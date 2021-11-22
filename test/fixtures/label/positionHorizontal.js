@@ -14,6 +14,7 @@ module.exports = {
         }
       },
       plugins: {
+        legend: false,
         annotation: {
           annotations: {
             text1: {
@@ -24,9 +25,9 @@ module.exports = {
               yValue: 20,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: 'This is my text',
+              content: 'position: {x: start}',
               position: {
-                x: 'end'
+                x: 'start'
               }
             },
             text2: {
@@ -37,7 +38,7 @@ module.exports = {
               yValue: 10,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: 'This is my text'
+              content: 'position: center'
             },
             text3: {
               type: 'label',
@@ -47,9 +48,9 @@ module.exports = {
               yValue: 20,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: 'This is my text',
+              content: 'position: {x: end}',
               position: {
-                x: 'start'
+                x: 'end'
               }
             }
           }

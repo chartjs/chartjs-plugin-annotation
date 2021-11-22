@@ -23,6 +23,7 @@ module.exports = {
         }
       },
       plugins: {
+        legend: false,
         annotation: {
           annotations: {
             text1: {
@@ -43,8 +44,8 @@ module.exports = {
               yValue: 20,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: 'position: end',
-              position: 'end'
+              content: 'position: start',
+              position: 'start'
             },
             text3: {
               type: 'label',
@@ -54,8 +55,8 @@ module.exports = {
               yValue: 20,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: 'position: start',
-              position: 'start'
+              content: 'position: end',
+              position: 'end'
             }
           }
         }

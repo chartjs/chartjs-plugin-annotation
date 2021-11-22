@@ -1,5 +1,5 @@
 module.exports = {
-  tolerance: 0.0055,
+  tolerance: 0.0075,
   config: {
     type: 'bar',
     options: {
@@ -50,9 +50,9 @@ module.exports = {
               borderColor: 'rgb(101, 33, 171)',
               borderDash: [6, 6],
               borderWidth: 5,
-              content: 'This is my text',
+              content: 'This is my text position: {x: end}',
               position: {
-                x: 'start'
+                x: 'end'
               }
             }
           }

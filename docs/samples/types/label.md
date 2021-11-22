@@ -35,8 +35,8 @@ const annotation1 = {
   yScaleID: 'y',
   yValue: minValue,
   position: {
-    x: 'end',
-    y: 'start'
+    x: 'start',
+    y: 'end'
   },
   content: (ctx) => 'Lower bound: ' + minValue(ctx).toFixed(3)
 };
@@ -50,8 +50,8 @@ const annotation2 = {
   yScaleID: 'y',
   yValue: maxValue,
   position: {
-    x: 'end',
-    y: 'end'
+    x: 'start',
+    y: 'start'
   },
   content: (ctx) => 'Upper bound: ' + maxValue(ctx).toFixed(3)
 };

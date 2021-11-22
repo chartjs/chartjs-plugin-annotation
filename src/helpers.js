@@ -17,7 +17,7 @@ function calculateTextAlignment(size, options) {
   const textAlign = options.textAlign;
   if (textAlign === 'center') {
     return x + width / 2;
-  } else if (textAlign === 'end' || textAlign === 'right') {
+  } else if (textAlign === 'end') {
     return x + width;
   }
   return x;

@@ -24,9 +24,9 @@ module.exports = {
               yValue: 20,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: ['This is my text', 'This is my text, row 2, longer than other', 'This is my text, row 3'],
+              content: ['position: {x: start, y: center}, textAlign: start, xValue: January', 'This is my text, row 2, longer than other', 'This is my text, row 3'],
               position: {
-                x: 'end',
+                x: 'start',
                 y: 'center'
               },
               textAlign: 'start'
@@ -39,19 +39,19 @@ module.exports = {
               yValue: 10,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: ['This is my text', 'This is my text, row 2, longer than other', 'This is my text, row 3'],
+              content: ['position: center, textAlign: center, xValue: April', 'This is my text, row 2, longer than other', 'This is my text, row 3'],
             },
             text3: {
               type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
-              xValue: 'June',
+              xValue: 'May',
               yValue: 15,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: ['This is my text', 'This is my text, row 2, longer than other', 'This is my text, row 3'],
+              content: ['position: {x: end}, xValue: May', 'This is my text, row 2, longer than other', 'This is my text, row 3'],
               position: {
-                x: 'start'
+                x: 'end'
               }
             }
           }

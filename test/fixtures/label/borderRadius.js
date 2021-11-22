@@ -49,9 +49,9 @@ module.exports = {
               borderDash: [6, 6],
               borderWidth: 5,
               borderRadius: 4,
-              content: 'This is my text',
+              content: ['This is my text', 'position: {x: end}'],
               position: {
-                x: 'start'
+                x: 'end'
               }
             }
           }
