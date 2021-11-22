@@ -47,7 +47,7 @@ module.exports = {
               yValue: 20,
               backgroundColor: () => 'transparent',
               borderWidth: () => 0,
-              content: () => 'This is my text',
+              content: (ctx, opts) => 'xValue: ' + opts.xValue + ', position: ' + JSON.stringify(opts.position),
               position() {
                 return {x: 'start'};
               }
