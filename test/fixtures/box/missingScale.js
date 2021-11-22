@@ -20,7 +20,7 @@ module.exports = {
               type: 'box',
               xScaleID: 'x',
               yScaleID: 'missing',
-              xMin: 'Febraury',
+              xMin: 'February',
               xMax: 'May',
               yMin: 5,
               yMax: 18,
