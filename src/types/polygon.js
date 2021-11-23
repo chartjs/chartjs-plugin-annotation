@@ -11,10 +11,11 @@ export default class PolygonAnnotation extends PointAnnotation {
   draw(ctx) {
     const {x, y, options} = this;
     const {sides, radius} = options;
+    const point = {x, y};
     let angle = (2 * PI) / sides;
     let rad = options.rotation * RAD_PER_DEG;
     this.vertices = new Array();
-    let vertex = createVertex(this.vertices, x, y, rad, radius);
+    let vertex = createVertex(this.vertices, point, rad, radius);
     ctx.save();
     ctx.beginPath();
     ctx.fillStyle = options.backgroundColor;
@@ -22,7 +23,7 @@ export default class PolygonAnnotation extends PointAnnotation {
     ctx.moveTo(vertex.x, vertex.y);
     for (let i = 0; i < sides; i++) {
       rad += angle;
-      vertex = createVertex(this.vertices, x, y, rad, radius);
+      vertex = createVertex(this.vertices, point, rad, radius);
       ctx.lineTo(vertex.x, vertex.y);
     }
     ctx.closePath();
@@ -60,10 +61,10 @@ PolygonAnnotation.defaultRoutes = {
   backgroundColor: 'color'
 };
 
-function createVertex(array, x, y, rad, radius) {
+function createVertex(array, point, rad, radius) {
   const vertex = {
-    x: x + Math.sin(rad) * radius,
-    y: y - Math.cos(rad) * radius
+    x: point.x + Math.sin(rad) * radius,
+    y: point.y - Math.cos(rad) * radius
   };
   array.push(vertex);
   return vertex;
@@ -71,22 +72,6 @@ function createVertex(array, x, y, rad, radius) {
 
 function pointIsInPolygon(vertices, x, y) {
   let isInside = false;
-  let minX = vertices[0].x;
-  let maxX = vertices[0].x;
-  let minY = vertices[0].y;
-  let maxY = vertices[0].y;
-  for (let n = 1; n < vertices.length; n++) {
-    let q = vertices[n];
-    minX = Math.min(q.x, minX);
-    maxX = Math.max(q.x, maxX);
-    minY = Math.min(q.y, minY);
-    maxY = Math.max(q.y, maxY);
-  }
-
-  if (x < minX || x > maxX || y < minY || y > maxY) {
-    return false;
-  }
-
   let i = 0;
   let j = vertices.length - 1;
   for (i, j; i < vertices.length; j = i++) {
