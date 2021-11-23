@@ -9,6 +9,7 @@ export interface AnnotationTypeRegistry {
   box: BoxAnnotationOptions
   ellipse: EllipseAnnotationOptions
   point: PointAnnotationOptions
+  polygon: PolygonAnnotationOptions
 }
 
 export type AnnotationType = keyof AnnotationTypeRegistry;
@@ -83,6 +84,17 @@ interface EllipseAnnotationOptions extends CoreAnnotationOptions, AnnotationCoor
 interface PointAnnotationOptions extends CoreAnnotationOptions {
   backgroundColor: Scriptable<Color, PartialEventContext>,
   radius?: Scriptable<number, PartialEventContext>,
+  xValue?: Scriptable<ScaleValue, PartialEventContext>;
+  yValue?: Scriptable<ScaleValue, PartialEventContext>;
+}
+
+interface PolygonAnnotationOptions extends CoreAnnotationOptions {
+  backgroundColor: Scriptable<Color, PartialEventContext>,
+  borderCapStyle?: Scriptable<CanvasLineCap, PartialEventContext>,
+  borderJoinStyle?: Scriptable<CanvasLineJoin, PartialEventContext>,
+  radius?: Scriptable<number, PartialEventContext>,
+  rotation?: Scriptable<number, PartialEventContext>,
+  sides?: Scriptable<number, PartialEventContext>,
   xValue?: Scriptable<ScaleValue, PartialEventContext>;
   yValue?: Scriptable<ScaleValue, PartialEventContext>;
 }
