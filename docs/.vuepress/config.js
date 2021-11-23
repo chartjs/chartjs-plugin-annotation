@@ -91,7 +91,8 @@ module.exports = {
             'types/box',
             'types/ellipse',
             'types/line',
-            'types/point'
+            'types/point',
+            'types/polygon'
           ]
         }
       ],
@@ -104,7 +105,8 @@ module.exports = {
             'types/box',
             'types/ellipse',
             'types/line',
-            'types/point'
+            'types/point',
+            'types/polygon'
           ],
         },
         {
