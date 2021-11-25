@@ -65,7 +65,7 @@ module.exports = {
               borderWidth: 5,
               label: {
                 enabled: true,
-                content: 'This is a label created by callback',
+                content: 'This is a label with different length',
                 position: 'end'
               }
             },
