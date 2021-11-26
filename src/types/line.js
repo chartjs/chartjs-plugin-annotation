@@ -1,12 +1,11 @@
 import {Element} from 'chart.js';
-import {addRoundedRectPath, isArray, toFont, toRadians, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
-import {clamp, clampAll, scaleValue, rotated, setBorderStyle} from '../helpers';
+import {toRadians} from 'chart.js/helpers';
+import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, isLabelVisible} from '../helpers';
 
 const PI = Math.PI;
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
-const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
 
 function isLineInArea({x, y, x2, y2}, {top, right, bottom, left}) {
   return !(
@@ -70,7 +69,7 @@ export default class LineAnnotation extends Element {
     const label = this.options.label;
 
     const inside = !chartArea || isLineInArea(this, chartArea);
-    return inside && label && label.enabled && label.content;
+    return inside && isLabelVisible(label);
   }
 
   isOnLabel(mouseX, mouseY) {
@@ -119,7 +118,7 @@ export default class LineAnnotation extends Element {
   drawLabel(ctx, chartArea) {
     if (this.labelIsVisible(chartArea)) {
       ctx.save();
-      drawLabel(ctx, this, chartArea);
+      applyLabel(ctx, this, chartArea);
       ctx.restore();
     }
   }
@@ -175,6 +174,7 @@ LineAnnotation.defaults = {
     borderDashOffset: 0,
     borderJoinStyle: 'miter',
     borderRadius: 6,
+    cornerRadius: undefined, // TODO: v2 remove support for cornerRadius
     borderWidth: 0,
     drawTime: undefined,
     font: {
@@ -219,95 +219,32 @@ function calculateAutoRotation(line) {
   return rotation > PI / 2 ? rotation - PI : rotation < PI / -2 ? rotation + PI : rotation;
 }
 
-function drawLabel(ctx, line, chartArea) {
+function applyLabel(ctx, line, chartArea) {
   const label = line.options.label;
-  const {borderWidth, xPadding, yPadding, content} = label;
-  const font = toFont(label.font);
-  ctx.font = font.string;
-
-  const {width, height} = measureLabel(ctx, label, font);
+  const {borderWidth, xPadding, yPadding} = label;
+  const labelSize = measureLabelSize(ctx, label);
+  const width = labelSize.width + 2 * xPadding + borderWidth;
+  const height = labelSize.height + label.yPadding * 2 + borderWidth;
   const rect = line.labelRect = calculateLabelPosition(line, width, height, chartArea);
 
   ctx.translate(rect.x, rect.y);
   ctx.rotate(rect.rotation);
 
-  ctx.fillStyle = label.backgroundColor;
-  const stroke = setBorderStyle(ctx, label);
-
-  ctx.beginPath();
-  addRoundedRectPath(ctx, {
-    x: -(width / 2), y: -(height / 2), w: width, h: height,
-    // TODO: v2 remove support for cornerRadius
-    radius: clampAll(toTRBLCorners(valueOrDefault(label.cornerRadius, label.borderRadius)), 0, Math.min(width, height) / 2)
-  });
-  ctx.closePath();
-  ctx.fill();
-  if (stroke) {
-    ctx.stroke();
-  }
-
-  ctx.fillStyle = label.color;
-  if (content instanceof Image) {
-    const x = -(width / 2) + xPadding + borderWidth / 2;
-    const y = -(height / 2) + yPadding + borderWidth / 2;
-    ctx.drawImage(content, x, y, width - (2 * xPadding) - borderWidth, height - (2 * yPadding) - borderWidth);
-  } else {
-    const labels = isArray(content) ? content : [content];
-    const x = calculateLabelXAlignment(label, width);
-    const y = -(labels.length - 1) * font.lineHeight / 2;
-    ctx.textBaseline = 'middle';
-    ctx.textAlign = label.textAlign;
-    labels.forEach((l, i) => ctx.fillText(l, x, y + (i * font.lineHeight)));
-  }
-}
-
-function calculateLabelXAlignment(label, width) {
-  const {textAlign, xPadding, borderWidth} = label;
-  if (textAlign === 'start') {
-    return -(width / 2) + xPadding + borderWidth / 2;
-  } else if (textAlign === 'end') {
-    return +(width / 2) - xPadding - borderWidth / 2;
-  }
-  return 0;
-}
-
-function getImageSize(size, value) {
-  if (typeof value === 'number') {
-    return value;
-  } else if (typeof value === 'string') {
-    return toPercent(value) * size;
-  }
-  return size;
-}
-
-const widthCache = new Map();
-function measureLabel(ctx, label, font) {
-  const content = label.content;
-  const borderWidth = label.borderWidth;
-
-  if (content instanceof Image) {
-    return {
-      width: getImageSize(content.width, label.width) + 2 * label.xPadding + borderWidth,
-      height: getImageSize(content.height, label.height) + 2 * label.yPadding + borderWidth
-    };
-  }
-  const lines = isArray(content) ? content : [content];
-  const count = lines.length;
-  let width = 0;
-  for (let i = 0; i < count; i++) {
-    const text = lines[i];
-    const key = font.string + '-' + text;
-    if (!widthCache.has(key)) {
-      widthCache.set(key, ctx.measureText(text).width);
-    }
-    width = Math.max(width, widthCache.get(key));
-  }
-  width += 2 * label.xPadding + borderWidth;
-
-  return {
+  const boxRect = {
+    x: -(width / 2),
+    y: -(height / 2),
     width,
-    height: count * font.lineHeight + label.yPadding * 2 + borderWidth
+    height
   };
+  drawBox(ctx, boxRect, label);
+
+  const labelTextRect = {
+    x: -(width / 2) + xPadding + borderWidth / 2,
+    y: -(height / 2) + yPadding + borderWidth / 2,
+    width: labelSize.width,
+    height: labelSize.height
+  };
+  drawLabel(ctx, labelTextRect, label);
 }
 
 function calculateLabelPosition(line, width, height, chartArea) {

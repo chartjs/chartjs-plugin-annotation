@@ -90,6 +90,7 @@ module.exports = {
           children: [
             'types/box',
             'types/ellipse',
+            'types/label',
             'types/line',
             'types/point'
           ]
@@ -103,6 +104,7 @@ module.exports = {
           children: [
             'types/box',
             'types/ellipse',
+            'types/label',
             'types/line',
             'types/point'
           ],
