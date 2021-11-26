@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {toRadians} from 'chart.js/helpers';
+import {toRadians, toPadding} from 'chart.js/helpers';
 import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, isLabelVisible} from '../helpers';
 
 const PI = Math.PI;
@@ -174,9 +174,12 @@ LineAnnotation.defaults = {
     borderDashOffset: 0,
     borderJoinStyle: 'miter',
     borderRadius: 6,
-    cornerRadius: undefined, // TODO: v2 remove support for cornerRadius
     borderWidth: 0,
+    color: '#fff',
+    content: null,
+    cornerRadius: undefined, // TODO: v2 remove support for cornerRadius
     drawTime: undefined,
+    enabled: false,
     font: {
       family: undefined,
       lineHeight: undefined,
@@ -184,18 +187,14 @@ LineAnnotation.defaults = {
       style: undefined,
       weight: 'bold'
     },
-    color: '#fff',
-    xPadding: 6,
-    yPadding: 6,
-    rotation: 0,
+    height: undefined,
+    padding: 6,
     position: 'center',
-    xAdjust: 0,
-    yAdjust: 0,
+    rotation: 0,
     textAlign: 'center',
     width: undefined,
-    height: undefined,
-    enabled: false,
-    content: null
+    xAdjust: 0,
+    yAdjust: 0
   },
   value: undefined,
   endValue: undefined,
@@ -221,10 +220,11 @@ function calculateAutoRotation(line) {
 
 function applyLabel(ctx, line, chartArea) {
   const label = line.options.label;
-  const {borderWidth, xPadding, yPadding} = label;
+  const padding = toPadding(label.padding);
+  const borderWidth = label.borderWidth;
   const labelSize = measureLabelSize(ctx, label);
-  const width = labelSize.width + 2 * xPadding + borderWidth;
-  const height = labelSize.height + label.yPadding * 2 + borderWidth;
+  const width = labelSize.width + padding.width + borderWidth;
+  const height = labelSize.height + padding.height + borderWidth;
   const rect = line.labelRect = calculateLabelPosition(line, width, height, chartArea);
 
   ctx.translate(rect.x, rect.y);
@@ -239,8 +239,8 @@ function applyLabel(ctx, line, chartArea) {
   drawBox(ctx, boxRect, label);
 
   const labelTextRect = {
-    x: -(width / 2) + xPadding + borderWidth / 2,
-    y: -(height / 2) + yPadding + borderWidth / 2,
+    x: -(width / 2) + padding.left + borderWidth / 2,
+    y: -(height / 2) + padding.top + borderWidth / 2,
     width: labelSize.width,
     height: labelSize.height
   };
@@ -249,15 +249,16 @@ function applyLabel(ctx, line, chartArea) {
 
 function calculateLabelPosition(line, width, height, chartArea) {
   const label = line.options.label;
-  const {xAdjust, yAdjust, xPadding, yPadding, position} = label;
+  const {xAdjust, yAdjust, position} = label;
+  const padding = toPadding(label.padding);
   const p1 = {x: line.x, y: line.y};
   const p2 = {x: line.x2, y: line.y2};
   const rotation = label.rotation === 'auto' ? calculateAutoRotation(line) : toRadians(label.rotation);
   const size = rotatedSize(width, height, rotation);
   const t = calculateT(line, position, size, chartArea);
   const pt = pointInLine(p1, p2, t);
-  const xCoordinateSizes = {size: size.w, min: chartArea.left, max: chartArea.right, padding: xPadding};
-  const yCoordinateSizes = {size: size.h, min: chartArea.top, max: chartArea.bottom, padding: yPadding};
+  const xCoordinateSizes = {size: size.w, min: chartArea.left, max: chartArea.right, padding: padding.left};
+  const yCoordinateSizes = {size: size.h, min: chartArea.top, max: chartArea.bottom, padding: padding.top};
 
   return {
     x: adjustLabelCoordinate(pt.x, xCoordinateSizes) + xAdjust,
@@ -290,11 +291,11 @@ function calculateT(line, position, rotSize, chartArea) {
 }
 
 function calculateTAdjust(lineSize, labelSize, label, space) {
-  const {xPadding, yPadding} = label;
+  const padding = toPadding(label.padding);
   const lineW = lineSize.w * space.dx;
   const lineH = lineSize.h * space.dy;
-  const x = (lineW > 0) && ((labelSize.w / 2 + xPadding - space.x) / lineW);
-  const y = (lineH > 0) && ((labelSize.h / 2 + yPadding - space.y) / lineH);
+  const x = (lineW > 0) && ((labelSize.w / 2 + padding.left - space.x) / lineW);
+  const y = (lineH > 0) && ((labelSize.h / 2 + padding.top - space.y) / lineH);
   return clamp(Math.max(x, y), 0, 0.25);
 }
 
