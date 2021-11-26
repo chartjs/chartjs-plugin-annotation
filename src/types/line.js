@@ -225,7 +225,7 @@ function applyLabel(ctx, line, chartArea) {
   const labelSize = measureLabelSize(ctx, label);
   const width = labelSize.width + padding.width + borderWidth;
   const height = labelSize.height + padding.height + borderWidth;
-  const rect = line.labelRect = calculateLabelPosition(line, width, height, chartArea);
+  const rect = line.labelRect = calculateLabelPosition(line, {width, height, padding}, chartArea);
 
   ctx.translate(rect.x, rect.y);
   ctx.rotate(rect.rotation);
@@ -247,15 +247,15 @@ function applyLabel(ctx, line, chartArea) {
   drawLabel(ctx, labelTextRect, label);
 }
 
-function calculateLabelPosition(line, width, height, chartArea) {
+function calculateLabelPosition(line, sizes, chartArea) {
+  const {width, height, padding} = sizes;
   const label = line.options.label;
   const {xAdjust, yAdjust, position} = label;
-  const padding = toPadding(label.padding);
   const p1 = {x: line.x, y: line.y};
   const p2 = {x: line.x2, y: line.y2};
   const rotation = label.rotation === 'auto' ? calculateAutoRotation(line) : toRadians(label.rotation);
   const size = rotatedSize(width, height, rotation);
-  const t = calculateT(line, position, size, chartArea);
+  const t = calculateT(line, position, {labelSize: size, padding}, chartArea);
   const pt = pointInLine(p1, p2, t);
   const xCoordinateSizes = {size: size.w, min: chartArea.left, max: chartArea.right, padding: padding.left};
   const yCoordinateSizes = {size: size.h, min: chartArea.top, max: chartArea.bottom, padding: padding.top};
@@ -278,20 +278,20 @@ function rotatedSize(width, height, rotation) {
   };
 }
 
-function calculateT(line, position, rotSize, chartArea) {
+function calculateT(line, position, sizes, chartArea) {
   let t = 0.5;
   const space = spaceAround(line, chartArea);
   const label = line.options.label;
   if (position === 'start') {
-    t = calculateTAdjust({w: line.x2 - line.x, h: line.y2 - line.y}, rotSize, label, space);
+    t = calculateTAdjust({w: line.x2 - line.x, h: line.y2 - line.y}, sizes, label, space);
   } else if (position === 'end') {
-    t = 1 - calculateTAdjust({w: line.x - line.x2, h: line.y - line.y2}, rotSize, label, space);
+    t = 1 - calculateTAdjust({w: line.x - line.x2, h: line.y - line.y2}, sizes, label, space);
   }
   return t;
 }
 
-function calculateTAdjust(lineSize, labelSize, label, space) {
-  const padding = toPadding(label.padding);
+function calculateTAdjust(lineSize, sizes, label, space) {
+  const {labelSize, padding} = sizes;
   const lineW = lineSize.w * space.dx;
   const lineH = lineSize.h * space.dy;
   const x = (lineW > 0) && ((labelSize.w / 2 + padding.left - space.x) / lineW);
