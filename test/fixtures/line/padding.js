@@ -67,7 +67,9 @@ module.exports = {
                 backgroundColor: 'red',
                 content: 'padding: {left: 10, top: 15, right: 3, bottom: 2}',
                 enabled: true,
-                padding: {left: 10, top: 15, right: 3, bottom: 2}
+                padding() {
+                  return {left: 10, top: 15, right: 3, bottom: 2};
+                }
               },
             }
           }

@@ -69,7 +69,9 @@ module.exports = {
               borderWidth: 1,
               content: 'position: {x: end}, padding: {y: 20}',
               position: 'start',
-              padding: {left: 40, top: 10, right: 5, bottom: 20}
+              padding() {
+                return {left: 40, top: 10, right: 5, bottom: 20};
+              }
             }
           }
         }

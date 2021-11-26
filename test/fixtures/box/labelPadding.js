@@ -93,7 +93,9 @@ module.exports = {
                   x: 'start',
                   y: 'start'
                 },
-                padding: {left: 10, top: 5}
+                padding() {
+                  return {left: 10, top: 5};
+                }
               }
             }
           }
