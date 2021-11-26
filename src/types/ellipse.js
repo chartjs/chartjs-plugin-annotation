@@ -1,10 +1,15 @@
+import {Element} from 'chart.js';
 import {toRadians} from 'chart.js/helpers';
-import BoxAnnotation from './box';
+import {getRectCenterPoint, getChartRect} from '../helpers';
 
-export default class EllipseAnnotation extends BoxAnnotation {
+export default class EllipseAnnotation extends Element {
 
   inRange(x, y) {
     return pointInEllipse({x, y}, this);
+  }
+
+  getCenterPoint(useFinalPosition) {
+    return getRectCenterPoint(this, useFinalPosition);
   }
 
   draw(ctx) {
@@ -34,6 +39,11 @@ export default class EllipseAnnotation extends BoxAnnotation {
 
     ctx.restore();
   }
+
+  resolveElementProperties(chart, options) {
+    return getChartRect(chart, options);
+  }
+
 }
 
 EllipseAnnotation.id = 'ellipseAnnotation';

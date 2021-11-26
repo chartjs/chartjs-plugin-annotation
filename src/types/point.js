@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {scaleValue} from '../helpers';
+import {getChartCircle, getCircleCenterPoint} from '../helpers';
 
 export default class PointAnnotation extends Element {
 
@@ -16,8 +16,7 @@ export default class PointAnnotation extends Element {
   }
 
   getCenterPoint(useFinalPosition) {
-    const {x, y} = this.getProps(['x', 'y'], useFinalPosition);
-    return {x, y};
+    return getCircleCenterPoint(this, useFinalPosition);
   }
 
   draw(ctx) {
@@ -41,26 +40,7 @@ export default class PointAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    const {chartArea, scales} = chart;
-    const xScale = scales[options.xScaleID];
-    const yScale = scales[options.yScaleID];
-    let x = chartArea.width / 2;
-    let y = chartArea.height / 2;
-
-    if (xScale) {
-      x = scaleValue(xScale, options.xValue, x);
-    }
-
-    if (yScale) {
-      y = scaleValue(yScale, options.yValue, y);
-    }
-
-    return {
-      x,
-      y,
-      width: options.radius * 2,
-      height: options.radius * 2
-    };
+    return getChartCircle(chart, options);
   }
 }
 

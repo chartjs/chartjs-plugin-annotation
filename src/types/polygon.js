@@ -1,11 +1,15 @@
+import {Element} from 'chart.js';
 import {PI, RAD_PER_DEG} from 'chart.js/helpers';
-import {setBorderStyle} from '../helpers';
-import PointAnnotation from './point';
+import {setBorderStyle, getCircleCenterPoint, getChartCircle} from '../helpers';
 
-export default class PolygonAnnotation extends PointAnnotation {
+export default class PolygonAnnotation extends Element {
 
   inRange(x, y) {
     return this.vertices && this.vertices.length > 0 && pointIsInPolygon(this.vertices, x, y);
+  }
+
+  getCenterPoint(useFinalPosition) {
+    return getCircleCenterPoint(this, useFinalPosition);
   }
 
   draw(ctx) {
@@ -33,6 +37,10 @@ export default class PolygonAnnotation extends PointAnnotation {
       ctx.stroke();
     }
     ctx.restore();
+  }
+
+  resolveElementProperties(chart, options) {
+    return getChartCircle(chart, options);
   }
 
 }

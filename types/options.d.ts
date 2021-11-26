@@ -1,13 +1,14 @@
 import { Color } from 'chart.js';
 import { AnnotationEvents, PartialEventContext } from './events';
-import { LabelOptions } from './label';
+import { LabelOptions, BoxLabelOptions, LabelTypeOptions } from './label';
 
 export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw';
 
 export interface AnnotationTypeRegistry {
-  line: LineAnnotationOptions
   box: BoxAnnotationOptions
   ellipse: EllipseAnnotationOptions
+  label: LabelAnnotationOptions
+  line: LineAnnotationOptions
   point: PointAnnotationOptions
   polygon: PolygonAnnotationOptions
 }
@@ -16,7 +17,6 @@ export type AnnotationType = keyof AnnotationTypeRegistry;
 
 export type AnnotationOptions<TYPE extends AnnotationType = AnnotationType> =
 	{ [key in TYPE]: { type: key } & AnnotationTypeRegistry[key] }[TYPE]
-
 
 export interface CoreAnnotationOptions extends AnnotationEvents {
   id?: string,
@@ -74,14 +74,15 @@ export interface BoxAnnotationOptions extends CoreAnnotationOptions, AnnotationC
    * @deprecated replaced by borderRadius
    * @todo remove at v2
    */
-  cornerRadius?: Scriptable<number, PartialEventContext>
+  cornerRadius?: Scriptable<number, PartialEventContext>,
+  label?: BoxLabelOptions
 }
 
-interface EllipseAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
+export interface EllipseAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
   backgroundColor?: Scriptable<Color, PartialEventContext>,
 }
 
-interface PointAnnotationOptions extends CoreAnnotationOptions {
+export interface PointAnnotationOptions extends CoreAnnotationOptions {
   backgroundColor: Scriptable<Color, PartialEventContext>,
   radius?: Scriptable<number, PartialEventContext>,
   xValue?: Scriptable<ScaleValue, PartialEventContext>;
@@ -95,6 +96,9 @@ interface PolygonAnnotationOptions extends CoreAnnotationOptions {
   radius?: Scriptable<number, PartialEventContext>,
   rotation?: Scriptable<number, PartialEventContext>,
   sides?: Scriptable<number, PartialEventContext>,
+}
+
+export interface LabelAnnotationOptions extends CoreAnnotationOptions, LabelTypeOptions {
   xValue?: Scriptable<ScaleValue, PartialEventContext>;
   yValue?: Scriptable<ScaleValue, PartialEventContext>;
 }
