@@ -44,7 +44,7 @@ function getChartDimensionByScale(scale, options) {
  * @param {Object} options - options with border configuration
  * @returns {boolean} true is the border options have been applied
  */
-function setBorderStyle(ctx, options) {
+export function setBorderStyle(ctx, options) {
   if (options && options.borderWidth) {
     ctx.lineCap = options.borderCapStyle;
     ctx.setLineDash(options.borderDash);
