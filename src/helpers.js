@@ -239,3 +239,17 @@ export function getChartRect(chart, options) {
     height: y2 - y
   };
 }
+
+export function drawPoint(ctx, point, options) {
+  ctx.beginPath();
+  ctx.fillStyle = options.backgroundColor;
+  ctx.strokeStyle = options.borderColor;
+  ctx.lineWidth = options.borderWidth;
+  ctx.setLineDash(options.borderDash);
+  ctx.lineDashOffset = options.borderDashOffset;
+  ctx.beginPath();
+  ctx.arc(point.x, point.y, options.radius, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  ctx.closePath();
+}

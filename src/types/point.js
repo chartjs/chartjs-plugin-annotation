@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {getChartPoint} from '../helpers';
+import {getChartPoint, drawPoint} from '../helpers';
 
 export default class PointAnnotation extends Element {
 
@@ -21,23 +21,7 @@ export default class PointAnnotation extends Element {
   }
 
   draw(ctx) {
-    const {x, y, width, options} = this;
-
-    ctx.save();
-
-    ctx.lineWidth = options.borderWidth;
-    ctx.strokeStyle = options.borderColor;
-    ctx.fillStyle = options.backgroundColor;
-
-    ctx.setLineDash(options.borderDash);
-    ctx.lineDashOffset = options.borderDashOffset;
-
-    ctx.beginPath();
-    ctx.arc(x, y, width / 2, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
-
-    ctx.restore();
+    drawPoint(ctx, this, this.options);
   }
 
   resolveElementProperties(chart, options) {

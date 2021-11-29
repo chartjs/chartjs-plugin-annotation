@@ -1,4 +1,4 @@
-import {drawBox, drawLabel, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle} from '../helpers';
+import {drawBox, drawLabel, drawPoint, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle} from '../helpers';
 import {color as getColor, valueOrDefault} from 'chart.js/helpers';
 import {Element} from 'chart.js';
 
@@ -168,23 +168,21 @@ function drawCallout(ctx, element) {
     ctx.stroke();
   }
   if (options.callout.drawPoint) {
-    drawPoint(ctx, point, callout);
+    applyPoint(ctx, point, callout);
   }
 }
 
-function drawPoint(ctx, point, options) {
+function applyPoint(ctx, point, options) {
   const borderColor = valueOrDefault(options.pointBorderColor, options.borderColor);
-  ctx.beginPath();
-  ctx.lineWidth = valueOrDefault(options.pointBorderWidth, options.borderWidth);
-  ctx.strokeStyle = borderColor;
-  ctx.fillStyle = valueOrDefault(options.pointBackgroundColor, borderColor);
-  ctx.setLineDash(options.pointBorderDash);
-  ctx.lineDashOffset = options.pointBorderDashOffset;
-  ctx.beginPath();
-  ctx.arc(point.x, point.y, options.pointRadius, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.stroke();
-  ctx.closePath();
+  const opts = {
+    backgroundColor: valueOrDefault(options.pointBackgroundColor, borderColor),
+    borderColor,
+    borderDash: options.pointBorderDash,
+    borderDashOffset: options.pointBorderDashOffset,
+    borderWidth: valueOrDefault(options.pointBorderWidth, options.borderWidth),
+    radius: options.pointRadius
+  };
+  drawPoint(ctx, point, opts);
 }
 
 function getCalloutSeparatorCoord(element, position) {
