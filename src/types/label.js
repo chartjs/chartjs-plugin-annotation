@@ -191,17 +191,13 @@ function getCalloutSeparatorCoord(element, position) {
   const {x, y, width, height, options} = element;
   const {margin, borderWidth} = options.callout;
   let separatorStart, separatorEnd;
-  if (position === 'left') {
-    separatorStart = {x: x - margin - borderWidth / 2, y};
+  if (position === 'left' || position === 'right') {
+    const adjust = position === 'left' ? -margin - borderWidth / 2 : width + margin + borderWidth / 2;
+    separatorStart = {x: x + adjust, y};
     separatorEnd = {x: separatorStart.x, y: separatorStart.y + height};
-  } else if (position === 'right') {
-    separatorStart = {x: x + width + margin + borderWidth / 2, y};
-    separatorEnd = {x: separatorStart.x, y: separatorStart.y + height};
-  } else if (position === 'top') {
-    separatorStart = {x, y: y - margin - borderWidth / 2};
-    separatorEnd = {x: separatorStart.x + width, y: separatorStart.y};
-  } else if (position === 'bottom') {
-    separatorStart = {x, y: y + height + margin + borderWidth / 2};
+  } else if (position === 'top' || position === 'bottom') {
+    const adjust = position === 'top' ? -margin - borderWidth / 2 : height + margin + borderWidth / 2;
+    separatorStart = {x, y: y + adjust};
     separatorEnd = {x: separatorStart.x + width, y: separatorStart.y};
   }
   return {separatorStart, separatorEnd};
@@ -211,18 +207,14 @@ function getCalloutSideCoord(element, position, separatorStart) {
   const {y, width, height, options} = element;
   const {side, start} = options.callout;
   let sideStart, sideEnd;
-  if (position === 'left') {
+  if (position === 'left' || position === 'right') {
     sideStart = {x: separatorStart.x, y: y + height * start};
-    sideEnd = {x: sideStart.x - side, y: sideStart.y};
-  } else if (position === 'right') {
-    sideStart = {x: separatorStart.x, y: y + height * start};
-    sideEnd = {x: sideStart.x + side, y: sideStart.y};
-  } else if (position === 'top') {
+    const adjust = position === 'left' ? -side : side;
+    sideEnd = {x: sideStart.x + adjust, y: sideStart.y};
+  } else if (position === 'top' || position === 'bottom') {
     sideStart = {x: separatorStart.x + width * start, y: separatorStart.y};
-    sideEnd = {x: sideStart.x, y: sideStart.y - side};
-  } else if (position === 'bottom') {
-    sideStart = {x: separatorStart.x + width * start, y: separatorStart.y};
-    sideEnd = {x: sideStart.x, y: sideStart.y + side};
+    const adjust = position === 'top' ? -side : side;
+    sideEnd = {x: sideStart.x, y: sideStart.y + adjust};
   }
   return {sideStart, sideEnd};
 }
