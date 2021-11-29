@@ -188,35 +188,51 @@ function drawPoint(ctx, point, options) {
 }
 
 function getCalloutSeparatorCoord(element, position) {
-  const {x, y, width, height, options} = element;
-  const {margin, borderWidth} = options.callout;
+  const {x, y, width, height} = element;
+  const adjust = getCalloutSeparatorAdjust(element, position);
   let separatorStart, separatorEnd;
   if (position === 'left' || position === 'right') {
-    const adjust = position === 'left' ? -margin - borderWidth / 2 : width + margin + borderWidth / 2;
     separatorStart = {x: x + adjust, y};
     separatorEnd = {x: separatorStart.x, y: separatorStart.y + height};
   } else if (position === 'top' || position === 'bottom') {
-    const adjust = position === 'top' ? -margin - borderWidth / 2 : height + margin + borderWidth / 2;
     separatorStart = {x, y: y + adjust};
     separatorEnd = {x: separatorStart.x + width, y: separatorStart.y};
   }
   return {separatorStart, separatorEnd};
 }
 
+function getCalloutSeparatorAdjust(element, position) {
+  const {width, height, options} = element;
+  const adjust = options.callout.margin + options.borderWidth / 2;
+  if (position === 'right') {
+    return width + adjust;
+  } else if (position === 'bottom') {
+    return height + adjust;
+  }
+  return -adjust;
+}
+
 function getCalloutSideCoord(element, position, separatorStart) {
   const {y, width, height, options} = element;
-  const {side, start} = options.callout;
+  const start = options.callout.start;
+  const side = getCalloutSideAdjust(position, options.callout);
   let sideStart, sideEnd;
   if (position === 'left' || position === 'right') {
     sideStart = {x: separatorStart.x, y: y + height * start};
-    const adjust = position === 'left' ? -side : side;
-    sideEnd = {x: sideStart.x + adjust, y: sideStart.y};
+    sideEnd = {x: sideStart.x + side, y: sideStart.y};
   } else if (position === 'top' || position === 'bottom') {
     sideStart = {x: separatorStart.x + width * start, y: separatorStart.y};
-    const adjust = position === 'top' ? -side : side;
-    sideEnd = {x: sideStart.x, y: sideStart.y + adjust};
+    sideEnd = {x: sideStart.x, y: sideStart.y + side};
   }
   return {sideStart, sideEnd};
+}
+
+function getCalloutSideAdjust(position, options) {
+  const side = options.side;
+  if (position === 'left' || position === 'top') {
+    return -side;
+  }
+  return side;
 }
 
 function resolveCalloutPosition(element) {
