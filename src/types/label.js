@@ -212,7 +212,7 @@ function getCalloutSeparatorAdjust(element, position) {
 
 function getCalloutSideCoord(element, position, separatorStart) {
   const {y, width, height, options} = element;
-  const start = options.callout.start;
+  const start = Math.min(Math.max(options.callout.start, 0), 1);
   const side = getCalloutSideAdjust(position, options.callout);
   let sideStart, sideEnd;
   if (position === 'left' || position === 'right') {
