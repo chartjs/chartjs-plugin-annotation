@@ -1,18 +1,11 @@
 import {Element} from 'chart.js';
-import {getChartPoint, drawPoint} from '../helpers';
+import {getChartPoint, drawPoint, inPointRange} from '../helpers';
 
 export default class PointAnnotation extends Element {
 
   inRange(x, y) {
     const {width, options} = this;
-    const center = this.getCenterPoint(true);
-    const radius = width / 2 + options.borderWidth;
-
-    if (radius <= 0) {
-      return false;
-    }
-
-    return (Math.pow(x - center.x, 2) + Math.pow(y - center.y, 2)) <= Math.pow(radius, 2);
+    return inPointRange({x, y}, this.getCenterPoint(true), width / 2 + options.borderWidth);
   }
 
   getCenterPoint(useFinalPosition) {

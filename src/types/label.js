@@ -1,10 +1,14 @@
-import {drawBox, drawLabel, drawPoint, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize} from '../helpers';
+import {drawBox, drawLabel, drawPoint, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inPointRange} from '../helpers';
 import {color as getColor, valueOrDefault} from 'chart.js/helpers';
 import {Element} from 'chart.js';
 
 export default class LabelAnnotation extends Element {
 
   inRange(mouseX, mouseY) {
+    return this.inLabelRange(mouseX, mouseY) || (this.isCalloutVisible() && inPointRange({x: mouseX, y: mouseY}, this.point, this.options.callout.pointRadius));
+  }
+
+  inLabelRange(mouseX, mouseY) {
     if (this.labelRect) {
       const {x, y, width, height} = this.isBoxVisible() ? this.getProps(['x', 'y', 'width', 'height']) : this.labelRect;
 
@@ -22,7 +26,7 @@ export default class LabelAnnotation extends Element {
   }
 
   isCalloutVisible() {
-    return this.options.callout && this.options.callout.enabled && this.point && !this.inRange(this.point.x, this.point.y);
+    return this.options.callout && this.options.callout.enabled && this.point && !this.inLabelRange(this.point.x, this.point.y);
   }
 
   getCenterPoint(useFinalPosition) {

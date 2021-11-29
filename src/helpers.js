@@ -253,3 +253,10 @@ export function drawPoint(ctx, point, options) {
   ctx.stroke();
   ctx.closePath();
 }
+
+export function inPointRange(point, center, radius) {
+  if (!point || !center || radius <= 0) {
+    return false;
+  }
+  return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius, 2);
+}
