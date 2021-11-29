@@ -102,7 +102,7 @@ export interface CalloutOptions {
   margin?: Scriptable<number, PartialEventContext>,
   position?: Scriptable<CalloutPosition, PartialEventContext>,
   side?: Scriptable<number, PartialEventContext>,
-  start?: Scriptable<number, PartialEventContext>,
+  start?: Scriptable<number | string, PartialEventContext>,
   pointBackgroundColor?: Scriptable<Color, PartialEventContext>,
   pointBorderColor?: Scriptable<Color, PartialEventContext>,
   pointBorderDash?: Scriptable<number[], PartialEventContext>,

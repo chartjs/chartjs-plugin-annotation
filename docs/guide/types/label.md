@@ -207,4 +207,4 @@ All of these options can be [Scriptable](../options#scriptable-options).
 | `pointRadius` | `number` | `3` | Radius of the selected point.
 | `position` | `string` | `'auto'` | The position of callout, with respect to the label. Could be `left`, `top`, `right`, `bottom` or `auto`.
 | `side` | `number` | `5` | Width of the starter line of callout pointer.
-| `start` | `number` | `0.5` | The percentage of the separator dimension to use as starting point for callout pointer. Value between 0 and 1.
+| `start` | `number`\|`string` | `'50%'` | The percentage of the separator dimension to use as starting point for callout pointer. Could be set in pixel by a number, or in percentage of the separator dimension by a string. 

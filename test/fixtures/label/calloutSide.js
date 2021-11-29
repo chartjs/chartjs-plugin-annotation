@@ -34,7 +34,7 @@ module.exports = {
               yAdjust: -50,
               callout: {
                 enabled: true,
-                start: 0.1,
+                start: '10%',
                 side: 20,
                 position: 'bottom',
                 drawPoint: true
@@ -58,7 +58,7 @@ module.exports = {
               yAdjust: 50,
               callout: {
                 enabled: true,
-                start: 0.9,
+                start: 80,
                 side: 20,
                 position: 'top',
                 drawPoint: true

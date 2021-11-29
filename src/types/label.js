@@ -1,4 +1,4 @@
-import {drawBox, drawLabel, drawPoint, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle} from '../helpers';
+import {drawBox, drawLabel, drawPoint, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize} from '../helpers';
 import {color as getColor, valueOrDefault} from 'chart.js/helpers';
 import {Element} from 'chart.js';
 
@@ -85,8 +85,7 @@ LabelAnnotation.defaults = {
     margin: 5,
     position: 'auto',
     side: 5,
-    start: 0.5,
-    // point options
+    start: '50%',
     drawPoint: false,
     pointBackgroundColor: undefined,
     pointBorderColor: undefined,
@@ -212,17 +211,22 @@ function getCalloutSeparatorAdjust(element, position) {
 
 function getCalloutSideCoord(element, position, separatorStart) {
   const {y, width, height, options} = element;
-  const start = Math.min(Math.max(options.callout.start, 0), 1);
+  const start = options.callout.start;
   const side = getCalloutSideAdjust(position, options.callout);
   let sideStart, sideEnd;
   if (position === 'left' || position === 'right') {
-    sideStart = {x: separatorStart.x, y: y + height * start};
+    sideStart = {x: separatorStart.x, y: y + getStartSize(height, start)};
     sideEnd = {x: sideStart.x + side, y: sideStart.y};
   } else if (position === 'top' || position === 'bottom') {
-    sideStart = {x: separatorStart.x + width * start, y: separatorStart.y};
+    sideStart = {x: separatorStart.x + getStartSize(width, start), y: separatorStart.y};
     sideEnd = {x: sideStart.x, y: sideStart.y + side};
   }
   return {sideStart, sideEnd};
+}
+
+function getStartSize(size, value) {
+  const start = getSize(size, value);
+  return Math.min(Math.max(start, 0), size);
 }
 
 function getCalloutSideAdjust(position, options) {

@@ -36,7 +36,7 @@ module.exports = {
                 enabled: true,
                 margin: () => 10,
                 side: () => 10,
-                start: () => 0.8,
+                start: () => '80%',
                 borderColor: () => 'green',
                 borderWidth: () => 2,
                 borderDash: () => [1],

@@ -3,7 +3,7 @@ import {isFinite, isArray, isObject, toFont, addRoundedRectPath, toTRBLCorners, 
 const widthCache = new Map();
 const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
 
-function getImageSize(size, value) {
+export function getSize(size, value) {
   if (typeof value === 'number') {
     return value;
   } else if (typeof value === 'string') {
@@ -119,8 +119,8 @@ export function measureLabelSize(ctx, options) {
   const content = options.content;
   if (content instanceof Image) {
     return {
-      width: getImageSize(content.width, options.width),
-      height: getImageSize(content.height, options.height)
+      width: getSize(content.width, options.width),
+      height: getSize(content.height, options.height)
     };
   }
   const font = toFont(options.font);
