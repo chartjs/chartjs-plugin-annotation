@@ -88,9 +88,33 @@ export interface PointAnnotationOptions extends CoreAnnotationOptions {
   yValue?: Scriptable<ScaleValue, PartialEventContext>;
 }
 
+export type CalloutPosition = 'left' | 'top' | 'bottom' | 'right' | 'auto';
+
+export interface CalloutOptions {
+  borderCapStyle?: Scriptable<CanvasLineCap, PartialEventContext>,
+  borderColor?: Scriptable<Color, PartialEventContext>,
+  borderDash?: Scriptable<number[], PartialEventContext>,
+  borderDashOffset?: Scriptable<number, PartialEventContext>,
+  borderJoinStyle?: Scriptable<CanvasLineJoin, PartialEventContext>,
+  borderWidth?: Scriptable<number, PartialEventContext>,
+  enabled?: Scriptable<boolean, PartialEventContext>,
+  drawPoint?: Scriptable<boolean, PartialEventContext>,
+  margin?: Scriptable<number, PartialEventContext>,
+  position?: Scriptable<CalloutPosition, PartialEventContext>,
+  side?: Scriptable<number, PartialEventContext>,
+  start?: Scriptable<number, PartialEventContext>,
+  pointBackgroundColor?: Scriptable<Color, PartialEventContext>,
+  pointBorderColor?: Scriptable<Color, PartialEventContext>,
+  pointBorderDash?: Scriptable<number[], PartialEventContext>,
+  pointBorderDashOffset?: Scriptable<number, PartialEventContext>,
+  pointBorderWidth?: Scriptable<number, PartialEventContext>,
+  pointRadius?: Scriptable<number, PartialEventContext>
+}
+
 export interface LabelAnnotationOptions extends CoreAnnotationOptions, LabelTypeOptions {
   xValue?: Scriptable<ScaleValue, PartialEventContext>;
   yValue?: Scriptable<ScaleValue, PartialEventContext>;
+  callout?: CalloutOptions;
 }
 
 export interface AnnotationPluginOptions extends AnnotationEvents {
