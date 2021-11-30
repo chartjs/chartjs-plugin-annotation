@@ -40,16 +40,10 @@ export default class LabelAnnotation extends Element {
 
   draw(ctx) {
     if (this.labelRect) {
-      if (this.isCalloutVisible()) {
-        drawCallout(ctx, this);
-      }
-      if (this.isBoxVisible()) {
-        drawBox(ctx, this, this.options);
-      }
+      applyCallout(ctx, this);
+      applyBox(ctx, this);
       drawLabel(ctx, this.labelRect, this.options);
-      if (this.isPointVisible()) {
-        drawPoint(ctx, this.point, this.options.point);
-      }
+      applyPoint(ctx, this);
     }
   }
 
@@ -155,6 +149,24 @@ function calculatePosition(start, size, adjust, position) {
     return start - size + adjust;
   }
   return start - size / 2 + adjust;
+}
+
+function applyCallout(ctx, element) {
+  if (element.isCalloutVisible()) {
+    drawCallout(ctx, element);
+  }
+}
+
+function applyBox(ctx, element) {
+  if (element.isBoxVisible()) {
+    drawBox(ctx, element, element.options);
+  }
+}
+
+function applyPoint(ctx, element) {
+  if (element.isPointVisible()) {
+    drawPoint(ctx, element.point, element.options.point);
+  }
 }
 
 function drawCallout(ctx, element) {
