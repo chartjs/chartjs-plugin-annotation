@@ -37,7 +37,9 @@ module.exports = {
                 start: '10%',
                 side: 20,
                 position: 'bottom',
-                drawPoint: true
+              },
+              point: {
+                enabled: true
               }
             },
             text2: {
@@ -61,7 +63,9 @@ module.exports = {
                 start: 80,
                 side: 20,
                 position: 'top',
-                drawPoint: true
+              },
+              point: {
+                enabled: true
               }
             }
           }

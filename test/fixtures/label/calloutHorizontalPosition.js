@@ -57,7 +57,9 @@ module.exports = {
               callout: {
                 enabled: true,
                 position: 'left',
-                drawPoint: true
+              },
+              point: {
+                enabled: true
               }
             }
           }

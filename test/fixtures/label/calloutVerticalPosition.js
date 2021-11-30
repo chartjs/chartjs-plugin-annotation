@@ -35,7 +35,9 @@ module.exports = {
               callout: {
                 enabled: true,
                 position: 'bottom',
-                drawPoint: true
+              },
+              point: {
+                enabled: true
               }
             },
             text2: {
@@ -57,7 +59,9 @@ module.exports = {
               callout: {
                 enabled: true,
                 position: 'top',
-                drawPoint: true
+              },
+              point: {
+                enabled: true
               }
             }
           }

@@ -27,16 +27,17 @@ module.exports = {
               borderWidth: 1,
               content: ['This is my text', 'and this is the second row of my text'],
               position: {
-                x: 'center',
-                y: 'center'
-              },
-              xAdjust: 150,
-              yAdjust: -100,
-              callout: {
-                enabled: true,
+                x: 'start',
+                y: 'start'
               },
               point: {
                 enabled: true,
+                radius: 10,
+                backgroundColor: 'red',
+                borderColor: 'black',
+                borderWidth: 3,
+                borderDash: [2, 3],
+                borderDashOffset: 0
               }
             }
           }

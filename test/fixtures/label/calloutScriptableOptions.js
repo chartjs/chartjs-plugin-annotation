@@ -41,13 +41,15 @@ module.exports = {
                 borderWidth: () => 2,
                 borderDash: () => [1],
                 borderDashOffset: () => 0,
-                drawPoint: () => true,
-                pointRadius: () => 10,
-                pointBackgroundColor: () => 'green',
-                pointBorderColor: () => 'black',
-                pointBorderWidth: () => 1,
-                pointBorderDash: () => [1],
-                pointBorderDashOffset: () => 0
+              },
+              point: {
+                enabled: true,
+                radius: () => 10,
+                backgroundColor: () => 'green',
+                borderColor: () => 'black',
+                borderWidth: () => 1,
+                borderDash: () => [1],
+                borderDashOffset: () => 0
               }
             }
           }

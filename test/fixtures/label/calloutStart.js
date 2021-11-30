@@ -59,7 +59,9 @@ module.exports = {
                 enabled: true,
                 start: 80,
                 position: 'top',
-                drawPoint: true
+              },
+              point: {
+                enabled: true
               }
             }
           }

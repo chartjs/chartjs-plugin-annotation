@@ -151,9 +151,9 @@ export function measureLabelSize(ctx, options) {
  */
 export function drawBox(ctx, rect, options) {
   const {x, y, width, height} = rect;
-  ctx.strokeStyle = options.borderColor;
-  ctx.fillStyle = options.backgroundColor;
+  ctx.save();
   const stroke = setBorderStyle(ctx, options);
+  ctx.fillStyle = options.backgroundColor;
   ctx.beginPath();
   addRoundedRectPath(ctx, {
     x, y, w: width, h: height,
@@ -165,6 +165,7 @@ export function drawBox(ctx, rect, options) {
   if (stroke) {
     ctx.stroke();
   }
+  ctx.restore();
 }
 
 export function isLabelVisible(options) {
@@ -241,17 +242,17 @@ export function getChartRect(chart, options) {
 }
 
 export function drawPoint(ctx, point, options) {
-  ctx.beginPath();
+  ctx.save();
+  const stroke = setBorderStyle(ctx, options);
   ctx.fillStyle = options.backgroundColor;
-  ctx.strokeStyle = options.borderColor;
-  ctx.lineWidth = options.borderWidth;
-  ctx.setLineDash(options.borderDash);
-  ctx.lineDashOffset = options.borderDashOffset;
   ctx.beginPath();
   ctx.arc(point.x, point.y, options.radius, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.stroke();
   ctx.closePath();
+  ctx.fill();
+  if (stroke) {
+    ctx.stroke();
+  }
+  ctx.restore();
 }
 
 export function inPointRange(point, center, radius) {

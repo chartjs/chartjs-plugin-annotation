@@ -34,13 +34,15 @@ module.exports = {
               yAdjust: -100,
               callout: {
                 enabled: true,
-                drawPoint: true,
-                pointRadius: 10,
-                pointBackgroundColor: 'red',
-                pointBorderColor: 'black',
-                pointBorderWidth: 3,
-                pointBorderDash: [2, 3],
-                pointBorderDashOffset: 0
+              },
+              point: {
+                enabled: true,
+                radius: 10,
+                backgroundColor: 'red',
+                borderColor: 'black',
+                borderWidth: 3,
+                borderDash: [2, 3],
+                borderDashOffset: 0
               }
             }
           }

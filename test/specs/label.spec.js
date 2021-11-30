@@ -109,8 +109,10 @@ describe('Label annotation', function() {
                   yAdjust: -200,
                   callout: {
                     enabled: true,
-                    drawPoint: true,
-                    pointRadius: 30
+                  },
+                  point: {
+                    enabled: true,
+                    radius: 30
                   },
                   enter: enterSpy,
                   click: clickSpy,

@@ -1,21 +1,22 @@
 import {drawBox, drawLabel, drawPoint, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inPointRange} from '../helpers';
-import {color as getColor, valueOrDefault} from 'chart.js/helpers';
+import {color as getColor} from 'chart.js/helpers';
 import {Element} from 'chart.js';
 
 export default class LabelAnnotation extends Element {
 
   inRange(mouseX, mouseY) {
-    return this.inLabelRange(mouseX, mouseY) || (this.isCalloutVisible() && inPointRange({x: mouseX, y: mouseY}, this.point, this.options.callout.pointRadius));
+    return this.inLabelRange(mouseX, mouseY) || (this.isPointVisible() && inPointRange({x: mouseX, y: mouseY}, this.point, this.options.point.radius));
   }
 
-  inLabelRange(mouseX, mouseY) {
+  inLabelRange(mouseX, mouseY, gap) {
     if (this.labelRect) {
+      const adjust = gap || 0;
       const {x, y, width, height} = this.isBoxVisible() ? this.getProps(['x', 'y', 'width', 'height']) : this.labelRect;
 
-      return mouseX >= x &&
-             mouseX <= x + width &&
-             mouseY >= y &&
-             mouseY <= y + height;
+      return mouseX >= x + adjust &&
+             mouseX <= x + width - adjust &&
+             mouseY >= y + adjust &&
+             mouseY <= y + height - adjust;
     }
     return false;
   }
@@ -23,6 +24,10 @@ export default class LabelAnnotation extends Element {
   isBoxVisible() {
     const color = getColor(this.options.backgroundColor);
     return (color && color.valid && color.rgb.a > 0) || this.options.borderWidth > 0;
+  }
+
+  isPointVisible() {
+    return this.options.point && this.options.point.enabled && this.point && !this.inLabelRange(this.point.x, this.point.y, 1);
   }
 
   isCalloutVisible() {
@@ -35,7 +40,6 @@ export default class LabelAnnotation extends Element {
 
   draw(ctx) {
     if (this.labelRect) {
-      ctx.save();
       if (this.isCalloutVisible()) {
         drawCallout(ctx, this);
       }
@@ -43,7 +47,9 @@ export default class LabelAnnotation extends Element {
         drawBox(ctx, this, this.options);
       }
       drawLabel(ctx, this.labelRect, this.options);
-      ctx.restore();
+      if (this.isPointVisible()) {
+        drawPoint(ctx, this.point, this.options.point);
+      }
     }
   }
 
@@ -90,13 +96,15 @@ LabelAnnotation.defaults = {
     position: 'auto',
     side: 5,
     start: '50%',
-    drawPoint: false,
-    pointBackgroundColor: undefined,
-    pointBorderColor: undefined,
-    pointBorderDash: [],
-    pointBorderDashOffset: 0,
-    pointBorderWidth: undefined,
-    pointRadius: 3
+  },
+  point: {
+    backgroundColor: undefined,
+    borderColor: undefined,
+    borderDash: [],
+    borderDashOffset: 0,
+    borderWidth: 1,
+    enabled: false,
+    radius: 3
   },
   color: 'black',
   content: null,
@@ -124,6 +132,7 @@ LabelAnnotation.defaults = {
 
 LabelAnnotation.defaultRoutes = {
   borderColor: 'color',
+  backgroundColor: 'color',
 };
 
 function measureRect(point, size, options) {
@@ -158,6 +167,7 @@ function drawCallout(ctx, element) {
   }
   const {separatorStart, separatorEnd} = getCalloutSeparatorCoord(element, position);
   const {sideStart, sideEnd} = getCalloutSideCoord(element, position, separatorStart);
+  ctx.save();
   ctx.beginPath();
   const stroke = setBorderStyle(ctx, callout);
   if (callout.margin > 0 || options.borderWidth === 0) {
@@ -170,22 +180,7 @@ function drawCallout(ctx, element) {
   if (stroke) {
     ctx.stroke();
   }
-  if (options.callout.drawPoint) {
-    applyPoint(ctx, point, callout);
-  }
-}
-
-function applyPoint(ctx, point, options) {
-  const borderColor = valueOrDefault(options.pointBorderColor, options.borderColor);
-  const opts = {
-    backgroundColor: valueOrDefault(options.pointBackgroundColor, borderColor),
-    borderColor,
-    borderDash: options.pointBorderDash,
-    borderDashOffset: options.pointBorderDashOffset,
-    borderWidth: valueOrDefault(options.pointBorderWidth, options.borderWidth),
-    radius: options.pointRadius
-  };
-  drawPoint(ctx, point, opts);
+  ctx.restore();
 }
 
 function getCalloutSeparatorCoord(element, position) {
