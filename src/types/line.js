@@ -224,11 +224,7 @@ function applyLabel(ctx, line, chartArea) {
   const label = line.options.label;
   // TODO: v2 remove support for xPadding and yPadding
   const {padding: lblPadding, xPadding, yPadding, borderWidth} = label;
-  let tempPadding = lblPadding;
-  if (xPadding || yPadding) {
-    tempPadding = {x: xPadding || 6, y: yPadding || 6};
-  }
-  const padding = toPadding(tempPadding);
+  const padding = getPadding(lblPadding, xPadding, yPadding);
   const labelSize = measureLabelSize(ctx, label);
   const width = labelSize.width + padding.width + borderWidth;
   const height = labelSize.height + padding.height + borderWidth;
@@ -252,6 +248,15 @@ function applyLabel(ctx, line, chartArea) {
     height: labelSize.height
   };
   drawLabel(ctx, labelTextRect, label);
+}
+
+// TODO: v2 remove support for xPadding and yPadding
+function getPadding(padding, xPadding, yPadding) {
+  let tempPadding = padding;
+  if (xPadding || yPadding) {
+    tempPadding = {x: xPadding || 6, y: yPadding || 6};
+  }
+  return toPadding(tempPadding);
 }
 
 function calculateLabelPosition(line, sizes, chartArea) {
