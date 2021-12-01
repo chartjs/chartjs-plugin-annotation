@@ -34,8 +34,7 @@ module.exports = {
               yAdjust: -50,
               callout: {
                 enabled: true,
-                position: 'right',
-                drawPoint: true
+                position: 'right'
               }
             },
             text2: {
