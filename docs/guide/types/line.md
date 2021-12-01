@@ -70,7 +70,14 @@ The following options are available for line annotations. All of these options c
 
 ### General
 
-If one of the axes does not match an axis in the chart, the box will take the entire chart dimension. The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges in the respective direction.
+If one of the axes does not match an axis in the chart and the line behaviors are the following, depending how the line should be drawn:
+
+1. if `scaleId` is not resolved, the line will take the entire chart dimension, starting top-left vertex to bottom-right vertex of the chart
+1. if `xScaleId` is not resolved, the line will take the entire chart width
+1. if `yScaleId` is  not resolved, the line will take the entire chart height
+
+The 2 coordinates, start, end, are optional. If not specified, the line is expanded out to the edges in the respective direction.
+The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the line is expanded out to the edges in the respective direction.
 
 | Name | Description |
 | ---- | ---- |
