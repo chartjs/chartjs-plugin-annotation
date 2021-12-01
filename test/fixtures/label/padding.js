@@ -53,7 +53,7 @@ module.exports = {
               yValue: 15,
               backgroundColor: 'transparent',
               borderWidth: 1,
-              content: 'position: {x: end}, padding: {y: 20}',
+              content: 'position: {x: end}, padding: {y: 30}',
               position: {
                 x: 'end'
               },
@@ -67,7 +67,8 @@ module.exports = {
               yValue: 5,
               backgroundColor: 'transparent',
               borderWidth: 1,
-              content: 'position: {x: end}, padding: {y: 20}',
+              content: ['position: {x: end},', 'padding: {left: 40, top: 10, right: 5, bottom: 20}'],
+              textAlign: 'right',
               position: 'start',
               padding() {
                 return {left: 40, top: 10, right: 5, bottom: 20};
