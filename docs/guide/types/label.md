@@ -69,16 +69,15 @@ The following options are available for label annotations.
 | [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
 | [`font`](#styling) | [`Font`](../options#font) | Yes | `{}`
 | [`height`](#general) | `number`\|`string` | Yes | `undefined` 
+| [`padding`](#general) | [`Padding`](../options#padding) | Yes | `6`
 | [`point`](#point) | `object` | Yes |
 | [`position`](#position) | `string`\|`{x: string, y: string}` | Yes | `'center'`
 | [`textAlign`](#general) | `string` | Yes | `'center'`
 | [`width`](#general) | `number`\|`string` | Yes | `undefined`
 | [`xAdjust`](#general) | `number` | Yes | `0`
-| [`xPadding`](#general) | `number` | Yes | `6`
 | [`xScaleID`](#general) | `string` | Yes | `'x'`
 | [`xValue`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yAdjust`](#general) | `number` | Yes | `0`
-| [`yPadding`](#general) | `number` | Yes | `6`
 | [`yScaleID`](#general) | `string` | Yes | `'y'`
 | [`yValue`](#general) | `number` \| `string` | Yes | `undefined`
 
@@ -93,14 +92,13 @@ If one of the axes does not match an axis in the chart, the content will be rend
 | `display` | Whether or not this annotation is visible
 | `drawTime` | See [drawTime](../options#draw-time).
 | `height` | Overrides the height of the image. Could be set in pixel by a number, or in percentage of current height of image by a string. If undefined, uses the height of the image. It is used only when the content is an image.
+| `padding` | The padding to add around the text label.
 | `textAlign` | Text alignment of label content when there's more than one line. Possible options are: `'left'`, `'start'`, `'center'`, `'end'`, `'right'`.
 | `width` | Overrides the width of the image. Could be set in pixel by a number, or in percentage of current width of image by a string. If undefined, uses the width of the image. It is used only when the content is an image.
 | `xAdjust` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
-| `xPadding` | Padding of label to add left/right.
 | `xScaleID` | ID of the X scale to bind onto, default is 'x'.
 | `xValue` | X coordinate of the point in units along the x axis.
 | `yAdjust` | Adjustment along y-axis (top-bottom) of label relative to computed position. Negative values move the label up, positive down.
-| `yPadding` | Padding of label to add top/bottom.
 | `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
 | `yValue` | Y coordinate of the point in units along the y axis.
 

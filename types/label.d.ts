@@ -7,15 +7,10 @@ export interface CoreLabelOptions {
   font?: FontSpec
   color?: Scriptable<Color, PartialEventContext>,
   /**
-   * Padding of label to add left/right
+   * Padding of label
    * @default 6
    */
-  xPadding?: Scriptable<number, PartialEventContext>,
-  /**
-   * Padding of label to add top/bottom
-   * @default 6
-   */
-  yPadding?: Scriptable<number, PartialEventContext>,
+  padding?: Scriptable<number | LabelPadding, PartialEventContext>,
   /**
    * Text alignment when the content of the label is multi-line.
    * @default 'center'
@@ -99,6 +94,18 @@ export interface LabelOptions extends ContainedLabelOptions {
    * @default 90
    */
   rotation?: Scriptable<number | 'auto', PartialEventContext>
+  /**
+   * Padding of label to add left/right
+   * @default 6
+   * @deprecated
+   */
+  xPadding?: Scriptable<number, PartialEventContext>,
+  /**
+   * Padding of label to add top/bottom
+   * @default 6
+   * @deprecated
+   */
+  yPadding?: Scriptable<number, PartialEventContext>,
 }
 
 export interface BoxLabelOptions extends CoreLabelOptions {
@@ -123,3 +130,11 @@ interface LabelPositionObject {
   y?: LabelPosition
 }
 
+interface LabelPadding {
+  top?: number,
+  left?: number,
+  right?: number,
+  bottom?: number,
+  x?: number,
+  y?: number
+}

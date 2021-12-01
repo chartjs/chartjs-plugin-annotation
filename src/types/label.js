@@ -1,5 +1,5 @@
 import {drawBox, drawLabel, drawPoint, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inPointRange} from '../helpers';
-import {color as getColor} from 'chart.js/helpers';
+import {color as getColor, toPadding} from 'chart.js/helpers';
 import {Element} from 'chart.js';
 
 export default class LabelAnnotation extends Element {
@@ -51,11 +51,12 @@ export default class LabelAnnotation extends Element {
     this.point = getChartPoint(chart, options);
 
     if (isLabelVisible(options)) {
+      const padding = toPadding(options.padding);
       const labelSize = measureLabelSize(chart.ctx, options);
-      const elemDim = measureRect(this.point, labelSize, options);
+      const elemDim = measureRect(this.point, labelSize, options, padding);
       this.labelRect = {
-        x: elemDim.x + options.xPadding + (options.borderWidth / 2),
-        y: elemDim.y + options.yPadding + (options.borderWidth / 2),
+        x: elemDim.x + padding.left + (options.borderWidth / 2),
+        y: elemDim.y + padding.top + (options.borderWidth / 2),
         width: labelSize.width,
         height: labelSize.height
       };
@@ -111,15 +112,14 @@ LabelAnnotation.defaults = {
     weight: undefined
   },
   height: undefined,
+  padding: 6,
   position: 'center',
   textAlign: 'center',
   width: undefined,
   xAdjust: 0,
-  xPadding: 6,
   xScaleID: 'x',
   xValue: undefined,
   yAdjust: 0,
-  yPadding: 6,
   yScaleID: 'y',
   yValue: undefined
 };
@@ -129,9 +129,9 @@ LabelAnnotation.defaultRoutes = {
   backgroundColor: 'color',
 };
 
-function measureRect(point, size, options) {
-  const width = size.width + (2 * options.xPadding) + options.borderWidth;
-  const height = size.height + (2 * options.yPadding) + options.borderWidth;
+function measureRect(point, size, options, padding) {
+  const width = size.width + padding.width + options.borderWidth;
+  const height = size.height + padding.height + options.borderWidth;
   const position = toPosition(options.position);
 
   return {

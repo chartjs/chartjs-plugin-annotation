@@ -70,7 +70,14 @@ The following options are available for line annotations. All of these options c
 
 ### General
 
-If one of the axes does not match an axis in the chart, the box will take the entire chart dimension. The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges in the respective direction.
+If one of the axes does not match an axis in the chart and the line behaviors are the following, depending how the line should be drawn:
+
+1. if `scaleId` is not resolved, the line will take the entire chart dimension, starting top-left vertex to bottom-right vertex of the chart
+1. if `xScaleId` is not resolved, the line will take the entire chart width
+1. if `yScaleId` is  not resolved, the line will take the entire chart height
+
+The 2 coordinates, start, end, are optional. If not specified, the line is expanded out to the edges in the respective direction.
+The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the line is expanded out to the edges in the respective direction.
 
 | Name | Description |
 | ---- | ---- |
@@ -127,15 +134,16 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `drawTime` | `string` | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the line annotation draw time if unset
 | `enabled` | `boolean` | `false` | Whether or not the label is shown.
 | `font` | [`Font`](../options#font) | `{ style: 'bold' }` | Label font
-| `xPadding` | `number` | `6` | Padding of label to add left/right.
-| `yPadding` | `number` | `6` | Padding of label to add top/bottom.
-| `xAdjust` | `number` | `0` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
-| `yAdjust` | `number` | `0` | Adjustment along y-axis (top-bottom) of label relative to computed position. Negative values move the label up, positive down.
+| `height` | `number`\|`string` | `undefined` | Overrides the height of the image. Could be set in pixel by a number, or in percentage of current height of image by a string. If undefined, uses the height of the image. It is used only when the content is an image.
+| `padding` | [`Padding`](../options#padding) | `6` | The padding to add around the text label.
+| `xPadding` | `number` | `6` | Padding of label to add left/right. This is **deprecated**. Use `padding`.
+| `yPadding` | `number` | `6` | Padding of label to add top/bottom. This is **deprecated**. Use `padding`.
 | `position` | `string` | `'center'` | Anchor position of label on line. Possible options are: `'start'`, `'center'`, `'end'`.
+| `rotation` | `number`\|`'auto'` | `0` | Rotation of label, in degrees, or 'auto' to use the degrees of the line
 | `textAlign` | `string` | `'center'` | Text alignment of label content when there's more than one line. Possible options are: `'start'`, `'center'`, `'end'`.
 | `width` | `number`\|`string` | `undefined` | Overrides the width of the image. Could be set in pixel by a number, or in percentage of current width of image by a string. If undefined, uses the width of the image. It is used only when the content is an image.
-| `height` | `number`\|`string` | `undefined` | Overrides the height of the image. Could be set in pixel by a number, or in percentage of current height of image by a string. If undefined, uses the height of the image. It is used only when the content is an image.
-| `rotation` | `number`\|`'auto'` | `0` | Rotation of label, in degrees, or 'auto' to use the degrees of the line
+| `xAdjust` | `number` | `0` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
+| `yAdjust` | `number` | `0` | Adjustment along y-axis (top-bottom) of label relative to computed position. Negative values move the label up, positive down.
 
 #### borderRadius
 
