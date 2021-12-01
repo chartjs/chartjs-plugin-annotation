@@ -129,6 +129,8 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `font` | [`Font`](../options#font) | `{ style: 'bold' }` | Label font
 | `height` | `number`\|`string` | `undefined` | Overrides the height of the image. Could be set in pixel by a number, or in percentage of current height of image by a string. If undefined, uses the height of the image. It is used only when the content is an image.
 | `padding` | [`Padding`](../options#padding) | `6` | The padding to add around the text label.
+| `xPadding` | `number` | `6` | Padding of label to add left/right. This is **deprecated**. Use `padding`.
+| `yPadding` | `number` | `6` | Padding of label to add top/bottom. This is **deprecated**. Use `padding`.
 | `position` | `string` | `'center'` | Anchor position of label on line. Possible options are: `'start'`, `'center'`, `'end'`.
 | `rotation` | `number`\|`'auto'` | `0` | Rotation of label, in degrees, or 'auto' to use the degrees of the line
 | `textAlign` | `string` | `'center'` | Text alignment of label content when there's more than one line. Possible options are: `'start'`, `'center'`, `'end'`.

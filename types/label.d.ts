@@ -94,6 +94,18 @@ export interface LabelOptions extends ContainedLabelOptions {
    * @default 90
    */
   rotation?: Scriptable<number | 'auto', PartialEventContext>
+  /**
+   * Padding of label to add left/right
+   * @default 6
+   * @deprecated
+   */
+  xPadding?: Scriptable<number, PartialEventContext>,
+  /**
+   * Padding of label to add top/bottom
+   * @default 6
+   * @deprecated
+   */
+  yPadding?: Scriptable<number, PartialEventContext>,
 }
 
 export interface BoxLabelOptions extends CoreLabelOptions {

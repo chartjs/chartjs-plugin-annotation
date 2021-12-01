@@ -189,6 +189,8 @@ LineAnnotation.defaults = {
     },
     height: undefined,
     padding: 6,
+    xPadding: undefined, // TODO: v2 remove support for xPadding
+    yPadding: undefined, // TODO: v2 remove support for yPadding
     position: 'center',
     rotation: 0,
     textAlign: 'center',
@@ -220,8 +222,13 @@ function calculateAutoRotation(line) {
 
 function applyLabel(ctx, line, chartArea) {
   const label = line.options.label;
-  const padding = toPadding(label.padding);
-  const borderWidth = label.borderWidth;
+  // TODO: v2 remove support for xPadding and yPadding
+  const {padding: lblPadding, xPadding, yPadding, borderWidth} = label;
+  let tempPadding = lblPadding;
+  if (xPadding || yPadding) {
+    tempPadding = {x: xPadding || 6, y: yPadding || 6};
+  }
+  const padding = toPadding(tempPadding);
   const labelSize = measureLabelSize(ctx, label);
   const width = labelSize.width + padding.width + borderWidth;
   const height = labelSize.height + padding.height + borderWidth;
