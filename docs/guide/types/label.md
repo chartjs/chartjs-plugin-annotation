@@ -62,6 +62,7 @@ The following options are available for label annotations.
 | [`borderJoinStyle`](#styling) | `string` | Yes | `'miter'`
 | [`borderRadius`](#borderradius) | `number` \| `object` | Yes | `0`
 | [`borderWidth`](#styling) | `number`| Yes | `0`
+| [`callout`](#callout) | `object` | Yes |
 | [`color`](#styling) | [`Color`](../options#color) | Yes | `'black'`
 | [`content`](#general) | `string`\|`string[]`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image) | Yes | `null`
 | [`display`](#general) | `boolean` | Yes | `true`
@@ -69,6 +70,7 @@ The following options are available for label annotations.
 | [`font`](#styling) | [`Font`](../options#font) | Yes | `{}`
 | [`height`](#general) | `number`\|`string` | Yes | `undefined` 
 | [`padding`](#general) | [`Padding`](../options#padding) | Yes | `6`
+| [`point`](#point) | `object` | Yes |
 | [`position`](#position) | `string`\|`{x: string, y: string}` | Yes | `'center'`
 | [`textAlign`](#general) | `string` | Yes | `'center'`
 | [`width`](#general) | `number`\|`string` | Yes | `undefined`
@@ -123,3 +125,153 @@ If this value is an object, the `x` property defines the horizontal alignment of
 #### borderRadius
 
 If this value is a number, it is applied to all corners of the rectangle (topLeft, topRight, bottomLeft, bottomRight). If this value is an object, the `topLeft` property defines the top-left corners border radius. Similarly, the `topRight`, `bottomLeft`, and `bottomRight` properties can also be specified. Omitted corners have radius of 0.
+
+### Point
+
+A point options can enable the selected point drawing.
+
+Namespace: `options.annotations[annotationID].label.point`, it defines options for the point on the annotation label.
+
+```js chart-editor
+/* <block:options:0> */
+const options = {
+  plugins: {
+    autocolors: false,
+    annotation: {
+      annotations: {
+        label1: {
+          type: 'label',
+          xValue: 2.5,
+          yValue: 60,
+          backgroundColor: 'rgba(245,245,245)',
+          content: ['In this point of time,', 'something happened'],
+          textAlign: 'start',
+          position: {
+            y: 'start'
+          },
+          font: {
+            size: 18
+          },
+          point: {
+            enabled: true,
+            backgroundColor: 'red',
+            radius: 5
+          }
+        }
+      }
+    }
+  }
+};
+/* </block:options> */
+
+/* <block:config:1> */
+const config = {
+  type: 'line',
+  data: {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [{
+      label: 'My First Dataset',
+      data: [65, 59, 80, 81, 56, 55, 40],
+      fill: false,
+      borderColor: 'rgb(75, 192, 192)',
+      tension: 0.1
+    }]
+  },
+  options
+};
+/* </block:config> */
+
+module.exports = {
+  config
+};
+```
+
+All of these options can be [Scriptable](../options#scriptable-options).
+
+| Name | Type | Default | Notes
+| ---- | ---- | :----: | ---- | ----
+| `enabled` | `boolean` | `false` | If true, the point is drawn.
+| `backgroundColor` | `Color` | `undefined` | Fill color of the selected point.
+| `borderColor` | [`Color`](../options#color) | `undefined` | Stroke color of the selected point.
+| `borderDash` | `number[]` | `[]` | Length and spacing of dashes of the border of the selected point. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
+| `borderDashOffset` | `number` | `0` | Offset for line dashes of the border of the selected point. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
+| `borderWidth` | `number` | `1` | Stroke width of the selected point.
+| `radius` | `number` | `3` | Radius of the selected point.
+
+### Callout
+
+A callout connects the label by a line to a point.
+
+Namespace: `options.annotations[annotationID].label.callout`, it defines options for the callout on the annotation label.
+
+```js chart-editor
+/* <block:options:0> */
+const options = {
+  plugins: {
+    autocolors: false,
+    annotation: {
+      annotations: {
+        label1: {
+          type: 'label',
+          xValue: 2.5,
+          yValue: 60,
+          xAdjust: 290,
+          yAdjust: -100,
+          backgroundColor: 'rgba(245,245,245)',
+          content: ['In this point of time,', 'something happened'],
+          textAlign: 'start',
+          font: {
+            size: 18
+          },
+          callout: {
+            enabled: true,
+            side: 10
+          },
+          point: {
+            enabled: true,
+            backgroundColor: 'rgba(245,245,245)'
+          }
+        }
+      }
+    }
+  }
+};
+/* </block:options> */
+
+/* <block:config:1> */
+const config = {
+  type: 'line',
+  data: {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [{
+      label: 'My First Dataset',
+      data: [65, 59, 80, 81, 56, 55, 40],
+      fill: false,
+      borderColor: 'rgb(75, 192, 192)',
+      tension: 0.1
+    }]
+  },
+  options
+};
+/* </block:config> */
+
+module.exports = {
+  config
+};
+```
+
+All of these options can be [Scriptable](../options#scriptable-options).
+
+| Name | Type | Default | Notes
+| ---- | ---- | :----: | ---- | ----
+| `borderCapStyle` | `string` | `'butt'` | Cap style of the border line of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap). 
+| `borderColor` | [`Color`](../options#color) | `undefined` | Stroke color of the pointer of the callout.
+| `borderDash` | `number[]` | `[]` | Length and spacing of dashes of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
+| `borderDashOffset` | `number` | `0` | Offset for line dashes of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
+| `borderJoinStyle` | `string` | `'miter'` | Border line joint style of the callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
+| `borderWidth` | `number` | `1` | Stroke width of the pointer of the callout.
+| `enabled` | `boolean` | `false` | If true, the callout is drawn.
+| `margin` | `number` | `5` | Amount of pixels between the label and the callout separator.
+| `position` | `string` | `'auto'` | The position of callout, with respect to the label. Could be `left`, `top`, `right`, `bottom` or `auto`.
+| `side` | `number` | `5` | Width of the starter line of callout pointer.
+| `start` | `number`\|`string` | `'50%'` | The percentage of the separator dimension to use as starting point for callout pointer. Could be set in pixel by a number, or in percentage of the separator dimension by a string. 

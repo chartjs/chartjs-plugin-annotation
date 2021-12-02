@@ -1,18 +1,11 @@
 import {Element} from 'chart.js';
-import {getChartCircle, getCircleCenterPoint} from '../helpers';
+import {drawPoint, inPointRange, getChartCircle, getCircleCenterPoint} from '../helpers';
 
 export default class PointAnnotation extends Element {
 
   inRange(x, y) {
     const {width, options} = this;
-    const center = this.getCenterPoint(true);
-    const radius = width / 2 + options.borderWidth;
-
-    if (radius <= 0) {
-      return false;
-    }
-
-    return (Math.pow(x - center.x, 2) + Math.pow(y - center.y, 2)) <= Math.pow(radius, 2);
+    return inPointRange({x, y}, this.getCenterPoint(true), width / 2 + options.borderWidth);
   }
 
   getCenterPoint(useFinalPosition) {
@@ -20,23 +13,7 @@ export default class PointAnnotation extends Element {
   }
 
   draw(ctx) {
-    const {x, y, width, options} = this;
-
-    ctx.save();
-
-    ctx.lineWidth = options.borderWidth;
-    ctx.strokeStyle = options.borderColor;
-    ctx.fillStyle = options.backgroundColor;
-
-    ctx.setLineDash(options.borderDash);
-    ctx.lineDashOffset = options.borderDashOffset;
-
-    ctx.beginPath();
-    ctx.arc(x, y, width / 2, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
-
-    ctx.restore();
+    drawPoint(ctx, this, this.options);
   }
 
   resolveElementProperties(chart, options) {

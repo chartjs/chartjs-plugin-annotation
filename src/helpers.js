@@ -3,7 +3,7 @@ import {isFinite, isArray, isObject, toFont, addRoundedRectPath, toTRBLCorners, 
 const widthCache = new Map();
 const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
 
-function getImageSize(size, value) {
+export function getSize(size, value) {
   if (typeof value === 'number') {
     return value;
   } else if (typeof value === 'string') {
@@ -119,8 +119,8 @@ export function measureLabelSize(ctx, options) {
   const content = options.content;
   if (content instanceof Image) {
     return {
-      width: getImageSize(content.width, options.width),
-      height: getImageSize(content.height, options.height)
+      width: getSize(content.width, options.width),
+      height: getSize(content.height, options.height)
     };
   }
   const font = toFont(options.font);
@@ -151,9 +151,9 @@ export function measureLabelSize(ctx, options) {
  */
 export function drawBox(ctx, rect, options) {
   const {x, y, width, height} = rect;
-  ctx.strokeStyle = options.borderColor;
-  ctx.fillStyle = options.backgroundColor;
+  ctx.save();
   const stroke = setBorderStyle(ctx, options);
+  ctx.fillStyle = options.backgroundColor;
   ctx.beginPath();
   addRoundedRectPath(ctx, {
     x, y, w: width, h: height,
@@ -165,6 +165,7 @@ export function drawBox(ctx, rect, options) {
   if (stroke) {
     ctx.stroke();
   }
+  ctx.restore();
 }
 
 export function isLabelVisible(options) {
@@ -238,6 +239,27 @@ export function getChartRect(chart, options) {
     width: x2 - x,
     height: y2 - y
   };
+}
+
+export function drawPoint(ctx, point, options) {
+  ctx.save();
+  const stroke = setBorderStyle(ctx, options);
+  ctx.fillStyle = options.backgroundColor;
+  ctx.beginPath();
+  ctx.arc(point.x, point.y, options.radius, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.fill();
+  if (stroke) {
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+export function inPointRange(point, center, radius) {
+  if (!point || !center || radius <= 0) {
+    return false;
+  }
+  return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius, 2);
 }
 
 export function getCircleCenterPoint(element, useFinalPosition) {
