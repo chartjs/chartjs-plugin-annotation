@@ -1,6 +1,6 @@
 import { Color } from 'chart.js';
 import { AnnotationEvents, PartialEventContext } from './events';
-import { LabelOptions, BoxLabelOptions, LabelTypeOptions } from './label';
+import { LabelOptions, BoxLabelOptions, LabelTypeOptions, BorderRadius } from './label';
 
 export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw';
 
@@ -10,6 +10,7 @@ export interface AnnotationTypeRegistry {
   label: LabelAnnotationOptions
   line: LineAnnotationOptions
   point: PointAnnotationOptions
+  polygon: PolygonAnnotationOptions
 }
 
 export type AnnotationType = keyof AnnotationTypeRegistry;
@@ -68,7 +69,7 @@ export interface BoxAnnotationOptions extends CoreAnnotationOptions, AnnotationC
    * @default 'miter'
    */
   borderJoinStyle?: Scriptable<CanvasLineJoin, PartialEventContext>,
-  borderRadius?: Scriptable<number, PartialEventContext>,
+  borderRadius?: Scriptable<number | BorderRadius, PartialEventContext>,
   /**
    * @deprecated replaced by borderRadius
    * @todo remove at v2
@@ -79,6 +80,7 @@ export interface BoxAnnotationOptions extends CoreAnnotationOptions, AnnotationC
 
 export interface EllipseAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
   backgroundColor?: Scriptable<Color, PartialEventContext>,
+  rotation?: Scriptable<number, PartialEventContext>
 }
 
 export interface PointAnnotationOptions extends CoreAnnotationOptions {
@@ -119,6 +121,15 @@ export interface LabelAnnotationOptions extends CoreAnnotationOptions, LabelType
   yValue?: Scriptable<ScaleValue, PartialEventContext>;
   callout?: CalloutOptions;
   point?: LabelPointOptions;
+}
+
+interface PolygonAnnotationOptions extends CoreAnnotationOptions {
+  backgroundColor: Scriptable<Color, PartialEventContext>,
+  borderCapStyle?: Scriptable<CanvasLineCap, PartialEventContext>,
+  borderJoinStyle?: Scriptable<CanvasLineJoin, PartialEventContext>,
+  radius?: Scriptable<number, PartialEventContext>,
+  rotation?: Scriptable<number, PartialEventContext>,
+  sides?: Scriptable<number, PartialEventContext>,
 }
 
 export interface AnnotationPluginOptions extends AnnotationEvents {

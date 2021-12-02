@@ -92,7 +92,8 @@ module.exports = {
             'types/ellipse',
             'types/label',
             'types/line',
-            'types/point'
+            'types/point',
+            'types/polygon'
           ]
         }
       ],
@@ -106,7 +107,8 @@ module.exports = {
             'types/ellipse',
             'types/label',
             'types/line',
-            'types/point'
+            'types/point',
+            'types/polygon'
           ],
         },
         {

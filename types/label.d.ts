@@ -74,12 +74,12 @@ export interface ContainedLabelOptions extends CoreLabelOptions {
    * Border radius of the label rectangle
    * @default 6
    */
-  borderRadius?: Scriptable<number, PartialEventContext>,
+  borderRadius?: Scriptable<number | BorderRadius, PartialEventContext>,
   /**
    * @deprecated replaced by borderRadius
    * @todo remove at v2
    */
-  cornerRadius?: Scriptable<number, PartialEventContext>,
+  cornerRadius?: Scriptable<number | BorderRadius, PartialEventContext>,
 }
 
 export interface LabelOptions extends ContainedLabelOptions {
@@ -137,4 +137,11 @@ interface LabelPadding {
   bottom?: number,
   x?: number,
   y?: number
+}
+
+export interface BorderRadius {
+  topLeft: number;
+  topRight: number;
+  bottomLeft: number;
+  bottomRight: number;
 }

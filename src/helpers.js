@@ -261,3 +261,18 @@ export function inPointRange(point, center, radius) {
   }
   return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius, 2);
 }
+
+export function getCircleCenterPoint(element, useFinalPosition) {
+  const {x, y} = element.getProps(['x', 'y'], useFinalPosition);
+  return {x, y};
+}
+
+export function getChartCircle(chart, options) {
+  const point = getChartPoint(chart, options);
+  return {
+    x: point.x,
+    y: point.y,
+    width: options.radius * 2,
+    height: options.radius * 2
+  };
+}

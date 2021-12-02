@@ -4,6 +4,8 @@ import { AnnotationElement } from './element';
 export interface EventContext {
   chart: Chart,
   element: AnnotationElement,
+  id: string,
+  type: string
 }
 
 /**
@@ -13,6 +15,8 @@ export interface EventContext {
 export interface PartialEventContext {
   chart: Chart,
   element?: Partial<AnnotationElement>,
+  id?: string,
+  type?: string
 }
 
 export interface AnnotationEvents {
