@@ -10,6 +10,7 @@ export interface AnnotationTypeRegistry {
   label: LabelAnnotationOptions
   line: LineAnnotationOptions
   point: PointAnnotationOptions
+  polygon: PolygonAnnotationOptions
 }
 
 export type AnnotationType = keyof AnnotationTypeRegistry;
@@ -87,6 +88,15 @@ export interface PointAnnotationOptions extends CoreAnnotationOptions {
   radius?: Scriptable<number, PartialEventContext>,
   xValue?: Scriptable<ScaleValue, PartialEventContext>;
   yValue?: Scriptable<ScaleValue, PartialEventContext>;
+}
+
+interface PolygonAnnotationOptions extends CoreAnnotationOptions {
+  backgroundColor: Scriptable<Color, PartialEventContext>,
+  borderCapStyle?: Scriptable<CanvasLineCap, PartialEventContext>,
+  borderJoinStyle?: Scriptable<CanvasLineJoin, PartialEventContext>,
+  radius?: Scriptable<number, PartialEventContext>,
+  rotation?: Scriptable<number, PartialEventContext>,
+  sides?: Scriptable<number, PartialEventContext>,
 }
 
 export interface LabelAnnotationOptions extends CoreAnnotationOptions, LabelTypeOptions {

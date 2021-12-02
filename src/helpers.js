@@ -44,7 +44,7 @@ function getChartDimensionByScale(scale, options) {
  * @param {Object} options - options with border configuration
  * @returns {boolean} true is the border options have been applied
  */
-function setBorderStyle(ctx, options) {
+export function setBorderStyle(ctx, options) {
   if (options && options.borderWidth) {
     ctx.lineCap = options.borderCapStyle;
     ctx.setLineDash(options.borderDash);
@@ -237,5 +237,20 @@ export function getChartRect(chart, options) {
     y2,
     width: x2 - x,
     height: y2 - y
+  };
+}
+
+export function getCircleCenterPoint(element, useFinalPosition) {
+  const {x, y} = element.getProps(['x', 'y'], useFinalPosition);
+  return {x, y};
+}
+
+export function getChartCircle(chart, options) {
+  const point = getChartPoint(chart, options);
+  return {
+    x: point.x,
+    y: point.y,
+    width: options.radius * 2,
+    height: options.radius * 2
   };
 }
