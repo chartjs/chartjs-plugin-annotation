@@ -1,30 +1,10 @@
-import {Animations, Chart, defaults} from 'chart.js';
+import {Animations, Chart} from 'chart.js';
 import {clipArea, unclipArea, isFinite, valueOrDefault, isObject, isArray} from 'chart.js/helpers';
 import {handleEvent, hooks, updateListeners} from './events';
-import BoxAnnotation from './types/box';
-import LineAnnotation from './types/line';
-import EllipseAnnotation from './types/ellipse';
-import LabelAnnotation from './types/label';
-import PointAnnotation from './types/point';
-import PolygonAnnotation from './types/polygon';
+import {annotationTypes} from './types';
 import {version} from '../package.json';
 
 const chartStates = new Map();
-
-const annotationTypes = {
-  box: BoxAnnotation,
-  ellipse: EllipseAnnotation,
-  label: LabelAnnotation,
-  line: LineAnnotation,
-  point: PointAnnotation,
-  polygon: PolygonAnnotation
-};
-
-Object.keys(annotationTypes).forEach(key => {
-  defaults.describe(`elements.${annotationTypes[key].id}`, {
-    _fallback: 'plugins.annotation'
-  });
-});
 
 export default {
   id: 'annotation',
@@ -65,6 +45,7 @@ export default {
     } else if (isArray(annotationOptions)) {
       annotations.push(...annotationOptions);
     }
+    verifyScaleOptions(annotations, chart.scales);
   },
 
   afterDataLimits(chart, args) {
@@ -277,4 +258,14 @@ function getScaleLimits(scale, annotations) {
     }
   }
   return {min, max};
+}
+
+function verifyScaleOptions(annotations, scales) {
+  for (const annotation of annotations) {
+    for (const key of ['scaleID', 'xScaleID', 'yScaleID']) {
+      if (annotation[key] && !scales[annotation[key]]) {
+        throw new Error(`Non-existing scale '${annotation[key]}' defined as ${key} for annotation '${annotation.id}'. Configured scales: ${Object.keys(scales).join(', ')}`);
+      }
+    }
+  }
 }
