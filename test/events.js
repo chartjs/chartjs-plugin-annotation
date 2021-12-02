@@ -110,7 +110,9 @@ export function testEvents(options, innerElement) {
       window.afterEvent(chart, 'click', function() {
         if (!dblClick) {
           dblClick = true;
-          window.triggerMouseEvent(chart, 'click', eventPoint);
+          setTimeout(() => {
+            window.triggerMouseEvent(chart, 'click', eventPoint);
+          }, 500);
         } else {
           expect(dblClickSpy.calls.count()).toBe(0);
           delete options.dblclick;
