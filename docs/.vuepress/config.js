@@ -91,6 +91,7 @@ module.exports = {
           collapsable: false,
           children: [
             'types/box',
+            'types/custom',
             'types/ellipse',
             'types/label',
             'types/line',
@@ -162,6 +163,12 @@ module.exports = {
             'charts/line',
           ],
         },
+        {
+          title: 'Custom annotation',
+          children: [
+            'custom/basic'
+          ]
+        }
       ]
     }
   }
