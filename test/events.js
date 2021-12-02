@@ -128,7 +128,7 @@ export function testEvents(options, innerElement) {
         const center = element.getCenterPoint();
         expect(element.inRange(center.x, center.y)).toBe(true);
       });
-      
+
       it(`shouldn't center point plus adjustment in range on ${descr}`, function() {
         chartOptions.options.plugins.annotation.annotations = [options];
         const chart = window.acquireChart(chartOptions);
