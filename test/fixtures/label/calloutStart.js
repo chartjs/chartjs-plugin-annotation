@@ -20,12 +20,12 @@ module.exports = {
               type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
-              xValue: 2.5,
+              xValue: 3.5,
               yValue: 20,
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
               borderColor: 'rgb(33, 101, 171)',
               borderWidth: 1,
-              content: 'position: bottom',
+              content: 'position: bottom, start: 10%',
               position: {
                 x: 'end',
                 y: 'center'
@@ -47,17 +47,38 @@ module.exports = {
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
               borderColor: 'rgb(33, 101, 171)',
               borderWidth: 1,
-              content: 'position: top',
+              content: 'position: top, start: 80',
               position: {
                 x: 'start',
                 y: 'center'
               },
-              xAdjust: 50,
+              xAdjust: 20,
               yAdjust: 50,
               callout: {
                 enabled: true,
                 start: 80,
-                position: 'top',
+                position: 'top'
+              },
+              point: {
+                enabled: true
+              }
+            },
+            text3: {
+              type: 'label',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'March',
+              yValue: 12,
+              backgroundColor: 'rgba(33, 101, 171, 0.5)',
+              borderColor: 'rgb(33, 101, 171)',
+              borderWidth: 1,
+              content: 'position: center, start wrong',
+              position: 'center',
+              xAdjust: -70,
+              yAdjust: 70,
+              callout: {
+                enabled: true,
+                start: 'wrong'
               },
               point: {
                 enabled: true
