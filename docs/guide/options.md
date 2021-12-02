@@ -12,6 +12,10 @@ Fonts use the same format as [chart.js](https://www.chartjs.org/docs/master/gene
 
 Paddings use the same format as [chart.js](https://www.chartjs.org/docs/master/general/padding.html).
 
+## Point Style
+
+Point styles use the same format as [chart.js](https://www.chartjs.org/docs/master/configuration/elements.html#point-styles).
+
 ## Scriptable Options
 
 As with most options in chart.js, the annotation plugin options are scriptable. This means that a function can be passed which returns the value as needed. In the example below, the annotation is hidden when the screen is less than 1000px wide.
