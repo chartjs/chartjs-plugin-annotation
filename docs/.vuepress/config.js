@@ -32,6 +32,7 @@ module.exports = {
               {
                 text: 'Development (master)',
                 link: '/chartjs-plugin-annotation/master/',
+                target: '_self',
               },
               {
                 type: 'versions',
@@ -39,6 +40,7 @@ module.exports = {
                 link: '/chartjs-plugin-annotation/{{version}}/',
                 exclude: /^[0]\.[0-4]\./,
                 group: 'minor',
+                target: '_self',
               }
             ]
           },
@@ -83,7 +85,7 @@ module.exports = {
         'integration',
         'usage',
         'options',
-        'interaction',
+        'configuration',
         {
           title: 'Annotations',
           collapsable: false,
