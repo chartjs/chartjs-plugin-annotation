@@ -48,7 +48,7 @@ const annotation2 = {
   backgroundColor: 'transparent',
   pointStyle: 'triangle',
   radius: 25,
-  rotation: 90,
+  rotation: 180,
   xValue: (ctx) => value(ctx, 1, 4, 'x'),
   yValue: (ctx) => value(ctx, 1, 4, 'y')
 };
