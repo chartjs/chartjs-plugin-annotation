@@ -1,6 +1,6 @@
 import { Color } from 'chart.js';
 import { AnnotationEvents, PartialEventContext } from './events';
-import { LabelOptions, BoxLabelOptions, LabelTypeOptions } from './label';
+import { LabelOptions, BoxLabelOptions, LabelTypeOptions, BorderRadius } from './label';
 
 export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw';
 
@@ -68,7 +68,7 @@ export interface BoxAnnotationOptions extends CoreAnnotationOptions, AnnotationC
    * @default 'miter'
    */
   borderJoinStyle?: Scriptable<CanvasLineJoin, PartialEventContext>,
-  borderRadius?: Scriptable<number, PartialEventContext>,
+  borderRadius?: Scriptable<number | BorderRadius, PartialEventContext>,
   /**
    * @deprecated replaced by borderRadius
    * @todo remove at v2
@@ -79,6 +79,7 @@ export interface BoxAnnotationOptions extends CoreAnnotationOptions, AnnotationC
 
 export interface EllipseAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
   backgroundColor?: Scriptable<Color, PartialEventContext>,
+  rotation?: Scriptable<number, PartialEventContext>
 }
 
 export interface PointAnnotationOptions extends CoreAnnotationOptions {
