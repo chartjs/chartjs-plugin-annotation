@@ -77,7 +77,7 @@ function testEvents(options, innerNode) {
 
       const chart = window.acquireChart(chartOptions);
       const eventPoint = getEventPoint(chart, innerNode);
-      
+
       let dblClick = false;
       window.afterEvent(chart, 'click', function() {
         if (!dblClick) {
@@ -91,8 +91,8 @@ function testEvents(options, innerNode) {
       });
       window.triggerMouseEvent(chart, 'click', eventPoint);
     });
-  });
 
+  });
 }
 
 function getEventPoint(chart, innerNode) {
@@ -100,5 +100,5 @@ function getEventPoint(chart, innerNode) {
   const state = Annotation._getState(chart);
   const annotation = state.elements[0];
   const element = innerNode ? annotation[innerNode] : annotation;
-  return innerNode ? {x: element.x + element.width / 2, y: element.y} : element.getCenterPoint();
+  return innerNode ? {x: element.x, y: element.y} : element.getCenterPoint();
 }

@@ -1,7 +1,7 @@
 describe('Polygon annotation', function() {
   describe('auto', jasmine.fixtures('polygon'));
 
-  for (let i=3; i<=10; i++){
+  for (let i = 3; i <= 10; i++) {
     window.testEvents({
       type: 'polygon',
       id: 'test',

@@ -1,5 +1,6 @@
 describe('Line annotation', function() {
   describe('auto', jasmine.fixtures('line'));
+
   const options = {
     type: 'line',
     id: 'test',
