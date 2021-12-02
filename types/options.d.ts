@@ -1,6 +1,6 @@
-import { Color } from 'chart.js';
+import { Color, PointStyle, BorderRadius } from 'chart.js';
 import { AnnotationEvents, PartialEventContext } from './events';
-import { LabelOptions, BoxLabelOptions, LabelTypeOptions, BorderRadius } from './label';
+import { LabelOptions, BoxLabelOptions, LabelTypeOptions } from './label';
 
 export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw';
 
@@ -43,6 +43,11 @@ interface AnnotationCoordinates {
   yMin?: Scriptable<ScaleValue, PartialEventContext>,
 }
 
+interface AnnotationPointCoordinates {
+  xValue?: Scriptable<ScaleValue, PartialEventContext>,
+  yValue?: Scriptable<ScaleValue, PartialEventContext>,
+}
+
 export interface LineAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
   label?: LabelOptions
 }
@@ -83,11 +88,11 @@ export interface EllipseAnnotationOptions extends CoreAnnotationOptions, Annotat
   rotation?: Scriptable<number, PartialEventContext>
 }
 
-export interface PointAnnotationOptions extends CoreAnnotationOptions {
+export interface PointAnnotationOptions extends CoreAnnotationOptions, AnnotationPointCoordinates {
   backgroundColor: Scriptable<Color, PartialEventContext>,
+  pointStyle?: Scriptable<PointStyle, PartialEventContext>,
   radius?: Scriptable<number, PartialEventContext>,
-  xValue?: Scriptable<ScaleValue, PartialEventContext>;
-  yValue?: Scriptable<ScaleValue, PartialEventContext>;
+  rotation?: Scriptable<number, PartialEventContext>,
 }
 
 export type CalloutPosition = 'left' | 'top' | 'bottom' | 'right' | 'auto';
@@ -113,17 +118,17 @@ export interface LabelPointOptions {
   borderDashOffset?: Scriptable<number, PartialEventContext>,
   borderWidth?: Scriptable<number, PartialEventContext>,
   enabled?: Scriptable<boolean, PartialEventContext>,
-  radius?: Scriptable<number, PartialEventContext>
+  pointStyle?: Scriptable<PointStyle, PartialEventContext>,
+  radius?: Scriptable<number, PartialEventContext>,
+  rotation?: Scriptable<number, PartialEventContext>
 }
 
-export interface LabelAnnotationOptions extends CoreAnnotationOptions, LabelTypeOptions {
-  xValue?: Scriptable<ScaleValue, PartialEventContext>;
-  yValue?: Scriptable<ScaleValue, PartialEventContext>;
+export interface LabelAnnotationOptions extends CoreAnnotationOptions, LabelTypeOptions, AnnotationPointCoordinates {
   callout?: CalloutOptions;
   point?: LabelPointOptions;
 }
 
-interface PolygonAnnotationOptions extends CoreAnnotationOptions {
+interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationPointCoordinates {
   backgroundColor: Scriptable<Color, PartialEventContext>,
   borderCapStyle?: Scriptable<CanvasLineCap, PartialEventContext>,
   borderJoinStyle?: Scriptable<CanvasLineJoin, PartialEventContext>,
