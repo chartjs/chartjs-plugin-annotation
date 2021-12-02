@@ -4,13 +4,18 @@ describe('scale options', function() {
       function create() {
         return acquireChart({
           type: 'line',
+          data: {
+            datasets: [{
+              data: [1, 2, 3]
+            }]
+          },
           options: {
             plugins: {
               annotation: {
                 annotations: {
                   test: {
                     type: 'line',
-                    scaleID: 'missing'
+                    [key]: 'missing'
                   }
                 }
               }
@@ -18,7 +23,7 @@ describe('scale options', function() {
           }
         });
       }
-      expect(create).toThrow();
+      expect(create).toThrowError(`Non-existing scale 'missing' defined as ${key} for annotation 'test'. Configured scales: x, y`);
     });
   });
 });
