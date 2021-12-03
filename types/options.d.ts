@@ -83,7 +83,7 @@ export interface EllipseAnnotationOptions extends CoreAnnotationOptions, Annotat
   rotation?: Scriptable<number, PartialEventContext>
 }
 
-export interface PointAnnotationOptions extends CoreAnnotationOptions {
+export interface PointAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
   backgroundColor: Scriptable<Color, PartialEventContext>,
   radius?: Scriptable<number, PartialEventContext>,
   xValue?: Scriptable<ScaleValue, PartialEventContext>;
@@ -123,7 +123,7 @@ export interface LabelAnnotationOptions extends CoreAnnotationOptions, LabelType
   point?: LabelPointOptions;
 }
 
-interface PolygonAnnotationOptions extends CoreAnnotationOptions {
+interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
   backgroundColor: Scriptable<Color, PartialEventContext>,
   borderCapStyle?: Scriptable<CanvasLineCap, PartialEventContext>,
   borderJoinStyle?: Scriptable<CanvasLineJoin, PartialEventContext>,
