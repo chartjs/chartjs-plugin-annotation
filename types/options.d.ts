@@ -43,7 +43,7 @@ interface AnnotationCoordinates {
   yMin?: Scriptable<ScaleValue, PartialEventContext>,
 }
 
-interface AnnotationPointCoordinates {
+interface AnnotationPointCoordinates extends AnnotationCoordinates{
   xValue?: Scriptable<ScaleValue, PartialEventContext>,
   yValue?: Scriptable<ScaleValue, PartialEventContext>,
 }
@@ -88,7 +88,7 @@ export interface EllipseAnnotationOptions extends CoreAnnotationOptions, Annotat
   rotation?: Scriptable<number, PartialEventContext>
 }
 
-export interface PointAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates, AnnotationPointCoordinates {
+export interface PointAnnotationOptions extends CoreAnnotationOptions, AnnotationPointCoordinates {
   backgroundColor: Scriptable<Color, PartialEventContext>,
   pointStyle?: Scriptable<PointStyle, PartialEventContext>,
   radius?: Scriptable<number, PartialEventContext>,
@@ -123,12 +123,12 @@ export interface LabelPointOptions {
   rotation?: Scriptable<number, PartialEventContext>
 }
 
-export interface LabelAnnotationOptions extends CoreAnnotationOptions, LabelTypeOptions, AnnotationCoordinates, AnnotationPointCoordinates {
+export interface LabelAnnotationOptions extends CoreAnnotationOptions, LabelTypeOptions, AnnotationPointCoordinates {
   callout?: CalloutOptions;
   point?: LabelPointOptions;
 }
 
-interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates, AnnotationPointCoordinates {
+interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationPointCoordinates {
   backgroundColor: Scriptable<Color, PartialEventContext>,
   borderCapStyle?: Scriptable<CanvasLineCap, PartialEventContext>,
   borderJoinStyle?: Scriptable<CanvasLineJoin, PartialEventContext>,

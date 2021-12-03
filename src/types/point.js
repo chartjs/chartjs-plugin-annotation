@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {drawPoint, inPointRange, getCenterPointElement, resolvePointPosition} from '../helpers';
+import {drawPoint, inPointRange, getElementCenterPoint, resolvePointPosition} from '../helpers';
 
 export default class PointAnnotation extends Element {
 
@@ -9,7 +9,7 @@ export default class PointAnnotation extends Element {
   }
 
   getCenterPoint(useFinalPosition) {
-    return getCenterPointElement(this, useFinalPosition);
+    return getElementCenterPoint(this, useFinalPosition);
   }
 
   draw(ctx) {

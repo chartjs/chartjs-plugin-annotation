@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, RAD_PER_DEG} from 'chart.js/helpers';
-import {setBorderStyle, resolvePointPosition, getCenterPointElement} from '../helpers';
+import {setBorderStyle, resolvePointPosition, getElementCenterPoint} from '../helpers';
 
 export default class PolygonAnnotation extends Element {
 
@@ -9,7 +9,7 @@ export default class PolygonAnnotation extends Element {
   }
 
   getCenterPoint(useFinalPosition) {
-    return getCenterPointElement(this, useFinalPosition);
+    return getElementCenterPoint(this, useFinalPosition);
   }
 
   draw(ctx) {
