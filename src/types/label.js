@@ -13,10 +13,8 @@ export default class LabelAnnotation extends Element {
       const adjust = gap || 0;
       const {x, y, width, height} = this.isBoxVisible() ? this.getProps(['x', 'y', 'width', 'height']) : this.labelRect;
 
-      return mouseX >= x + adjust &&
-             mouseX <= x + width - adjust &&
-             mouseY >= y + adjust &&
-             mouseY <= y + height - adjust;
+      return mouseX >= x + adjust && mouseX <= x + width - adjust &&
+             mouseY >= y + adjust && mouseY <= y + height - adjust;
     }
     return false;
   }
@@ -48,9 +46,7 @@ export default class LabelAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    this.point = !isBoundToPoint(options) ?
-      getRectCenterPoint(getChartRect(chart, options)) :
-      getChartPoint(chart, options);
+    this.point = !isBoundToPoint(options) ? getRectCenterPoint(getChartRect(chart, options)) : getChartPoint(chart, options);
 
     if (isLabelVisible(options)) {
       const padding = toPadding(options.padding);
