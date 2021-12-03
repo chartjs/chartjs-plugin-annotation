@@ -45,6 +45,7 @@ export default {
     } else if (isArray(annotationOptions)) {
       annotations.push(...annotationOptions);
     }
+    verifyScaleOptions(annotations, chart.scales);
   },
 
   afterDataLimits(chart, args) {
@@ -257,4 +258,14 @@ function getScaleLimits(scale, annotations) {
     }
   }
   return {min, max};
+}
+
+function verifyScaleOptions(annotations, scales) {
+  for (const annotation of annotations) {
+    for (const key of ['scaleID', 'xScaleID', 'yScaleID']) {
+      if (annotation[key] && !scales[annotation[key]]) {
+        console.warn(`No scale found with id '${annotation[key]}' for annotation '${annotation.id}'`);
+      }
+    }
+  }
 }
