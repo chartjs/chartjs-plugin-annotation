@@ -33,4 +33,4 @@ Before submitting an issue or a pull request to the project, please take a momen
 
 ## License
 
-Chart.Annotation.js is available under the [MIT license](http://opensource.org/licenses/MIT).
+Chart.Annotation.js is available under the [MIT license](LICENSE.md).
