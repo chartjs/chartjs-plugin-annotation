@@ -49,19 +49,21 @@ The following options are available for point annotations.
 
 | Name | Type | [Scriptable](../options#scriptable-options) | Default
 | ---- | ---- | :----: | ----
-| [`display`](#general) | `boolean` | Yes | `true`
 | [`adjustScaleRange`](#general) | `boolean` | Yes | `true`
-| [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
-| [`xScaleID`](#general) | `string` | Yes | `'x'`
-| [`yScaleID`](#general) | `string` | Yes | `'y'`
-| [`xValue`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yValue`](#general) | `number` \| `string` | Yes | `undefined`
-| [`radius`](#general) | `number` | Yes | `10`
+| [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
 | [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
-| [`borderWidth`](#styling) | `number`| Yes | `1`
 | [`borderDash`](#styling) | `number[]`| Yes | `[]`
 | [`borderDashOffset`](#styling) | `number`| Yes | `0`
-| [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
+| [`borderWidth`](#styling) | `number`| Yes | `1`
+| [`display`](#general) | `boolean` | Yes | `true`
+| [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
+| [`pointStyle`](#styling) | [`PointStyle`](../options#point-style) | Yes | `'circle'`
+| [`radius`](#general) | `number` | Yes | `10`
+| [`rotation`](#general) | `number` | Yes | `0`
+| [`xScaleID`](#general) | `string` | Yes | `'x'`
+| [`xValue`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yScaleID`](#general) | `string` | Yes | `'y'`
+| [`yValue`](#general) | `number` \| `string` | Yes | `undefined`
 
 ### General
 
@@ -69,21 +71,23 @@ If one of the axes does not match an axis in the chart, the point annotation wil
 
 | Name | Description |
 | ---- | ---- |
-| `display` | Whether or not this annotation is visible
-| `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range
-| `drawTime` | See [drawTime](../options#draw-time)
+| `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
+| `display` | Whether or not this annotation is visible.
+| `drawTime` | See [drawTime](../options#draw-time).
+| `radius` | Size of the point in pixels.
+| `rotation` | Rotation of point, in degrees.
 | `xScaleID` | ID of the X scale to bind onto, default is 'x'.
-| `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
 | `xValue` | X coordinate of the point in units along the x axis.
+| `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
 | `yValue` | Y coordinate of the point in units along the y axis.
-| `radius` | Size of the point in pixels
 
 ### Styling
 
 | Name | Description |
 | ---- | ---- |
-| `borderColor` | Stroke color
-| `borderWidth` | Stroke width
+| `backgroundColor` | Fill color.
+| `borderColor` | Stroke color.
 | `borderDash` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | Offset for line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
-| `backgroundColor` | Fill color
+| `borderWidth` | Stroke width.
+| `pointStyle` | Style of the point.

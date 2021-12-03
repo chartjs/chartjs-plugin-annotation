@@ -1,4 +1,4 @@
-import { Color, FontSpec } from 'chart.js';
+import { Color, FontSpec, BorderRadius } from 'chart.js';
 import { PartialEventContext } from './events';
 import { DrawTime, Scriptable } from './options';
 
@@ -137,11 +137,4 @@ interface LabelPadding {
   bottom?: number,
   x?: number,
   y?: number
-}
-
-export interface BorderRadius {
-  topLeft: number;
-  topRight: number;
-  bottomLeft: number;
-  bottomRight: number;
 }
