@@ -44,10 +44,7 @@ module.exports = function(karma) {
       chrome: {
         base: 'Chrome',
         flags: [
-          '--disable-accelerated-2d-canvas',
-          '--disable-background-timer-throttling',
-          '--disable-backgrounding-occluded-windows',
-          '--disable-renderer-backgrounding'
+          '--disable-accelerated-2d-canvas'
         ]
       },
       firefox: {
