@@ -190,8 +190,8 @@ export function drawLabel(ctx, rect, options) {
   labels.forEach((l, i) => ctx.fillText(l, x, y + (i * lh)));
 }
 
-export function getRectCenterPoint(element, useFinalPosition) {
-  const {x, y, width, height} = element.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
+export function getRectCenterPoint(rect) {
+  const {x, y, width, height} = rect;
   return {
     x: x + width / 2,
     y: y + height / 2
@@ -262,7 +262,7 @@ export function inPointRange(point, center, radius) {
   return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius, 2);
 }
 
-export function getCircleCenterPoint(element, useFinalPosition) {
+export function getCenterPointElement(element, useFinalPosition) {
   const {x, y} = element.getProps(['x', 'y'], useFinalPosition);
   return {x, y};
 }
@@ -275,4 +275,8 @@ export function getChartCircle(chart, options) {
     width: options.radius * 2,
     height: options.radius * 2
   };
+}
+
+export function isBoundToPoint(options) {
+  return options && (options.xValue || options.yValue);
 }

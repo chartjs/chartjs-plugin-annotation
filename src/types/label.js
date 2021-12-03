@@ -35,7 +35,7 @@ export default class LabelAnnotation extends Element {
   }
 
   getCenterPoint(useFinalPosition) {
-    return getRectCenterPoint(this, useFinalPosition);
+    return getRectCenterPoint(this.getProps(['x', 'y', 'width', 'height'], useFinalPosition));
   }
 
   draw(ctx) {

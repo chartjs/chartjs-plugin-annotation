@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, RAD_PER_DEG} from 'chart.js/helpers';
-import {setBorderStyle, getCircleCenterPoint, getChartCircle} from '../helpers';
+import {setBorderStyle, getChartCircle, getCenterPointElement} from '../helpers';
 
 export default class PolygonAnnotation extends Element {
 
@@ -9,7 +9,7 @@ export default class PolygonAnnotation extends Element {
   }
 
   getCenterPoint(useFinalPosition) {
-    return getCircleCenterPoint(this, useFinalPosition);
+    return getCenterPointElement(this, useFinalPosition);
   }
 
   draw(ctx) {
