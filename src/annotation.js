@@ -165,6 +165,15 @@ function resolveAnnotationOptions(resolver) {
   for (const hook of hooks) {
     result[hook] = resolver[hook];
   }
+  // customOptions for custom annotations
+  if (result.type === 'custom') {
+    const customOptions = resolver.customOptions;
+    if (isArray(customOptions)) {
+      for (const name of customOptions) {
+        result[name] = resolver[name];
+      }
+    }
+  }
   return result;
 }
 

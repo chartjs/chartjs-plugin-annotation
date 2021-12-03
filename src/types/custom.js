@@ -38,12 +38,6 @@ CustomAnnotation.id = 'customAnnotation';
 
 CustomAnnotation.defaults = {
   adjustScaleRange: true,
-  borderCapStyle: undefined,
-  borderDash: [],
-  borderDashOffset: undefined,
-  borderJoinStyle: undefined,
-  borderRadius: undefined,
-  borderWidth: undefined,
   display: true,
   draw: undefined,
   xScaleID: 'x',
