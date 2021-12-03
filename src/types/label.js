@@ -101,7 +101,9 @@ LabelAnnotation.defaults = {
     borderDashOffset: 0,
     borderWidth: 1,
     enabled: false,
-    radius: 3
+    pointStyle: 'circle',
+    radius: 3,
+    rotation: 0
   },
   color: 'black',
   content: null,

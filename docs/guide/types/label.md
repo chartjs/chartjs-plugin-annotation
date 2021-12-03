@@ -207,7 +207,9 @@ All of these options can be [Scriptable](../options#scriptable-options).
 | `borderDash` | `number[]` | `[]` | Length and spacing of dashes of the border of the selected point. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | `number` | `0` | Offset for line dashes of the border of the selected point. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
 | `borderWidth` | `number` | `1` | Stroke width of the selected point.
+| `pointStyle` | [`PointStyle`](../options#point-style) | `'circle'` | Style of the point.
 | `radius` | `number` | `3` | Radius of the selected point.
+| `rotation` | `number` | `0` | Rotation of point, in degrees.
 
 ### Callout
 

@@ -59,20 +59,20 @@ export default {
     updateElements(chart, state, options, args.mode);
   },
 
-  beforeDatasetsDraw(chart) {
-    draw(chart, 'beforeDatasetsDraw');
+  beforeDatasetsDraw(chart, _args, options) {
+    draw(chart, 'beforeDatasetsDraw', options.clip);
   },
 
-  afterDatasetsDraw(chart) {
-    draw(chart, 'afterDatasetsDraw');
+  afterDatasetsDraw(chart, _args, options) {
+    draw(chart, 'afterDatasetsDraw', options.clip);
   },
 
-  beforeDraw(chart) {
-    draw(chart, 'beforeDraw');
+  beforeDraw(chart, _args, options) {
+    draw(chart, 'beforeDraw', options.clip);
   },
 
-  afterDraw(chart) {
-    draw(chart, 'afterDraw');
+  afterDraw(chart, _args, options) {
+    draw(chart, 'afterDraw', options.clip);
   },
 
   beforeEvent(chart, args, options) {
@@ -97,6 +97,7 @@ export default {
         type: 'number'
       },
     },
+    clip: true,
     label: {
       drawTime: null
     }
@@ -190,18 +191,22 @@ function resyncElements(elements, annotations) {
   return elements;
 }
 
-function draw(chart, caller) {
+function draw(chart, caller, clip) {
   const {ctx, chartArea} = chart;
   const state = chartStates.get(chart);
   const elements = state.elements.filter(el => !el.skip && el.options.display);
 
-  clipArea(ctx, chartArea);
+  if (clip) {
+    clipArea(ctx, chartArea);
+  }
   elements.forEach(el => {
     if (el.options.drawTime === caller) {
       el.draw(ctx);
     }
   });
-  unclipArea(ctx);
+  if (clip) {
+    unclipArea(ctx);
+  }
 
   elements.forEach(el => {
     if ('drawLabel' in el && el.options.label && (el.options.label.drawTime || el.options.drawTime) === caller) {
@@ -264,7 +269,7 @@ function verifyScaleOptions(annotations, scales) {
   for (const annotation of annotations) {
     for (const key of ['scaleID', 'xScaleID', 'yScaleID']) {
       if (annotation[key] && !scales[annotation[key]]) {
-        throw new Error(`Non-existing scale '${annotation[key]}' defined as ${key} for annotation '${annotation.id}'. Configured scales: ${Object.keys(scales).join(', ')}`);
+        console.warn(`No scale found with id '${annotation[key]}' for annotation '${annotation.id}'`);
       }
     }
   }

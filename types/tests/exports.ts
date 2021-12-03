@@ -15,6 +15,7 @@ const chart = new Chart('id', {
   options: {
     plugins: {
       annotation: {
+        clip: false,
         annotations: [{
           type: 'line',
           label: {

@@ -1,4 +1,4 @@
-import {isFinite, isArray, isObject, toFont, addRoundedRectPath, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
+import {isFinite, isArray, isObject, toFont, addRoundedRectPath, toTRBLCorners, valueOrDefault, drawPoint as drawPointOnChart} from 'chart.js/helpers';
 
 const widthCache = new Map();
 const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
@@ -243,15 +243,9 @@ export function getChartRect(chart, options) {
 
 export function drawPoint(ctx, point, options) {
   ctx.save();
-  const stroke = setBorderStyle(ctx, options);
   ctx.fillStyle = options.backgroundColor;
-  ctx.beginPath();
-  ctx.arc(point.x, point.y, options.radius, 0, Math.PI * 2);
-  ctx.closePath();
-  ctx.fill();
-  if (stroke) {
-    ctx.stroke();
-  }
+  setBorderStyle(ctx, options);
+  drawPointOnChart(ctx, options, point.x, point.y);
   ctx.restore();
 }
 
