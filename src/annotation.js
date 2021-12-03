@@ -264,7 +264,7 @@ function verifyScaleOptions(annotations, scales) {
   for (const annotation of annotations) {
     for (const key of ['scaleID', 'xScaleID', 'yScaleID']) {
       if (annotation[key] && !scales[annotation[key]]) {
-        throw new Error(`Non-existing scale '${annotation[key]}' defined as ${key} for annotation '${annotation.id}'. Configured scales: ${Object.keys(scales).join(', ')}`);
+        console.warn(`No scale found with id '${annotation[key]}' for annotation '${annotation.id}'`);
       }
     }
   }
