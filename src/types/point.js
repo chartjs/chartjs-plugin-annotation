@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {drawPoint, inPointRange, getChartCircle, getCenterPointElement, isBoundToPoint, getChartRect, getRectCenterPoint} from '../helpers';
+import {drawPoint, inPointRange, getCenterPointElement, resolvePointPosition} from '../helpers';
 
 export default class PointAnnotation extends Element {
 
@@ -17,22 +17,7 @@ export default class PointAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    if (!isBoundToPoint(options)) {
-      const box = getChartRect(chart, options);
-      const point = getRectCenterPoint(box);
-      let radius = options.radius;
-      if (!radius || isNaN(radius)) {
-        radius = Math.min(box.width, box.height) / 2;
-        options.radius = radius;
-      }
-      return {
-        x: point.x,
-        y: point.y,
-        width: radius * 2,
-        height: radius * 2
-      };
-    }
-    return getChartCircle(chart, options);
+    return resolvePointPosition(chart, options);
   }
 }
 

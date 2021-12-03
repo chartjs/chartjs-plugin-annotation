@@ -277,6 +277,25 @@ export function getChartCircle(chart, options) {
   };
 }
 
-export function isBoundToPoint(options) {
+function isBoundToPoint(options) {
   return options && (options.xValue || options.yValue);
+}
+
+export function resolvePointPosition(chart, options) {
+  if (!isBoundToPoint(options)) {
+    const box = getChartRect(chart, options);
+    const point = getRectCenterPoint(box);
+    let radius = options.radius;
+    if (!radius || isNaN(radius)) {
+      radius = Math.min(box.width, box.height) / 2;
+      options.radius = radius;
+    }
+    return {
+      x: point.x,
+      y: point.y,
+      width: radius * 2,
+      height: radius * 2
+    };
+  }
+  return getChartCircle(chart, options);
 }

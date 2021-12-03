@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, RAD_PER_DEG} from 'chart.js/helpers';
-import {setBorderStyle, getChartCircle, getCenterPointElement} from '../helpers';
+import {setBorderStyle, resolvePointPosition, getCenterPointElement} from '../helpers';
 
 export default class PolygonAnnotation extends Element {
 
@@ -40,7 +40,7 @@ export default class PolygonAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    return getChartCircle(chart, options);
+    return resolvePointPosition(chart, options);
   }
 
 }
@@ -58,8 +58,12 @@ PolygonAnnotation.defaults = {
   radius: 10,
   rotation: 0,
   sides: 3,
+  xMax: undefined,
+  xMin: undefined,
   xScaleID: 'x',
   xValue: undefined,
+  yMax: undefined,
+  yMin: undefined,
   yScaleID: 'y',
   yValue: undefined
 };
