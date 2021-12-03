@@ -6,11 +6,17 @@ module.exports = {
       scales: {
         x: {
           display: true,
+          ticks: {
+            display: false
+          },
           min: -10,
           max: 10
         },
         y: {
           display: true,
+          ticks: {
+            display: false
+          },
           min: -10,
           max: 10
         }
@@ -33,6 +39,7 @@ module.exports = {
               borderWidth: 1,
               content: ['This is my text', 'and this is the second row of my text'],
               padding: {
+                x: 10,
                 y: 10
               },
               position: {
@@ -71,6 +78,7 @@ module.exports = {
               borderWidth: 1,
               content: ['This is my text', 'and this is the second row of my text'],
               padding: {
+                x: 10,
                 y: 10
               },
               position: {
