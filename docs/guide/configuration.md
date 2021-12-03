@@ -1,15 +1,18 @@
 ---
-title: Interactions
+title: Configuration
 ---
 
-## Configuration
+## Top level options
 
 The following options are available at the top level. They apply to all annotations unless they are overwritten on a per-annotation basis.
 
 | Name | Type | [Scriptable](options#scriptable-options) | Default | Notes
 | ---- | ---- | :----: | ---- | ----
+| `clip` | `boolean` | No | `true` | Are the annotations clipped to the chartArea.
 | `drawTime` | `string` | Yes | `'afterDatasetsDraw'` | See [drawTime](options#draw-time)
 | `dblClickSpeed` | `number` | Yes | `350` | Time to detect a double click in ms.
+
+### Events
 
 The following options are available for all annotation types. These options can be specified per annotation, or at the top level which apply to all annotations.
 
