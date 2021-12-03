@@ -62,10 +62,17 @@ The following options are available for point annotations.
 | [`borderDash`](#styling) | `number[]`| Yes | `[]`
 | [`borderDashOffset`](#styling) | `number`| Yes | `0`
 | [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
+| [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
+| [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
 
 ### General
 
 If one of the axes does not match an axis in the chart, the point annotation will take the center of the chart as point. The 2 coordinates, xValue, yValue are optional. If not specified, the point annotation will take the center of the chart as point.
+
+The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges in the respective direction and the box size is used to calculated the center of the point. To enable to use the box positioning, the `radius` must be set to `0` or `NaN`. 
+
 
 | Name | Description |
 | ---- | ---- |
@@ -77,6 +84,10 @@ If one of the axes does not match an axis in the chart, the point annotation wil
 | `xValue` | X coordinate of the point in units along the x axis.
 | `yValue` | Y coordinate of the point in units along the y axis.
 | `radius` | Size of the point in pixels
+| `xMin` | Left edge of the box in units along the x axis.
+| `xMax` | Right edge of the box in units along the x axis.
+| `yMin` | Top edge of the box in units along the y axis.
+| `yMax` | Bottom edge of the box in units along the y axis.
 
 ### Styling
 

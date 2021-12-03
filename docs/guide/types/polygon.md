@@ -61,30 +61,40 @@ The following options are available for polygon annotations.
 | [`borderWidth`](#styling) | `number`| Yes | `1`
 | [`display`](#general) | `boolean` | Yes | `true`
 | [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
-| [`xScaleID`](#general) | `string` | Yes | `'x'`
-| [`yScaleID`](#general) | `string` | Yes | `'y'`
-| [`xValue`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yValue`](#general) | `number` \| `string` | Yes | `undefined`
 | [`radius`](#general) | `number` | Yes | `10`
 | [`rotation`](#general) | `number` | Yes | `0`
 | [`sides`](#general) | `number` | Yes | `3`
+| [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
+| [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
+| [`xScaleID`](#general) | `string` | Yes | `'x'`
+| [`xValue`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yScaleID`](#general) | `string` | Yes | `'y'`
+| [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yValue`](#general) | `number` \| `string` | Yes | `undefined`
 
 ### General
 
 If one of the axes does not match an axis in the chart, the polygon annotation will take the center of the chart as point. The 2 coordinates, xValue, yValue are optional. If not specified, the polygon annotation will take the center of the chart.
+
+The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges in the respective direction and the box size is used to calculated the center of the point. To enable to use the box positioning, the `radius` must be set to `0` or `NaN`. 
 
 | Name | Description |
 | ---- | ---- |
 | `display` | Whether or not this annotation is visible.
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
 | `drawTime` | See [drawTime](../options#draw-time).
-| `xScaleID` | ID of the X scale to bind onto, default is 'x'.
-| `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
-| `xValue` | X coordinate of the polygon in units along the x axis.
-| `yValue` | Y coordinate of the polygon in units along the y axis.
 | `radius` | Size of the polygon in pixels.
 | `rotation` | Rotation of polygon, in degrees.
 | `sides` | Amount of sides of polygon.
+| `xMax` | Right edge of the box in units along the x axis.
+| `xMin` | Left edge of the box in units along the x axis.
+| `xScaleID` | ID of the X scale to bind onto, default is 'x'.
+| `xValue` | X coordinate of the polygon in units along the x axis.
+| `yMax` | Bottom edge of the box in units along the y axis.
+| `yMin` | Top edge of the box in units along the y axis.
+| `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
+| `yValue` | Y coordinate of the polygon in units along the y axis.
 
 ### Styling
 
