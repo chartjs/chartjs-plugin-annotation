@@ -116,7 +116,7 @@ export interface LabelPointOptions {
   radius?: Scriptable<number, PartialEventContext>
 }
 
-export interface LabelAnnotationOptions extends CoreAnnotationOptions, LabelTypeOptions {
+export interface LabelAnnotationOptions extends CoreAnnotationOptions, LabelTypeOptions, AnnotationCoordinates {
   xValue?: Scriptable<ScaleValue, PartialEventContext>;
   yValue?: Scriptable<ScaleValue, PartialEventContext>;
   callout?: CalloutOptions;

@@ -277,7 +277,7 @@ export function getChartCircle(chart, options) {
   };
 }
 
-function isBoundToPoint(options) {
+export function isBoundToPoint(options) {
   return options && (options.xValue || options.yValue);
 }
 
