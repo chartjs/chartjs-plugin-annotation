@@ -15,20 +15,13 @@ An annotation plugin for Chart.js >= 3.0.0
 
 For Chart.js 2.4.0 to 2.9.x support, use [version 0.5.7 of this plugin](https://github.com/chartjs/chartjs-plugin-annotation/releases/tag/v0.5.7)
 
-This plugin draws lines, boxes, points and ellipses on the chart area.
+This plugin draws lines, boxes, points, labels, polygons and ellipses on the chart area.
 
 Annotations work with line, bar, scatter and bubble charts that use linear, logarithmic, time, or category scales. Annotations will not work on any chart that does not have exactly two axes, including pie, radar, and polar area charts.
 
 ![Example Screenshot](docs/guide/banner.png)
 
 [View this example](https://www.chartjs.org/chartjs-plugin-annotation/latest/samples/intro.html)
-
-## To-do Items
-
-The following features still need to be done:
-
-* Box annotation labels
-* Text annotations
 
 ## Documentation
 
@@ -40,4 +33,4 @@ Before submitting an issue or a pull request to the project, please take a momen
 
 ## License
 
-Chart.Annotation.js is available under the [MIT license](http://opensource.org/licenses/MIT).
+Chart.Annotation.js is available under the [MIT license](LICENSE.md).
