@@ -1,4 +1,9 @@
+const annotationTypes = ['box', 'ellipse', 'label', 'line', 'point', 'polygon'];
+
 export function testEvents(options, innerElement) {
+  if (!annotationTypes.includes(options.type)) {
+    console.warn(`No annotation found with type '${options.type}'.`);
+  }
   const descr = innerElement ? options.type + '.' + innerElement : options.type;
   const chartOptions = {
     type: 'scatter',
@@ -51,6 +56,34 @@ export function testEvents(options, innerElement) {
           delete options.enter;
           delete options.leave;
           done();
+        });
+      });
+    });
+
+    it(`should detect a property in the context, to check persistency, on ${descr}`, function(done) {
+      options.enter = function(ctx) {
+        ctx.persistency = true;
+      };
+      options.leave = function(ctx) {
+        expect(ctx.persistency).toBe(true);
+        done();
+      };
+      chartOptions.options.plugins.annotation.annotations = [options];
+
+      const chart = window.acquireChart(chartOptions);
+      const eventPoint = getEventPoint(chart, innerElement);
+
+      window.triggerMouseEvent(chart, 'mousemove', eventPoint);
+      window.afterEvent(chart, 'mousemove', function() {
+
+        window.triggerMouseEvent(chart, 'mousemove', {
+          x: 0,
+          y: 0
+        });
+
+        window.afterEvent(chart, 'mousemove', function() {
+          delete options.enter;
+          delete options.leave;
         });
       });
     });
