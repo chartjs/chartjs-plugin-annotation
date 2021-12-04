@@ -1,6 +1,6 @@
 export function testEvents(options, innerElement) {
   const descr = innerElement ? options.type + '.' + innerElement : options.type;
-  const chartOptions = {
+  const chartConfig = {
     type: 'scatter',
     options: {
       animation: false,
@@ -25,121 +25,126 @@ export function testEvents(options, innerElement) {
   };
 
   describe('events', function() {
+    const pluginOpts = chartConfig.options.plugins.annotation;
 
-    it(`should detect enter and leave events on ${descr}`, function(done) {
-      const enterSpy = jasmine.createSpy('enter');
-      const leaveSpy = jasmine.createSpy('leave');
+    [pluginOpts, options].forEach(function(targetOptions) {
 
-      options.enter = enterSpy;
-      options.leave = leaveSpy;
-      chartOptions.options.plugins.annotation.annotations = [options];
+      it(`should detect enter and leave events on ${descr}`, function(done) {
+        const enterSpy = jasmine.createSpy('enter');
+        const leaveSpy = jasmine.createSpy('leave');
 
-      const chart = window.acquireChart(chartOptions);
-      const eventPoint = getEventPoint(chart, innerElement);
+        targetOptions.enter = enterSpy;
+        targetOptions.leave = leaveSpy;
+        pluginOpts.annotations = [options];
 
-      window.triggerMouseEvent(chart, 'mousemove', eventPoint);
-      window.afterEvent(chart, 'mousemove', function() {
-        expect(enterSpy.calls.count()).toBe(1);
+        const chart = window.acquireChart(chartConfig);
+        const eventPoint = getEventPoint(chart, innerElement);
 
-        window.triggerMouseEvent(chart, 'mousemove', {
-          x: 0,
-          y: 0
-        });
-
+        window.triggerMouseEvent(chart, 'mousemove', eventPoint);
         window.afterEvent(chart, 'mousemove', function() {
-          expect(leaveSpy.calls.count()).toBe(1);
-          delete options.enter;
-          delete options.leave;
-          done();
+          expect(enterSpy.calls.count()).toBe(1);
+
+          window.triggerMouseEvent(chart, 'mousemove', {
+            x: 0,
+            y: 0
+          });
+
+          window.afterEvent(chart, 'mousemove', function() {
+            expect(leaveSpy.calls.count()).toBe(1);
+            delete targetOptions.enter;
+            delete targetOptions.leave;
+            done();
+          });
         });
       });
-    });
 
-    it(`should detect click event on ${descr}`, function(done) {
-      const clickSpy = jasmine.createSpy('click');
+      it(`should detect click event on ${descr}`, function(done) {
+        const clickSpy = jasmine.createSpy('click');
 
-      options.click = clickSpy;
-      chartOptions.options.plugins.annotation.annotations = [options];
+        targetOptions.click = clickSpy;
+        pluginOpts.annotations = [options];
 
-      const chart = window.acquireChart(chartOptions);
-      const eventPoint = getEventPoint(chart, innerElement);
+        const chart = window.acquireChart(chartConfig);
+        const eventPoint = getEventPoint(chart, innerElement);
 
-      window.afterEvent(chart, 'click', function() {
-        expect(clickSpy.calls.count()).toBe(1);
-        delete options.click;
-        done();
-      });
-      window.triggerMouseEvent(chart, 'click', eventPoint);
-    });
-
-    it(`should detect dbl click event on ${descr}`, function(done) {
-      const dblClickSpy = jasmine.createSpy('dblclick');
-
-      options.dblclick = dblClickSpy;
-      chartOptions.options.plugins.annotation.dblClickSpeed = 1000;
-      chartOptions.options.plugins.annotation.annotations = [options];
-
-      const chart = window.acquireChart(chartOptions);
-      const eventPoint = getEventPoint(chart, innerElement);
-
-      let dblClick = false;
-      window.afterEvent(chart, 'click', function() {
-        if (!dblClick) {
-          dblClick = true;
-          window.triggerMouseEvent(chart, 'click', eventPoint);
-        } else {
-          expect(dblClickSpy.calls.count()).toBe(1);
-          delete options.dblclick;
+        window.afterEvent(chart, 'click', function() {
+          expect(clickSpy.calls.count()).toBe(1);
+          delete targetOptions.click;
           done();
-        }
+        });
+        window.triggerMouseEvent(chart, 'click', eventPoint);
       });
-      window.triggerMouseEvent(chart, 'click', eventPoint);
-    });
 
-    it(`should detect a click event even if 2 clicks are fired on ${descr}`, function(done) {
-      const dblClickSpy = jasmine.createSpy('dblclick');
+      it(`should detect dbl click event on ${descr}`, function(done) {
+        const dblClickSpy = jasmine.createSpy('dblclick');
 
-      options.dblclick = dblClickSpy;
-      chartOptions.options.plugins.annotation.dblClickSpeed = 1;
-      chartOptions.options.plugins.annotation.annotations = [options];
+        targetOptions.dblclick = dblClickSpy;
+        pluginOpts.dblClickSpeed = 1000;
+        pluginOpts.annotations = [options];
 
-      const chart = window.acquireChart(chartOptions);
-      const eventPoint = getEventPoint(chart, innerElement);
+        const chart = window.acquireChart(chartConfig);
+        const eventPoint = getEventPoint(chart, innerElement);
 
-      let dblClick = false;
-      window.afterEvent(chart, 'click', function() {
-        if (!dblClick) {
-          dblClick = true;
-          setTimeout(() => {
+        let dblClick = false;
+        window.afterEvent(chart, 'click', function() {
+          if (!dblClick) {
+            dblClick = true;
             window.triggerMouseEvent(chart, 'click', eventPoint);
-          }, 500);
-        } else {
-          expect(dblClickSpy.calls.count()).toBe(0);
-          delete options.dblclick;
-          done();
-        }
+          } else {
+            expect(dblClickSpy.calls.count()).toBe(1);
+            delete targetOptions.dblclick;
+            delete pluginOpts.dblClickSpeed;
+            done();
+          }
+        });
+        window.triggerMouseEvent(chart, 'click', eventPoint);
       });
-      window.triggerMouseEvent(chart, 'click', eventPoint);
+
+      it(`should detect a click event even if 2 clicks are fired on ${descr}`, function(done) {
+        const dblClickSpy = jasmine.createSpy('dblclick');
+
+        targetOptions.dblclick = dblClickSpy;
+        pluginOpts.dblClickSpeed = 1;
+        pluginOpts.annotations = [options];
+
+        const chart = window.acquireChart(chartConfig);
+        const eventPoint = getEventPoint(chart, innerElement);
+
+        let dblClick = false;
+        window.afterEvent(chart, 'click', function() {
+          if (!dblClick) {
+            dblClick = true;
+            setTimeout(() => {
+              window.triggerMouseEvent(chart, 'click', eventPoint);
+            }, 50);
+          } else {
+            expect(dblClickSpy.calls.count()).toBe(0);
+            delete targetOptions.dblclick;
+            delete pluginOpts.dblClickSpeed;
+            done();
+          }
+        });
+        window.triggerMouseEvent(chart, 'click', eventPoint);
+      });
+
+      if (!innerElement) {
+        it(`should center point in range on ${descr}`, function() {
+          pluginOpts.annotations = [options];
+          const chart = window.acquireChart(chartConfig);
+          const element = getElement(chart);
+          const center = element.getCenterPoint();
+          expect(element.inRange(center.x, center.y)).toBe(true);
+        });
+
+        it(`shouldn't center point plus adjustment in range on ${descr}`, function() {
+          pluginOpts.annotations = [options];
+          const chart = window.acquireChart(chartConfig);
+          const element = getElement(chart);
+          const center = element.getCenterPoint();
+          expect(element.inRange(center.x + center.width, center.y)).toBe(false);
+        });
+      }
     });
-
-    if (!innerElement) {
-      it(`should center point in range on ${descr}`, function() {
-        chartOptions.options.plugins.annotation.annotations = [options];
-        const chart = window.acquireChart(chartOptions);
-        const element = getElement(chart);
-        const center = element.getCenterPoint();
-        expect(element.inRange(center.x, center.y)).toBe(true);
-      });
-
-      it(`shouldn't center point plus adjustment in range on ${descr}`, function() {
-        chartOptions.options.plugins.annotation.annotations = [options];
-        const chart = window.acquireChart(chartOptions);
-        const element = getElement(chart);
-        const center = element.getCenterPoint();
-        expect(element.inRange(center.x + center.width, center.y)).toBe(false);
-      });
-
-    }
   });
 }
 
