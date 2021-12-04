@@ -2,7 +2,7 @@ describe('Ellipse annotation', function() {
   describe('auto', jasmine.fixtures('ellipse'));
 
   window.testEvents({
-    type: 'ellispe',
+    type: 'ellipse',
     id: 'test',
     xScaleID: 'x',
     yScaleID: 'y',
