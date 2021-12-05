@@ -127,6 +127,34 @@ export function testEvents(options, innerElement) {
         window.triggerMouseEvent(chart, 'click', eventPoint);
       });
 
+      it(`should detect a property in the context, to check persistency, on ${descr}`, function(done) {
+        targetOptions.enter = function(ctx) {
+          ctx.persistency = true;
+        };
+        targetOptions.leave = function(ctx) {
+          expect(ctx.persistency).toBe(true);
+          done();
+        };
+        pluginOpts.annotations = [options];
+
+        const chart = window.acquireChart(chartConfig);
+        const eventPoint = getEventPoint(chart, innerElement);
+
+        window.triggerMouseEvent(chart, 'mousemove', eventPoint);
+        window.afterEvent(chart, 'mousemove', function() {
+
+          window.triggerMouseEvent(chart, 'mousemove', {
+            x: 0,
+            y: 0
+          });
+
+          window.afterEvent(chart, 'mousemove', function() {
+            delete targetOptions.enter;
+            delete targetOptions.leave;
+          });
+        });
+      });
+
       if (!innerElement) {
         it(`should center point in range on ${descr}`, function() {
           pluginOpts.annotations = [options];
