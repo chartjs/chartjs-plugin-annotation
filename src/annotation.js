@@ -108,7 +108,7 @@ export default {
     _scriptable: (prop) => !hooks.includes(prop),
     annotations: {
       _allKeys: false,
-      _fallback: (prop, opts) => `elements.${annotationTypes[opts.type || 'line'].id}`,
+      _fallback: (prop, opts) => `elements.${annotationTypes[resolveType(opts.type)].id}`,
     },
   },
 
@@ -126,6 +126,14 @@ function resolveAnimations(chart, animOpts, mode) {
   return new Animations(chart, animOpts);
 }
 
+function resolveType(type = 'line') {
+  if (annotationTypes[type]) {
+    return type;
+  }
+  console.warn(`Unknown annotation type: '${type}', defaulting to 'line'`);
+  return 'line';
+}
+
 function updateElements(chart, state, options, mode) {
   const animations = resolveAnimations(chart, options.animations, mode);
 
@@ -135,9 +143,9 @@ function updateElements(chart, state, options, mode) {
   for (let i = 0; i < annotations.length; i++) {
     const annotation = annotations[i];
     let el = elements[i];
-    const elType = annotationTypes[annotation.type] || annotationTypes.line;
-    if (!el || !(el instanceof elType)) {
-      el = elements[i] = new elType();
+    const elementClass = annotationTypes[resolveType(annotation.type)];
+    if (!el || !(el instanceof elementClass)) {
+      el = elements[i] = new elementClass();
     }
     const opts = resolveAnnotationOptions(annotation.setContext(getContext(chart, el, annotation)));
     const properties = el.resolveElementProperties(chart, opts);
@@ -148,12 +156,12 @@ function updateElements(chart, state, options, mode) {
 }
 
 function resolveAnnotationOptions(resolver) {
-  const elType = annotationTypes[resolver.type] || annotationTypes.line;
+  const elementClass = annotationTypes[resolveType(resolver.type)];
   const result = {};
   result.id = resolver.id;
   result.type = resolver.type;
   result.drawTime = resolver.drawTime;
-  Object.assign(result, resolveObj(resolver, elType.defaults), resolveObj(resolver, elType.defaultRoutes));
+  Object.assign(result, resolveObj(resolver, elementClass.defaults), resolveObj(resolver, elementClass.defaultRoutes));
   for (const hook of hooks) {
     result[hook] = resolver[hook];
   }
