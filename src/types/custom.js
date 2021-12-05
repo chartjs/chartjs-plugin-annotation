@@ -1,15 +1,10 @@
 import {Element} from 'chart.js';
-import {getChartRect, getRectCenterPoint} from '../helpers';
+import {getChartRect, getRectCenterPoint, inBoxRange} from '../helpers';
 
 export default class CustomAnnotation extends Element {
 
   inRange(mouseX, mouseY, useFinalPosition) {
-    const {x, y, width, height} = this.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
-
-    return mouseX >= x &&
-           mouseX <= x + width &&
-           mouseY >= y &&
-           mouseY <= y + height;
+    return inBoxRange(mouseX, mouseY, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition));
   }
 
   getCenterPoint(useFinalPosition) {
