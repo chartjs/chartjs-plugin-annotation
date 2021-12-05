@@ -43,7 +43,7 @@ interface AnnotationCoordinates {
   yMin?: Scriptable<ScaleValue, PartialEventContext>,
 }
 
-interface AnnotationPointCoordinates extends AnnotationCoordinates{
+interface AnnotationPointCoordinates extends AnnotationCoordinates {
   xValue?: Scriptable<ScaleValue, PartialEventContext>,
   yValue?: Scriptable<ScaleValue, PartialEventContext>,
 }
