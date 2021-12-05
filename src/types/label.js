@@ -13,8 +13,10 @@ export default class LabelAnnotation extends Element {
       const adjust = gap || 0;
       const {x, y, width, height} = this.isBoxVisible() ? this.getProps(['x', 'y', 'width', 'height']) : this.labelRect;
 
-      return mouseX >= x + adjust && mouseX <= x + width - adjust &&
-             mouseY >= y + adjust && mouseY <= y + height - adjust;
+      return mouseX >= x + adjust &&
+             mouseX <= x + width - adjust &&
+             mouseY >= y + adjust &&
+             mouseY <= y + height - adjust;
     }
     return false;
   }

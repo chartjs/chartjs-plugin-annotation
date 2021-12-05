@@ -1,5 +1,5 @@
 module.exports = {
-  tolerance: 0.0075,
+  tolerance: 0.0080,
   config: {
     type: 'scatter',
     options: {
@@ -45,6 +45,19 @@ module.exports = {
               borderColor: 'red',
               borderWidth: 1,
             },
+            circle1: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xMin: 1,
+              yMin: 1,
+              xMax: 8,
+              yMax: 8,
+              backgroundColor: 'transparent',
+              borderColor: 'red',
+              borderWidth: 1,
+              radius: NaN
+            },
             triangle2: {
               type: 'polygon',
               xScaleID: 'x',
@@ -69,7 +82,20 @@ module.exports = {
               backgroundColor: 'transparent',
               borderColor: 'red',
               borderWidth: 1,
-            }
+            },
+            circle2: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xMin: -8,
+              yMin: -8,
+              xMax: 1,
+              yMax: 1,
+              backgroundColor: 'transparent',
+              borderColor: 'red',
+              borderWidth: 1,
+              radius: NaN
+            },
           }
         }
       }
