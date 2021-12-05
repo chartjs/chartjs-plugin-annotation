@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {getChartRect, getRectCenterPoint, inBoxRange} from '../helpers';
+import {getChartPoint, getChartRect, getRectCenterPoint, inBoxRange, isBoundToPoint} from '../helpers';
 
 export default class CustomAnnotation extends Element {
 
@@ -8,7 +8,7 @@ export default class CustomAnnotation extends Element {
   }
 
   getCenterPoint(useFinalPosition) {
-    return getRectCenterPoint(this, useFinalPosition);
+    return getRectCenterPoint(this.getProps(['x', 'y', 'width', 'height'], useFinalPosition));
   }
 
   draw(ctx) {
@@ -19,13 +19,20 @@ export default class CustomAnnotation extends Element {
     }
 
     ctx.save();
-    options.draw(ctx, {x, y, width, height}, options, this._chart);
+    options.draw(ctx, {x, y, width, height}, options, this.$context.chart);
     ctx.restore();
   }
 
   resolveElementProperties(chart, options) {
-    this._chart = chart;
-    return getChartRect(chart, options);
+    let rect;
+    if (isBoundToPoint(options)) {
+      rect = getChartPoint(chart, options);
+      rect.width = 0;
+      rect.height = 0;
+    } else {
+      rect = getChartRect(chart, options);
+    }
+    return rect;
   }
 }
 
@@ -35,17 +42,14 @@ CustomAnnotation.defaults = {
   adjustScaleRange: true,
   display: true,
   draw: undefined,
-  xScaleID: 'x',
-  xMin: undefined,
   xMax: undefined,
-  yScaleID: 'y',
-  yMin: undefined,
+  xMin: undefined,
+  xScaleID: 'x',
+  xValue: undefined,
   yMax: undefined,
-};
-
-CustomAnnotation.descriptors = {
-  _indexable: false,
-  _scriptable: (prop) => !['draw', 'enter', 'click', 'dblclick', 'leave'].includes(prop),
+  yMin: undefined,
+  yScaleID: 'y',
+  yValue: undefined
 };
 
 CustomAnnotation.defaultRoutes = {
