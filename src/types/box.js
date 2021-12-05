@@ -13,7 +13,7 @@ export default class BoxAnnotation extends Element {
   }
 
   getCenterPoint(useFinalPosition) {
-    return getRectCenterPoint(this, useFinalPosition);
+    return getRectCenterPoint(this.getProps(['x', 'y', 'width', 'height'], useFinalPosition));
   }
 
   draw(ctx) {
@@ -63,12 +63,12 @@ BoxAnnotation.defaults = {
   cornerRadius: undefined, // TODO: v2 remove support for cornerRadius
   borderWidth: 1,
   display: true,
-  xScaleID: 'x',
-  xMin: undefined,
   xMax: undefined,
-  yScaleID: 'y',
-  yMin: undefined,
+  xMin: undefined,
+  xScaleID: 'x',
   yMax: undefined,
+  yMin: undefined,
+  yScaleID: 'y',
   label: {
     color: 'black',
     content: null,

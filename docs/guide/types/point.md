@@ -60,14 +60,21 @@ The following options are available for point annotations.
 | [`pointStyle`](#styling) | [`PointStyle`](../options#point-style) | Yes | `'circle'`
 | [`radius`](#general) | `number` | Yes | `10`
 | [`rotation`](#general) | `number` | Yes | `0`
+| [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
+| [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
 | [`xScaleID`](#general) | `string` | Yes | `'x'`
 | [`xValue`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yScaleID`](#general) | `string` | Yes | `'y'`
 | [`yValue`](#general) | `number` \| `string` | Yes | `undefined`
 
 ### General
 
 If one of the axes does not match an axis in the chart, the point annotation will take the center of the chart as point. The 2 coordinates, xValue, yValue are optional. If not specified, the point annotation will take the center of the chart as point.
+
+The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges in the respective direction and the box size is used to calculated the center of the point. To enable to use the box positioning, the `radius` must be set to `0` or `NaN`. 
+
 
 | Name | Description |
 | ---- | ---- |
@@ -76,8 +83,12 @@ If one of the axes does not match an axis in the chart, the point annotation wil
 | `drawTime` | See [drawTime](../options#draw-time).
 | `radius` | Size of the point in pixels.
 | `rotation` | Rotation of point, in degrees.
+| `xMax` | Right edge of the box in units along the x axis.
+| `xMin` | Left edge of the box in units along the x axis.
 | `xScaleID` | ID of the X scale to bind onto, default is 'x'.
 | `xValue` | X coordinate of the point in units along the x axis.
+| `yMax` | Bottom edge of the box in units along the y axis.
+| `yMin` | Top edge of the box in units along the y axis.
 | `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
 | `yValue` | Y coordinate of the point in units along the y axis.
 

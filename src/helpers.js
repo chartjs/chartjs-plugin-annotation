@@ -190,8 +190,8 @@ export function drawLabel(ctx, rect, options) {
   labels.forEach((l, i) => ctx.fillText(l, x, y + (i * lh)));
 }
 
-export function getRectCenterPoint(element, useFinalPosition) {
-  const {x, y, width, height} = element.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
+export function getRectCenterPoint(rect) {
+  const {x, y, width, height} = rect;
   return {
     x: x + width / 2,
     y: y + height / 2
@@ -256,7 +256,7 @@ export function inPointRange(point, center, radius) {
   return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius, 2);
 }
 
-export function getCircleCenterPoint(element, useFinalPosition) {
+export function getElementCenterPoint(element, useFinalPosition) {
   const {x, y} = element.getProps(['x', 'y'], useFinalPosition);
   return {x, y};
 }
@@ -269,4 +269,27 @@ export function getChartCircle(chart, options) {
     width: options.radius * 2,
     height: options.radius * 2
   };
+}
+
+export function isBoundToPoint(options) {
+  return options && (options.xValue || options.yValue);
+}
+
+export function resolvePointPosition(chart, options) {
+  if (!isBoundToPoint(options)) {
+    const box = getChartRect(chart, options);
+    const point = getRectCenterPoint(box);
+    let radius = options.radius;
+    if (!radius || isNaN(radius)) {
+      radius = Math.min(box.width, box.height) / 2;
+      options.radius = radius;
+    }
+    return {
+      x: point.x,
+      y: point.y,
+      width: radius * 2,
+      height: radius * 2
+    };
+  }
+  return getChartCircle(chart, options);
 }

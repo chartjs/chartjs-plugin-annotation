@@ -1,4 +1,4 @@
-import {drawBox, drawLabel, drawPoint, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inPointRange} from '../helpers';
+import {drawBox, drawLabel, drawPoint, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inPointRange, isBoundToPoint, getChartRect} from '../helpers';
 import {color as getColor, toPadding} from 'chart.js/helpers';
 import {Element} from 'chart.js';
 
@@ -35,7 +35,7 @@ export default class LabelAnnotation extends Element {
   }
 
   getCenterPoint(useFinalPosition) {
-    return getRectCenterPoint(this, useFinalPosition);
+    return getRectCenterPoint(this.getProps(['x', 'y', 'width', 'height'], useFinalPosition));
   }
 
   draw(ctx) {
@@ -48,7 +48,7 @@ export default class LabelAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    this.point = getChartPoint(chart, options);
+    this.point = !isBoundToPoint(options) ? getRectCenterPoint(getChartRect(chart, options)) : getChartPoint(chart, options);
 
     if (isLabelVisible(options)) {
       const padding = toPadding(options.padding);
@@ -119,9 +119,13 @@ LabelAnnotation.defaults = {
   textAlign: 'center',
   width: undefined,
   xAdjust: 0,
+  xMax: undefined,
+  xMin: undefined,
   xScaleID: 'x',
   xValue: undefined,
   yAdjust: 0,
+  yMax: undefined,
+  yMin: undefined,
   yScaleID: 'y',
   yValue: undefined
 };

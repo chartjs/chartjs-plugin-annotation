@@ -75,15 +75,22 @@ The following options are available for label annotations.
 | [`textAlign`](#general) | `string` | Yes | `'center'`
 | [`width`](#general) | `number`\|`string` | Yes | `undefined`
 | [`xAdjust`](#general) | `number` | Yes | `0`
+| [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
+| [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
 | [`xScaleID`](#general) | `string` | Yes | `'x'`
 | [`xValue`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yAdjust`](#general) | `number` | Yes | `0`
+| [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yScaleID`](#general) | `string` | Yes | `'y'`
 | [`yValue`](#general) | `number` \| `string` | Yes | `undefined`
 
 ### General
 
 If one of the axes does not match an axis in the chart, the content will be rendered in the center of the chart. The 2 coordinates, xValue, yValue are optional. If not specified, the content will be rendered in the center of the chart.
+
+The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges in the respective direction and the box size is used to calculated the center of the point. To enable to use the box positioning, the `radius` must be set to `0` or `NaN`. 
+
 
 | Name | Description |
 | ---- | ---- |
@@ -96,9 +103,13 @@ If one of the axes does not match an axis in the chart, the content will be rend
 | `textAlign` | Text alignment of label content when there's more than one line. Possible options are: `'left'`, `'start'`, `'center'`, `'end'`, `'right'`.
 | `width` | Overrides the width of the image. Could be set in pixel by a number, or in percentage of current width of image by a string. If undefined, uses the width of the image. It is used only when the content is an image.
 | `xAdjust` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
+| `xMax` | Right edge of the box in units along the x axis.
+| `xMin` | Left edge of the box in units along the x axis.
 | `xScaleID` | ID of the X scale to bind onto, default is 'x'.
 | `xValue` | X coordinate of the point in units along the x axis.
 | `yAdjust` | Adjustment along y-axis (top-bottom) of label relative to computed position. Negative values move the label up, positive down.
+| `yMax` | Bottom edge of the box in units along the y axis.
+| `yMin` | Top edge of the box in units along the y axis.
 | `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
 | `yValue` | Y coordinate of the point in units along the y axis.
 

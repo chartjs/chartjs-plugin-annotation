@@ -9,7 +9,7 @@ export default class EllipseAnnotation extends Element {
   }
 
   getCenterPoint(useFinalPosition) {
-    return getRectCenterPoint(this, useFinalPosition);
+    return getRectCenterPoint(this.getProps(['x', 'y', 'width', 'height'], useFinalPosition));
   }
 
   draw(ctx) {
