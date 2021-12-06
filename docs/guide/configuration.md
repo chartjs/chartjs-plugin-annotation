@@ -16,7 +16,7 @@ The following options are available at the top level. They apply to all annotati
 
 Setting `clip` to `false`, you can enable the possibility to draw part of the annotation outside of the chart area.
 
-Nevertheless, this disables the catching  of events on that part, outside of the chart area.
+Nevertheless events are only catched over the chartArea.
 
 :::
 
