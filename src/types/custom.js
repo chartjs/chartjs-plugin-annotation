@@ -12,14 +12,14 @@ export default class CustomAnnotation extends Element {
   }
 
   draw(ctx) {
-    const {x, y, width, height, options} = this;
+    const draw = this.options.draw;
 
-    if (typeof options.draw !== 'function') {
+    if (typeof draw !== 'function') {
       throw new Error('No draw function defined for CustomAnnotation');
     }
 
     ctx.save();
-    options.draw(ctx, {x, y, width, height}, options, this.$context.chart);
+    draw(ctx, this, this.$context.chart);
     ctx.restore();
   }
 
@@ -32,6 +32,9 @@ export default class CustomAnnotation extends Element {
     } else {
       rect = getChartRect(chart, options);
     }
+    if (options.init) {
+      options.init(rect, this, this.$context.chart);
+    }
     return rect;
   }
 }
@@ -42,6 +45,7 @@ CustomAnnotation.defaults = {
   adjustScaleRange: true,
   display: true,
   draw: undefined,
+  init: undefined,
   xMax: undefined,
   xMin: undefined,
   xScaleID: 'x',

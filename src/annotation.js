@@ -105,7 +105,7 @@ export default {
 
   descriptors: {
     _indexable: false,
-    _scriptable: (prop) => !hooks.includes(prop) && prop !== 'draw',
+    _scriptable: (prop) => !hooks.includes(prop) && !['draw', 'init'].includes(prop),
     annotations: {
       _allKeys: false,
       _fallback: (prop, opts) => `elements.${annotationTypes[resolveType(opts.type)].id}`,

@@ -21,7 +21,14 @@ module.exports = {
               type: 'custom',
               xValue: 5,
               yValue: 5,
-              draw(ctx, rect) {
+              init(properties) {
+                properties.spikes = 8;
+                properties.innerRadius = 20;
+                properties.outerRadius = 30;
+                properties.width = 60;
+                properties.height = 60;
+              },
+              draw(ctx, element) {
                 // https://stackoverflow.com/a/25840319
                 function drawStar(cx, cy, spikes, outerRadius, innerRadius) {
                   const step = Math.PI / spikes;
@@ -51,12 +58,18 @@ module.exports = {
                   ctx.fill();
                 }
 
-                drawStar(rect.x, rect.y, 5, 30, 15);
+                drawStar(element.x, element.y, element.spikes, element.outerRadius, element.innerRadius);
               }
             }
           }
         }
       }
+    }
+  },
+  options: {
+    canvas: {
+      width: 128,
+      height: 128
     }
   }
 };
