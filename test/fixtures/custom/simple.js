@@ -21,7 +21,7 @@ module.exports = {
               type: 'custom',
               xValue: 5,
               yValue: 5,
-              draw(ctx, rect, opts, chart) {
+              draw(ctx, rect) {
                 // https://stackoverflow.com/a/25840319
                 function drawStar(cx, cy, spikes, outerRadius, innerRadius) {
                   const step = Math.PI / spikes;
