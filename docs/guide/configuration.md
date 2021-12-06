@@ -12,6 +12,14 @@ The following options are available at the top level. They apply to all annotati
 | `drawTime` | `string` | Yes | `'afterDatasetsDraw'` | See [drawTime](options#draw-time)
 | `dblClickSpeed` | `number` | Yes | `350` | Time to detect a double click in ms.
 
+:::warning
+
+Setting `clip` to `false`, you can enable the possibility to draw part of the annotation outside of the chart area.
+
+Nevertheless, this disables the catching  of events on that part, outside of the chart area.
+
+:::
+
 ### Events
 
 The following options are available for all annotation types. These options can be specified per annotation, or at the top level which apply to all annotations.
