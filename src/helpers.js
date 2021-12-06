@@ -117,7 +117,7 @@ export function rotated(point, center, angle) {
  */
 export function measureLabelSize(ctx, options) {
   const content = options.content;
-  if (content instanceof Image) {
+  if (content instanceof Image || content instanceof HTMLCanvasElement) {
     return {
       width: getSize(content.width, options.width),
       height: getSize(content.height, options.height)
@@ -174,7 +174,7 @@ export function isLabelVisible(options) {
 
 export function drawLabel(ctx, rect, options) {
   const content = options.content;
-  if (content instanceof Image) {
+  if (content instanceof Image || content instanceof HTMLCanvasElement) {
     ctx.drawImage(content, rect.x, rect.y, rect.width, rect.height);
     return;
   }
