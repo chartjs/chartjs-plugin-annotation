@@ -33,7 +33,7 @@ export interface CoreLabelOptions {
   /**
    * Text to display in label. Provide an array to display multiple lines
    */
-  content: Scriptable<string | string[] | HTMLImageElement | null, PartialEventContext>,
+  content: Scriptable<string | string[] | HTMLImageElement | HTMLCanvasElement | null, PartialEventContext>,
   /**
    * Overrides the width of the image. Could be set in pixel by a number,
    * or in percentage of current width of image by a string

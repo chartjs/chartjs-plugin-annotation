@@ -109,6 +109,10 @@ export function rotated(point, center, angle) {
   };
 }
 
+function isImageOrCanvas(content) {
+  return content instanceof Image || content instanceof HTMLCanvasElement;
+}
+
 /**
  * Measure the label size using the label options.
  * @param {CanvasRenderingContext2D} ctx - chart canvas context
@@ -117,7 +121,7 @@ export function rotated(point, center, angle) {
  */
 export function measureLabelSize(ctx, options) {
   const content = options.content;
-  if (content instanceof Image) {
+  if (isImageOrCanvas(content)) {
     return {
       width: getSize(content.width, options.width),
       height: getSize(content.height, options.height)
@@ -174,7 +178,7 @@ export function isLabelVisible(options) {
 
 export function drawLabel(ctx, rect, options) {
   const content = options.content;
-  if (content instanceof Image) {
+  if (isImageOrCanvas(content)) {
     ctx.drawImage(content, rect.x, rect.y, rect.width, rect.height);
     return;
   }
