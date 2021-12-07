@@ -25,3 +25,10 @@ export function getElementCenterPoint(element, useFinalPosition) {
   const {x, y} = element.getProps(['x', 'y'], useFinalPosition);
   return {x, y};
 }
+
+export function requireVersion(min, ver) {
+  const parts = ver.split('.');
+  if (!min.split('.').reduce((a, c, i) => a && c <= parts[i], true)) {
+    throw new Error(`Chart.js v${ver} is not supported. v${min} or newer is required.`);
+  }
+}

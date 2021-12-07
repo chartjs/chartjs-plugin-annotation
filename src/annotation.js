@@ -1,6 +1,7 @@
 import {Animations, Chart} from 'chart.js';
 import {clipArea, unclipArea, isFinite, valueOrDefault, isObject, isArray} from 'chart.js/helpers';
 import {handleEvent, hooks, updateListeners} from './events';
+import {requireVersion} from './helpers';
 import {annotationTypes} from './types';
 import {version} from '../package.json';
 
@@ -10,6 +11,10 @@ export default {
   id: 'annotation',
 
   version,
+
+  beforeRegister() {
+    requireVersion('3.7', Chart.version);
+  },
 
   afterRegister() {
     Chart.register(annotationTypes);
@@ -105,7 +110,7 @@ export default {
 
   descriptors: {
     _indexable: false,
-    _scriptable: (prop) => !hooks.includes(prop) && !['draw', 'init'].includes(prop),
+    _scriptable: (prop) => !hooks.includes(prop) && !['draw', 'init', 'inRange'].includes(prop),
     annotations: {
       _allKeys: false,
       _fallback: (prop, opts) => `elements.${annotationTypes[resolveType(opts.type)].id}`,
@@ -177,7 +182,7 @@ function resolveAnnotationOptions(resolver) {
   return result;
 }
 
-function resolveObj(resolver, defs) {
+function resolveObj(resolver, defs = {}) {
   const result = {};
   for (const name of Object.keys(defs)) {
     const optDefs = defs[name];

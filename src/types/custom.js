@@ -1,10 +1,12 @@
 import {Element} from 'chart.js';
+import {callback} from 'chart.js/helpers';
 import {getChartPoint, getChartRect, getRectCenterPoint, inBoxRange, isBoundToPoint} from '../helpers';
 
 export default class CustomAnnotation extends Element {
 
   inRange(mouseX, mouseY, useFinalPosition) {
-    return inBoxRange(mouseX, mouseY, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition));
+    const insideBox = inBoxRange(mouseX, mouseY, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition));
+    return insideBox && callback(this.options.inRange, arguments, this);
   }
 
   getCenterPoint(useFinalPosition) {
@@ -24,18 +26,16 @@ export default class CustomAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    let rect;
+    let properties;
     if (isBoundToPoint(options)) {
-      rect = getChartPoint(chart, options);
-      rect.width = 0;
-      rect.height = 0;
+      properties = getChartPoint(chart, options);
+      properties.width = 0;
+      properties.height = 0;
     } else {
-      rect = getChartRect(chart, options);
+      properties = getChartRect(chart, options);
     }
-    if (options.init) {
-      options.init(rect, this, this.$context.chart);
-    }
-    return rect;
+    callback(options.init, [properties, this.$context.chart], this);
+    return properties;
   }
 }
 
@@ -46,6 +46,9 @@ CustomAnnotation.defaults = {
   display: true,
   draw: undefined,
   init: undefined,
+  inRange() {
+    return true;
+  },
   xMax: undefined,
   xMin: undefined,
   xScaleID: 'x',
@@ -54,10 +57,4 @@ CustomAnnotation.defaults = {
   yMin: undefined,
   yScaleID: 'y',
   yValue: undefined
-};
-
-CustomAnnotation.defaultRoutes = {
-  color: 'color',
-  borderColor: 'color',
-  backgroundColor: 'color'
 };
