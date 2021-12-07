@@ -102,6 +102,38 @@ module.exports = {
       '/samples/': [
         'intro',
         {
+          title: 'Box annotations',
+          children: [
+            'box/basic',
+			'box/quarters',
+          ]
+        },
+        {
+          title: 'Ellipse annotations',
+          children: [
+            'ellipse/basic',
+			'ellipse/rotation',
+          ]
+        },
+        {
+          title: 'Label annotations',
+          children: [
+            'label/basic',
+			'label/point',
+			'label/callout',
+			'label/lowerUpper',
+          ]
+        },
+        {
+          title: 'Line annotations',
+          children: [
+            'line/basic',
+            'line/average',
+            'line/lowerUpper',
+            'line/trend',
+          ]
+        },
+        {
           title: 'Types',
           collapsable: false,
           children: [
