@@ -42,6 +42,10 @@ export default class LabelAnnotation extends Element {
     if (this.labelRect) {
       applyCallout(ctx, this);
       applyBox(ctx, this);
+      const {width, height, padding} = this.labelRect;
+      const elemDim = measureRect(this.point, {width, height}, this.options, padding);
+      this.labelRect.x = getLabelCoord(elemDim.x, padding.left, this.options.borderWidth);
+      this.labelRect.y = getLabelCoord(elemDim.y, padding.top, this.options.borderWidth);
       drawLabel(ctx, this.labelRect, this.options);
       applyPoint(ctx, this);
     }
@@ -55,10 +59,11 @@ export default class LabelAnnotation extends Element {
       const labelSize = measureLabelSize(chart.ctx, options);
       const elemDim = measureRect(this.point, labelSize, options, padding);
       this.labelRect = {
-        x: elemDim.x + padding.left + (options.borderWidth / 2),
-        y: elemDim.y + padding.top + (options.borderWidth / 2),
+        x: getLabelCoord(elemDim.x, padding.left, options.borderWidth),
+        y: getLabelCoord(elemDim.y, padding.top, options.borderWidth),
         width: labelSize.width,
-        height: labelSize.height
+        height: labelSize.height,
+        padding
       };
       return elemDim;
     }
@@ -134,6 +139,10 @@ LabelAnnotation.defaultRoutes = {
   borderColor: 'color',
   backgroundColor: 'color',
 };
+
+function getLabelCoord(start, padding, borderWidth) {
+  return start + padding + (borderWidth / 2);
+}
 
 function measureRect(point, size, options, padding) {
   const width = size.width + padding.width + options.borderWidth;
