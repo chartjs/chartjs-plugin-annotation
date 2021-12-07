@@ -105,23 +105,23 @@ module.exports = {
           title: 'Box annotations',
           children: [
             'box/basic',
-			'box/quarters',
+            'box/quarters',
           ]
         },
         {
           title: 'Ellipse annotations',
           children: [
             'ellipse/basic',
-			'ellipse/rotation',
+            'ellipse/rotation',
           ]
         },
         {
           title: 'Label annotations',
           children: [
             'label/basic',
-			'label/point',
-			'label/callout',
-			'label/lowerUpper',
+            'label/point',
+            'label/callout',
+            'label/lowerUpper',
           ]
         },
         {
