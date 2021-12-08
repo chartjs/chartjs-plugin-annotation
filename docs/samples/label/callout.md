@@ -11,7 +11,7 @@ const numberCfg = {count: DATA_COUNT, min: MIN, max: MAX};
 const data = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
   datasets: [{
-    data: Utils.numbers(numberCfg),
+    data: Utils.numbers(numberCfg)
   }]
 };
 // </block:setup>
@@ -20,22 +20,22 @@ const data = {
 const annotation = {
   type: 'label',
   backgroundColor: 'rgba(245,245,245)',
-  xValue: (ctx) => maxLabel(ctx),
-  yValue: (ctx) => maxValue(ctx),
+  callout: {
+    enabled: true,
+    borderColor: (ctx) => ctx.chart.data.datasets[0].borderColor
+  },
   content: (ctx) => 'Maximum value is ' + maxValue(ctx).toFixed(2),
-  xAdjust: (ctx) => maxIndex(ctx) <= 3 ? 60 : maxIndex(ctx) >= 10 ? -60 : 0,
-  yAdjust: -60,
+  font: {
+    size: 16
+  },
   position: {
     x: (ctx) => maxIndex(ctx) <= 3 ? 'start' : maxIndex(ctx) >= 10 ? 'end' : 'center',
     y: 'center'
   },
-  font: {
-    size: 16
-  },
-  callout: {
-    enabled: true,
-    borderColor: (ctx) => ctx.chart.data.datasets[0].borderColor
-  }
+  xAdjust: (ctx) => maxIndex(ctx) <= 3 ? 60 : maxIndex(ctx) >= 10 ? -60 : 0,
+  xValue: (ctx) => maxLabel(ctx),
+  yAdjust: -60,
+  yValue: (ctx) => maxValue(ctx)
 };
 // </block:annotation>
 
@@ -47,30 +47,25 @@ const config = {
     scales: {
       y: {
         beginAtZero: true,
-        min: 0,
-        max: 140
+        max: 140,
+        min: 0
       }
     },
     plugins: {
       annotation: {
-        animation: false,
         annotations: {
           annotation
         }
       }
-    },
+    }
   }
 };
 /* </block:config> */
 
 // <block:utils:3>
 function maxValue(ctx) {
-  let max = 0;
-  const dataset = ctx.chart.data.datasets[0];
-  dataset.data.forEach(function(el) {
-    max = Math.max(max, el);
-  });
-  return max;
+  const values = ctx.chart.data.datasets[0].data;
+  return Math.max(...values);
 }
 
 function maxIndex(ctx) {
@@ -91,7 +86,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data = dataset.data.map(() => Utils.rand(MIN, MAX));
       });
-
       chart.update();
     }
   }

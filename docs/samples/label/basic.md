@@ -11,7 +11,7 @@ const numberCfg = {count: DATA_COUNT, min: MIN, max: MAX};
 const data = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
   datasets: [{
-    data: Utils.numbers(numberCfg),
+    data: Utils.numbers(numberCfg)
   }]
 };
 // </block:setup>
@@ -19,57 +19,48 @@ const data = {
 // <block:annotation1:1>
 const annotation1 = {
   type: 'label',
-  backgroundColor: 'rgba(245,245,245)',
-  borderWidth: 1,
+  borderColor: (ctx) => ctx.chart.data.datasets[0].backgroundColor,
   borderRadius: 6,
-  xValue: 'March',
-  yValue: (ctx) => yValue(ctx, 'March'),
-  content: 'March is annotated',
+  borderWidth: 1,
+  content: ['March', 'annotated'],
   position: {
     x: 'center',
     y: 'end'
   },
-  font: {
-    size: 16
-  }
+  xValue: 'March',
+  yValue: (ctx) => yValue(ctx, 'March')
 };
 // </block:annotation1>
 
 // <block:annotation2:2>
 const annotation2 = {
   type: 'label',
-  backgroundColor: 'rgba(245,245,245)',
-  borderWidth: 1,
+  borderColor: (ctx) => ctx.chart.data.datasets[0].backgroundColor,
   borderRadius: 6,
-  xValue: 'June',
-  yValue: (ctx) => yValue(ctx, 'June'),
-  content: 'June is annotated',
+  borderWidth: 1,
+  content: ['June', 'annotated'],
   position: {
     x: 'center',
     y: 'end'
   },
-  font: {
-    size: 16
-  }
+  xValue: 'June',
+  yValue: (ctx) => yValue(ctx, 'June')
 };
 // </block:annotation2>
 
 // <block:annotation3:3>
 const annotation3 = {
   type: 'label',
-  backgroundColor: 'rgba(245,245,245)',
-  borderWidth: 1,
+  borderColor: (ctx) => ctx.chart.data.datasets[0].backgroundColor,
   borderRadius: 6,
-  xValue: 'October',
-  yValue: (ctx) => yValue(ctx, 'October'),
-  content: 'October is annotated',
+  borderWidth: 1,
+  content: ['October', 'annotated'],
   position: {
     x: 'center',
     y: 'end'
   },
-  font: {
-    size: 16
-  }
+  xValue: 'October',
+  yValue: (ctx) => yValue(ctx, 'October')
 };
 // </block:annotation3>
 
@@ -81,25 +72,24 @@ const config = {
     scales: {
       x: {
         beginAtZero: true,
-        min: 0,
-        max: 120
+        max: 120,
+        min: 0
       },
       y: {
         beginAtZero: true,
-        min: 0,
-        max: 120
+        max: 120,
+        min: 0
       }
     },
     plugins: {
       annotation: {
-        animation: false,
         annotations: {
           annotation1,
           annotation2,
           annotation3
         }
       }
-    },
+    }
   }
 };
 /* </block:config> */
@@ -119,7 +109,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data = dataset.data.map(() => Utils.rand(MIN, MAX));
       });
-
       chart.update();
     }
   }

@@ -18,7 +18,7 @@ const numberCfg = {count: DATA_COUNT, min: MIN, max: MAX};
 const data = {
   labels: labels,
   datasets: [{
-    data: Utils.numbers(numberCfg),
+    data: Utils.numbers(numberCfg)
   }]
 };
 // </block:setup>
@@ -26,17 +26,17 @@ const data = {
 // <block:annotation:1>
 const annotation = {
   type: 'line',
-  scaleID: 'y',
-  borderWidth: 3,
   borderColor: 'black',
   borderDash: [6, 6],
   borderDashOffset: 0,
-  value: (ctx) => average(ctx),
+  borderWidth: 3,
   label: {
     enabled: true,
     content: (ctx) => 'Average: ' + average(ctx).toFixed(2),
     position: 'end'
-  }
+  },
+  scaleID: 'y',
+  value: (ctx) => average(ctx)
 };
 // </block:annotation>
 
@@ -58,12 +58,8 @@ const config = {
 
 // <block:utils:3>
 function average(ctx) {
-  const dataset = ctx.chart.data.datasets[0];
-  let sum = 0;
-  dataset.data.forEach(function(el) {
-    sum += el;
-  });
-  return sum / dataset.data.length;
+  const values = ctx.chart.data.datasets[0].data;
+  return values.reduce((a, b) => a + b, 0) / values.length;
 }
 // </block:utils>
 
@@ -74,7 +70,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data = dataset.data.map(() => Utils.rand(MIN, MAX));
       });
-
       chart.update();
     }
   },
@@ -85,7 +80,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data.push(Utils.rand(MIN, MAX));
       });
-
       chart.update();
     }
   },
@@ -96,7 +90,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data.shift();
       });
-
       chart.update();
     }
   }

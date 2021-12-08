@@ -11,7 +11,7 @@ const numberCfg = {count: DATA_COUNT, min: MIN, max: MAX};
 const data = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
   datasets: [{
-    data: Utils.numbers(numberCfg),
+    data: Utils.numbers(numberCfg)
   }]
 };
 // </block:setup>
@@ -20,29 +20,30 @@ const data = {
 const annotation = {
   type: 'label',
   backgroundColor: 'rgba(245,245,245, 0.5)',
-  xValue: (ctx) => maxLabel(ctx),
-  yValue: (ctx) => maxValue(ctx),
   content: (ctx) => 'Maximum value is ' + maxValue(ctx).toFixed(2),
-  yAdjust: -6,
+  font: {
+    size: 16
+  },
   padding: {
     top: 6,
     left: 6,
     right: 6,
     bottom: 12
   },
+  point: {
+    enabled: true,
+    backgroundColor: 'transparent',
+    borderColor: (ctx) => ctx.chart.data.datasets[0].borderColor,
+    pointStyle: 'rectRounded',
+    radius: 10
+  },
   position: {
     x: (ctx) => maxIndex(ctx) <= 3 ? 'start' : maxIndex(ctx) >= 10 ? 'end' : 'center',
     y: 'end'
   },
-  font: {
-    size: 16
-  },
-  point: {
-    enabled: true,
-    borderColor: (ctx) => ctx.chart.data.datasets[0].borderColor,
-    backgroundColor: 'transparent',
-    radius: 10
-  }
+  xValue: (ctx) => maxLabel(ctx),
+  yAdjust: -6,
+  yValue: (ctx) => maxValue(ctx)
 };
 // </block:annotation>
 
@@ -54,19 +55,18 @@ const config = {
     scales: {
       y: {
         beginAtZero: true,
-        min: 0,
-        max: 120
+        max: 120,
+        min: 0
       }
     },
     plugins: {
       annotation: {
         clip: false,
-        animation: false,
         annotations: {
           annotation
         }
       }
-    },
+    }
   }
 };
 /* </block:config> */
@@ -99,7 +99,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data = dataset.data.map(() => Utils.rand(MIN, MAX));
       });
-
       chart.update();
     }
   }

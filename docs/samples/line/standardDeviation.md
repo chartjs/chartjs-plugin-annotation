@@ -1,8 +1,8 @@
-# Lower and upper bounds
+# Standard deviation
 
 ```js chart-editor
 // <block:setup:4>
-const DATA_COUNT = 8;
+const DATA_COUNT = 16;
 const MIN = 10;
 const MAX = 100;
 
@@ -19,10 +19,6 @@ const data = {
   labels: labels,
   datasets: [{
     data: Utils.numbers(numberCfg)
-  }, {
-    data: Utils.numbers(numberCfg)
-  }, {
-    data: Utils.numbers(numberCfg)
   }]
 };
 // </block:setup>
@@ -30,56 +26,80 @@ const data = {
 // <block:annotation1:1>
 const annotation1 = {
   type: 'line',
-  borderColor: 'black',
+  borderColor: 'rgb(100,149,237)',
+  borderDash: [6, 6],
+  borderDashOffset: 0,
   borderWidth: 3,
   label: {
     enabled: true,
-    backgroundColor: 'black',
-    borderColor: 'black',
-    borderRadius: 10,
-    borderWidth: 2,
-    content: (ctx) => 'Lower bound: ' + minValue(ctx).toFixed(3),
-    rotation: 'auto'
+    backgroundColor: 'rgba(100,149,237)',
+    content: (ctx) => 'Average: ' + average(ctx).toFixed(2)
   },
   scaleID: 'y',
-  value: minValue
+  value: (ctx) => average(ctx)
 };
 // </block:annotation1>
 
 // <block:annotation2:2>
 const annotation2 = {
   type: 'line',
+  borderColor: 'rgba(102,102,102,0.5)',
+  borderDash: [6, 6],
+  borderDashOffset: 0,
   borderWidth: 3,
-  borderColor: 'black',
   label: {
     enabled: true,
-    backgroundColor: 'black',
-    borderColor: 'black',
-    borderRadius: 10,
-    borderWidth: 2,
-    content: (ctx) => 'Upper bound: ' + maxValue(ctx).toFixed(3),
-    rotation: 'auto'
+    backgroundColor: 'rgba(102,102,102,0.5)',
+    color: 'black',
+    content: (ctx) => (average(ctx) + standardDeviation(ctx)).toFixed(2),
+    position: 'start',
+    rotation: -90,
+    yAdjust: -28
   },
   scaleID: 'y',
-  value: maxValue
+  value: (ctx) => average(ctx) + standardDeviation(ctx)
 };
 // </block:annotation2>
+
+// <block:annotation3:3>
+const annotation3 = {
+  type: 'line',
+  borderColor: 'rgba(102,102,102,0.5)',
+  borderDash: [6, 6],
+  borderDashOffset: 0,
+  borderWidth: 3,
+  label: {
+    enabled: true,
+    backgroundColor: 'rgba(102,102,102,0.5)',
+    color: 'black',
+    content: (ctx) => (average(ctx) - standardDeviation(ctx)).toFixed(2),
+    position: 'end',
+    rotation: 90,
+    yAdjust: 28
+  },
+  scaleID: 'y',
+  value: (ctx) => average(ctx) - standardDeviation(ctx)
+};
+// </block:annotation3>
 
 /* <block:config:0> */
 const config = {
   type: 'line',
   data,
   options: {
-    scales: {
+    scale: {
       y: {
-        stacked: true
+        beginAtZero: true,
+        max: 120,
+        min: 0
       }
     },
     plugins: {
       annotation: {
         annotations: {
           annotation1,
-          annotation2
+          annotation2,
+          annotation3
         }
       }
     }
@@ -87,26 +107,19 @@ const config = {
 };
 /* </block:config> */
 
-// <block:utils:3>
-function minValue(ctx) {
-  const dataset = ctx.chart.data.datasets[0];
-  const min = dataset.data.reduce((max, point) => Math.min(point, max), Infinity);
-  return isFinite(min) ? min : 0;
+// <block:utils:5>
+function average(ctx) {
+  const values = ctx.chart.data.datasets[0].data;
+  return values.reduce((a, b) => a + b, 0) / values.length;
 }
 
-function maxValue(ctx) {
-  const datasets = ctx.chart.data.datasets;
-  const count = datasets[0].data.length;
-  let max = 0;
-  for (let i = 0; i < count; i++) {
-    let sum = 0;
-    for (const dataset of datasets) {
-      sum += dataset.data[i];
-    }
-    max = Math.max(max, sum);
-  }
-  return max;
+function standardDeviation(ctx) {
+  const values = ctx.chart.data.datasets[0].data;
+  const n = values.length;
+  const mean = average(ctx);
+  return Math.sqrt(values.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n);
 }
+
 // </block:utils>
 
 var actions = [

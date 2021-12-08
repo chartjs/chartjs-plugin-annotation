@@ -1,4 +1,4 @@
-# Lower and upper level labels
+# Lower and upper bounds labels
 
 ```js chart-editor
 // <block:setup:3>
@@ -18,11 +18,11 @@ const numberCfg = {count: DATA_COUNT, min: MIN, max: MAX};
 const data = {
   labels: labels,
   datasets: [{
-    data: Utils.numbers(numberCfg),
+    data: Utils.numbers(numberCfg)
   }, {
-    data: Utils.numbers(numberCfg),
+    data: Utils.numbers(numberCfg)
   }, {
-    data: Utils.numbers(numberCfg),
+    data: Utils.numbers(numberCfg)
   }]
 };
 // </block:setup>
@@ -30,30 +30,30 @@ const data = {
 // <block:annotation1:1>
 const annotation1 = {
   type: 'label',
-  xScaleID: 'x',
-  xValue: 0,
-  yScaleID: 'y',
-  yValue: minValue,
+  content: (ctx) => 'Lower bound: ' + minValue(ctx).toFixed(3),
   position: {
     x: 'start',
     y: 'end'
   },
-  content: (ctx) => 'Lower bound: ' + minValue(ctx).toFixed(3)
+  xScaleID: 'x',
+  xValue: 0,
+  yScaleID: 'y',
+  yValue: minValue
 };
 // </block:annotation1>
 
 // <block:annotation2:2>
 const annotation2 = {
   type: 'label',
-  xScaleID: 'x',
-  xValue: 0,
-  yScaleID: 'y',
-  yValue: maxValue,
+  content: (ctx) => 'Upper bound: ' + maxValue(ctx).toFixed(3),
   position: {
     x: 'start',
     y: 'start'
   },
-  content: (ctx) => 'Upper bound: ' + maxValue(ctx).toFixed(3)
+  xScaleID: 'x',
+  xValue: 0,
+  yScaleID: 'y',
+  yValue: maxValue
 };
 // </block:annotation2>
 
@@ -62,18 +62,17 @@ const config = {
   type: 'line',
   data,
   options: {
+    scales: {
+      y: {
+        stacked: true
+      }
+    },
     plugins: {
       annotation: {
         annotations: {
           annotation1,
           annotation2
         }
-      }
-    },
-    // Core options
-    scales: {
-      y: {
-        stacked: true
       }
     }
   }
@@ -109,7 +108,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data = dataset.data.map(() => Utils.rand(MIN, MAX));
       });
-
       chart.update();
     }
   },
@@ -120,7 +118,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data.push(Utils.rand(MIN, MAX));
       });
-
       chart.update();
     }
   },
@@ -131,7 +128,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data.shift();
       });
-
       chart.update();
     }
   }

@@ -10,9 +10,9 @@ Utils.srand(8);
 
 const data = {
   datasets: [{
-    data: Utils.points({count: DATA_COUNT, min: MIN[0], max: MAX[0]}),
+    data: Utils.points({count: DATA_COUNT, min: MIN[0], max: MAX[0]})
   }, {
-    data: Utils.points({count: DATA_COUNT, min: MIN[1], max: MAX[1]}),
+    data: Utils.points({count: DATA_COUNT, min: MIN[1], max: MAX[1]})
   }]
 };
 // </block:setup>
@@ -24,10 +24,10 @@ const annotation1 = {
   borderColor: 'rgba(0,150,0,0.2)',
   borderWidth: 1,
   rotation: 90,
-  xMin: (ctx) => min(ctx, 0, 'x') - 10,
-  yMin: (ctx) => min(ctx, 0, 'y') - 10,
   xMax: (ctx) => max(ctx, 0, 'x') + 10,
-  yMax: (ctx) => max(ctx, 0, 'y') + 10
+  xMin: (ctx) => min(ctx, 0, 'x') - 10,
+  yMax: (ctx) => max(ctx, 0, 'y') + 10,
+  yMin: (ctx) => min(ctx, 0, 'y') - 10
 };
 // </block:annotation1>
 
@@ -38,10 +38,10 @@ const annotation2 = {
   borderColor: 'rgba(150,0,0,0.2)',
   borderWidth: 1,
   rotation: 90,
-  xMin: (ctx) => min(ctx, 1, 'x') - 10,
-  yMin: (ctx) => min(ctx, 1, 'y') - 10,
   xMax: (ctx) => max(ctx, 1, 'x') + 10,
-  yMax: (ctx) => max(ctx, 1, 'y') + 10
+  xMin: (ctx) => min(ctx, 1, 'x') - 10,
+  yMax: (ctx) => max(ctx, 1, 'y') + 10,
+  yMin: (ctx) => min(ctx, 1, 'y') - 10
 };
 // </block:annotation2>
 
@@ -53,13 +53,13 @@ const config = {
     scales: {
       x: {
         beginAtZero: true,
-        min: 0,
-        max: 100
+        max: 100,
+        min: 0
       },
       y: {
         beginAtZero: true,
-        min: 0,
-        max: 100
+        max: 100,
+        min: 0
       }
     },
     plugins: {
@@ -69,7 +69,7 @@ const config = {
           annotation2
         }
       }
-    },
+    }
   }
 };
 /* </block:config> */
@@ -97,7 +97,6 @@ var actions = [
           p.y = Utils.rand(MIN[i], MAX[i]);
         });
       });
-
       chart.update();
     }
   },
@@ -117,7 +116,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data.shift();
       });
-
       chart.update();
     }
   }

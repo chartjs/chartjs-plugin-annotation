@@ -1,10 +1,13 @@
-# Yearly quarters
+# Limited lines
 
 ```js chart-editor
-// <block:setup:5>
+// <block:setup:4>
 const DATA_COUNT = 12;
 const MIN = 10;
 const MAX = 100;
+
+Utils.srand(8);
+const jointValue = Utils.rand(MIN, MAX);
 
 const numberCfg = {count: DATA_COUNT, min: MIN, max: MAX};
 
@@ -12,91 +15,70 @@ const data = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
   datasets: [{
     data: Utils.numbers(numberCfg)
+  }, {
+    data: Utils.numbers(numberCfg)
   }]
 };
 // </block:setup>
 
 // <block:annotation1:1>
 const annotation1 = {
-  type: 'box',
-  backgroundColor: 'rgba(255,245,157,0.2)',
-  borderWidth: 0,
-  xMax: 2.5,
-  xMin: -0.5,
+  type: 'line',
+  borderColor: 'green',
+  borderDash: [6, 6],
+  borderWidth: 3,
   label: {
-    drawTime: 'afterDraw',
     enabled: true,
-    content: 'First quarter',
-    position: {
-      x: 'center',
-      y: 'start'
-    }
-  }
+    backgroundColor: 'lightGreen',
+    borderRadius: 0,
+    color: 'green',
+    content: 'Summer time'
+  },
+  xMax: 8,
+  xMin: 5,
+  xScaleID: 'x',
+  yMax: 110,
+  yMin: 110,
+  yScaleID: 'y'
 };
 // </block:annotation1>
 
 // <block:annotation2:2>
 const annotation2 = {
-  type: 'box',
-  backgroundColor: 'rgba(188,170,164,0.2)',
-  borderWidth: 0,
-  xMax: 5.5,
-  xMin: 2.5,
-  label: {
-    drawTime: 'afterDraw',
-    enabled: true,
-    content: 'Second quarter',
-    position: {
-      x: 'center',
-      y: 'start'
-    }
-  }
+  type: 'line',
+  borderColor: 'green',
+  borderDash: [6, 6],
+  borderWidth: 1,
+  xMax: 5,
+  xMin: 5,
+  xScaleID: 'x',
+  yMax: 0,
+  yMin: 110,
+  yScaleID: 'y'
 };
 // </block:annotation2>
 
 // <block:annotation3:3>
 const annotation3 = {
-  type: 'box',
-  backgroundColor: 'rgba(165,214,167,0.2)',
-  borderWidth: 0,
-  xMax: 8.5,
-  xMin: 5.5,
-  label: {
-    drawTime: 'afterDraw',
-    enabled: true,
-    content: 'Third quarter',
-    position: {
-      x: 'center',
-      y: 'start'
-    }
-  }
+  type: 'line',
+  borderColor: 'green',
+  borderDash: [6, 6],
+  borderWidth: 1,
+  xMax: 8,
+  xMin: 8,
+  xScaleID: 'x',
+  yMax: 0,
+  yMin: 110,
+  yScaleID: 'y'
 };
 // </block:annotation3>
-
-// <block:annotation4:4>
-const annotation4 = {
-  type: 'box',
-  backgroundColor: 'rgba(159,168,218,0.2)',
-  borderWidth: 0,
-  xMin: 8.5,
-  label: {
-    drawTime: 'afterDraw',
-    enabled: true,
-    content: 'Fourth quarter',
-    position: {
-      x: 'center',
-      y: 'start'
-    }
-  }
-};
-// </block:annotation4>
 
 /* <block:config:0> */
 const config = {
   type: 'line',
   data,
   options: {
-    scales: {
+    scale: {
       y: {
         beginAtZero: true,
         max: 120,
@@ -109,8 +91,7 @@ const config = {
         annotations: {
           annotation1,
           annotation2,
-          annotation3,
-          annotation4
+          annotation3
         }
       }
     }
@@ -118,7 +99,7 @@ const config = {
 };
 /* </block:config> */
 
-var actions = [
+const actions = [
   {
     name: 'Randomize',
     handler: function(chart) {

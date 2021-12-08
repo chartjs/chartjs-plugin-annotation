@@ -18,7 +18,7 @@ const numberCfg = {count: DATA_COUNT, min: MIN, max: MAX};
 const data = {
   labels: labels,
   datasets: [{
-    data: Utils.numbers(numberCfg),
+    data: Utils.numbers(numberCfg)
   }]
 };
 // </block:setup>
@@ -26,10 +26,10 @@ const data = {
 // <block:annotation:1>
 const annotation = {
   type: 'line',
-  scaleID: 'y',
-  borderWidth: 3,
   borderColor: 'black',
-  value: 50,
+  borderWidth: 3,
+  scaleID: 'y',
+  value: 50
 };
 // </block:annotation>
 
@@ -38,17 +38,16 @@ const config = {
   type: 'line',
   data,
   options: {
+    scales: {
+      y: {
+        stacked: true
+      }
+    },
     plugins: {
       annotation: {
         annotations: {
           annotation
         }
-      }
-    },
-    // Core options
-    scales: {
-      y: {
-        stacked: true
       }
     }
   }
@@ -62,7 +61,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data = dataset.data.map(() => Utils.rand(MIN, MAX));
       });
-
       chart.update();
     }
   },
@@ -73,7 +71,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data.push(Utils.rand(MIN, MAX));
       });
-
       chart.update();
     }
   },
@@ -84,7 +81,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data.shift();
       });
-
       chart.update();
     }
   }

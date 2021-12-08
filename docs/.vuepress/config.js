@@ -106,6 +106,7 @@ module.exports = {
           children: [
             'box/basic',
             'box/quarters',
+            'box/disclosure',
           ]
         },
         {
@@ -128,9 +129,12 @@ module.exports = {
           title: 'Line annotations',
           children: [
             'line/basic',
-            'line/average',
             'line/lowerUpper',
-            'line/trend',
+            'line/limited',
+            'line/average',
+            'line/standardDeviation',
+            'line/visibility',
+            'line/animation',
           ]
         },
         {
