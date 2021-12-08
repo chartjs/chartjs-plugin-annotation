@@ -40,12 +40,14 @@ export default class LabelAnnotation extends Element {
 
   draw(ctx) {
     if (this.labelRect) {
+      this.point.x = this.x + this.point.xAdjust;
+      this.point.y = this.y + this.point.yAdjust;
       applyCallout(ctx, this);
       applyBox(ctx, this);
-      const {width, height, padding} = this.labelRect;
-      const elemDim = measureRect(this.point, {width, height}, this.options, padding);
-      this.labelRect.x = getLabelCoord(elemDim.x, padding.left, this.options.borderWidth);
-      this.labelRect.y = getLabelCoord(elemDim.y, padding.top, this.options.borderWidth);
+      const padding = this.labelRect.padding;
+      const borderWidth = this.options.borderWidth;
+      this.labelRect.x = getLabelCoord(this.x, padding.left, borderWidth);
+      this.labelRect.y = getLabelCoord(this.y, padding.top, borderWidth);
       drawLabel(ctx, this.labelRect, this.options);
       applyPoint(ctx, this);
     }
@@ -65,6 +67,8 @@ export default class LabelAnnotation extends Element {
         height: labelSize.height,
         padding
       };
+      this.point.xAdjust = this.point.x - elemDim.x;
+      this.point.yAdjust = this.point.y - elemDim.y;
       return elemDim;
     }
     this.point = null;
