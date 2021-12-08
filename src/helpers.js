@@ -272,6 +272,13 @@ export function inPointRange(point, center, radius) {
   return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius, 2);
 }
 
+export function inBoxRange(mouseX, mouseY, {x, y, width, height}) {
+  return mouseX >= x &&
+         mouseX <= x + width &&
+         mouseY >= y &&
+         mouseY <= y + height;
+}
+
 export function getElementCenterPoint(element, useFinalPosition) {
   const {x, y} = element.getProps(['x', 'y'], useFinalPosition);
   return {x, y};
