@@ -3,9 +3,9 @@ import {drawPoint, inPointRange, getElementCenterPoint, resolvePointPosition} fr
 
 export default class PointAnnotation extends Element {
 
-  inRange(x, y) {
-    const {width, options} = this;
-    return inPointRange({x, y}, this.getCenterPoint(true), width / 2 + options.borderWidth);
+  inRange(x, y, useFinalPosition) {
+    const {width} = this.getProps(['width'], useFinalPosition);
+    return inPointRange({x, y}, this.getCenterPoint(useFinalPosition), width / 2 + this.options.borderWidth);
   }
 
   getCenterPoint(useFinalPosition) {

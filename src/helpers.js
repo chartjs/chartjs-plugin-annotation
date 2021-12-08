@@ -172,11 +172,20 @@ export function drawBox(ctx, rect, options) {
   ctx.restore();
 }
 
+const isEnabled = (options) => options && (options.display || options.enabled);
+
 export function isLabelVisible(options) {
-  return options && (options.display || options.enabled) && options.content;
+  return isEnabled(options) && options.content;
+}
+
+export function isPointVisible(options) {
+  return isEnabled(options) && options.radius > 0.1;
 }
 
 export function drawLabel(ctx, rect, options) {
+  if (!isLabelVisible(options)) {
+    return;
+  }
   const content = options.content;
   if (isImageOrCanvas(content)) {
     ctx.drawImage(content, rect.x, rect.y, rect.width, rect.height);
@@ -246,6 +255,9 @@ export function getChartRect(chart, options) {
 }
 
 export function drawPoint(ctx, point, options) {
+  if (!isPointVisible(options)) {
+    return;
+  }
   ctx.save();
   ctx.fillStyle = options.backgroundColor;
   setBorderStyle(ctx, options);
