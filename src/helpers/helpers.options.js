@@ -50,3 +50,7 @@ function readValueToProps(value, props, defValue) {
 export function toPosition(value) {
   return readValueToProps(value, ['x', 'y'], 'center');
 }
+
+export function isBoundToPoint(options) {
+  return options && (options.xValue || options.yValue);
+}
