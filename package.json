@@ -19,6 +19,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "karma start --auto-watch --no-single-run --browsers chrome",
+    "dev:ff": "karma start --auto-watch --no-single-run --browsers firefox",
     "docs": "npm run build && vuepress build docs --no-cache",
     "docs:dev": "npm run build && vuepress dev docs --no-cache",
     "lint": "concurrently \"npm:lint-*\"",
