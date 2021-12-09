@@ -31,3 +31,4 @@ rules:
   es/no-regexp-named-capture-groups: "error"
   es/no-regexp-s-flag: "error"
   es/no-regexp-unicode-property-escapes: "error"
+  linebreak-style: ["error", "unix"]
