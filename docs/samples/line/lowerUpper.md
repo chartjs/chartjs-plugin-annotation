@@ -1,4 +1,4 @@
-# Label
+# Lower and upper bounds
 
 ```js chart-editor
 // <block:setup:4>
@@ -18,42 +18,50 @@ const numberCfg = {count: DATA_COUNT, min: MIN, max: MAX};
 const data = {
   labels: labels,
   datasets: [{
-    data: Utils.numbers(numberCfg),
+    data: Utils.numbers(numberCfg)
   }, {
-    data: Utils.numbers(numberCfg),
+    data: Utils.numbers(numberCfg)
   }, {
-    data: Utils.numbers(numberCfg),
+    data: Utils.numbers(numberCfg)
   }]
 };
 // </block:setup>
 
 // <block:annotation1:1>
 const annotation1 = {
-  type: 'label',
-  xScaleID: 'x',
-  xValue: 2,
-  yScaleID: 'y',
-  yValue: minValue,
-  position: {
-    x: 'start',
-    y: 'end'
+  type: 'line',
+  borderColor: 'black',
+  borderWidth: 3,
+  label: {
+    enabled: true,
+    backgroundColor: 'black',
+    borderColor: 'black',
+    borderRadius: 10,
+    borderWidth: 2,
+    content: (ctx) => 'Lower bound: ' + minValue(ctx).toFixed(3),
+    rotation: 'auto'
   },
-  content: (ctx) => 'Lower bound: ' + minValue(ctx).toFixed(3)
+  scaleID: 'y',
+  value: minValue
 };
 // </block:annotation1>
 
 // <block:annotation2:2>
 const annotation2 = {
-  type: 'label',
-  xScaleID: 'x',
-  xValue: 2,
-  yScaleID: 'y',
-  yValue: maxValue,
-  position: {
-    x: 'start',
-    y: 'start'
+  type: 'line',
+  borderWidth: 3,
+  borderColor: 'black',
+  label: {
+    enabled: true,
+    backgroundColor: 'black',
+    borderColor: 'black',
+    borderRadius: 10,
+    borderWidth: 2,
+    content: (ctx) => 'Upper bound: ' + maxValue(ctx).toFixed(3),
+    rotation: 'auto'
   },
-  content: (ctx) => 'Upper bound: ' + maxValue(ctx).toFixed(3)
+  scaleID: 'y',
+  value: maxValue
 };
 // </block:annotation2>
 
@@ -62,18 +70,17 @@ const config = {
   type: 'line',
   data,
   options: {
+    scales: {
+      y: {
+        stacked: true
+      }
+    },
     plugins: {
       annotation: {
         annotations: {
           annotation1,
           annotation2
         }
-      }
-    },
-    // Core options
-    scales: {
-      y: {
-        stacked: true
       }
     }
   }
@@ -109,7 +116,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data = dataset.data.map(() => Utils.rand(MIN, MAX));
       });
-
       chart.update();
     }
   },
@@ -120,7 +126,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data.push(Utils.rand(MIN, MAX));
       });
-
       chart.update();
     }
   },
@@ -131,24 +136,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data.shift();
       });
-
-      chart.update();
-    }
-  },
-  {
-    name: 'Cycle x-position',
-    handler: function(chart) {
-      const annotations = chart.options.plugins.annotation.annotations;
-      if (annotations.annotation1.position.x === 'start') {
-        annotations.annotation1.position.x = 'end';
-        annotations.annotation2.position.x = 'end';
-      } else if (annotations.annotation1.position.x === 'center') {
-        annotations.annotation1.position.x = 'start';
-        annotations.annotation2.position.x = 'start';
-      } else {
-        annotations.annotation1.position.x = 'center';
-        annotations.annotation2.position.x = 'center';
-      }
       chart.update();
     }
   }

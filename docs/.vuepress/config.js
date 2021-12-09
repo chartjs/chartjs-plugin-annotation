@@ -15,7 +15,7 @@ module.exports = {
     ['redirect', {
       redirectors: [
         // Default sample page when accessing /samples.
-        {base: '/samples', alternative: ['types/line']},
+        {base: '/samples', alternative: ['intro']},
       ],
     }],
     ['@simonbrunel/vuepress-plugin-versions', {
@@ -102,20 +102,59 @@ module.exports = {
       '/samples/': [
         'intro',
         {
-          title: 'Types',
-          collapsable: false,
+          title: 'Box annotations',
           children: [
-            'types/box',
-            'types/ellipse',
-            'types/label',
-            'types/line',
-            'types/point',
-            'types/polygon'
-          ],
+            'box/basic',
+            'box/quarters',
+            'box/disclosure',
+          ]
+        },
+        {
+          title: 'Ellipse annotations',
+          children: [
+            'ellipse/basic',
+            'ellipse/rotation',
+          ]
+        },
+        {
+          title: 'Label annotations',
+          children: [
+            'label/basic',
+            'label/point',
+            'label/callout',
+            'label/lowerUpper',
+          ]
+        },
+        {
+          title: 'Line annotations',
+          children: [
+            'line/basic',
+            'line/lowerUpper',
+            'line/limited',
+            'line/average',
+            'line/standardDeviation',
+            'line/visibility',
+            'line/labelVisibility',
+            'line/datasetBars',
+            'line/animation',
+          ]
+        },
+        {
+          title: 'Point annotations',
+          children: [
+            'point/basic',
+            'point/combined',
+          ]
+        },
+        {
+          title: 'Polygon annotations',
+          children: [
+            'polygon/basic',
+            'polygon/stop',
+            ]
         },
         {
           title: 'Charts',
-          collapsable: false,
           children: [
             'charts/bar',
             'charts/line',

@@ -1,4 +1,4 @@
-# Point
+# Basic
 
 ```js chart-editor
 // <block:setup:4>
@@ -18,11 +18,11 @@ const numberCfg = {count: DATA_COUNT, min: MIN, max: MAX};
 const data = {
   labels: labels,
   datasets: [{
-    data: Utils.numbers(numberCfg),
+    data: Utils.numbers(numberCfg)
   }, {
-    data: Utils.numbers(numberCfg),
+    data: Utils.numbers(numberCfg)
   }, {
-    data: Utils.numbers(numberCfg),
+    data: Utils.numbers(numberCfg)
   }]
 };
 // </block:setup>
@@ -30,10 +30,10 @@ const data = {
 // <block:annotation1:1>
 const annotation1 = {
   type: 'point',
-  scaleID: 'y',
-  borderWidth: 3,
-  borderColor: 'black',
   backgroundColor: 'rgba(0,255,255,0.4)',
+  borderColor: 'black',
+  borderWidth: 3,
+  scaleID: 'y',
   xValue: (ctx) => value(ctx, 0, 2, 'x'),
   yValue: (ctx) => value(ctx, 0, 2, 'y')
 };
@@ -42,15 +42,30 @@ const annotation1 = {
 // <block:annotation2:2>
 const annotation2 = {
   type: 'point',
-  scaleID: 'y',
-  borderWidth: 5,
-  borderColor: 'red',
   backgroundColor: 'transparent',
+  borderColor: 'red',
+  borderWidth: 5,
+  pointStyle: 'triangle',
   radius: 25,
+  scaleID: 'y',
   xValue: (ctx) => value(ctx, 1, 4, 'x'),
   yValue: (ctx) => value(ctx, 1, 4, 'y')
 };
 // </block:annotation2>
+
+// <block:annotation3:3>
+const annotation3 = {
+  type: 'point',
+  borderColor: 'orange',
+  borderWidth: 3,
+  drawTime: 'beforeDraw',
+  pointStyle: 'star',
+  radius: 25,
+  scaleID: 'y',
+  xValue: (ctx) => value(ctx, 1, 6, 'x'),
+  yValue: (ctx) => value(ctx, 1, 6, 'y')
+};
+// </block:annotation3>
 
 /* <block:config:0> */
 const config = {
@@ -61,10 +76,11 @@ const config = {
       annotation: {
         annotations: {
           annotation1,
-          annotation2
+          annotation2,
+          annotation3
         }
       }
-    },
+    }
   }
 };
 /* </block:config> */
@@ -84,7 +100,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data = dataset.data.map(() => Utils.rand(MIN, MAX));
       });
-
       chart.update();
     }
   },
@@ -95,7 +110,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data.push(Utils.rand(MIN, MAX));
       });
-
       chart.update();
     }
   },
@@ -106,7 +120,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data.shift();
       });
-
       chart.update();
     }
   }

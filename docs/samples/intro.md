@@ -1,7 +1,7 @@
 # Intro
 
 ```js chart-editor
-// <block:setup:4>
+// <block:setup:3>
 Utils.srand(8);
 
 const data = {
@@ -32,37 +32,37 @@ const data = {
 // <block:annotation1:1>
 const annotation1 = {
   type: 'line',
-  scaleID: 'y',
-  value: Utils.rand(-100, 100),
   borderColor: 'black',
   borderWidth: 5,
+  click: function({chart, element}) {
+    console.log('Line annotation clicked');
+  },
   label: {
     backgroundColor: 'red',
     content: 'Test Label',
     enabled: true
   },
-  click: function({chart, element}) {
-    console.log('Line annotation clicked');
-  }
+  scaleID: 'y',
+  value: Utils.rand(-100, 100)
 };
 // </block:annotation1>
 
 // <block:annotation2:2>
 const annotation2 = {
-  drawTime: 'beforeDatasetsDraw',
   type: 'box',
-  xScaleID: 'x',
-  yScaleID: 'y',
-  xMin: 'February',
-  xMax: 'April',
-  yMin: Utils.rand(-100, 100),
-  yMax: Utils.rand(-100, 100),
   backgroundColor: 'rgba(101, 33, 171, 0.5)',
   borderColor: 'rgb(101, 33, 171)',
   borderWidth: 1,
   click: function({chart, element}) {
     console.log('Box annotation clicked');
-  }
+  },
+  drawTime: 'beforeDatasetsDraw',
+  xMax: 'April',
+  xMin: 'February',
+  xScaleID: 'x',
+  yMax: Utils.rand(-100, 100),
+  yMin: Utils.rand(-100, 100),
+  yScaleID: 'y'
 };
 // </block:annotation2>
 
@@ -78,7 +78,7 @@ const config = {
           annotation2
         }
       }
-    },
+    }
   }
 };
 /* </block:config> */
@@ -90,7 +90,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data = Utils.numbers({count: 7, min: -100, max: 100});
       });
-
       chart.update();
     }
   },

@@ -1,7 +1,7 @@
-# Line
+# Lower and upper bounds labels
 
 ```js chart-editor
-// <block:setup:4>
+// <block:setup:3>
 const DATA_COUNT = 8;
 const MIN = 10;
 const MAX = 100;
@@ -18,46 +18,42 @@ const numberCfg = {count: DATA_COUNT, min: MIN, max: MAX};
 const data = {
   labels: labels,
   datasets: [{
-    data: Utils.numbers(numberCfg),
+    data: Utils.numbers(numberCfg)
   }, {
-    data: Utils.numbers(numberCfg),
+    data: Utils.numbers(numberCfg)
   }, {
-    data: Utils.numbers(numberCfg),
+    data: Utils.numbers(numberCfg)
   }]
 };
 // </block:setup>
 
 // <block:annotation1:1>
 const annotation1 = {
-  type: 'line',
-  scaleID: 'y',
-  borderWidth: 3,
-  borderColor: 'black',
-  value: minValue,
-  label: {
-    content: (ctx) => 'Lower bound: ' + minValue(ctx).toFixed(3),
-    enabled: true
+  type: 'label',
+  content: (ctx) => 'Lower bound: ' + minValue(ctx).toFixed(3),
+  position: {
+    x: 'start',
+    y: 'end'
   },
+  xScaleID: 'x',
+  xValue: 2,
+  yScaleID: 'y',
+  yValue: minValue
 };
 // </block:annotation1>
 
 // <block:annotation2:2>
 const annotation2 = {
-  type: 'line',
-  scaleID: 'y',
-  borderWidth: 3,
-  borderColor: 'black',
-  value: maxValue,
-  label: {
-    rotation: 'auto',
-    backgroundColor: 'black',
-    borderColor: 'red',
-    borderDash: [6, 3],
-    borderRadius: 10,
-    borderWidth: 2,
-    content: (ctx) => 'Upper bound: ' + maxValue(ctx).toFixed(3),
-    enabled: true
-  }
+  type: 'label',
+  content: (ctx) => 'Upper bound: ' + maxValue(ctx).toFixed(3),
+  position: {
+    x: 'start',
+    y: 'start'
+  },
+  xScaleID: 'x',
+  xValue: 2,
+  yScaleID: 'y',
+  yValue: maxValue
 };
 // </block:annotation2>
 
@@ -66,6 +62,11 @@ const config = {
   type: 'line',
   data,
   options: {
+    scales: {
+      y: {
+        stacked: true
+      }
+    },
     plugins: {
       annotation: {
         annotations: {
@@ -73,18 +74,12 @@ const config = {
           annotation2
         }
       }
-    },
-    // Core options
-    scales: {
-      y: {
-        stacked: true
-      }
     }
   }
 };
 /* </block:config> */
 
-// <block:utils:3>
+// <block:utils:4>
 function minValue(ctx) {
   const dataset = ctx.chart.data.datasets[0];
   const min = dataset.data.reduce((max, point) => Math.min(point, max), Infinity);
@@ -113,7 +108,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data = dataset.data.map(() => Utils.rand(MIN, MAX));
       });
-
       chart.update();
     }
   },
@@ -124,7 +118,6 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data.push(Utils.rand(MIN, MAX));
       });
-
       chart.update();
     }
   },
@@ -135,7 +128,23 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data.shift();
       });
-
+      chart.update();
+    }
+  },
+  {
+    name: 'Cycle x-position',
+    handler: function(chart) {
+      const annotations = chart.options.plugins.annotation.annotations;
+      if (annotations.annotation1.position.x === 'start') {
+        annotations.annotation1.position.x = 'end';
+        annotations.annotation2.position.x = 'end';
+      } else if (annotations.annotation1.position.x === 'center') {
+        annotations.annotation1.position.x = 'start';
+        annotations.annotation2.position.x = 'start';
+      } else {
+        annotations.annotation1.position.x = 'center';
+        annotations.annotation2.position.x = 'center';
+      }
       chart.update();
     }
   }
