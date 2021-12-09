@@ -4,6 +4,8 @@
 
 ```js chart-editor
 // <block:setup:2>
+const uniqueId = new Date().getTime();
+
 const data = {
   datasets: [{
     backgroundColor: 'rgba(63,184,175,0.3)',
@@ -42,6 +44,7 @@ const config = {
   type: 'scatter',
   data,
   options: {
+    _sampleId: uniqueId,
     plugins: {
       annotation: {
         annotations: {
@@ -58,10 +61,11 @@ document.getElementById('update').addEventListener('input', update);
 
 function update() {
   const newValue = +document.querySelector('input[type=range]').value;
-  const chart = Chart.instances[0];
+  const chart = Object.values(Chart.instances).find(c => c.options._sampleId === uniqueId);
   chart.data.datasets[0].data[1].x = newValue;
   chart.data.datasets[0].data[2].x = newValue;
   chart.options.plugins.annotation.annotations.line.value = newValue;
+  console.warn(chart.options.plugins.annotation.annotations.line.value);
   chart.update();
 }
 // </block:utils>

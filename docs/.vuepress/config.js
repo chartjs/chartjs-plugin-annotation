@@ -15,7 +15,7 @@ module.exports = {
     ['redirect', {
       redirectors: [
         // Default sample page when accessing /samples.
-        {base: '/samples', alternative: ['types/line']},
+        {base: '/samples', alternative: ['intro']},
       ],
     }],
     ['@simonbrunel/vuepress-plugin-versions', {
@@ -152,20 +152,7 @@ module.exports = {
             ]
         },
         {
-          title: 'Types',
-          collapsable: false,
-          children: [
-            'types/box',
-            'types/ellipse',
-            'types/label',
-            'types/line',
-            'types/point',
-            'types/polygon'
-          ],
-        },
-        {
           title: 'Charts',
-          collapsable: false,
           children: [
             'charts/bar',
             'charts/line',
