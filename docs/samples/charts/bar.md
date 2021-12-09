@@ -132,4 +132,3 @@ module.exports = {
   config: config,
 };
 ```
-

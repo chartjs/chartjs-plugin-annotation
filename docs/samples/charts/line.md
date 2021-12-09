@@ -127,4 +127,3 @@ module.exports = {
   config: config,
 };
 ```
-
