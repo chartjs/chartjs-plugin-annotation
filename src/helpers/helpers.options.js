@@ -52,5 +52,5 @@ export function toPosition(value) {
 }
 
 export function isBoundToPoint(options) {
-  return options && (options.xValue || options.yValue);
+  return options && (typeof options.xValue !== 'undefined' || typeof options.xValue !== 'undefined');
 }
