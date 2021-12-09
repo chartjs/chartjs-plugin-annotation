@@ -1,7 +1,7 @@
 # Combined annotations
 
 ```js chart-editor
-// <block:setup:4>
+// <block:setup:6>
 const DATA_COUNT = 12;
 const MIN = 10;
 const MAX = 100;

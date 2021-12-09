@@ -145,6 +145,13 @@ module.exports = {
           ]
         },
         {
+          title: 'Polygon annotations',
+          children: [
+            'polygon/basic',
+            'polygon/stop',
+            ]
+        },
+        {
           title: 'Types',
           collapsable: false,
           children: [
