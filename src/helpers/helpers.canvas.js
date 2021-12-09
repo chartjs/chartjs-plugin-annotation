@@ -1,5 +1,6 @@
 import {addRoundedRectPath, drawPoint as drawPointOnChart, isArray, toFont, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
-import {calculateTextAlignment, clampAll, getSize, isLabelVisible, isPointVisible} from '.';
+import {clampAll} from './helpers.core';
+import {calculateTextAlignment, getSize, isLabelVisible, isPointVisible} from './helpers.options';
 
 const widthCache = new Map();
 

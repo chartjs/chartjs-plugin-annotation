@@ -1,5 +1,6 @@
 import {isFinite} from 'chart.js/helpers';
-import {getRectCenterPoint, isBoundToPoint} from '.';
+import {getRectCenterPoint} from './helpers.geometric';
+import {isBoundToPoint} from './helpers.options';
 
 export function scaleValue(scale, value, fallback) {
   value = typeof value === 'number' ? value : scale.parse(value);
