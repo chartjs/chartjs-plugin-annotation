@@ -42,7 +42,7 @@ export function measureLabelSize(ctx, options) {
   }
   const font = toFont(options.font);
   const lines = isArray(content) ? content : [content];
-  const mapKey = lines.join() + font.string;
+  const mapKey = lines.join() + font.string + (ctx._measureText ? '-spriting' : '');
   if (!widthCache.has(mapKey)) {
     ctx.save();
     ctx.font = font.string;
