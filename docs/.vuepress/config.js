@@ -134,6 +134,7 @@ module.exports = {
             'line/average',
             'line/standardDeviation',
             'line/visibility',
+            'line/labelVisibility',
             'line/datasetBars',
             'line/animation',
           ]

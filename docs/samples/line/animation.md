@@ -65,7 +65,6 @@ function update() {
   chart.data.datasets[0].data[1].x = newValue;
   chart.data.datasets[0].data[2].x = newValue;
   chart.options.plugins.annotation.annotations.line.value = newValue;
-  console.warn(chart.options.plugins.annotation.annotations.line.value);
   chart.update();
 }
 // </block:utils>

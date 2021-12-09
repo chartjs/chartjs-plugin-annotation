@@ -36,7 +36,7 @@ const annotation1 = {
     y: 'end'
   },
   xScaleID: 'x',
-  xValue: 0,
+  xValue: 2,
   yScaleID: 'y',
   yValue: minValue
 };
@@ -51,7 +51,7 @@ const annotation2 = {
     y: 'start'
   },
   xScaleID: 'x',
-  xValue: 0,
+  xValue: 2,
   yScaleID: 'y',
   yValue: maxValue
 };
@@ -128,6 +128,23 @@ var actions = [
       chart.data.datasets.forEach(function(dataset, i) {
         dataset.data.shift();
       });
+      chart.update();
+    }
+  },
+  {
+    name: 'Cycle x-position',
+    handler: function(chart) {
+      const annotations = chart.options.plugins.annotation.annotations;
+      if (annotations.annotation1.position.x === 'start') {
+        annotations.annotation1.position.x = 'end';
+        annotations.annotation2.position.x = 'end';
+      } else if (annotations.annotation1.position.x === 'center') {
+        annotations.annotation1.position.x = 'start';
+        annotations.annotation2.position.x = 'start';
+      } else {
+        annotations.annotation1.position.x = 'center';
+        annotations.annotation2.position.x = 'center';
+      }
       chart.update();
     }
   }
