@@ -7,7 +7,6 @@ const MIN = 10;
 const MAX = 100;
 
 Utils.srand(8);
-const jointValue = Utils.rand(MIN, MAX);
 
 const numberCfg = {count: DATA_COUNT, min: MIN, max: MAX};
 
