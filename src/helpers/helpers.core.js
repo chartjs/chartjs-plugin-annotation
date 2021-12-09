@@ -25,7 +25,3 @@ export function getElementCenterPoint(element, useFinalPosition) {
   const {x, y} = element.getProps(['x', 'y'], useFinalPosition);
   return {x, y};
 }
-
-export function isBoundToPoint(options) {
-  return options && (options.xValue || options.yValue);
-}
