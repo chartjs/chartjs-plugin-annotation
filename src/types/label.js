@@ -1,37 +1,24 @@
-import {drawBox, drawLabel, drawPoint, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inPointRange, isBoundToPoint, getChartRect} from '../helpers';
-import {color as getColor, toPadding} from 'chart.js/helpers';
+import {drawBox, drawLabel, drawPoint, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inBoxRange, inPointRange, isBoundToPoint, getChartRect, isPointVisible} from '../helpers';
+import {color, toPadding} from 'chart.js/helpers';
 import {Element} from 'chart.js';
 
 export default class LabelAnnotation extends Element {
 
-  inRange(mouseX, mouseY) {
-    return this.inLabelRange(mouseX, mouseY) || (this.isPointVisible() && inPointRange({x: mouseX, y: mouseY}, this.point, this.options.point.radius));
-  }
-
-  inLabelRange(mouseX, mouseY, gap) {
-    if (this.labelRect) {
-      const adjust = gap || 0;
-      const {x, y, width, height} = this.isBoxVisible() ? this.getProps(['x', 'y', 'width', 'height']) : this.labelRect;
-
-      return mouseX >= x + adjust &&
-             mouseX <= x + width - adjust &&
-             mouseY >= y + adjust &&
-             mouseY <= y + height - adjust;
+  inRange(mouseX, mouseY, useFinalPosition) {
+    if (!this.visible) {
+      return false;
+    }
+    if (inBoxRange(mouseX, mouseY, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition))) {
+      return true;
+    }
+    const pointOpts = this.options.point;
+    if (isPointVisible(pointOpts)) {
+      const {pointX: x, pointY: y} = this.getProps(['pointX', 'pointY'], useFinalPosition);
+      if (inPointRange({x: mouseX, y: mouseY}, {x, y}, pointOpts.radius)) {
+        return true;
+      }
     }
     return false;
-  }
-
-  isBoxVisible() {
-    const color = getColor(this.options.backgroundColor);
-    return (color && color.valid && color.rgb.a > 0) || this.options.borderWidth > 0;
-  }
-
-  isPointVisible() {
-    return this.options.point && this.options.point.enabled && this.point && !this.inLabelRange(this.point.x, this.point.y, 1);
-  }
-
-  isCalloutVisible() {
-    return this.options.callout && this.options.callout.enabled && this.point && !this.inLabelRange(this.point.x, this.point.y);
   }
 
   getCenterPoint(useFinalPosition) {
@@ -39,32 +26,40 @@ export default class LabelAnnotation extends Element {
   }
 
   draw(ctx) {
-    if (this.labelRect) {
-      applyCallout(ctx, this);
-      applyBox(ctx, this);
-      drawLabel(ctx, this.labelRect, this.options);
-      applyPoint(ctx, this);
+    if (!this.visible) {
+      return;
     }
+    const {labelX, labelY, labelWidth, labelHeight, pointX, pointY, options} = this;
+    drawCallout(ctx, this);
+    if (this.boxVisible) {
+      drawBox(ctx, this, options);
+    }
+    drawLabel(ctx, {x: labelX, y: labelY, width: labelWidth, height: labelHeight}, options);
+    drawPoint(ctx, {x: pointX, y: pointY}, options.point);
   }
 
   resolveElementProperties(chart, options) {
-    this.point = !isBoundToPoint(options) ? getRectCenterPoint(getChartRect(chart, options)) : getChartPoint(chart, options);
+    const visible = isLabelVisible(options);
+    const point = !isBoundToPoint(options) ? getRectCenterPoint(getChartRect(chart, options)) : getChartPoint(chart, options);
+    const padding = toPadding(options.padding);
+    const labelSize = measureLabelSize(chart.ctx, options);
+    const boxSize = measureRect(point, labelSize, options, padding);
+    const bgColor = color(options.backgroundColor);
+    const boxVisible = options.borderWidth > 0 || (bgColor && bgColor.valid && bgColor.rgb.a > 0);
 
-    if (isLabelVisible(options)) {
-      const padding = toPadding(options.padding);
-      const labelSize = measureLabelSize(chart.ctx, options);
-      const elemDim = measureRect(this.point, labelSize, options, padding);
-      this.labelRect = {
-        x: elemDim.x + padding.left + (options.borderWidth / 2),
-        y: elemDim.y + padding.top + (options.borderWidth / 2),
-        width: labelSize.width,
-        height: labelSize.height
-      };
-      return elemDim;
-    }
-    this.point = null;
-    this.labelRect = null;
-    return {options: {}};
+    const properties = {
+      visible,
+      boxVisible,
+      pointX: point.x,
+      pointY: point.y,
+      ...boxSize,
+      labelX: boxSize.x + padding.left + (options.borderWidth / 2),
+      labelY: boxSize.y + padding.top + (options.borderWidth / 2),
+      labelWidth: labelSize.width,
+      labelHeight: labelSize.height
+    };
+    properties.calloutPosition = options.callout.enabled && resolveCalloutPosition(properties, options.callout);
+    return properties;
   }
 }
 
@@ -157,34 +152,14 @@ function calculatePosition(start, size, adjust, position) {
   return start - size / 2 + adjust;
 }
 
-function applyCallout(ctx, element) {
-  if (element.isCalloutVisible()) {
-    drawCallout(ctx, element);
-  }
-}
-
-function applyBox(ctx, element) {
-  if (element.isBoxVisible()) {
-    drawBox(ctx, element, element.options);
-  }
-}
-
-function applyPoint(ctx, element) {
-  if (element.isPointVisible()) {
-    drawPoint(ctx, element.point, element.options.point);
-  }
-}
-
 function drawCallout(ctx, element) {
-  const point = element.point;
-  const options = element.options;
-  const callout = options.callout;
-  const position = resolveCalloutPosition(element);
-  if (!position) {
+  const {pointX, pointY, calloutPosition, options} = element;
+  if (!calloutPosition) {
     return;
   }
-  const {separatorStart, separatorEnd} = getCalloutSeparatorCoord(element, position);
-  const {sideStart, sideEnd} = getCalloutSideCoord(element, position, separatorStart);
+  const callout = options.callout;
+  const {separatorStart, separatorEnd} = getCalloutSeparatorCoord(element, calloutPosition);
+  const {sideStart, sideEnd} = getCalloutSideCoord(element, calloutPosition, separatorStart);
   ctx.save();
   ctx.beginPath();
   const stroke = setBorderStyle(ctx, callout);
@@ -194,7 +169,7 @@ function drawCallout(ctx, element) {
   }
   ctx.moveTo(sideStart.x, sideStart.y);
   ctx.lineTo(sideEnd.x, sideEnd.y);
-  ctx.lineTo(point.x, point.y);
+  ctx.lineTo(pointX, pointY);
   if (stroke) {
     ctx.stroke();
   }
@@ -254,25 +229,25 @@ function getCalloutSideAdjust(position, options) {
   return side;
 }
 
-function resolveCalloutPosition(element) {
-  const position = element.options.callout.position;
+function resolveCalloutPosition(element, options) {
+  const position = options.position;
   if (position === 'left' || position === 'right' || position === 'top' || position === 'bottom') {
     return position;
   }
-  return resolveCalloutAutoPosition(element);
+  return resolveCalloutAutoPosition(element, options);
 }
 
-function resolveCalloutAutoPosition(element) {
-  const {x, y, width, height, point, options} = element;
-  const {margin, side} = options.callout;
+function resolveCalloutAutoPosition(element, options) {
+  const {x, y, width, height, pointX, pointY} = element;
+  const {margin, side} = options;
   const adjust = margin + side;
-  if (point.x < (x - adjust)) {
+  if (pointX < (x - adjust)) {
     return 'left';
-  } else if (point.x > (x + width + adjust)) {
+  } else if (pointX > (x + width + adjust)) {
     return 'right';
-  } else if (point.y < (y + height + adjust)) {
+  } else if (pointY < (y + height + adjust)) {
     return 'top';
-  } else if (point.y > (y - adjust)) {
+  } else if (pointY > (y - adjust)) {
     return 'bottom';
   }
 }

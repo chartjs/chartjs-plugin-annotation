@@ -68,7 +68,7 @@ The following options are available for label annotations.
 | [`display`](#general) | `boolean` | Yes | `true`
 | [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
 | [`font`](#styling) | [`Font`](../options#font) | Yes | `{}`
-| [`height`](#general) | `number`\|`string` | Yes | `undefined` 
+| [`height`](#general) | `number`\|`string` | Yes | `undefined`
 | [`padding`](#general) | [`Padding`](../options#padding) | Yes | `6`
 | [`point`](#point) | `object` | Yes |
 | [`position`](#position) | `string`\|`{x: string, y: string}` | Yes | `'center'`
@@ -89,7 +89,7 @@ The following options are available for label annotations.
 
 If one of the axes does not match an axis in the chart, the content will be rendered in the center of the chart. The 2 coordinates, xValue, yValue are optional. If not specified, the content will be rendered in the center of the chart.
 
-The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges in the respective direction and the box size is used to calculated the center of the point. To enable to use the box positioning, the `radius` must be set to `0` or `NaN`. 
+The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges in the respective direction and the box size is used to calculated the center of the point. To enable to use the box positioning, the `radius` must be set to `0` or `NaN`.
 
 
 | Name | Description |
@@ -277,7 +277,7 @@ All of these options can be [Scriptable](../options#scriptable-options).
 
 | Name | Type | Default | Notes
 | ---- | ---- | :----: | ---- | ----
-| `borderCapStyle` | `string` | `'butt'` | Cap style of the border line of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap). 
+| `borderCapStyle` | `string` | `'butt'` | Cap style of the border line of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap).
 | `borderColor` | [`Color`](../options#color) | `undefined` | Stroke color of the pointer of the callout.
 | `borderDash` | `number[]` | `[]` | Length and spacing of dashes of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | `number` | `0` | Offset for line dashes of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
@@ -287,4 +287,4 @@ All of these options can be [Scriptable](../options#scriptable-options).
 | `margin` | `number` | `5` | Amount of pixels between the label and the callout separator.
 | `position` | `string` | `'auto'` | The position of callout, with respect to the label. Could be `left`, `top`, `right`, `bottom` or `auto`.
 | `side` | `number` | `5` | Width of the starter line of callout pointer.
-| `start` | `number`\|`string` | `'50%'` | The percentage of the separator dimension to use as starting point for callout pointer. Could be set in pixel by a number, or in percentage of the separator dimension by a string. 
+| `start` | `number`\|`string` | `'50%'` | The percentage of the separator dimension to use as starting point for callout pointer. Could be set in pixel by a number, or in percentage of the separator dimension by a string.
