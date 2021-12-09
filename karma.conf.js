@@ -1,3 +1,4 @@
+const jasmineSeedReporter = require('./test/seed-reporter');
 const istanbul = require('rollup-plugin-istanbul');
 const json = require('@rollup/plugin-json');
 const resolve = require('@rollup/plugin-node-resolve').default;
@@ -27,7 +28,8 @@ module.exports = function(karma) {
 
   karma.set({
     frameworks: ['jasmine'],
-    reporters: ['progress', 'kjhtml'],
+    plugins: ['karma-*', jasmineSeedReporter],
+    reporters: ['progress', 'kjhtml', 'jasmine-seed'],
     browsers: (args.browsers || 'chrome,firefox').split(','),
     logLevel: karma.LOG_INFO,
 
