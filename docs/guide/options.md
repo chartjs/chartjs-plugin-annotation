@@ -110,3 +110,4 @@ In addition to [chart](#chart)
 The [annotation](#annotation) option context is passed to scriptable options in all other cases, except when resolving `id`, `type` or adjusting scale ranges. The same values resolved in `afterDataLimits` with [chart](#chart) context are again evaluated in `afterUpdate` with [annotation](#annotation) context.
 
 Note that the annotation element may be undefined or partially uninitialized, since scriptable options may be invoked during the initial chart display, before everything's been resolved and initialized.
+

@@ -102,3 +102,4 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | `borderDashOffset` | Offset for line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
 | `borderWidth` | Stroke width.
 | `pointStyle` | Style of the point.
+
