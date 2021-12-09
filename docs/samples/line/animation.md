@@ -23,7 +23,7 @@ const data = {
 // </block:setup>
 
 // <block:annotation:1>
-const annotation = {
+const line = {
   type: 'line',
   borderColor: 'red',
   borderWidth: 3,
@@ -45,7 +45,7 @@ const config = {
     plugins: {
       annotation: {
         annotations: {
-          annotation
+          line
         }
       }
     }
@@ -61,7 +61,7 @@ function update() {
   const chart = Chart.instances[0];
   chart.data.datasets[0].data[1].x = newValue;
   chart.data.datasets[0].data[2].x = newValue;
-  annotation.value = newValue;
+  chart.options.plugins.annotation.annotations.line.value = newValue;
   chart.update();
 }
 // </block:utils>

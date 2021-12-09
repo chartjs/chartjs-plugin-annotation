@@ -138,6 +138,13 @@ module.exports = {
           ]
         },
         {
+          title: 'Point annotations',
+          children: [
+            'point/basic',
+            'point/combined',
+          ]
+        },
+        {
           title: 'Types',
           collapsable: false,
           children: [

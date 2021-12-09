@@ -52,6 +52,11 @@ const config = {
   type: 'line',
   data,
   options: {
+    layout: {
+      padding: {
+        right: 10
+      },
+    },
     scales: {
       y: {
         beginAtZero: true,
