@@ -4,8 +4,9 @@ import {setBorderStyle, resolvePointPosition, getElementCenterPoint} from '../he
 
 export default class PolygonAnnotation extends Element {
 
-  inRange(x, y) {
-    return this.vertices && this.vertices.length > 0 && pointIsInPolygon(this.vertices, x, y);
+  inRange(mouseX, mouseY, useFinalPosition) {
+    const {vertices} = this.getProps(['vertices'], useFinalPosition);
+    return vertices && vertices.length > 0 && pointIsInPolygon(vertices, mouseX, mouseY);
   }
 
   getCenterPoint(useFinalPosition) {
