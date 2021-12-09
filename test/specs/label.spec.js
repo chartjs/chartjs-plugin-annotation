@@ -26,6 +26,6 @@ describe('Label annotation', function() {
 
   window.testEvents(options);
 
-  window.testEvents(options, 'point');
+  window.testEvents(options, 'point', (el) => ({x: el.pointX, y: el.pointY}));
 
 });

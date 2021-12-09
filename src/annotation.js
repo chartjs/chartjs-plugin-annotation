@@ -93,7 +93,7 @@ export default {
     dblClickSpeed: 350, // ms
     animations: {
       numbers: {
-        properties: ['x', 'y', 'x2', 'y2', 'width', 'height'],
+        properties: ['x', 'y', 'x2', 'y2', 'width', 'height', 'pointX', 'pointY', 'labelX', 'labelY', 'labelWidth', 'labelHeight', 'radius'],
         type: 'number'
       },
     },

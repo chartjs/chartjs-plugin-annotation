@@ -1,15 +1,10 @@
 import {Element} from 'chart.js';
 import {toPadding} from 'chart.js/helpers';
-import {drawBox, drawLabel, measureLabelSize, isLabelVisible, getRectCenterPoint, getChartRect, toPosition} from '../helpers';
+import {drawBox, drawLabel, measureLabelSize, isLabelVisible, getRectCenterPoint, getChartRect, toPosition, inBoxRange} from '../helpers';
 
 export default class BoxAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
-    const {x, y, width, height} = this.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
-
-    return mouseX >= x &&
-           mouseX <= x + width &&
-           mouseY >= y &&
-           mouseY <= y + height;
+    return inBoxRange(mouseX, mouseY, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition));
   }
 
   getCenterPoint(useFinalPosition) {

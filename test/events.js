@@ -1,4 +1,4 @@
-export function testEvents(options, innerElement) {
+export function testEvents(options, innerElement, getInnerPoint) {
   const descr = innerElement ? options.type + '.' + innerElement : options.type;
   const chartConfig = {
     type: 'scatter',
@@ -38,7 +38,7 @@ export function testEvents(options, innerElement) {
         pluginOpts.annotations = [options];
 
         const chart = window.acquireChart(chartConfig);
-        const eventPoint = getEventPoint(chart, innerElement);
+        const eventPoint = getEventPoint(chart, getInnerPoint);
 
         window.triggerMouseEvent(chart, 'mousemove', eventPoint);
         window.afterEvent(chart, 'mousemove', function() {
@@ -65,7 +65,7 @@ export function testEvents(options, innerElement) {
         pluginOpts.annotations = [options];
 
         const chart = window.acquireChart(chartConfig);
-        const eventPoint = getEventPoint(chart, innerElement);
+        const eventPoint = getEventPoint(chart, getInnerPoint);
 
         window.afterEvent(chart, 'click', function() {
           expect(clickSpy.calls.count()).toBe(1);
@@ -83,7 +83,7 @@ export function testEvents(options, innerElement) {
         pluginOpts.annotations = [options];
 
         const chart = window.acquireChart(chartConfig);
-        const eventPoint = getEventPoint(chart, innerElement);
+        const eventPoint = getEventPoint(chart, getInnerPoint);
 
         let dblClick = false;
         window.afterEvent(chart, 'click', function() {
@@ -108,7 +108,7 @@ export function testEvents(options, innerElement) {
         pluginOpts.annotations = [options];
 
         const chart = window.acquireChart(chartConfig);
-        const eventPoint = getEventPoint(chart, innerElement);
+        const eventPoint = getEventPoint(chart, getInnerPoint);
 
         let dblClick = false;
         window.afterEvent(chart, 'click', function() {
@@ -138,7 +138,7 @@ export function testEvents(options, innerElement) {
         pluginOpts.annotations = [options];
 
         const chart = window.acquireChart(chartConfig);
-        const eventPoint = getEventPoint(chart, innerElement);
+        const eventPoint = getEventPoint(chart, getInnerPoint);
 
         window.triggerMouseEvent(chart, 'mousemove', eventPoint);
         window.afterEvent(chart, 'mousemove', function() {
@@ -182,8 +182,7 @@ function getElement(chart) {
   return state.elements[0];
 }
 
-function getEventPoint(chart, innerElement) {
+function getEventPoint(chart, getInnerPoint) {
   const annotation = getElement(chart);
-  const element = innerElement ? annotation[innerElement] : annotation;
-  return innerElement ? element : element.getCenterPoint();
+  return getInnerPoint ? getInnerPoint(annotation) : annotation.getCenterPoint();
 }
