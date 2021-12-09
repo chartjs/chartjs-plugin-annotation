@@ -22,7 +22,7 @@ const annotation = {
   backgroundColor: 'transparent',
   borderWidth: 0,
   label: {
-    drawTime: 'afterDraw',
+    drawTime: 'afterDatasetsDraw',
     enabled: true,
     color: 'rgba(208,208,208,0.2)',
     content: 'Draft',

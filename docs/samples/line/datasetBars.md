@@ -130,7 +130,6 @@ const config = {
   options: {
     plugins: {
       annotation: {
-        drawTime: 'afterDraw',
         annotations: {
           annotation1,
           annotation2,

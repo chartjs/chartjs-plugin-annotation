@@ -57,7 +57,6 @@ const annotation3 = {
   type: 'label',
   color: 'black',
   content: '!',
-  drawTime: 'afterDraw',
   font: {
     size: 40,
     family: 'Arial',
@@ -87,7 +86,6 @@ const annotation5 = {
   type: 'label',
   color: 'white',
   content: 'STOP',
-  drawTime: 'afterDraw',
   font: {
     size: 24
   },
