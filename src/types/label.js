@@ -39,7 +39,7 @@ export default class LabelAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    const visible = isLabelVisible(options);
+    const visible = !!isLabelVisible(options);
     const point = !isBoundToPoint(options) ? getRectCenterPoint(getChartRect(chart, options)) : getChartPoint(chart, options);
     const padding = toPadding(options.padding);
     const labelSize = measureLabelSize(chart.ctx, options);

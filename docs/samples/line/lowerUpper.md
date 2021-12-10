@@ -138,6 +138,23 @@ var actions = [
       });
       chart.update();
     }
+  },
+  {
+    name: 'Cycle position',
+    handler: function(chart) {
+      const annotations = chart.options.plugins.annotation.annotations;
+      if (annotations.annotation1.label.position === 'start') {
+        annotations.annotation1.label.position = 'end';
+        annotations.annotation2.label.position = 'end';
+      } else if (annotations.annotation1.label.position === 'center') {
+        annotations.annotation1.label.position = 'start';
+        annotations.annotation2.label.position = 'start';
+      } else {
+        annotations.annotation1.label.position = 'center';
+        annotations.annotation2.label.position = 'center';
+      }
+      chart.update();
+    }
   }
 ];
 

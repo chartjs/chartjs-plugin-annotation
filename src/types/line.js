@@ -43,10 +43,10 @@ function limitLineToArea(p1, p2, area) {
 }
 
 export default class LineAnnotation extends Element {
-  intersects(x, y, epsilon = 0.001) {
+  intersects(x, y, epsilon = 0.001, useFinalPosition) {
     // Adapted from https://stackoverflow.com/a/6853926/25507
     const sqr = v => v * v;
-    const {x: x1, y: y1, x2, y2} = this;
+    const {x: x1, y: y1, x2, y2} = this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition);
     const dx = x2 - x1;
     const dy = y2 - y1;
     const lenSq = sqr(dx) + sqr(dy);
@@ -65,29 +65,28 @@ export default class LineAnnotation extends Element {
     return (sqr(x - xx) + sqr(y - yy)) < epsilon;
   }
 
-  labelIsVisible(chartArea) {
-    const label = this.options.label;
-
-    const inside = !chartArea || isLineInArea(this, chartArea);
-    return inside && isLabelVisible(label);
-  }
-
-  isOnLabel(mouseX, mouseY) {
-    const {labelRect} = this;
-    if (!labelRect || !this.labelIsVisible()) {
+  labelIsVisible(useFinalPosition, chartArea) {
+    if (!this.labelVisible) {
       return false;
     }
-
-    const {x, y} = rotated({x: mouseX, y: mouseY}, labelRect, -labelRect.rotation);
-    const w2 = labelRect.width / 2;
-    const h2 = labelRect.height / 2;
-    return x >= labelRect.x - w2 && x <= labelRect.x + w2 &&
-      y >= labelRect.y - h2 && y <= labelRect.y + h2;
+    return !chartArea || isLineInArea(this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), chartArea);
   }
 
-  inRange(x, y) {
+  isOnLabel(mouseX, mouseY, useFinalPosition) {
+    if (!this.labelIsVisible(useFinalPosition)) {
+      return false;
+    }
+    const {labelX, labelY, labelWidth, labelHeight, labelRotation} = this.getProps(['labelX', 'labelY', 'labelWidth', 'labelHeight', 'labelRotation'], useFinalPosition);
+    const {x, y} = rotated({x: mouseX, y: mouseY}, {x: labelX, y: labelY}, -labelRotation);
+    const w2 = labelWidth / 2;
+    const h2 = labelHeight / 2;
+    return x >= labelX - w2 && x <= labelX + w2 &&
+      y >= labelY - h2 && y <= labelY + h2;
+  }
+
+  inRange(mouseX, mouseY, useFinalPosition) {
     const epsilon = this.options.borderWidth || 1;
-    return this.intersects(x, y, epsilon) || this.isOnLabel(x, y);
+    return this.intersects(mouseX, mouseY, epsilon, useFinalPosition) || this.isOnLabel(mouseX, mouseY, useFinalPosition);
   }
 
   getCenterPoint() {
@@ -116,9 +115,9 @@ export default class LineAnnotation extends Element {
   }
 
   drawLabel(ctx, chartArea) {
-    if (this.labelIsVisible(chartArea)) {
+    if (this.labelIsVisible(false, chartArea)) {
       ctx.save();
-      applyLabel(ctx, this, chartArea);
+      applyLabel(ctx, this);
       ctx.restore();
     }
   }
@@ -153,9 +152,15 @@ export default class LineAnnotation extends Element {
       }
     }
     const inside = isLineInArea({x, y, x2, y2}, chart.chartArea);
-    return inside
+    const properties = inside
       ? limitLineToArea({x, y}, {x: x2, y: y2}, chart.chartArea)
       : {x, y, x2, y2, width: Math.abs(x2 - x), height: Math.abs(y2 - y)};
+    const label = options.label;
+    properties.labelVisible = !!isLabelVisible(label);
+    if (properties.labelVisible) {
+      return loadLabelRect(properties, chart, label);
+    }
+    return properties;
   }
 }
 
@@ -213,6 +218,24 @@ LineAnnotation.defaultRoutes = {
   borderColor: 'color'
 };
 
+function loadLabelRect(line, chart, options) {
+  // TODO: v2 remove support for xPadding and yPadding
+  const {padding: lblPadding, xPadding, yPadding, borderWidth} = options;
+  const padding = getPadding(lblPadding, xPadding, yPadding);
+  const textSize = measureLabelSize(chart.ctx, options);
+  const width = textSize.width + padding.width + borderWidth;
+  const height = textSize.height + padding.height + borderWidth;
+  const labelRect = calculateLabelPosition(line, options, {width, height, padding}, chart.chartArea);
+  line.labelX = labelRect.x;
+  line.labelY = labelRect.y;
+  line.labelWidth = labelRect.width;
+  line.labelHeight = labelRect.height;
+  line.labelRotation = labelRect.rotation;
+  line.labelPadding = padding;
+  line.labelTextSize = textSize;
+  return line;
+}
+
 function calculateAutoRotation(line) {
   const {x, y, x2, y2} = line;
   const rotation = Math.atan2(y2 - y, x2 - x);
@@ -220,32 +243,26 @@ function calculateAutoRotation(line) {
   return rotation > PI / 2 ? rotation - PI : rotation < PI / -2 ? rotation + PI : rotation;
 }
 
-function applyLabel(ctx, line, chartArea) {
-  const label = line.options.label;
-  // TODO: v2 remove support for xPadding and yPadding
-  const {padding: lblPadding, xPadding, yPadding, borderWidth} = label;
-  const padding = getPadding(lblPadding, xPadding, yPadding);
-  const labelSize = measureLabelSize(ctx, label);
-  const width = labelSize.width + padding.width + borderWidth;
-  const height = labelSize.height + padding.height + borderWidth;
-  const rect = line.labelRect = calculateLabelPosition(line, {width, height, padding}, chartArea);
+function applyLabel(ctx, line) {
+  const {labelX, labelY, labelWidth, labelHeight, labelRotation, labelPadding, labelTextSize, options} = line;
+  const label = options.label;
 
-  ctx.translate(rect.x, rect.y);
-  ctx.rotate(rect.rotation);
+  ctx.translate(labelX, labelY);
+  ctx.rotate(labelRotation);
 
   const boxRect = {
-    x: -(width / 2),
-    y: -(height / 2),
-    width,
-    height
+    x: -(labelWidth / 2),
+    y: -(labelHeight / 2),
+    width: labelWidth,
+    height: labelHeight
   };
   drawBox(ctx, boxRect, label);
 
   const labelTextRect = {
-    x: -(width / 2) + padding.left + borderWidth / 2,
-    y: -(height / 2) + padding.top + borderWidth / 2,
-    width: labelSize.width,
-    height: labelSize.height
+    x: -(labelWidth / 2) + labelPadding.left + label.borderWidth / 2,
+    y: -(labelHeight / 2) + labelPadding.top + label.borderWidth / 2,
+    width: labelTextSize.width,
+    height: labelTextSize.height
   };
   drawLabel(ctx, labelTextRect, label);
 }
@@ -259,15 +276,14 @@ function getPadding(padding, xPadding, yPadding) {
   return toPadding(tempPadding);
 }
 
-function calculateLabelPosition(line, sizes, chartArea) {
+function calculateLabelPosition(line, label, sizes, chartArea) {
   const {width, height, padding} = sizes;
-  const label = line.options.label;
-  const {xAdjust, yAdjust, position} = label;
+  const {xAdjust, yAdjust} = label;
   const p1 = {x: line.x, y: line.y};
   const p2 = {x: line.x2, y: line.y2};
   const rotation = label.rotation === 'auto' ? calculateAutoRotation(line) : toRadians(label.rotation);
   const size = rotatedSize(width, height, rotation);
-  const t = calculateT(line, position, {labelSize: size, padding}, chartArea);
+  const t = calculateT(line, label, {labelSize: size, padding}, chartArea);
   const pt = pointInLine(p1, p2, t);
   const xCoordinateSizes = {size: size.w, min: chartArea.left, max: chartArea.right, padding: padding.left};
   const yCoordinateSizes = {size: size.h, min: chartArea.top, max: chartArea.bottom, padding: padding.top};
@@ -290,13 +306,12 @@ function rotatedSize(width, height, rotation) {
   };
 }
 
-function calculateT(line, position, sizes, chartArea) {
+function calculateT(line, label, sizes, chartArea) {
   let t = 0.5;
   const space = spaceAround(line, chartArea);
-  const label = line.options.label;
-  if (position === 'start') {
+  if (label.position === 'start') {
     t = calculateTAdjust({w: line.x2 - line.x, h: line.y2 - line.y}, sizes, label, space);
-  } else if (position === 'end') {
+  } else if (label.position === 'end') {
     t = 1 - calculateTAdjust({w: line.x - line.x2, h: line.y - line.y2}, sizes, label, space);
   }
   return t;
@@ -320,27 +335,23 @@ function spaceAround(line, chartArea) {
   return {
     x: Math.min(l, r),
     y: Math.min(t, b),
-    dx: l < r ? 1 : -1,
-    dy: t < b ? 1 : -1
+    dx: l <= r ? 1 : -1,
+    dy: t <= b ? 1 : -1
   };
 }
 
 function adjustLabelCoordinate(coordinate, labelSizes) {
   const {size, min, max, padding} = labelSizes;
   const halfSize = size / 2;
-
   if (size > max - min) {
     // if it does not fit, display as much as possible
     return (max + min) / 2;
   }
-
   if (min >= (coordinate - padding - halfSize)) {
     coordinate = min + padding + halfSize;
   }
-
   if (max <= (coordinate + padding + halfSize)) {
     coordinate = max - padding - halfSize;
   }
-
   return coordinate;
 }

@@ -4,8 +4,8 @@ import {getRectCenterPoint, getChartRect} from '../helpers';
 
 export default class EllipseAnnotation extends Element {
 
-  inRange(x, y) {
-    return pointInEllipse({x, y}, this);
+  inRange(mouseX, mouseY, useFinalPosition) {
+    return pointInEllipse({x: mouseX, y: mouseY}, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition));
   }
 
   getCenterPoint(useFinalPosition) {
