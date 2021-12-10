@@ -30,6 +30,7 @@ const annotation1 = {
   radius: 15,
   xValue: 3,
   xScaleID: 'x',
+  yAdjust: 5,
   yValue: 0,
   yScaleID: 'y'
 };
@@ -46,6 +47,7 @@ const annotation2 = {
   rotation: 180,
   xValue: 3,
   xScaleID: 'x',
+  yAdjust: -5,
   yValue: 100,
   yScaleID: 'y'
 };
@@ -56,6 +58,11 @@ const config = {
   type: 'bar',
   data,
   options: {
+    layout: {
+      padding: {
+        top: 16
+      }
+    },
     scale: {
       y: {
         beginAtZero: true,

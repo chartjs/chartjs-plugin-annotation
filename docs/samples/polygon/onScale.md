@@ -40,6 +40,7 @@ const annotation2 = {
   sides: 5,
   xValue: 3,
   xScaleID: 'x',
+  yAdjust: 5,
   yValue: 0,
   yScaleID: 'y'
 };
@@ -57,6 +58,7 @@ const annotation3 = {
   sides: 5,
   xValue: 3,
   xScaleID: 'x',
+  yAdjust: -5,
   yValue: 100,
   yScaleID: 'y'
 };
@@ -69,7 +71,7 @@ const config = {
   options: {
     layout: {
       padding: {
-        top: 14
+        top: 20
       }
     },
     scale: {
