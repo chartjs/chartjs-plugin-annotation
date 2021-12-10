@@ -1,7 +1,7 @@
-# Point outside of chart area
+# Polygons outside of chart area
 
 ```js chart-editor
-// <block:setup:6>
+// <block:setup:4>
 const DATA_COUNT = 12;
 const MIN = 10;
 const MAX = 100;
@@ -22,36 +22,47 @@ const data = {
 
 // <block:annotation1:1>
 const annotation1 = {
-  type: 'point',
+  type: 'line',
+  borderColor: 'lime',
+  borderWidth: 2,
+  scaleID: 'x',
+  value: 3
+};
+// </block:annotation1>
+
+// <block:annotation2:2>
+const annotation2 = {
+  type: 'polygon',
   backgroundColor: 'lime',
   borderColor: 'black',
   borderWidth: 1,
-  pointStyle: 'triangle',
   radius: 15,
+  sides: 5,
   xValue: 3,
   xScaleID: 'x',
   yAdjust: 5,
   yValue: 0,
   yScaleID: 'y'
 };
-// </block:annotation1>
+// </block:annotation2>
 
-// <block:annotation2:2>
-const annotation2 = {
-  type: 'point',
+// <block:annotation3:3>
+const annotation3 = {
+  type: 'polygon',
   backgroundColor: 'lime',
   borderColor: 'black',
   borderWidth: 1,
   pointStyle: 'triangle',
   radius: 15,
   rotation: 180,
+  sides: 5,
   xValue: 3,
   xScaleID: 'x',
   yAdjust: -5,
   yValue: 100,
   yScaleID: 'y'
 };
-// </block:annotation2>
+// </block:annotation3>
 
 /* <block:config:0> */
 const config = {
@@ -60,7 +71,7 @@ const config = {
   options: {
     layout: {
       padding: {
-        top: 16
+        top: 20
       }
     },
     scale: {
@@ -76,7 +87,8 @@ const config = {
         drawTime: 'afterDraw',
         annotations: {
           annotation1,
-          annotation2
+          annotation2,
+          annotation3
         }
       }
     }
@@ -92,8 +104,9 @@ const actions = [
         dataset.data = dataset.data.map(() => Utils.rand(MIN, MAX));
       });
       const xValue = Utils.rand(0, DATA_COUNT - 1);
-      chart.options.plugins.annotation.annotations.annotation1.xValue = xValue;
+      chart.options.plugins.annotation.annotations.annotation1.value = xValue;
       chart.options.plugins.annotation.annotations.annotation2.xValue = xValue;
+      chart.options.plugins.annotation.annotations.annotation3.xValue = xValue;
       chart.update();
     }
   }
