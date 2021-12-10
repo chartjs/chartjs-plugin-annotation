@@ -277,12 +277,12 @@ function getPadding(padding, xPadding, yPadding) {
 
 function calculateLabelPosition(line, label, sizes, chartArea) {
   const {width, height, padding} = sizes;
-  const {xAdjust, yAdjust, position} = label;
+  const {xAdjust, yAdjust} = label;
   const p1 = {x: line.x, y: line.y};
   const p2 = {x: line.x2, y: line.y2};
   const rotation = label.rotation === 'auto' ? calculateAutoRotation(line) : toRadians(label.rotation);
   const size = rotatedSize(width, height, rotation);
-  const t = calculateT(line, label, position, {labelSize: size, padding}, chartArea);
+  const t = calculateT(line, label, {labelSize: size, padding}, chartArea);
   const pt = pointInLine(p1, p2, t);
   const xCoordinateSizes = {size: size.w, min: chartArea.left, max: chartArea.right, padding: padding.left};
   const yCoordinateSizes = {size: size.h, min: chartArea.top, max: chartArea.bottom, padding: padding.top};
@@ -305,12 +305,12 @@ function rotatedSize(width, height, rotation) {
   };
 }
 
-function calculateT(line, label, position, sizes, chartArea) {
+function calculateT(line, label, sizes, chartArea) {
   let t = 0.5;
   const space = spaceAround(line, chartArea);
-  if (position === 'start') {
+  if (label.position === 'start') {
     t = calculateTAdjust({w: line.x2 - line.x, h: line.y2 - line.y}, sizes, label, space);
-  } else if (position === 'end') {
+  } else if (label.position === 'end') {
     t = 1 - calculateTAdjust({w: line.x - line.x2, h: line.y - line.y2}, sizes, label, space);
   }
   return t;
