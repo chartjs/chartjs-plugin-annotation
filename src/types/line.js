@@ -66,9 +66,10 @@ export default class LineAnnotation extends Element {
   }
 
   labelIsVisible(useFinalPosition, chartArea) {
-    const {x, y, x2, y2, labelVisible} = this.getProps(['x', 'y', 'x2', 'y2', 'labelVisible'], useFinalPosition);
-    const inside = !chartArea || isLineInArea({x, y, x2, y2}, chartArea);
-    return inside && labelVisible;
+    if (!this.labelVisible) {
+      return false;
+    }
+    return !chartArea || isLineInArea(this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), chartArea);
   }
 
   isOnLabel(mouseX, mouseY, useFinalPosition) {
