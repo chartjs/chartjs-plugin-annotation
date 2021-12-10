@@ -1,11 +1,12 @@
 import {Element} from 'chart.js';
-import {PI, RAD_PER_DEG} from 'chart.js/helpers';
+import {PI, RAD_PER_DEG, isNumber} from 'chart.js/helpers';
 import {setBorderStyle, resolvePointPosition, getElementCenterPoint} from '../helpers';
 
 export default class PolygonAnnotation extends Element {
 
-  inRange(x, y) {
-    return this.vertices && this.vertices.length > 0 && pointIsInPolygon(this.vertices, x, y);
+  inRange(mouseX, mouseY, useFinalPosition) {
+    const vertices = getVertices(this.getProps(['x', 'y'], useFinalPosition), this.options);
+    return vertices && vertices.length > 0 && pointIsInPolygon(vertices, mouseX, mouseY);
   }
 
   getCenterPoint(useFinalPosition) {
@@ -14,20 +15,15 @@ export default class PolygonAnnotation extends Element {
 
   draw(ctx) {
     const {x, y, options} = this;
-    const {sides, radius} = options;
-    const point = {x, y};
-    let angle = (2 * PI) / sides;
-    let rad = options.rotation * RAD_PER_DEG;
-    this.vertices = new Array();
-    let vertex = createVertex(this.vertices, point, rad, radius);
+    const vertices = getVertices({x, y}, options);
+    let vertex = vertices[0];
     ctx.save();
     ctx.beginPath();
     ctx.fillStyle = options.backgroundColor;
     const stroke = setBorderStyle(ctx, options);
     ctx.moveTo(vertex.x, vertex.y);
-    for (let i = 0; i < sides; i++) {
-      rad += angle;
-      vertex = createVertex(this.vertices, point, rad, radius);
+    for (let i = 1; i < vertices.length; i++) {
+      vertex = vertices[i];
       ctx.lineTo(vertex.x, vertex.y);
     }
     ctx.closePath();
@@ -40,7 +36,10 @@ export default class PolygonAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    return resolvePointPosition(chart, options);
+    if (isNumber(options.sides) && options.sides >= 1) {
+      return resolvePointPosition(chart, options);
+    }
+    return {options: {}};
   }
 
 }
@@ -73,13 +72,24 @@ PolygonAnnotation.defaultRoutes = {
   backgroundColor: 'color'
 };
 
-function createVertex(array, point, rad, radius) {
-  const vertex = {
+function getVertices(point, options) {
+  const {sides, radius} = options;
+  let angle = (2 * PI) / sides;
+  let rad = options.rotation * RAD_PER_DEG;
+  const vertices = new Array();
+  addVertex(vertices, point, rad, radius);
+  for (let i = 0; i < sides; i++) {
+    rad += angle;
+    addVertex(vertices, point, rad, radius);
+  }
+  return vertices;
+}
+
+function addVertex(array, point, rad, radius) {
+  array.push({
     x: point.x + Math.sin(rad) * radius,
     y: point.y - Math.cos(rad) * radius
-  };
-  array.push(vertex);
-  return vertex;
+  });
 }
 
 function pointIsInPolygon(vertices, x, y) {
