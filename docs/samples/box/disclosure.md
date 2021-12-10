@@ -27,7 +27,7 @@ const annotation = {
     color: 'rgba(208,208,208,0.2)',
     content: 'Draft',
     font: {
-      size: 200
+      size: (ctx) => ctx.chart.chartArea.height / 1.5
     },
     position: 'center'
   }
