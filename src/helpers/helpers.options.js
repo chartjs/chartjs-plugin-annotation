@@ -1,4 +1,4 @@
-import {isObject, valueOrDefault} from 'chart.js/helpers';
+import {isObject, valueOrDefault, defined} from 'chart.js/helpers';
 
 const isEnabled = (options) => options && (options.display || options.enabled);
 const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
@@ -52,5 +52,5 @@ export function toPosition(value) {
 }
 
 export function isBoundToPoint(options) {
-  return options && (options.xValue || options.yValue);
+  return options && (defined(options.xValue) || defined(options.yValue));
 }
