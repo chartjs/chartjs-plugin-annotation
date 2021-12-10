@@ -60,10 +60,12 @@ The following options are available for point annotations.
 | [`pointStyle`](#styling) | [`PointStyle`](../options#point-style) | Yes | `'circle'`
 | [`radius`](#general) | `number` | Yes | `10`
 | [`rotation`](#general) | `number` | Yes | `0`
+| [`xAdjust`](#general) | `number` | Yes | `0`
 | [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
 | [`xScaleID`](#general) | `string` | Yes | `'x'`
 | [`xValue`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yAdjust`](#general) | `number` | Yes | `0`
 | [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yScaleID`](#general) | `string` | Yes | `'y'`
@@ -83,10 +85,12 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | `drawTime` | See [drawTime](../options#draw-time).
 | `radius` | Size of the point in pixels.
 | `rotation` | Rotation of point, in degrees.
+| `xAdjust` | Adjustment along x-axis (left-right) of point relative to computed position. Negative values move the point left, positive right.
 | `xMax` | Right edge of the box in units along the x axis.
 | `xMin` | Left edge of the box in units along the x axis.
 | `xScaleID` | ID of the X scale to bind onto, default is 'x'.
 | `xValue` | X coordinate of the point in units along the x axis.
+| `yAdjust` | Adjustment along y-axis (top-bottom) of point relative to computed position. Negative values move the point up, positive down.
 | `yMax` | Bottom edge of the box in units along the y axis.
 | `yMin` | Top edge of the box in units along the y axis.
 | `yScaleID` | ID of the Y scale to bind onto, default is 'y'.

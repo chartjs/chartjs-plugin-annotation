@@ -93,6 +93,8 @@ export interface PointAnnotationOptions extends CoreAnnotationOptions, Annotatio
   pointStyle?: Scriptable<PointStyle, PartialEventContext>,
   radius?: Scriptable<number, PartialEventContext>,
   rotation?: Scriptable<number, PartialEventContext>,
+  xAdjust?: Scriptable<number, PartialEventContext>,
+  yAdjust?: Scriptable<number, PartialEventContext>,
 }
 
 export type CalloutPosition = 'left' | 'top' | 'bottom' | 'right' | 'auto';
@@ -135,6 +137,8 @@ interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationPoin
   radius?: Scriptable<number, PartialEventContext>,
   rotation?: Scriptable<number, PartialEventContext>,
   sides?: Scriptable<number, PartialEventContext>,
+  xAdjust?: Scriptable<number, PartialEventContext>,
+  yAdjust?: Scriptable<number, PartialEventContext>,
 }
 
 export interface AnnotationPluginOptions extends AnnotationEvents {

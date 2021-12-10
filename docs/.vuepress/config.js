@@ -144,6 +144,7 @@ module.exports = {
           children: [
             'point/basic',
             'point/combined',
+            'point/onScale',
           ]
         },
         {
@@ -151,6 +152,7 @@ module.exports = {
           children: [
             'polygon/basic',
             'polygon/stop',
+            'polygon/onScale',
             ]
         },
         {
