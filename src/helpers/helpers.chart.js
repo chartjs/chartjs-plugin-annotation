@@ -30,9 +30,7 @@ export function getChartPoint(chart, options) {
   let y = chartArea.height / 2;
 
   if (xScale) {
-    console.log("ima "+x);
     x = scaleValue(xScale, options.xValue, x);
-    console.log("opo "+x);
   }
 
   if (yScale) {
@@ -78,7 +76,6 @@ export function getChartCircle(chart, options) {
 }
 
 export function resolvePointPosition(chart, options) {
-  console.log("bound? "+isBoundToPoint(options));
   if (!isBoundToPoint(options)) {
     const box = getChartRect(chart, options);
     const point = getRectCenterPoint(box);
