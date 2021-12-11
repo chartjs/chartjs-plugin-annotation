@@ -1,16 +1,17 @@
-import {isObject, valueOrDefault, defined, isNumber} from 'chart.js/helpers';
+import {isObject, valueOrDefault, defined} from 'chart.js/helpers';
 import {clamp} from './helpers.core';
 
 const isEnabled = (options) => options && (options.display || options.enabled);
-const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
+const toPercent = (s, d) => typeof s === 'string' && s.endsWith('%') ? parseFloat(s) / 100 : d;
+export const getTPosition = (p, d = 0.5) => clamp(getSize(1, p, d), 0, 1);
 
-export function getSize(size, value) {
+export function getSize(size, value, def) {
   if (typeof value === 'number') {
     return value;
   } else if (typeof value === 'string') {
-    return toPercent(value) * size;
+    return toPercent(value, def || 0) * size;
   }
-  return size;
+  return defined(def) ? def : size;
 }
 
 export function isLabelVisible(options) {
@@ -50,19 +51,6 @@ function readValueToProps(value, props, defValue) {
 
 export function toPosition(value) {
   return readValueToProps(value, ['x', 'y'], 'center');
-}
-
-export function getTPosition(position, def = 0.5) {
-  let t = def;
-  if (isNumber(position)) {
-    t = clamp(position, 0, 1);
-  } else {
-    const percentage = toPercent(position);
-    if (isNumber(percentage)) {
-      t = clamp(percentage, 0, 1);
-    }
-  }
-  return t;
 }
 
 export function isBoundToPoint(options) {
