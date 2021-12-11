@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {toRadians, toPadding} from 'chart.js/helpers';
+import {toRadians, toPadding, isNumber} from 'chart.js/helpers';
 import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, isLabelVisible} from '../helpers';
 
 const PI = Math.PI;
@@ -313,6 +313,8 @@ function calculateT(line, label, sizes, chartArea) {
     t = calculateTAdjust({w: line.x2 - line.x, h: line.y2 - line.y}, sizes, label, space);
   } else if (label.position === 'end') {
     t = 1 - calculateTAdjust({w: line.x - line.x2, h: line.y - line.y2}, sizes, label, space);
+  } else if (isNumber(label.position)) {
+    t = clamp(label.position, 0, 1);
   }
   return t;
 }

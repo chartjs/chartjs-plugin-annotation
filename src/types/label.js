@@ -1,4 +1,4 @@
-import {drawBox, drawLabel, drawPoint, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inBoxRange, inPointRange, isBoundToPoint, getChartRect, isPointVisible} from '../helpers';
+import {clamp, drawBox, drawLabel, drawPoint, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inBoxRange, inPointRange, isBoundToPoint, getChartRect, isPointVisible} from '../helpers';
 import {color, toPadding} from 'chart.js/helpers';
 import {Element} from 'chart.js';
 
@@ -217,8 +217,7 @@ function getCalloutSideCoord(element, position, separatorStart) {
 }
 
 function getStartSize(size, value) {
-  const start = getSize(size, value);
-  return Math.min(Math.max(start, 0), size);
+  return clamp(getSize(size, value), 0, size);
 }
 
 function getCalloutSideAdjust(position, options) {
