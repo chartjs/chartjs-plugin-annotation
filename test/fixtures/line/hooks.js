@@ -22,7 +22,7 @@ module.exports = {
       plugins: {
         annotation: {
           drawTime: 'afterDatasetsDraw',
-          clip:false,
+          clip: false,
           annotations: {
             auto1: {
               type: 'line',
@@ -38,7 +38,7 @@ module.exports = {
                 enabled: true,
                 padding: 10
               },
-              init(ctx, props) { 
+              init(ctx, props) {
                 props.x2 = ctx.chart.canvas.width;
                 props.width = props.x2 - props.x;
               }
