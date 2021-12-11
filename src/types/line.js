@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
-import {toRadians, toPadding, isNumber} from 'chart.js/helpers';
-import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, isLabelVisible, toPercent} from '../helpers';
+import {toRadians, toPadding} from 'chart.js/helpers';
+import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, isLabelVisible, getTPosition} from '../helpers';
 
 const PI = Math.PI;
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
@@ -307,19 +307,14 @@ function rotatedSize(width, height, rotation) {
 }
 
 function calculateT(line, label, sizes, chartArea) {
-  let t = 0.5;
+  let t;
   const space = spaceAround(line, chartArea);
   if (label.position === 'start') {
     t = calculateTAdjust({w: line.x2 - line.x, h: line.y2 - line.y}, sizes, label, space);
   } else if (label.position === 'end') {
     t = 1 - calculateTAdjust({w: line.x - line.x2, h: line.y - line.y2}, sizes, label, space);
-  } else if (isNumber(label.position)) {
-    t = clamp(label.position, 0, 1);
   } else {
-    const percentage = toPercent(label.position);
-    if (isNumber(percentage)) {
-      t = clamp(percentage, 0, 1);
-    }
+    t = getTPosition(label.position, 0.5);
   }
   return t;
 }

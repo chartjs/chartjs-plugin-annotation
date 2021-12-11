@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
-import {toPadding, isNumber} from 'chart.js/helpers';
-import {clamp, drawBox, drawLabel, measureLabelSize, isLabelVisible, getRectCenterPoint, getChartRect, toPosition, inBoxRange, toPercent} from '../helpers';
+import {toPadding} from 'chart.js/helpers';
+import {drawBox, drawLabel, measureLabelSize, isLabelVisible, getRectCenterPoint, getChartRect, toPosition, inBoxRange, getTPosition} from '../helpers';
 
 export default class BoxAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
@@ -112,18 +112,5 @@ function calculatePosition(boxOpts, labelOpts) {
   } else if (position === 'end') {
     return end - labelOpts.size - margin;
   }
-  return start + (size - labelOpts.size) / (1 / getPositionRatio(position));
-}
-
-function getPositionRatio(position) {
-  let t = 0.5;
-  if (isNumber(position)) {
-    t = clamp(position, 0, 1);
-  } else {
-    const percentage = toPercent(position);
-    if (isNumber(percentage)) {
-      t = clamp(percentage, 0, 1);
-    }
-  }
-  return t;
+  return start + (size - labelOpts.size) / (1 / getTPosition(position));
 }
