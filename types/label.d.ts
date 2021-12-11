@@ -121,7 +121,7 @@ export interface LabelTypeOptions extends ContainedLabelOptions {
   position?: Scriptable<LabelPosition | LabelPositionObject, PartialEventContext>,
 }
 
-export type LabelPosition = 'start' | 'center' | 'end';
+export type LabelPosition = 'start' | 'center' | 'end' | string | number;
 
 export type LabelTextAlign = 'left' | 'start' | 'center' | 'right' | 'end';
 
