@@ -1,7 +1,7 @@
 import {isObject, valueOrDefault, defined} from 'chart.js/helpers';
 
 const isEnabled = (options) => options && (options.display || options.enabled);
-const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
+export const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
 
 export function getSize(size, value) {
   if (typeof value === 'number') {
