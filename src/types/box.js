@@ -112,6 +112,10 @@ function calculatePosition(boxOpts, labelOpts) {
   } else if (position === 'end') {
     return end - labelOpts.size - margin;
   }
+  return start + (size - labelOpts.size) / (1 / getPositionRatio(position));
+}
+
+function getPositionRatio(position) {
   let t = 0.5;
   if (isNumber(position)) {
     t = clamp(position, 0, 1);
@@ -121,5 +125,5 @@ function calculatePosition(boxOpts, labelOpts) {
       t = clamp(percentage, 0, 1);
     }
   }
-  return start + (size - labelOpts.size) / (1 / t);
+  return t;
 }
