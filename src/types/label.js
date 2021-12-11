@@ -1,4 +1,4 @@
-import {clamp, drawBox, drawLabel, drawPoint, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inBoxRange, inPointRange, isBoundToPoint, getChartRect, isPointVisible} from '../helpers';
+import {clamp, drawBox, drawLabel, drawPoint, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inBoxRange, inPointRange, isBoundToPoint, getChartRect, isPointVisible, getTPosition} from '../helpers';
 import {color, toPadding} from 'chart.js/helpers';
 import {Element} from 'chart.js';
 
@@ -149,7 +149,7 @@ function calculatePosition(start, size, adjust, position) {
   } else if (position === 'end') {
     return start - size + adjust;
   }
-  return start - size / 2 + adjust;
+  return start + adjust - size / (1 / getTPosition(position));
 }
 
 function drawCallout(ctx, element) {
