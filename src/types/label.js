@@ -1,24 +1,11 @@
-import {drawBox, drawLabel, drawPoint, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inBoxRange, inPointRange, isBoundToPoint, getChartRect, isPointVisible} from '../helpers';
+import {drawBox, drawLabel, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, getChartRect} from '../helpers';
 import {color, toPadding} from 'chart.js/helpers';
 import {Element} from 'chart.js';
 
 export default class LabelAnnotation extends Element {
 
   inRange(mouseX, mouseY, useFinalPosition) {
-    if (!this.visible) {
-      return false;
-    }
-    if (inBoxRange(mouseX, mouseY, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition))) {
-      return true;
-    }
-    const pointOpts = this.options.point;
-    if (isPointVisible(pointOpts)) {
-      const {pointX: x, pointY: y} = this.getProps(['pointX', 'pointY'], useFinalPosition);
-      if (inPointRange({x: mouseX, y: mouseY}, {x, y}, pointOpts.radius)) {
-        return true;
-      }
-    }
-    return false;
+    return this.visible && inBoxRange(mouseX, mouseY, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition));
   }
 
   getCenterPoint(useFinalPosition) {
@@ -29,13 +16,12 @@ export default class LabelAnnotation extends Element {
     if (!this.visible) {
       return;
     }
-    const {labelX, labelY, labelWidth, labelHeight, pointX, pointY, options} = this;
+    const {labelX, labelY, labelWidth, labelHeight, options} = this;
     drawCallout(ctx, this);
     if (this.boxVisible) {
       drawBox(ctx, this, options);
     }
     drawLabel(ctx, {x: labelX, y: labelY, width: labelWidth, height: labelHeight}, options);
-    drawPoint(ctx, {x: pointX, y: pointY}, options.point);
   }
 
   resolveElementProperties(chart, options) {
@@ -86,17 +72,6 @@ LabelAnnotation.defaults = {
     position: 'auto',
     side: 5,
     start: '50%',
-  },
-  point: {
-    backgroundColor: undefined,
-    borderColor: undefined,
-    borderDash: [],
-    borderDashOffset: 0,
-    borderWidth: 1,
-    enabled: false,
-    pointStyle: 'circle',
-    radius: 3,
-    rotation: 0
   },
   color: 'black',
   content: null,

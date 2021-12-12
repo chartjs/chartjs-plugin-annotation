@@ -111,21 +111,8 @@ export interface CalloutOptions {
   start?: Scriptable<number | string, PartialEventContext>,
 }
 
-export interface LabelPointOptions {
-  backgroundColor?: Scriptable<Color, PartialEventContext>,
-  borderColor?: Scriptable<Color, PartialEventContext>,
-  borderDash?: Scriptable<number[], PartialEventContext>,
-  borderDashOffset?: Scriptable<number, PartialEventContext>,
-  borderWidth?: Scriptable<number, PartialEventContext>,
-  enabled?: Scriptable<boolean, PartialEventContext>,
-  pointStyle?: Scriptable<PointStyle, PartialEventContext>,
-  radius?: Scriptable<number, PartialEventContext>,
-  rotation?: Scriptable<number, PartialEventContext>
-}
-
 export interface LabelAnnotationOptions extends CoreAnnotationOptions, LabelTypeOptions, AnnotationPointCoordinates {
   callout?: CalloutOptions;
-  point?: LabelPointOptions;
 }
 
 interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationPointCoordinates {

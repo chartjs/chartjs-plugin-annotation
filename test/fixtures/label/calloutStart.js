@@ -58,10 +58,15 @@ module.exports = {
                 enabled: true,
                 start: 80,
                 position: 'top'
-              },
-              point: {
-                enabled: true
               }
+            },
+            point2: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'May',
+              yValue: 10,
+              radius: 3
             },
             text3: {
               type: 'label',
@@ -79,10 +84,15 @@ module.exports = {
               callout: {
                 enabled: true,
                 start: 'wrong'
-              },
-              point: {
-                enabled: true
               }
+            },
+            point3: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'March',
+              yValue: 12,
+              radius: 3
             }
           }
         }
