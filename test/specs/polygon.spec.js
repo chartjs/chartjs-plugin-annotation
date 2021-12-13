@@ -13,6 +13,8 @@ describe('Polygon annotation', function() {
       rotation: 45,
       radius: 50,
       borderWidth: 0,
+      xAdjust: 0,
+      yAdjust: 0
     });
   }
 });

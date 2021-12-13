@@ -144,6 +144,7 @@ module.exports = {
           children: [
             'point/basic',
             'point/combined',
+            'point/outsideChartArea',
           ]
         },
         {
@@ -151,6 +152,7 @@ module.exports = {
           children: [
             'polygon/basic',
             'polygon/stop',
+            'polygon/outsideChartArea',
             ]
         },
         {
