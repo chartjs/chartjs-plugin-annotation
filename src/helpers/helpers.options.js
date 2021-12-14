@@ -2,12 +2,26 @@ import {isObject, valueOrDefault, defined, isNumber} from 'chart.js/helpers';
 import {clamp} from './helpers.core';
 
 const isEnabled = (options) => options && (options.display || options.enabled);
-const toPercent = (s) => typeof s === 'string' && s.endsWith('%') && parseFloat(s) / 100;
+const isPercentString = (s) => typeof s === 'string' && s.endsWith('%');
+const toPercent = (s) => clamp(parseFloat(s) / 100, 0, 1);
+
+export function getRelativePosition(size, positionOption) {
+  if (positionOption === 'start') {
+    return 0;
+  }
+  if (positionOption === 'end') {
+    return size;
+  }
+  if (isPercentString(positionOption)) {
+    return toPercent(positionOption) * size;
+  }
+  return size / 2;
+}
 
 export function getSize(size, value) {
   if (typeof value === 'number') {
     return value;
-  } else if (typeof value === 'string') {
+  } else if (isPercentString(value)) {
     return toPercent(value) * size;
   }
   return size;
