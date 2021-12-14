@@ -41,16 +41,20 @@ module.exports = {
                 borderWidth: () => 2,
                 borderDash: () => [1],
                 borderDashOffset: () => 0,
-              },
-              point: {
-                enabled: true,
-                radius: () => 10,
-                backgroundColor: () => 'green',
-                borderColor: () => 'black',
-                borderWidth: () => 1,
-                borderDash: () => [1],
-                borderDashOffset: () => 0
               }
+            },
+            point1: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'February',
+              yValue: 10,
+              radius: () => 10,
+              backgroundColor: () => 'green',
+              borderColor: () => 'black',
+              borderWidth: () => 1,
+              borderDash: () => [1],
+              borderDashOffset: () => 0
             }
           }
         }

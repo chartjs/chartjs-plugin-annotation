@@ -34,10 +34,15 @@ module.exports = {
               yAdjust: -100,
               callout: {
                 enabled: true,
-              },
-              point: {
-                enabled: true,
               }
+            },
+            point1: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'February',
+              yValue: 10,
+              radius: 3
             }
           }
         }

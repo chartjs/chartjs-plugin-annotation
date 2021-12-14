@@ -1,7 +1,7 @@
 # Point
 
 ```js chart-editor
-// <block:setup:2>
+// <block:setup:3>
 const DATA_COUNT = 12;
 const MIN = 0;
 const MAX = 100;
@@ -16,8 +16,8 @@ const data = {
 };
 // </block:setup>
 
-// <block:annotation:1>
-const annotation = {
+// <block:annotation1:1>
+const annotation1 = {
   type: 'label',
   backgroundColor: 'rgba(245,245,245, 0.5)',
   content: (ctx) => 'Maximum value is ' + maxValue(ctx).toFixed(2),
@@ -45,7 +45,19 @@ const annotation = {
   yAdjust: -6,
   yValue: (ctx) => maxValue(ctx)
 };
-// </block:annotation>
+// </block:annotation1>
+
+// <block:annotation2:2>
+const annotation2 = {
+  type: 'point',
+  backgroundColor: 'transparent',
+  borderColor: (ctx) => ctx.chart.data.datasets[0].borderColor,
+  pointStyle: 'rectRounded',
+  radius: 10,
+  xValue: (ctx) => maxLabel(ctx),
+  yValue: (ctx) => maxValue(ctx)
+};
+// </block:annotation2>
 
 /* <block:config:0> */
 const config = {
@@ -68,7 +80,8 @@ const config = {
       annotation: {
         clip: false,
         annotations: {
-          annotation
+          annotation1,
+          annotation2
         }
       }
     }
@@ -76,7 +89,7 @@ const config = {
 };
 /* </block:config> */
 
-// <block:utils:3>
+// <block:utils:4>
 function maxValue(ctx) {
   let max = 0;
   const dataset = ctx.chart.data.datasets[0];
