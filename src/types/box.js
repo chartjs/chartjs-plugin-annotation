@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {toPadding} from 'chart.js/helpers';
-import {drawBox, drawLabel, measureLabelSize, isLabelVisible, getRectCenterPoint, getChartRect, toPosition, inBoxRange} from '../helpers';
+import {drawBox, drawLabel, getRelativePosition, measureLabelSize, isLabelVisible, getRectCenterPoint, getChartRect, toPosition, inBoxRange} from '../helpers';
 
 export default class BoxAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
@@ -94,24 +94,28 @@ BoxAnnotation.defaultRoutes = {
 function calculateX(box, labelSize, position, padding) {
   const {x: start, x2: end, width: size, options} = box;
   const {xAdjust: adjust, borderWidth} = options.label;
-  return calculatePosition({start, end, size}, {position: position.x, padding: padding.left, adjust, borderWidth, size: labelSize.width});
+  return calculatePosition({start, end, size}, {
+    position: position.x,
+    padding: {start: padding.left, end: padding.right},
+    adjust, borderWidth,
+    size: labelSize.width
+  });
 }
 
 function calculateY(box, labelSize, position, padding) {
   const {y: start, y2: end, height: size, options} = box;
   const {yAdjust: adjust, borderWidth} = options.label;
-  return calculatePosition({start, end, size}, {position: position.y, padding: padding.top, adjust, borderWidth, size: labelSize.height});
+  return calculatePosition({start, end, size}, {
+    position: position.y,
+    padding: {start: padding.top, end: padding.bottom},
+    adjust, borderWidth,
+    size: labelSize.height
+  });
 }
 
 function calculatePosition(boxOpts, labelOpts) {
-  const {start, end, size} = boxOpts;
-  const {position, padding, adjust, borderWidth} = labelOpts;
-  const margin = padding + (borderWidth / 2) + adjust;
-  if (position === 'start') {
-    return start + margin;
-  } else if (position === 'end') {
-    return end - labelOpts.size - margin;
-  }
-  return start + (size - labelOpts.size) / 2;
+  const {start, end} = boxOpts;
+  const {position, padding: {start: padStart, end: padEnd}, adjust, borderWidth} = labelOpts;
+  const availableSize = end - borderWidth - start - padStart - padEnd - labelOpts.size;
+  return start + borderWidth / 2 + adjust + padStart + getRelativePosition(availableSize, position);
 }
-

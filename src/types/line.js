@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {toRadians, toPadding} from 'chart.js/helpers';
-import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, isLabelVisible} from '../helpers';
+import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, isLabelVisible, getRelativePosition} from '../helpers';
 
 const PI = Math.PI;
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
@@ -307,12 +307,14 @@ function rotatedSize(width, height, rotation) {
 }
 
 function calculateT(line, label, sizes, chartArea) {
-  let t = 0.5;
+  let t;
   const space = spaceAround(line, chartArea);
   if (label.position === 'start') {
     t = calculateTAdjust({w: line.x2 - line.x, h: line.y2 - line.y}, sizes, label, space);
   } else if (label.position === 'end') {
     t = 1 - calculateTAdjust({w: line.x - line.x2, h: line.y - line.y2}, sizes, label, space);
+  } else {
+    t = getRelativePosition(1, label.position);
   }
   return t;
 }

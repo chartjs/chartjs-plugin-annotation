@@ -38,12 +38,12 @@ export interface CoreLabelOptions {
    * Overrides the width of the image. Could be set in pixel by a number,
    * or in percentage of current width of image by a string
    */
-  width?: Scriptable<number | string, PartialEventContext>,
+  width?: Scriptable<number | percentString, PartialEventContext>,
   /**
    * Overrides the height of the image. Could be set in pixel by a number,
    * or in percentage of current height of image by a string
    */
-  height?: Scriptable<number | string, PartialEventContext>,
+  height?: Scriptable<number | percentString, PartialEventContext>,
 }
 
 export interface ContainedLabelOptions extends CoreLabelOptions {
@@ -121,7 +121,8 @@ export interface LabelTypeOptions extends ContainedLabelOptions {
   position?: Scriptable<LabelPosition | LabelPositionObject, PartialEventContext>,
 }
 
-export type LabelPosition = 'start' | 'center' | 'end';
+type percentString = `${number}%`;
+export type LabelPosition = 'start' | 'center' | 'end' | percentString;
 
 export type LabelTextAlign = 'left' | 'start' | 'center' | 'right' | 'end';
 

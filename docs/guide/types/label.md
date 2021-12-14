@@ -128,9 +128,14 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 
 ### Position
 
-If this value is a string (possible options are `'start'`, `'center'`, `'end'`), it is applied to vertical and horizontal position of the label, with respect to the selected point.
+A position can be set in 2 different values types:
 
-If this value is an object, the `x` property defines the horizontal alignment of the label, with respect to the selected point. Similarly, the `y` property defines the vertical alignment of the label, with respect to the selected point. Possible options for both properties are `'start'`, `'center'`, `'end'`. Omitted property have value of the default, `'center'`.
+1. `'start'`, `'center'`, `'end'` which are defining where the label will be located
+2. a `string`, in percentage format `'number%'`, is representing the percentage on the size where the label will be located
+
+If this value is a string (possible options are `'start'`, `'center'`, `'end'` or a string in percentage format), it is applied to vertical and horizontal position in the box.
+
+If this value is an object, the `x` property defines the horizontal alignment in the label, with respect to the selected point. Similarly, the `y` property defines the vertical alignment in the label, with respect to the selected point. Possible options for both properties are `'start'`, `'center'`, `'end'`, a string in percentage format. Omitted property have value of the default, `'center'`.
 
 #### borderRadius
 
