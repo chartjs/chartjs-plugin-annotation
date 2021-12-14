@@ -2,16 +2,29 @@ import {isObject, valueOrDefault, defined} from 'chart.js/helpers';
 import {clamp} from './helpers.core';
 
 const isEnabled = (options) => options && (options.display || options.enabled);
-const toPercent = (s, d) => typeof s === 'string' && s.endsWith('%') ? parseFloat(s) / 100 : d;
-export const getTPosition = (p, d = 0.5) => clamp(getSize(1, p, d), 0, 1);
+const isPercentString = (s) => typeof s === 'string' && s.endsWith('%');
+const toPercent = (s) => clamp(parseFloat(s) / 100, 0, 1);
 
-export function getSize(size, value, def) {
+export function getRelativePosition(size, positionOption) {
+  if (positionOption === 'start') {
+    return 0;
+  }
+  if (positionOption === 'end') {
+    return size;
+  }
+  if (isPercentString(positionOption)) {
+    return toPercent(positionOption) * size;
+  }
+  return size / 2;
+}
+
+export function getSize(size, value) {
   if (typeof value === 'number') {
     return value;
-  } else if (typeof value === 'string') {
-    return toPercent(value, def || 0) * size;
+  } else if (isPercentString(value)) {
+    return toPercent(value) * size;
   }
-  return defined(def) ? def : size;
+  return size;
 }
 
 export function isLabelVisible(options) {

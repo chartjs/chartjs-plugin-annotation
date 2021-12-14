@@ -27,10 +27,10 @@ module.exports = {
               yValue: 8,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: 'position: {y: 0.5}',
+              content: 'position: {y: 50%}',
               position: {
                 x: 'start',
-                y: 0.5
+                y: '50%'
               },
               point: {
                 enabled: true,
@@ -49,10 +49,10 @@ module.exports = {
               yValue: 4,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: 'position: {y: 0.25}',
+              content: 'position: {y: 25%}',
               position: {
                 x: 'start',
-                y: 0.25
+                y: '25%'
               },
               point: {
                 enabled: true,
@@ -71,10 +71,10 @@ module.exports = {
               yValue: 0,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: 'position: {y: 0.75}',
+              content: 'position: {y: 75%}',
               position: {
                 x: 'start',
-                y: 0.75
+                y: '75%'
               },
               point: {
                 enabled: true,
@@ -93,10 +93,10 @@ module.exports = {
               yValue: -4,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: 'position: {y: 0}',
+              content: 'position: {y: 0%}',
               position: {
                 x: 'end',
-                y: 0
+                y: '0%'
               },
               point: {
                 enabled: true,
@@ -115,10 +115,10 @@ module.exports = {
               yValue: -8,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: 'position: {y: 1}',
+              content: 'position: {y: 100%}',
               position: {
                 x: 'end',
-                y: 1
+                y: '100%'
               },
               point: {
                 enabled: true,
@@ -137,10 +137,10 @@ module.exports = {
               yValue: -6,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: 'position: {y: > 1}',
+              content: 'position: {y: > 100%}',
               position: {
                 x: 'start',
-                y: 10
+                y: '850%'
               },
               point: {
                 enabled: true,
@@ -159,10 +159,10 @@ module.exports = {
               yValue: 8,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: 'position: {y: < 0}',
+              content: 'position: {y: < 0%}',
               position: {
                 x: 'end',
-                y: -10
+                y: '-850%'
               },
               point: {
                 enabled: true,
