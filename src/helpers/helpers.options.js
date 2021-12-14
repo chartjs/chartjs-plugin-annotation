@@ -1,4 +1,4 @@
-import {isObject, valueOrDefault, defined} from 'chart.js/helpers';
+import {isObject, valueOrDefault, defined, isNumber} from 'chart.js/helpers';
 import {clamp} from './helpers.core';
 
 const isEnabled = (options) => options && (options.display || options.enabled);
@@ -64,6 +64,19 @@ function readValueToProps(value, props, defValue) {
 
 export function toPosition(value) {
   return readValueToProps(value, ['x', 'y'], 'center');
+}
+
+export function getTPosition(position, def = 0.5) {
+  let t = def;
+  if (isNumber(position)) {
+    t = clamp(position, 0, 1);
+  } else {
+    const percentage = toPercent(position);
+    if (isNumber(percentage)) {
+      t = clamp(percentage, 0, 1);
+    }
+  }
+  return t;
 }
 
 export function isBoundToPoint(options) {
