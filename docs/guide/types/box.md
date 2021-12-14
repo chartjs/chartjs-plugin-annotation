@@ -126,7 +126,7 @@ All of these options can be [Scriptable](../options#scriptable-options)
 
 #### Position
 
-A position can be set in 3 different values types:
+A position can be set in 2 different values types:
 
 1. `'start'`, `'center'`, `'end'` which are defining where the label will be located
 2. a `string`, in percentage format `'number%'`, is representing the percentage on the size where the label will be located
