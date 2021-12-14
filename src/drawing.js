@@ -14,6 +14,7 @@ export function init(chart, element, options, properties) {
 export function drawElement(chart, element, caller) {
   if (element.options.drawTime === caller) {
     const args = {
+      cancelable: true,
       element
     };
     const argsHook = [element.$context];
@@ -29,10 +30,13 @@ export function drawElement(chart, element, caller) {
 export function drawLabelElement(chart, element, caller) {
   if ('drawLabel' in element && element.options.label && (element.options.label.drawTime || element.options.drawTime) === caller) {
     const args = {
+      cancelable: true,
       element
     };
     const argsHook = [element.$context];
-    if (chart.notifyPlugins('beforeDrawAnnotationLabel', args) === false || callHook(element.options.beforeDrawLabel, argsHook) === false) {
+    const res = chart.notifyPlugins('beforeDrawAnnotationLabel', args);
+    console.log(res);
+    if (res === false || callHook(element.options.beforeDrawLabel, argsHook) === false) {
       return;
     }
     element.drawLabel(chart.ctx, chart.chartArea);
