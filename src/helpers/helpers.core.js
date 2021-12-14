@@ -28,7 +28,14 @@ export function getElementCenterPoint(element, useFinalPosition) {
 
 export function requireVersion(min, ver) {
   const parts = ver.split('.');
-  if (!min.split('.').reduce((a, c, i) => a && c <= parts[i], true)) {
-    throw new Error(`Chart.js v${ver} is not supported. v${min} or newer is required.`);
+  let i = 0;
+  for (const req of min.split('.')) {
+    const act = parts[i++];
+    if (parseInt(req, 10) < parseInt(act, 10)) {
+      break;
+    }
+    if (req > act || (act.length > req.length && act.substr(0, req.length) === req)) {
+      throw new Error(`Chart.js v${ver} is not supported. v${min} or newer is required.`);
+    }
   }
 }

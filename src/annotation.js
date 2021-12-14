@@ -13,7 +13,8 @@ export default {
   version,
 
   beforeRegister() {
-    requireVersion('3.7', Chart.version);
+    // TODO: requre 3.7
+    requireVersion('3.6.2', Chart.version);
   },
 
   afterRegister() {
