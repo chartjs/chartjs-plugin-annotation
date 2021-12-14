@@ -122,7 +122,7 @@ export interface LabelTypeOptions extends ContainedLabelOptions {
 }
 
 type percentString = `${number}%`;
-export type LabelPosition = 'start' | 'center' | 'end' | percentString | number;
+export type LabelPosition = 'start' | 'center' | 'end' | percentString;
 
 export type LabelTextAlign = 'left' | 'start' | 'center' | 'right' | 'end';
 

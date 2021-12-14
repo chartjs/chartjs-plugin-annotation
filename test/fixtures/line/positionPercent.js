@@ -24,7 +24,7 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 5,
               label: {
-                position: 0,
+                position: '0%',
                 backgroundColor: 'black',
                 content: '0%',
                 enabled: true
@@ -37,7 +37,7 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 5,
               label: {
-                position: 0.10,
+                position: '10%',
                 backgroundColor: 'black',
                 content: '10%',
                 enabled: true
@@ -50,7 +50,7 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 5,
               label: {
-                position: 0.20,
+                position: '20%',
                 backgroundColor: 'black',
                 content: '20%',
                 enabled: true
@@ -63,7 +63,7 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 5,
               label: {
-                position: 0.30,
+                position: '30%',
                 backgroundColor: 'black',
                 content: '30%',
                 enabled: true
@@ -76,7 +76,7 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 5,
               label: {
-                position: 0.40,
+                position: '40%',
                 backgroundColor: 'black',
                 content: '40%',
                 enabled: true
@@ -89,7 +89,7 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 5,
               label: {
-                position: 0.50,
+                position: '50%',
                 backgroundColor: 'black',
                 content: '50%',
                 enabled: true
@@ -102,7 +102,7 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 5,
               label: {
-                position: 0.60,
+                position: '60%',
                 backgroundColor: 'black',
                 content: '60%',
                 enabled: true
@@ -115,7 +115,7 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 5,
               label: {
-                position: 0.70,
+                position: '70%',
                 backgroundColor: 'black',
                 content: '70%',
                 enabled: true
@@ -128,7 +128,7 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 5,
               label: {
-                position: 0.80,
+                position: '80%',
                 backgroundColor: 'black',
                 content: '80%',
                 enabled: true
@@ -141,7 +141,7 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 5,
               label: {
-                position: 0.90,
+                position: '90%',
                 backgroundColor: 'black',
                 content: '90%',
                 enabled: true
@@ -154,7 +154,7 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 5,
               label: {
-                position: 1,
+                position: '100%',
                 backgroundColor: 'black',
                 content: '100%',
                 enabled: true

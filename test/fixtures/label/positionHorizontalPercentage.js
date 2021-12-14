@@ -25,9 +25,9 @@ module.exports = {
               yValue: 20,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: 'position: {x: 0.25}',
+              content: 'position: {x: 25%}',
               position: {
-                x: 0.25,
+                x: '25%',
                 y: 'end'
               },
               point: {
@@ -47,9 +47,9 @@ module.exports = {
               yValue: 10,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: 'position: 0.5',
+              content: 'position: 50%',
               position: {
-                x: 0.5,
+                x: '50%',
                 y: 'end'
               },
               point: {
@@ -69,9 +69,9 @@ module.exports = {
               yValue: 20,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: 'position: {x: 0.75}',
+              content: 'position: {x: 75%}',
               position: {
-                x: 0.75,
+                x: '75%',
                 y: 'end'
               },
               point: {
@@ -91,9 +91,9 @@ module.exports = {
               yValue: 10,
               backgroundColor: 'transparent',
               borderWidth: 0,
-              content: 'position: 0.1',
+              content: 'position: 10%',
               position: {
-                x: 0.1,
+                x: '10%',
                 y: 'end'
               },
               point: {
