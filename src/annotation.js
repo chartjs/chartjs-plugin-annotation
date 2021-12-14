@@ -1,11 +1,11 @@
 import {Animations, Chart} from 'chart.js';
 import {clipArea, unclipArea, isFinite, valueOrDefault, isObject, isArray} from 'chart.js/helpers';
 import {handleEvent, eventHooks, updateListeners} from './events';
+import {drawingHooks, init, drawElement, drawLabelElement} from './drawing';
 import {annotationTypes} from './types';
 import {version} from '../package.json';
 
 const chartStates = new Map();
-const drawingHooks = ['init', 'afterDraw', 'beforeDraw', 'beforeDrawLabel', 'afterDrawLabel'];
 
 export default {
   id: 'annotation',
@@ -150,7 +150,7 @@ function updateElements(chart, state, options, mode) {
     }
     const opts = resolveAnnotationOptions(annotation.setContext(getContext(chart, el, annotation)));
     const properties = el.resolveElementProperties(chart, opts);
-    invokeHook(opts.init, el, properties);
+    init(el, opts, properties);
     properties.skip = isNaN(properties.x) || isNaN(properties.y);
     properties.options = opts;
     animations.update(el, properties);
@@ -210,27 +210,14 @@ function draw(chart, caller, clip) {
     clipArea(ctx, chartArea);
   }
   elements.forEach(el => {
-    if (el.options.drawTime === caller && invokeHook(el.options.beforeDraw, el)) {
-      el.draw(ctx);
-      invokeHook(el.options.afterDraw, el);
-    }
+    drawElement(chart, el, caller);
   });
   if (clip) {
     unclipArea(ctx);
   }
   elements.forEach(el => {
-    if ('drawLabel' in el && el.options.label && (el.options.label.drawTime || el.options.drawTime) === caller && invokeHook(el.options.beforeDrawLabel, el)) {
-      el.drawLabel(ctx, chartArea);
-      invokeHook(el.options.afterDrawLabel, el);
-    }
+    drawLabelElement(chart, el, caller);
   });
-}
-
-function invokeHook(callback, element, properties) {
-  if (typeof callback === 'function') {
-    return callback(element.$context, properties);
-  }
-  return true;
 }
 
 function adjustScaleRange(chart, scale, annotations) {
