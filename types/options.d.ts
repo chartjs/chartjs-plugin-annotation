@@ -133,5 +133,5 @@ export interface AnnotationPluginOptions extends AnnotationEvents {
   clip?: boolean,
   dblClickSpeed?: Scriptable<number, PartialEventContext>,
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
-  animations: Record<string, unknown>,
+  animations?: Record<string, unknown>,
 }
