@@ -1,10 +1,11 @@
 import {Animations, Chart} from 'chart.js';
 import {clipArea, unclipArea, isFinite, valueOrDefault, isObject, isArray} from 'chart.js/helpers';
-import {handleEvent, hooks, updateListeners} from './events';
+import {handleEvent, eventHooks, updateListeners} from './events';
 import {annotationTypes} from './types';
 import {version} from '../package.json';
 
 const chartStates = new Map();
+const drawingHooks = ['init', 'afterDraw', 'beforeDraw', 'beforeDrawLabel', 'afterDrawLabel'];
 
 export default {
   id: 'annotation',
@@ -105,7 +106,7 @@ export default {
 
   descriptors: {
     _indexable: false,
-    _scriptable: (prop) => !hooks.includes(prop) && !['init', 'afterDraw', 'beforeDraw', 'beforeDrawLabel', 'afterDrawLabel'].includes(prop),
+    _scriptable: (prop) => !eventHooks.includes(prop) && !drawingHooks.includes(prop),
     annotations: {
       _allKeys: false,
       _fallback: (prop, opts) => `elements.${annotationTypes[resolveType(opts.type)].id}`,
@@ -149,9 +150,7 @@ function updateElements(chart, state, options, mode) {
     }
     const opts = resolveAnnotationOptions(annotation.setContext(getContext(chart, el, annotation)));
     const properties = el.resolveElementProperties(chart, opts);
-    // -----
     invokeHook(opts.init, el, properties);
-    // -----
     properties.skip = isNaN(properties.x) || isNaN(properties.y);
     properties.options = opts;
     animations.update(el, properties);
@@ -165,7 +164,7 @@ function resolveAnnotationOptions(resolver) {
   result.type = resolver.type;
   result.drawTime = resolver.drawTime;
   Object.assign(result, resolveObj(resolver, elementClass.defaults), resolveObj(resolver, elementClass.defaultRoutes));
-  for (const hook of hooks) {
+  for (const hook of eventHooks) {
     result[hook] = resolver[hook];
   }
   return result;
@@ -210,25 +209,21 @@ function draw(chart, caller, clip) {
   if (clip) {
     clipArea(ctx, chartArea);
   }
-  // -----
   elements.forEach(el => {
     if (el.options.drawTime === caller && invokeHook(el.options.beforeDraw, el)) {
       el.draw(ctx);
       invokeHook(el.options.afterDraw, el);
     }
   });
-  // -----
   if (clip) {
     unclipArea(ctx);
   }
-  // -----
   elements.forEach(el => {
     if ('drawLabel' in el && el.options.label && (el.options.label.drawTime || el.options.drawTime) === caller && invokeHook(el.options.beforeDrawLabel, el)) {
       el.drawLabel(ctx, chartArea);
       invokeHook(el.options.afterDrawLabel, el);
     }
   });
-  // -----
 }
 
 function invokeHook(callback, element, properties) {

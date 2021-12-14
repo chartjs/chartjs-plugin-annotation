@@ -66,7 +66,13 @@ PolygonAnnotation.defaults = {
   yMax: undefined,
   yMin: undefined,
   yScaleID: 'y',
-  yValue: undefined
+  yValue: undefined,
+  // hooks
+  init: undefined,
+  afterDraw: undefined,
+  afterDrawLabel: undefined,
+  beforeDraw: undefined,
+  beforeDrawLabel: undefined
 };
 
 PolygonAnnotation.defaultRoutes = {
