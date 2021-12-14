@@ -149,7 +149,7 @@ function calculatePosition(start, size, adjust, position) {
   } else if (position === 'end') {
     return start - size + adjust;
   }
-  return start + adjust - size / (1 / getTPosition(position));
+  return start + getSize(size, position, size / 2) + adjust ;
 }
 
 function drawCallout(ctx, element) {
