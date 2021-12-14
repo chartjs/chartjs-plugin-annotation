@@ -57,9 +57,13 @@ module.exports = {
                 enabled: true,
                 position: 'left',
               },
-              point: {
-                enabled: true
-              }
+            },
+            point2: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'May',
+              yValue: 10
             }
           }
         }

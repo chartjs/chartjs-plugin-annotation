@@ -64,10 +64,12 @@ The following options are available for polygon annotations.
 | [`radius`](#general) | `number` | Yes | `10`
 | [`rotation`](#general) | `number` | Yes | `0`
 | [`sides`](#general) | `number` | Yes | `3`
+| [`xAdjust`](#general) | `number` | Yes | `0`
 | [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
 | [`xScaleID`](#general) | `string` | Yes | `'x'`
 | [`xValue`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yAdjust`](#general) | `number` | Yes | `0`
 | [`yScaleID`](#general) | `string` | Yes | `'y'`
 | [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
@@ -87,10 +89,12 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | `radius` | Size of the polygon in pixels.
 | `rotation` | Rotation of polygon, in degrees.
 | `sides` | Amount of sides of polygon.
+| `xAdjust` | Adjustment along x-axis (left-right) of polygon relative to computed position. Negative values move the polygon left, positive right.
 | `xMax` | Right edge of the box in units along the x axis.
 | `xMin` | Left edge of the box in units along the x axis.
 | `xScaleID` | ID of the X scale to bind onto, default is 'x'.
 | `xValue` | X coordinate of the polygon in units along the x axis.
+| `yAdjust` | Adjustment along y-axis (top-bottom) of polygon relative to computed position. Negative values move the polygon up, positive down.
 | `yMax` | Bottom edge of the box in units along the y axis.
 | `yMin` | Top edge of the box in units along the y axis.
 | `yScaleID` | ID of the Y scale to bind onto, default is 'y'.

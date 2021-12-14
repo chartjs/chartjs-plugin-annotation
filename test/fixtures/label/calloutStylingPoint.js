@@ -34,16 +34,20 @@ module.exports = {
               yAdjust: -100,
               callout: {
                 enabled: true,
-              },
-              point: {
-                enabled: true,
-                radius: 10,
-                backgroundColor: 'red',
-                borderColor: 'black',
-                borderWidth: 3,
-                borderDash: [2, 3],
-                borderDashOffset: 0
               }
+            },
+            point1: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'February',
+              yValue: 10,
+              radius: 10,
+              backgroundColor: 'red',
+              borderColor: 'black',
+              borderWidth: 3,
+              borderDash: [2, 3],
+              borderDashOffset: 0
             }
           }
         }

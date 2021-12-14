@@ -16,7 +16,7 @@ module.exports = {
       plugins: {
         annotation: {
           annotations: {
-            cross: {
+            labelcross: {
               type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
@@ -34,15 +34,19 @@ module.exports = {
               yAdjust: -35,
               callout: {
                 enabled: true,
-              },
-              point: {
-                enabled: true,
-                pointStyle: 'cross',
-                borderWidth: 4,
-                radius: 10
               }
             },
-            rectRounded: {
+            cross: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'January',
+              yValue: 22,
+              pointStyle: 'cross',
+              borderWidth: 4,
+              radius: 10
+            },
+            labelRectRounded: {
               type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
@@ -60,16 +64,20 @@ module.exports = {
               yAdjust: -35,
               callout: {
                 enabled: true,
-              },
-              point: {
-                enabled: true,
-                pointStyle: 'rectRounded',
-                backgroundColor: 'white',
-                borderWidth: 4,
-                radius: 10
               }
             },
-            triangle: {
+            rectRounded: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'February',
+              yValue: 18,
+              pointStyle: 'rectRounded',
+              backgroundColor: 'white',
+              borderWidth: 4,
+              radius: 10
+            },
+            labelTriangle: {
               type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
@@ -87,16 +95,20 @@ module.exports = {
               yAdjust: -35,
               callout: {
                 enabled: true,
-              },
-              point: {
-                enabled: true,
-                pointStyle: 'triangle',
-                backgroundColor: 'white',
-                borderWidth: 4,
-                radius: 10
               }
             },
-            star: {
+            triangle: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'March',
+              yValue: 14,
+              pointStyle: 'triangle',
+              backgroundColor: 'white',
+              borderWidth: 4,
+              radius: 10
+            },
+            labelStar: {
               type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
@@ -115,15 +127,19 @@ module.exports = {
               callout: {
                 enabled: true,
               },
-              point: {
-                enabled: true,
-                pointStyle: 'star',
-                backgroundColor: 'white',
-                borderWidth: 4,
-                radius: 10
-              },
             },
-            triangleRot: {
+            star: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'April',
+              yValue: 10,
+              pointStyle: 'star',
+              backgroundColor: 'white',
+              borderWidth: 4,
+              radius: 10
+            },
+            labelTriangleRot: {
               type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
@@ -141,15 +157,19 @@ module.exports = {
               yAdjust: +35,
               callout: {
                 enabled: true,
-              },
-              point: {
-                enabled: true,
-                pointStyle: 'triangle',
-                backgroundColor: 'white',
-                borderWidth: 4,
-                radius: 20,
-                rotation: 45
               }
+            },
+            triangleRot: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'May',
+              yValue: 6,
+              pointStyle: 'triangle',
+              backgroundColor: 'white',
+              borderWidth: 4,
+              radius: 20,
+              rotation: 45
             }
           }
         }

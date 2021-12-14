@@ -28,12 +28,16 @@ module.exports = {
               content: 'position: {x: start}',
               position: {
                 x: 'start'
-              },
-              point: {
-                enabled: true,
-                backgroundColor: 'red',
-                radius: 5
               }
+            },
+            point1: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'January',
+              yValue: 20,
+              backgroundColor: 'red',
+              radius: 5
             },
             text2: {
               type: 'label',
@@ -44,11 +48,15 @@ module.exports = {
               backgroundColor: 'transparent',
               borderWidth: 0,
               content: 'position: center',
-              point: {
-                enabled: true,
-                backgroundColor: 'red',
-                radius: 5
-              }
+            },
+            point2: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'February',
+              yValue: 10,
+              backgroundColor: 'red',
+              radius: 5
             },
             text3: {
               type: 'label',
@@ -61,12 +69,16 @@ module.exports = {
               content: 'position: {x: end}',
               position: {
                 x: 'end'
-              },
-              point: {
-                enabled: true,
-                backgroundColor: 'red',
-                radius: 5
               }
+            },
+            point3: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'May',
+              yValue: 20,
+              backgroundColor: 'red',
+              radius: 5
             }
           }
         }

@@ -70,7 +70,6 @@ The following options are available for label annotations.
 | [`font`](#styling) | [`Font`](../options#font) | Yes | `{}`
 | [`height`](#general) | `number`\|`string` | Yes | `undefined`
 | [`padding`](#general) | [`Padding`](../options#padding) | Yes | `6`
-| [`point`](#point) | `object` | Yes |
 | [`position`](#position) | `string`\|`{x: string, y: string}` | Yes | `'center'`
 | [`textAlign`](#general) | `string` | Yes | `'center'`
 | [`width`](#general) | `number`\|`string` | Yes | `undefined`
@@ -129,91 +128,22 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 
 ### Position
 
-If this value is a string (possible options are `'start'`, `'center'`, `'end'`), it is applied to vertical and horizontal position of the label, with respect to the selected point.
+A position can be set in 2 different values types:
 
-If this value is an object, the `x` property defines the horizontal alignment of the label, with respect to the selected point. Similarly, the `y` property defines the vertical alignment of the label, with respect to the selected point. Possible options for both properties are `'start'`, `'center'`, `'end'`. Omitted property have value of the default, `'center'`.
+1. `'start'`, `'center'`, `'end'` which are defining where the label will be located
+2. a `string`, in percentage format `'number%'`, is representing the percentage on the size where the label will be located
+
+If this value is a string (possible options are `'start'`, `'center'`, `'end'` or a string in percentage format), it is applied to vertical and horizontal position in the box.
+
+If this value is an object, the `x` property defines the horizontal alignment in the label, with respect to the selected point. Similarly, the `y` property defines the vertical alignment in the label, with respect to the selected point. Possible options for both properties are `'start'`, `'center'`, `'end'`, a string in percentage format. Omitted property have value of the default, `'center'`.
 
 #### borderRadius
 
 If this value is a number, it is applied to all corners of the rectangle (topLeft, topRight, bottomLeft, bottomRight). If this value is an object, the `topLeft` property defines the top-left corners border radius. Similarly, the `topRight`, `bottomLeft`, and `bottomRight` properties can also be specified. Omitted corners have radius of 0.
 
-### Point
+## Callout
 
-A point options can enable the selected point drawing.
-
-Namespace: `options.annotations[annotationID].label.point`, it defines options for the point on the annotation label.
-
-```js chart-editor
-/* <block:options:0> */
-const options = {
-  plugins: {
-    autocolors: false,
-    annotation: {
-      annotations: {
-        label1: {
-          type: 'label',
-          xValue: 2.5,
-          yValue: 60,
-          backgroundColor: 'rgba(245,245,245)',
-          content: ['In this point of time,', 'something happened'],
-          textAlign: 'start',
-          position: {
-            y: 'start'
-          },
-          font: {
-            size: 18
-          },
-          point: {
-            enabled: true,
-            backgroundColor: 'red',
-            radius: 5
-          }
-        }
-      }
-    }
-  }
-};
-/* </block:options> */
-
-/* <block:config:1> */
-const config = {
-  type: 'line',
-  data: {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [{
-      label: 'My First Dataset',
-      data: [65, 59, 80, 81, 56, 55, 40],
-      fill: false,
-      borderColor: 'rgb(75, 192, 192)',
-      tension: 0.1
-    }]
-  },
-  options
-};
-/* </block:config> */
-
-module.exports = {
-  config
-};
-```
-
-All of these options can be [Scriptable](../options#scriptable-options).
-
-| Name | Type | Default | Notes
-| ---- | ---- | :----: | ---- | ----
-| `enabled` | `boolean` | `false` | If true, the point is drawn.
-| `backgroundColor` | `Color` | `undefined` | Fill color of the selected point.
-| `borderColor` | [`Color`](../options#color) | `undefined` | Stroke color of the selected point.
-| `borderDash` | `number[]` | `[]` | Length and spacing of dashes of the border of the selected point. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
-| `borderDashOffset` | `number` | `0` | Offset for line dashes of the border of the selected point. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
-| `borderWidth` | `number` | `1` | Stroke width of the selected point.
-| `pointStyle` | [`PointStyle`](../options#point-style) | `'circle'` | Style of the point.
-| `radius` | `number` | `3` | Radius of the selected point.
-| `rotation` | `number` | `0` | Rotation of point, in degrees.
-
-### Callout
-
-A callout connects the label by a line to a point.
+A callout connects the label by a line to the selected point.
 
 Namespace: `options.annotations[annotationID].label.callout`, it defines options for the callout on the annotation label.
 
@@ -239,10 +169,6 @@ const options = {
           callout: {
             enabled: true,
             side: 10
-          },
-          point: {
-            enabled: true,
-            backgroundColor: 'rgba(245,245,245)'
           }
         }
       }

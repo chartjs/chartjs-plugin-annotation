@@ -45,14 +45,20 @@ module.exports = {
               },
               position: {
                 y: 'end'
-              },
-              point: {
-                enabled: true,
-                radius: 10,
-                backgroundColor: 'red',
-                borderColor: 'black',
-                borderWidth: 1
               }
+            },
+            point1: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xMin: 1,
+              yMin: 1,
+              xMax: 8,
+              yMax: 8,
+              radius: 10,
+              backgroundColor: 'red',
+              borderColor: 'black',
+              borderWidth: 1
             },
             box1: {
               type: 'box',
@@ -85,13 +91,19 @@ module.exports = {
               position: {
                 y: 'end'
               },
-              point: {
-                enabled: true,
-                radius: 10,
-                backgroundColor: 'red',
-                borderColor: 'black',
-                borderWidth: 1,
-              }
+            },
+            point2: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xMin: -8,
+              yMin: -8,
+              xMax: 1,
+              yMax: 1,
+              radius: 10,
+              backgroundColor: 'red',
+              borderColor: 'black',
+              borderWidth: 1
             },
             box2: {
               type: 'box',

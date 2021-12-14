@@ -80,13 +80,7 @@ function toggleLabel(ctx, event) {
   const chart = ctx.chart;
   const annotationOpts = chart.options.plugins.annotation.annotations.annotation;
   annotationOpts.label.enabled = !annotationOpts.label.enabled;
-  if (event.x < oneThirdWidth) {
-    annotationOpts.label.position = 'start';
-  } else if (event.x > oneThirdWidth * 2) {
-    annotationOpts.label.position = 'end';
-  } else {
-    annotationOpts.label.position = 'center';
-  }
+  annotationOpts.label.position = (event.x / ctx.chart.chartArea.width * 100) + '%';
   chart.update();
 }
 // </block:utils>

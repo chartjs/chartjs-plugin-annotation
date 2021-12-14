@@ -36,10 +36,14 @@ module.exports = {
                 enabled: true,
                 margin: 10,
                 position: 'right',
-              },
-              point: {
-                enabled: true,
               }
+            },
+            point1: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 2.5,
+              yValue: 20
             },
             text2: {
               type: 'label',
@@ -61,10 +65,14 @@ module.exports = {
                 enabled: true,
                 margin: 0,
                 position: 'left',
-              },
-              point: {
-                enabled: true,
               }
+            },
+            point2: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'May',
+              yValue: 10
             }
           }
         }
