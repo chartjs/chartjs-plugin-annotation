@@ -11,6 +11,7 @@ The following options are available at the top level. They apply to all annotati
 | `clip` | `boolean` | No | `true` | Are the annotations clipped to the chartArea.
 | `drawTime` | `string` | Yes | `'afterDatasetsDraw'` | See [drawTime](options#draw-time)
 | `dblClickSpeed` | `number` | Yes | `350` | Time to detect a double click in ms.
+| [`animations`](#animations) | `object` | No | [see here](#default-animations) | To configure which element properties are animated and how
 
 :::warning
 
@@ -20,7 +21,43 @@ Nevertheless events are only catched over the chartArea.
 
 :::
 
-### Events
+## Animations
+
+Animations options configures which element properties are animated and how, with the same configuration of [chart.js](https://www.chartjs.org/docs/latest/configuration/animations.html#animations-2). 
+
+```javascript
+const options = {
+  plugins: {
+    annotation: {
+      animations: {
+        numbers: {
+          properties: ['x', 'y', 'x2', 'y2', 'width', 'height', 'radius'],
+          type: 'number'
+        },
+      },
+      annotations: {
+        box1: {
+          type: 'box',
+          xMin: 1,
+          xMax: 2,
+          yMin: 50,
+          yMax: 70,
+          backgroundColor: 'rgba(255, 99, 132, 0.5)'
+        }
+      }
+    }
+  }
+};
+```
+
+### Default animations
+
+| Name | Option | Value
+| ---- | ---- | ----
+| `numbers` | `properties` | `['x', 'y', 'x2', 'y2', 'width', 'height', 'pointX', 'pointY', 'labelX', 'labelY', 'labelWidth', 'labelHeight', 'radius']`
+| `numbers` | `type` | `number`
+
+## Events
 
 The following options are available for all annotation types. These options can be specified per annotation, or at the top level which apply to all annotations.
 
