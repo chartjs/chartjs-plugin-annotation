@@ -112,5 +112,5 @@ function calculatePosition(boxOpts, labelOpts) {
   } else if (position === 'end') {
     return end - labelOpts.size - margin;
   }
-  return start + (size - labelOpts.size) * getTPosition(position);
+  return start + (size - labelOpts.size) / (1 / getTPosition(position));
 }

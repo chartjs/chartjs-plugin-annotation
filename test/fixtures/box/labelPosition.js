@@ -33,10 +33,10 @@ module.exports = {
               borderWidth: 2,
               label: {
                 enabled: true,
-                content: 'p: -25%,-25%',
+                content: 'p: 0.25-0.25',
                 position: {
-                  x: '-25%',
-                  y: '-25%'
+                  x: 0.25,
+                  y: 0.25
                 }
               }
             },
@@ -53,7 +53,7 @@ module.exports = {
               borderWidth: 2,
               label: {
                 enabled: true,
-                content: 'p: 25%,25%',
+                content: 'p: 25%-25%',
                 position: {
                   x: '25%',
                   y: '25%'
@@ -73,10 +73,10 @@ module.exports = {
               borderWidth: 2,
               label: {
                 enabled: true,
-                content: 'p: 125%,125%',
+                content: 'p: 0.50-0.75',
                 position: {
-                  x: '125%',
-                  y: '125%'
+                  x: 0.50,
+                  y: 0.75
                 }
               }
             },
@@ -93,7 +93,7 @@ module.exports = {
               borderWidth: 2,
               label: {
                 enabled: true,
-                content: 'p: 50%,75%',
+                content: 'p: 50%-75%',
                 position: {
                   x: '50%',
                   y: '75%'
