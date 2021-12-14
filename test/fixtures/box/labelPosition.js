@@ -93,7 +93,7 @@ module.exports = {
               borderWidth: 2,
               label: {
                 enabled: true,
-                content: 'p: 100%,25%',
+                content: 'p: 100%,0%',
                 position: {
                   x: '100%',
                   y: '0%'
