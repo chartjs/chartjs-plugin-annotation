@@ -80,7 +80,7 @@ function toggleLabel(ctx, event) {
   const chart = ctx.chart;
   const annotationOpts = chart.options.plugins.annotation.annotations.annotation;
   annotationOpts.label.enabled = !annotationOpts.label.enabled;
-  annotationOpts.label.position = event.x / ctx.chart.chartArea.width;
+  annotationOpts.label.position = (event.x / ctx.chart.chartArea.width * 100) + '%';
   chart.update();
 }
 // </block:utils>

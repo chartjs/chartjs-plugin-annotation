@@ -34,7 +34,6 @@ module.exports = {
               label: {
                 enabled: true,
                 content: 'p: 0%,100%',
-                content: 'p: 0.25-0.25',
                 position: {
                   x: '0%',
                   y: '100%'
