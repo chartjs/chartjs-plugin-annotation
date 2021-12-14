@@ -71,7 +71,7 @@ The following options are available for label annotations.
 | [`height`](#general) | `number`\|`string` | Yes | `undefined`
 | [`padding`](#general) | [`Padding`](../options#padding) | Yes | `6`
 | [`point`](#point) | `object` | Yes |
-| [`position`](#position) | `string`\|`{x: string, y: string}`\|`number` | Yes | `'center'`
+| [`position`](#position) | `string`\|`{x: string|number, y: string|number}`\|`number` | Yes | `'center'`
 | [`textAlign`](#general) | `string` | Yes | `'center'`
 | [`width`](#general) | `number`\|`string` | Yes | `undefined`
 | [`xAdjust`](#general) | `number` | Yes | `0`

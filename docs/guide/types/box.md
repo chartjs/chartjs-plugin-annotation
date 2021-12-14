@@ -118,7 +118,7 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `font` | [`Font`](../options#font) | `{ weight: 'bold' }` | Label font
 | `height` | `number`\|`string` | `undefined` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
 | `padding` | [`Padding`](../options#padding) | `6` | The padding to add around the text label.
-| [`position`](#position) | `string`\|`{x: string, y: string}`\|`number` | `'center'` | Anchor position of label in the box.
+| [`position`](#position) | `string`\|`{x: string|number, y: string|number}`\|`number` | `'center'` | Anchor position of label in the box.
 | `textAlign` | `string` | `'center'` | Text alignment of label content when there's more than one line. Possible options are: `'left'`, `'start'`, `'center'`, `'end'`, `'right'`.
 | `width` | `number`\|`string` | `undefined` | Overrides the width of the image or canvas element. Could be set in pixel by a number, or in percentage of current width of image or canvas element by a string. If undefined, uses the width of the image or canvas element. It is used only when the content is an image or canvas element.
 | `xAdjust` | `number` | `0` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
