@@ -68,8 +68,8 @@ export function getChartRect(chart, options) {
 export function getChartCircle(chart, options) {
   const point = getChartPoint(chart, options);
   return {
-    x: point.x,
-    y: point.y,
+    x: point.x + options.xAdjust,
+    y: point.y + options.yAdjust,
     width: options.radius * 2,
     height: options.radius * 2
   };
@@ -85,8 +85,8 @@ export function resolvePointPosition(chart, options) {
       options.radius = radius;
     }
     return {
-      x: point.x,
-      y: point.y,
+      x: point.x + options.xAdjust,
+      y: point.y + options.yAdjust,
       width: radius * 2,
       height: radius * 2
     };

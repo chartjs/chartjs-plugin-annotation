@@ -17,15 +17,9 @@ describe('Label annotation', function() {
     callout: {
       enabled: false,
     },
-    point: {
-      enabled: true,
-      radius: 20
-    },
     font: {}
   };
 
   window.testEvents(options);
-
-  window.testEvents(options, 'point', (el) => ({x: el.pointX, y: el.pointY}));
 
 });

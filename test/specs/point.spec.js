@@ -9,7 +9,9 @@ describe('Point annotation', function() {
     xValue: 8,
     yValue: 8,
     radius: 30,
-    borderWidth: 5
+    borderWidth: 5,
+    xAdjust: 0,
+    yAdjust: 0
   });
 
   describe('applying defaults', function() {

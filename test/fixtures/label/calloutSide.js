@@ -37,10 +37,15 @@ module.exports = {
                 start: '10%',
                 side: 20,
                 position: 'bottom',
-              },
-              point: {
-                enabled: true
               }
+            },
+            point1: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 2.5,
+              yValue: 20,
+              radius: 3
             },
             text2: {
               type: 'label',
@@ -63,10 +68,15 @@ module.exports = {
                 start: 80,
                 side: 20,
                 position: 'top',
-              },
-              point: {
-                enabled: true
               }
+            },
+            point2: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 2.5,
+              yValue: 20,
+              radius: 3
             }
           }
         }
