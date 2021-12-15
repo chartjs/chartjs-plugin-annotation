@@ -21,5 +21,6 @@ export default Annotation;
 
 export * from './element';
 export * from './events';
+export * from './hooks';
 export * from './label';
 export * from './options';
