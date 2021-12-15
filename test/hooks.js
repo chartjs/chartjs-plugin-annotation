@@ -146,6 +146,22 @@ export function testHooks(options) {
       done();
     });
 
+    it(`should detect by a plugin before and after all annotations drawing on ${options.type}`, function(done) {
+      const beforeSpy = jasmine.createSpy('beforeAnnotationsDraw');
+      const afterSpy = jasmine.createSpy('afterAnnotationsDraw');
+
+      myPlugin.beforeAnnotationsDraw = beforeSpy;
+      myPlugin.afterAnnotationsDraw = afterSpy;
+      pluginOpts.annotations = [options];
+
+      window.acquireChart(chartConfig);
+      expect(beforeSpy.calls.count()).toBe(1);
+      expect(afterSpy.calls.count()).toBe(1);
+      delete myPlugin.beforeAnnotationsDraw;
+      delete myPlugin.afterAnnotationsDraw;
+      done();
+    });
+
     it(`should detect by a plugin only before draw on ${options.type}`, function(done) {
       const before = () => false;
       const afterSpy = jasmine.createSpy('afterAnnotationDraw');
