@@ -99,11 +99,10 @@ LabelAnnotation.defaults = {
   yScaleID: 'y',
   yValue: undefined,
   // hooks
-  init: undefined,
   afterDraw: undefined,
-  afterDrawLabel: undefined,
+  afterInit: undefined,
   beforeDraw: undefined,
-  beforeDrawLabel: undefined
+  beforeInit: undefined
 };
 
 LabelAnnotation.defaultRoutes = {

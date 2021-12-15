@@ -1,7 +1,7 @@
 import {Animations, Chart} from 'chart.js';
 import {clipArea, unclipArea, isFinite, valueOrDefault, isObject, isArray} from 'chart.js/helpers';
 import {handleEvent, eventHooks, updateListeners} from './events';
-import {drawingHooks, init, drawElement, drawLabelElement} from './drawing';
+import {elementHooks, initElement, drawElement, drawLabelElement} from './hooks';
 import {annotationTypes} from './types';
 import {version} from '../package.json';
 
@@ -106,7 +106,7 @@ export default {
 
   descriptors: {
     _indexable: false,
-    _scriptable: (prop) => !eventHooks.includes(prop) && !drawingHooks.includes(prop),
+    _scriptable: (prop) => !eventHooks.includes(prop) && !elementHooks.includes(prop),
     annotations: {
       _allKeys: false,
       _fallback: (prop, opts) => `elements.${annotationTypes[resolveType(opts.type)].id}`,
@@ -149,8 +149,7 @@ function updateElements(chart, state, options, mode) {
       el = elements[i] = new elementClass();
     }
     const opts = resolveAnnotationOptions(annotation.setContext(getContext(chart, el, annotation)));
-    const properties = el.resolveElementProperties(chart, opts);
-    init(chart, el, opts, properties);
+    const properties = initElement(chart, el, opts);
     properties.skip = isNaN(properties.x) || isNaN(properties.y);
     properties.options = opts;
     animations.update(el, properties);
@@ -210,13 +209,17 @@ function draw(chart, caller, clip) {
     clipArea(ctx, chartArea);
   }
   elements.forEach(el => {
-    drawElement(chart, el, caller);
+    if (el.options.drawTime === caller) {
+      drawElement(chart, el);
+    }
   });
   if (clip) {
     unclipArea(ctx);
   }
   elements.forEach(el => {
-    drawLabelElement(chart, el, caller);
+    if ('drawLabel' in el && el.options.label && (el.options.label.drawTime || el.options.drawTime) === caller) {
+      drawLabelElement(chart, el);
+    }
   });
 }
 

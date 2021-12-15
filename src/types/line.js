@@ -213,11 +213,12 @@ LineAnnotation.defaults = {
   yMin: undefined,
   yMax: undefined,
   // hooks
-  init: undefined,
   afterDraw: undefined,
   afterDrawLabel: undefined,
+  afterInit: undefined,
   beforeDraw: undefined,
-  beforeDrawLabel: undefined
+  beforeDrawLabel: undefined,
+  beforeInit: undefined
 };
 
 LineAnnotation.defaultRoutes = {

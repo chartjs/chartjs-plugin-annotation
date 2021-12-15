@@ -62,11 +62,10 @@ EllipseAnnotation.defaults = {
   yMin: undefined,
   yMax: undefined,
   // hooks
-  init: undefined,
   afterDraw: undefined,
-  afterDrawLabel: undefined,
+  afterInit: undefined,
   beforeDraw: undefined,
-  beforeDrawLabel: undefined
+  beforeInit: undefined
 };
 
 EllipseAnnotation.defaultRoutes = {

@@ -85,11 +85,12 @@ BoxAnnotation.defaults = {
     width: undefined
   },
   // hooks
-  init: undefined,
   afterDraw: undefined,
   afterDrawLabel: undefined,
+  afterInit: undefined,
   beforeDraw: undefined,
-  beforeDrawLabel: undefined
+  beforeDrawLabel: undefined,
+  beforeInit: undefined
 };
 
 BoxAnnotation.defaultRoutes = {
