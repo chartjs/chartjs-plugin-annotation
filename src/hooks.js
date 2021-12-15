@@ -23,21 +23,19 @@ export function initElement(chart, element, options) {
 }
 
 export function drawElement(chart, element) {
-  const hooks = {
+  invokeDrawHook(chart, element, {
     elementHook: 'draw',
     optionsHook: 'Draw',
     pluginHook: 'AnnotationDraw'
-  };
-  invokeDrawHook(chart, element, hooks);
+  });
 }
 
 export function drawLabelElement(chart, element) {
-  const hooks = {
+  invokeDrawHook(chart, element, {
     elementHook: 'drawLabel',
     optionsHook: 'DrawLabel',
     pluginHook: 'AnnotationLabelDraw'
-  };
-  invokeDrawHook(chart, element, hooks);
+  });
 }
 
 function invokeDrawHook(chart, element, hooks) {
