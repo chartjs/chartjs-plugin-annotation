@@ -86,7 +86,6 @@ jobs:
           registry-url: https://registry.npmjs.org/
 
       - name: Build docs (latest/next)
-        if: "!github.event.release.prerelease"
         run: |
           npm ci
           npm run build
