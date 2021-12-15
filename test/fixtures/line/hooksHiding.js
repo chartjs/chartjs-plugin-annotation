@@ -34,14 +34,11 @@ module.exports = {
                 rotation: 'auto',
                 position: 'start',
                 backgroundColor: 'red',
-                content: 'init hook',
+                content: 'shows only label',
                 enabled: true,
                 padding: 10
               },
-              afterInit(ctx, props) {
-                props.x2 = ctx.chart.canvas.width;
-                props.width = props.x2 - props.x;
-              },
+              beforeDraw: () => false
             },
           }
         }

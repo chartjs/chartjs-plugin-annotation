@@ -1,3 +1,4 @@
+// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
 export function createCanvas() {
   const canvas = document.createElement('canvas');
   canvas.width = 230;
@@ -13,4 +14,21 @@ export function createCanvas() {
   ctx.closePath();
   ctx.stroke();
   return canvas;
+}
+
+// https://stackoverflow.com/questions/25837158/how-to-draw-a-star-by-using-canvas-html5
+export function drawStar(ctx, x, y, radius, spikes, inset) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.translate(x, y);
+  ctx.moveTo(0, 0 - radius);
+  for (let i = 0; i < spikes; i++) {
+    ctx.rotate(Math.PI / spikes);
+    ctx.lineTo(0, 0 - (radius * inset));
+    ctx.rotate(Math.PI / spikes);
+    ctx.lineTo(0, 0 - radius);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
 }
