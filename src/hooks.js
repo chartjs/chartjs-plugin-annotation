@@ -22,6 +22,11 @@ export function initElement(chart, element, options) {
   return properties;
 }
 
+export function notifyElementsDraw(chart, state, hook) {
+  const elements = state.elements.filter(el => !el.skip && el.options.display);
+  chart.notifyPlugins(hook, {elements});
+}
+
 export function drawElement(chart, element) {
   invokeDrawHook(chart, element, {
     elementHook: 'draw',

@@ -1,7 +1,7 @@
 import {Animations, Chart} from 'chart.js';
 import {clipArea, unclipArea, isFinite, valueOrDefault, isObject, isArray} from 'chart.js/helpers';
 import {handleEvent, eventHooks, updateListeners} from './events';
-import {elementHooks, initElement, drawElement, drawLabelElement} from './hooks';
+import {elementHooks, initElement, notifyElementsDraw, drawElement, drawLabelElement} from './hooks';
 import {annotationTypes} from './types';
 import {version} from '../package.json';
 
@@ -69,11 +69,13 @@ export default {
   },
 
   beforeDraw(chart, _args, options) {
+    notifyElementsDraw(chart, chartStates.get(chart), 'beforeAnnotationsDraw');
     draw(chart, 'beforeDraw', options.clip);
   },
 
   afterDraw(chart, _args, options) {
     draw(chart, 'afterDraw', options.clip);
+    notifyElementsDraw(chart, chartStates.get(chart), 'afterAnnotationsDraw');
   },
 
   beforeEvent(chart, args, options) {
