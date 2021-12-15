@@ -106,4 +106,95 @@ export function testHooks(options) {
       });
     }
   });
+
+  describe('plugin hooks', function() {
+    const myPlugin = {
+      id: 'myplugin'
+    };
+    chartConfig.plugins = [myPlugin];
+    const pluginOpts = chartConfig.options.plugins.annotation;
+
+    it(`should detect by a plugin before and after init on ${options.type}`, function(done) {
+      const beforeSpy = jasmine.createSpy('beforeAnnotationInit');
+      const afterSpy = jasmine.createSpy('afterAnnotationInit');
+
+      myPlugin.beforeAnnotationInit = beforeSpy;
+      myPlugin.afterAnnotationInit = afterSpy;
+      pluginOpts.annotations = [options];
+
+      window.acquireChart(chartConfig);
+      expect(beforeSpy.calls.count()).toBe(1);
+      expect(afterSpy.calls.count()).toBe(1);
+      delete myPlugin.beforeAnnotationInit;
+      delete myPlugin.afterAnnotationInit;
+      done();
+    });
+
+    it(`should detect by a plugin before and after draw on ${options.type}`, function(done) {
+      const beforeSpy = jasmine.createSpy('beforeAnnotationDraw');
+      const afterSpy = jasmine.createSpy('afterAnnotationDraw');
+
+      myPlugin.beforeAnnotationDraw = beforeSpy;
+      myPlugin.afterAnnotationDraw = afterSpy;
+      pluginOpts.annotations = [options];
+
+      window.acquireChart(chartConfig);
+      expect(beforeSpy.calls.count()).not.toBe(0);
+      expect(afterSpy.calls.count()).not.toBe(0);
+      delete myPlugin.beforeAnnotationDraw;
+      delete myPlugin.afterAnnotationDraw;
+      done();
+    });
+
+    it(`should detect by a plugin only before draw on ${options.type}`, function(done) {
+      const before = () => false;
+      const afterSpy = jasmine.createSpy('afterAnnotationDraw');
+
+      myPlugin.beforeAnnotationDraw = before;
+      myPlugin.afterAnnotationDraw = afterSpy;
+      pluginOpts.annotations = [options];
+
+      window.acquireChart(chartConfig);
+      expect(afterSpy.calls.count()).toBe(0);
+      delete myPlugin.beforeAnnotationDraw;
+      delete myPlugin.afterAnnotationDraw;
+      done();
+    });
+
+    if (options.label) {
+      it(`should detect by a plugin before and after draw label on ${options.type}`, function(done) {
+        const beforeSpy = jasmine.createSpy('beforeAnnotationLabelDraw');
+        const afterSpy = jasmine.createSpy('afterAnnotationLabelDraw');
+
+        myPlugin.beforeAnnotationLabelDraw = beforeSpy;
+        myPlugin.afterAnnotationLabelDraw = afterSpy;
+        pluginOpts.annotations = [options];
+
+        window.acquireChart(chartConfig);
+        expect(beforeSpy.calls.count()).not.toBe(0);
+        expect(afterSpy.calls.count()).not.toBe(0);
+        delete myPlugin.beforeAnnotationLabelDraw;
+        delete myPlugin.afterAnnotationLabelDraw;
+        done();
+      });
+
+      it(`should detect by a plugin only before draw on ${options.type}`, function(done) {
+        const before = () => false;
+        const afterSpy = jasmine.createSpy('afterAnnotationLabelDraw');
+
+        myPlugin.beforeAnnotationLabelDraw = before;
+        myPlugin.afterAnnotationLabelDraw = afterSpy;
+        pluginOpts.annotations = [options];
+
+        window.acquireChart(chartConfig);
+        expect(afterSpy.calls.count()).toBe(0);
+        delete myPlugin.beforeAnnotationLabelDraw;
+        delete myPlugin.afterAnnotationLabelDraw;
+        done();
+      });
+
+    }
+
+  });
+
 }
