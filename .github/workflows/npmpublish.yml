@@ -76,7 +76,7 @@ jobs:
           destination_dir: ${{ needs.setup.outputs.version }}
 
   publish-docs:
-    needs: [test]
+    needs: [test, setup]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -92,6 +92,8 @@ jobs:
           npm run build
           ./scripts/docs-config.sh "$VERSION"
           npm run docs
+        env:
+          VERSION: ${{ needs.setup.outputs.version }}
 
       - name: Release to GitHub Pages (latest)
         if: "!github.event.release.prerelease"
