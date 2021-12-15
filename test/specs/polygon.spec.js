@@ -2,7 +2,7 @@ describe('Polygon annotation', function() {
   describe('auto', jasmine.fixtures('polygon'));
 
   for (let i = 3; i <= 10; i++) {
-    window.testEvents({
+    const options = {
       type: 'polygon',
       id: 'test',
       xScaleID: 'x',
@@ -15,6 +15,11 @@ describe('Polygon annotation', function() {
       borderWidth: 0,
       xAdjust: 0,
       yAdjust: 0
-    });
+    };
+
+    window.testEvents(options);
+
+    window.testHooks(options);
+
   }
 });

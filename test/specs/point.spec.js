@@ -1,7 +1,7 @@
 describe('Point annotation', function() {
   describe('auto', jasmine.fixtures('point'));
 
-  window.testEvents({
+  const options = {
     type: 'point',
     id: 'test',
     xScaleID: 'x',
@@ -12,7 +12,11 @@ describe('Point annotation', function() {
     borderWidth: 5,
     xAdjust: 0,
     yAdjust: 0
-  });
+  };
+
+  window.testEvents(options);
+
+  window.testHooks(options);
 
   describe('applying defaults', function() {
 
@@ -41,9 +45,9 @@ describe('Point annotation', function() {
                   point: {
                     type: 'point',
                     borderWidth: 5,
-                    display(context, options) {
-                      if (options) {
-                        context.chart.annotationRadius1 = options.radius;
+                    display(context, opts) {
+                      if (opts) {
+                        context.chart.annotationRadius1 = opts.radius;
                       }
                       return true;
                     },
@@ -55,9 +59,9 @@ describe('Point annotation', function() {
                     xValue: 8,
                     yValue: 8,
                     borderWidth: 0,
-                    display(context, options) {
-                      if (options) {
-                        context.chart.annotationRadius2 = options.radius;
+                    display(context, opts) {
+                      if (opts) {
+                        context.chart.annotationRadius2 = opts.radius;
                       }
                       return true;
                     },

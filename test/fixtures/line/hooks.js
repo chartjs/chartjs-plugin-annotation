@@ -38,7 +38,7 @@ module.exports = {
                 enabled: true,
                 padding: 10
               },
-              init(ctx, props) {
+              afterInit(ctx, props) {
                 props.x2 = ctx.chart.canvas.width;
                 props.width = props.x2 - props.x;
               }
