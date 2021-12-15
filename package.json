@@ -23,7 +23,7 @@
     "docs": "npm run build && vuepress build docs --no-cache",
     "docs:dev": "npm run build && vuepress dev docs --no-cache",
     "lint": "concurrently \"npm:lint-*\"",
-    "lint-js": "eslint \"old_samples/**/*.html\" \"test/**/*.js\" \"src/**/*.js\"",
+    "lint-js": "eslint \"test/**/*.js\" \"src/**/*.js\"",
     "lint-md": "eslint \"**/*.md\"",
     "lint-types": "eslint \"types/**/*.ts\" && tsc -p types/tests/",
     "test": "cross-env NODE_ENV=test concurrently \"npm:test-*\"",
