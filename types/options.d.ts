@@ -1,6 +1,7 @@
 import { Color, PointStyle, BorderRadius } from 'chart.js';
 import { AnnotationEvents, PartialEventContext } from './events';
 import { LabelOptions, BoxLabelOptions, LabelTypeOptions } from './label';
+import { AnnotationHooks, AnnotationLabelHooks } from './hooks';
 
 export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw';
 
@@ -18,7 +19,7 @@ export type AnnotationType = keyof AnnotationTypeRegistry;
 export type AnnotationOptions<TYPE extends AnnotationType = AnnotationType> =
 	{ [key in TYPE]: { type: key } & AnnotationTypeRegistry[key] }[TYPE]
 
-export interface CoreAnnotationOptions extends AnnotationEvents {
+export interface CoreAnnotationOptions extends AnnotationEvents, AnnotationHooks {
   id?: string,
   display?: Scriptable<boolean, PartialEventContext>,
   adjustScaleRange?: Scriptable<boolean, PartialEventContext>,
@@ -48,11 +49,11 @@ interface AnnotationPointCoordinates extends AnnotationCoordinates {
   yValue?: Scriptable<ScaleValue, PartialEventContext>,
 }
 
-export interface LineAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
+export interface LineAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates, AnnotationLabelHooks {
   label?: LabelOptions
 }
 
-export interface BoxAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
+export interface BoxAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates, AnnotationLabelHooks {
   backgroundColor?: Scriptable<Color, PartialEventContext>,
   /**
    * Border line cap style. See MDN.
@@ -113,7 +114,7 @@ export interface CalloutOptions {
   start?: Scriptable<number | string, PartialEventContext>,
 }
 
-export interface LabelAnnotationOptions extends CoreAnnotationOptions, LabelTypeOptions, AnnotationPointCoordinates {
+export interface LabelAnnotationOptions extends CoreAnnotationOptions, LabelTypeOptions, AnnotationPointCoordinates, AnnotationLabelHooks {
   callout?: CalloutOptions;
 }
 
