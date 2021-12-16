@@ -155,11 +155,10 @@ export interface AnnotationObserverPlugin<TType extends ChartType = ChartType, O
    * @param {Chart} chart - The chart instance.
    * @param {object} args - The call arguments.
    * @param {object} args.element - The initialized element
-   * @param {object} args.options - The element options
    * @param {object} args.properties - The proporties to apply to the element, after initialization
    * @param {object} options - The plugin options.
    */
-  afterAnnotationInit?(chart: Chart, args: { element: AnnotationElement, options: CoreAnnotationOptions, properties: AnnotationElement }, options: O): void;
+  afterAnnotationInit?(chart: Chart, args: { element: AnnotationElement, properties: AnnotationElement }, options: O): void;
   /**
    * @desc Called before drawing the annotations.
    * @param {Chart} chart - The chart instance.

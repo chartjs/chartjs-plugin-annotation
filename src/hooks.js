@@ -14,8 +14,10 @@ export function initElement(chart, element, options) {
 
   const properties = element.resolveElementProperties(chart, options);
   properties.skip = isNaN(properties.x) || isNaN(properties.y);
+  properties.options = options;
 
   args.properties = properties;
+  delete args.options;
   argsHook.push(properties);
   callHook(options.afterInit, argsHook);
   chart.notifyPlugins('afterAnnotationInit', args);

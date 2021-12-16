@@ -106,7 +106,7 @@ export default {
     },
     // hooks
     afterAnnotationsDraw: undefined,
-    beforeAnnotationsDraw: undefined,
+    beforeAnnotationsDraw: undefined
   },
 
   descriptors: {
@@ -155,7 +155,6 @@ function updateElements(chart, state, options, mode) {
     }
     const opts = resolveAnnotationOptions(annotation.setContext(getContext(chart, el, annotation)));
     const properties = initElement(chart, el, opts);
-    properties.options = opts;
     animations.update(el, properties);
   }
 }
