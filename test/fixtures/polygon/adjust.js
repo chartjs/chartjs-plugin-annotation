@@ -41,11 +41,16 @@ module.exports = {
               xValue: 4.5,
               yValue: 4.5,
               content: 'x: +30, y: +40',
-              position: 'start',
-              point: {
-                enabled: true,
-                backgroundColor: 'black'
-              }
+              position: 'start'
+            },
+            point1: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 4.5,
+              yValue: 4.5,
+              backgroundColor: 'black',
+              radius: 3
             },
             polygon2: {
               type: 'polygon',
@@ -71,11 +76,16 @@ module.exports = {
               position: {
                 x: 'start',
                 y: 'end'
-              },
-              point: {
-                enabled: true,
-                backgroundColor: 'black'
               }
+            },
+            point2: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: -4.5,
+              yValue: 4.5,
+              backgroundColor: 'black',
+              radius: 3
             },
             polygon3: {
               type: 'polygon',
@@ -99,10 +109,15 @@ module.exports = {
               yValue: -4.5,
               content: 'x: -30, y: -40',
               position: 'end',
-              point: {
-                enabled: true,
-                backgroundColor: 'black'
-              }
+            },
+            point3: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: -4.5,
+              yValue: -4.5,
+              backgroundColor: 'black',
+              radius: 3
             },
             polygon4: {
               type: 'polygon',
@@ -128,12 +143,17 @@ module.exports = {
               position: {
                 x: 'end',
                 y: 'start'
-              },
-              point: {
-                enabled: true,
-                backgroundColor: 'black'
               }
             },
+            point4: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 4.5,
+              yValue: -4.5,
+              backgroundColor: 'black',
+              radius: 3
+            }
           }
         }
       }

@@ -29,15 +29,19 @@ module.exports = {
               position: {
                 x: '25%',
                 y: 'end'
-              },
-              point: {
-                enabled: true,
-                radius: 5,
-                rotation: 90,
-                borderColor: 'black',
-                borderWidth: 3,
-                pointStyle: 'line'
               }
+            },
+            point1: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'January',
+              yValue: 20,
+              radius: 5,
+              rotation: 90,
+              borderColor: 'black',
+              borderWidth: 3,
+              pointStyle: 'line'
             },
             text2: {
               type: 'label',
@@ -52,14 +56,18 @@ module.exports = {
                 x: '50%',
                 y: 'end'
               },
-              point: {
-                enabled: true,
-                radius: 5,
-                rotation: 90,
-                borderColor: 'black',
-                borderWidth: 3,
-                pointStyle: 'line'
-              }
+            },
+            point2: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'February',
+              yValue: 10,
+              radius: 5,
+              rotation: 90,
+              borderColor: 'black',
+              borderWidth: 3,
+              pointStyle: 'line'
             },
             text3: {
               type: 'label',
@@ -74,14 +82,18 @@ module.exports = {
                 x: '75%',
                 y: 'end'
               },
-              point: {
-                enabled: true,
-                radius: 5,
-                rotation: 90,
-                borderColor: 'black',
-                borderWidth: 3,
-                pointStyle: 'line'
-              }
+            },
+            point3: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'May',
+              yValue: 20,
+              radius: 5,
+              rotation: 90,
+              borderColor: 'black',
+              borderWidth: 3,
+              pointStyle: 'line'
             },
             text4: {
               type: 'label',
@@ -96,15 +108,19 @@ module.exports = {
                 x: '10%',
                 y: 'end'
               },
-              point: {
-                enabled: true,
-                radius: 5,
-                rotation: 90,
-                borderColor: 'black',
-                borderWidth: 3,
-                pointStyle: 'line'
-              }
             },
+            point4: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 'May',
+              yValue: 10,
+              radius: 5,
+              rotation: 90,
+              borderColor: 'black',
+              borderWidth: 3,
+              pointStyle: 'line'
+            }
           }
         }
       }
