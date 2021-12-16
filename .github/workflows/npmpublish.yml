@@ -37,6 +37,7 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
+
       - name: Setup and build
         run: |
           npm ci
@@ -47,33 +48,52 @@ jobs:
           npm pack
         env:
           VERSION: ${{ needs.setup.outputs.version }}
+
       - name: Publish @next
         run: npm publish --tag next
         if: "github.event.release.prerelease"
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
+
       - name: Publish @latest
         run: npm publish --tag latest
         if: "!github.event.release.prerelease"
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
+
       - name: Build docs
         run: |
           ./scripts/docs-config.sh "$VERSION" release
           npm run docs
         env:
           VERSION: ${{ needs.setup.outputs.version }}
+
       - name: Release to GitHub Pages (version)
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GH_AUTH_TOKEN }}
           publish_dir: dist/docs
           destination_dir: ${{ needs.setup.outputs.version }}
-      - name: Build docs (latest)
-        if: "!github.event.release.prerelease"
+
+  publish-docs:
+    needs: [test, setup]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          registry-url: https://registry.npmjs.org/
+
+      - name: Build docs (latest/next)
         run: |
-          ./scripts/docs-config.sh latest
+          npm ci
+          npm run build
+          ./scripts/docs-config.sh "$VERSION"
           npm run docs
+        env:
+          VERSION: ${{ needs.setup.outputs.version }}
+
       - name: Release to GitHub Pages (latest)
         if: "!github.event.release.prerelease"
         uses: peaceiris/actions-gh-pages@v3
@@ -81,11 +101,7 @@ jobs:
           github_token: ${{ secrets.GH_AUTH_TOKEN }}
           publish_dir: dist/docs
           destination_dir: latest
-      - name: Build docs (next)
-        if: "github.event.release.prerelease"
-        run: |
-          ./scripts/docs-config.sh next
-          npm run docs
+
       - name: Release to GitHub Pages (next)
         if: "github.event.release.prerelease"
         uses: peaceiris/actions-gh-pages@v3
@@ -93,4 +109,3 @@ jobs:
           github_token: ${{ secrets.GH_AUTH_TOKEN }}
           publish_dir: dist/docs
           destination_dir: next
-
