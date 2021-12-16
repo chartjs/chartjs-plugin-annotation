@@ -121,7 +121,7 @@ export interface LabelTypeOptions extends ContainedLabelOptions {
   position?: Scriptable<LabelPosition | LabelPositionObject, PartialEventContext>,
 }
 
-type percentString = `${number}%`;
+type percentString = string;
 export type LabelPosition = 'start' | 'center' | 'end' | percentString;
 
 export type LabelTextAlign = 'left' | 'start' | 'center' | 'right' | 'end';
