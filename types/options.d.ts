@@ -1,7 +1,10 @@
-import { Color, PointStyle, BorderRadius } from 'chart.js';
+import { Chart, ChartType, Plugin, Color, PointStyle, BorderRadius } from 'chart.js';
 import { AnnotationEvents, PartialEventContext } from './events';
 import { LabelOptions, BoxLabelOptions, LabelTypeOptions } from './label';
 import { AnnotationHooks, AnnotationLabelHooks } from './hooks';
+import { AnnotationElement } from './element';
+
+export type AnyObject = Record<string, unknown>;
 
 export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw';
 
@@ -135,4 +138,80 @@ export interface AnnotationPluginOptions extends AnnotationEvents {
   dblClickSpeed?: Scriptable<number, PartialEventContext>,
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
   animations: Record<string, unknown>,
+}
+
+export interface AnnotationObserverPlugin<TType extends ChartType = ChartType, O = AnyObject> extends Plugin<TType, O> {
+  /**
+   * @desc Called before initializing an annotation.
+   * @param {Chart} chart - The chart instance.
+   * @param {object} args - The call arguments.
+   * @param {AnnotationElement} args.element - The element to initialize
+   * @param {CoreAnnotationOptions} args.options - The element options
+   * @param {object} options - The plugin options.
+   */
+  beforeAnnotationInit?(chart: Chart, args: { element: AnnotationElement, options: CoreAnnotationOptions }, options: O): void;
+  /**
+   * @desc Called after `chart` has been initialized and before the first update.
+   * @param {Chart} chart - The chart instance.
+   * @param {object} args - The call arguments.
+   * @param {object} args.element - The initialized element
+   * @param {object} args.options - The element options
+   * @param {object} args.properties - The proporties to apply to the element, after initialization
+   * @param {object} options - The plugin options.
+   */
+  afterAnnotationInit?(chart: Chart, args: { element: AnnotationElement, options: CoreAnnotationOptions, properties: AnnotationElement }, options: O): void;
+  /**
+   * @desc Called before drawing the annotations.
+   * @param {Chart} chart - The chart instance.
+   * @param {object} args - The call arguments.
+   * @param {Array} args.elements - The elements to draw
+   * @param {object} options - The plugin options.
+   */
+  beforeAnnotationsDraw?(chart: Chart, args: { elements: AnnotationElement[] }, options: O): void;
+  /**
+   * @desc Called after drawing the annotations.
+   * @param {Chart} chart - The chart instance.
+   * @param {object} args - The call arguments.
+   * @param {Array} args.elements - The elements to draw
+   * @param {object} options - The plugin options.
+   */
+  afterAnnotationsDraw?(chart: Chart, args: { elements: AnnotationElement[] }, options: O, cancelable: false): void;
+  /**
+   * @desc Called before drawing annotation at every animation frame. If any plugin returns `false`,
+   * the annotation drawing is cancelled.
+   * @param {Chart} chart - The chart instance.
+   * @param {object} args - The call arguments.
+   * @param {object} args.element - The element to draw
+   * @param {object} options - The plugin options.
+   * @returns {boolean} `false` to cancel the annotation drawing.
+   */
+  beforeAnnotationDraw?(chart: Chart, args: { element: AnnotationElement, cancelable: true }, options: O): boolean | void;
+  /**
+   * @desc Called after the annotation has been drawn. Note that this hook will not be called
+   * if the drawing has been previously cancelled.
+   * @param {Chart} chart - The chart instance.
+   * @param {object} args - The call arguments.
+   * @param {object} args.element - The drawn element
+   * @param {object} options - The plugin options.
+   */
+  afterAnnotationDraw?(chart: Chart, args: { element: AnnotationElement, cancelable: false }, options: O): void;
+  /**
+   * @desc Called before drawing annotation label at every animation frame. If any plugin returns `false`,
+   * the annotation drawing is cancelled.
+   * @param {Chart} chart - The chart instance.
+   * @param {object} args - The call arguments.
+   * @param {object} args.element - The element which contains the label to draw
+   * @param {object} options - The plugin options.
+   * @returns {boolean} `false` to cancel the annotation label drawing.
+   */
+  beforeAnnotationLabelDraw?(chart: Chart, args: { element: AnnotationElement, cancelable: true }, options: O): boolean | void;
+  /**
+   * @desc Called after the annotation label has been drawn. Note that this hook will not be called
+   * if the drawing has been previously cancelled.
+   * @param {Chart} chart - The chart instance.
+   * @param {object} args - The call arguments.
+   * @param {object} args.element - The element which contains the drawn label
+   * @param {object} options - The plugin options.
+   */
+  afterAnnotationLabelDraw?(chart: Chart, args: { element: AnnotationElement, cancelable: false }, options: O): void;
 }
