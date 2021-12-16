@@ -40,11 +40,16 @@ module.exports = {
               xValue: 4.5,
               yValue: 4.5,
               content: 'x: +30, y: +40',
-              position: 'start',
-              point: {
-                enabled: true,
-                backgroundColor: 'black'
-              }
+              position: 'start'
+            },
+            pointCenter1: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 4.5,
+              yValue: 4.5,
+              backgroundColor: 'black',
+              radius: 3
             },
             point2: {
               type: 'point',
@@ -69,11 +74,16 @@ module.exports = {
               position: {
                 x: 'start',
                 y: 'end'
-              },
-              point: {
-                enabled: true,
-                backgroundColor: 'black'
               }
+            },
+            pointCenter2: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: -4.5,
+              yValue: 4.5,
+              backgroundColor: 'black',
+              radius: 3
             },
             point3: {
               type: 'point',
@@ -95,11 +105,16 @@ module.exports = {
               xValue: -4.5,
               yValue: -4.5,
               content: 'x: -30, y: -40',
-              position: 'end',
-              point: {
-                enabled: true,
-                backgroundColor: 'black'
-              }
+              position: 'end'
+            },
+            pointCenter3: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: -4.5,
+              yValue: -4.5,
+              backgroundColor: 'black',
+              radius: 3
             },
             point4: {
               type: 'point',
@@ -124,12 +139,17 @@ module.exports = {
               position: {
                 x: 'end',
                 y: 'start'
-              },
-              point: {
-                enabled: true,
-                backgroundColor: 'black'
               }
             },
+            pointCenter4: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xValue: 4.5,
+              yValue: -4.5,
+              backgroundColor: 'black',
+              radius: 3
+            }
           }
         }
       }

@@ -46,11 +46,18 @@ module.exports = {
               xMax: 8,
               yMax: 8,
               content: 'x: +30, y: +40',
-              position: 'start',
-              point: {
-                enabled: true,
-                backgroundColor: 'black'
-              }
+              position: 'start'
+            },
+            pointCenter1: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xMin: 1,
+              yMin: 1,
+              xMax: 8,
+              yMax: 8,
+              backgroundColor: 'black',
+              radius: 3
             },
             polygon2: {
               type: 'polygon',
@@ -81,11 +88,18 @@ module.exports = {
               position: {
                 x: 'start',
                 y: 'end'
-              },
-              point: {
-                enabled: true,
-                backgroundColor: 'black'
               }
+            },
+            pointCenter2: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xMin: -1,
+              yMin: 1,
+              xMax: -8,
+              yMax: 8,
+              backgroundColor: 'black',
+              radius: 3
             },
             polygon3: {
               type: 'polygon',
@@ -113,11 +127,18 @@ module.exports = {
               xMax: -8,
               yMax: -8,
               content: 'x: -30, y: -40',
-              position: 'end',
-              point: {
-                enabled: true,
-                backgroundColor: 'black'
-              }
+              position: 'end'
+            },
+            pointCenter3: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xMin: -1,
+              yMin: -1,
+              xMax: -8,
+              yMax: -8,
+              backgroundColor: 'black',
+              radius: 3
             },
             polygon4: {
               type: 'polygon',
@@ -148,12 +169,19 @@ module.exports = {
               position: {
                 x: 'end',
                 y: 'start'
-              },
-              point: {
-                enabled: true,
-                backgroundColor: 'black'
               }
             },
+            pointCenter4: {
+              type: 'point',
+              xScaleID: 'x',
+              yScaleID: 'y',
+              xMin: 1,
+              yMin: -1,
+              xMax: 8,
+              yMax: -8,
+              backgroundColor: 'black',
+              radius: 3
+            }
           }
         }
       }
