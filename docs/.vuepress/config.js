@@ -107,6 +107,7 @@ module.exports = {
             'box/basic',
             'box/quarters',
             'box/disclosure',
+            'box/shadow',
           ]
         },
         {
@@ -137,6 +138,7 @@ module.exports = {
             'line/labelVisibility',
             'line/datasetBars',
             'line/animation',
+            'line/hook',
           ]
         },
         {
