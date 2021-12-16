@@ -69,13 +69,13 @@ export default {
   },
 
   beforeDraw(chart, _args, options) {
-    notifyElementsDraw(chart, chartStates.get(chart), 'beforeAnnotationsDraw');
+    notifyElementsDraw(chart, chartStates.get(chart), options, 'beforeAnnotationsDraw');
     draw(chart, 'beforeDraw', options.clip);
   },
 
   afterDraw(chart, _args, options) {
     draw(chart, 'afterDraw', options.clip);
-    notifyElementsDraw(chart, chartStates.get(chart), 'afterAnnotationsDraw');
+    notifyElementsDraw(chart, chartStates.get(chart), options, 'afterAnnotationsDraw');
   },
 
   beforeEvent(chart, args, options) {
@@ -92,8 +92,6 @@ export default {
   },
 
   defaults: {
-    drawTime: 'afterDatasetsDraw',
-    dblClickSpeed: 350, // ms
     animations: {
       numbers: {
         properties: ['x', 'y', 'x2', 'y2', 'width', 'height', 'pointX', 'pointY', 'labelX', 'labelY', 'labelWidth', 'labelHeight', 'radius'],
@@ -101,9 +99,14 @@ export default {
       },
     },
     clip: true,
+    drawTime: 'afterDatasetsDraw',
+    dblClickSpeed: 350, // ms
     label: {
       drawTime: null
-    }
+    },
+    // hooks
+    afterAnnotationsDraw: undefined,
+    beforeAnnotationsDraw: undefined,
   },
 
   descriptors: {
@@ -152,7 +155,6 @@ function updateElements(chart, state, options, mode) {
     }
     const opts = resolveAnnotationOptions(annotation.setContext(getContext(chart, el, annotation)));
     const properties = initElement(chart, el, opts);
-    properties.skip = isNaN(properties.x) || isNaN(properties.y);
     properties.options = opts;
     animations.update(el, properties);
   }

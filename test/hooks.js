@@ -26,6 +26,22 @@ export function testHooks(options) {
   describe('hooks', function() {
     const pluginOpts = chartConfig.options.plugins.annotation;
 
+    it(`should detect before and after draw annotations on ${options.type}`, function(done) {
+      const beforeSpy = jasmine.createSpy('beforeAnnotationsDraw');
+      const afterSpy = jasmine.createSpy('afterAnnotationsDraw');
+
+      pluginOpts.beforeAnnotationsDraw = beforeSpy;
+      pluginOpts.afterAnnotationsDraw = afterSpy;
+      pluginOpts.annotations = [options];
+
+      window.acquireChart(chartConfig);
+      expect(beforeSpy.calls.count()).toBe(1);
+      expect(afterSpy.calls.count()).toBe(1);
+      delete pluginOpts.beforeAnnotationsDraw;
+      delete pluginOpts.afterAnnotationsDraw;
+      done();
+    });
+
     it(`should detect before and after init on ${options.type}`, function(done) {
       const beforeSpy = jasmine.createSpy('beforeInit');
       const afterSpy = jasmine.createSpy('afterInit');

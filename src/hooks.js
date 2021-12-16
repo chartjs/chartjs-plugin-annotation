@@ -1,6 +1,6 @@
 import {callback as callHook} from 'chart.js/helpers';
 
-export const elementHooks = ['beforeInit', 'afterInit', 'afterDraw', 'beforeDraw', 'beforeDrawLabel', 'afterDrawLabel'];
+export const elementHooks = ['beforeInit', 'afterInit', 'afterDraw', 'beforeDraw', 'beforeDrawLabel', 'afterDrawLabel', 'beforeAnnotationsDraw', 'afterAnnotationsDraw'];
 
 export function initElement(chart, element, options) {
   const args = {
@@ -13,6 +13,7 @@ export function initElement(chart, element, options) {
   chart.notifyPlugins('beforeAnnotationInit', args);
 
   const properties = element.resolveElementProperties(chart, options);
+  properties.skip = isNaN(properties.x) || isNaN(properties.y);
 
   args.properties = properties;
   argsHook.push(properties);
@@ -22,8 +23,18 @@ export function initElement(chart, element, options) {
   return properties;
 }
 
-export function notifyElementsDraw(chart, state, hook) {
+export function notifyElementsDraw(chart, state, options, hook) {
   const elements = state.elements.filter(el => !el.skip && el.options.display);
+  if (options[hook]) {
+    if (!state.context) {
+      state.context = {
+        chart,
+        type: 'annotations'
+      };
+    }
+    state.context.elements = elements;
+    callHook(options[hook], [state.context]);
+  }
   chart.notifyPlugins(hook, {elements});
 }
 
