@@ -58,7 +58,7 @@ function invokeDrawHook(chart, element, hooks) {
   const callback = element[elementHook];
   callback.call(element, chart.ctx, chart.chartArea);
 
-  args.cancelable = false;
+  delete args.cancelable;
   callHook(element.options['after' + optionsHook], argsHook);
   chart.notifyPlugins('after' + pluginHook, args);
 }

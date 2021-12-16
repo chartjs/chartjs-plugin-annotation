@@ -194,7 +194,7 @@ export interface AnnotationObserverPlugin<TType extends ChartType = ChartType, O
    * @param {object} args.element - The drawn element
    * @param {object} options - The plugin options.
    */
-  afterAnnotationDraw?(chart: Chart, args: { element: AnnotationElement, cancelable: false }, options: O): void;
+  afterAnnotationDraw?(chart: Chart, args: { element: AnnotationElement }, options: O): void;
   /**
    * @desc Called before drawing annotation label at every animation frame. If any plugin returns `false`,
    * the annotation drawing is cancelled.
@@ -213,5 +213,5 @@ export interface AnnotationObserverPlugin<TType extends ChartType = ChartType, O
    * @param {object} args.element - The element which contains the drawn label
    * @param {object} options - The plugin options.
    */
-  afterAnnotationLabelDraw?(chart: Chart, args: { element: AnnotationElement, cancelable: false }, options: O): void;
+  afterAnnotationLabelDraw?(chart: Chart, args: { element: AnnotationElement }, options: O): void;
 }
