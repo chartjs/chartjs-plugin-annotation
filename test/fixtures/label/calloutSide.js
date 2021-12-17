@@ -15,8 +15,8 @@ module.exports = {
       },
       plugins: {
         annotation: {
-          annotations: {
-            text1: {
+          annotations: [
+            {
               type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
@@ -39,7 +39,7 @@ module.exports = {
                 position: 'bottom',
               }
             },
-            point1: {
+            {
               type: 'point',
               xScaleID: 'x',
               yScaleID: 'y',
@@ -47,7 +47,7 @@ module.exports = {
               yValue: 20,
               radius: 3
             },
-            text2: {
+            {
               type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
@@ -70,7 +70,7 @@ module.exports = {
                 position: 'top',
               }
             },
-            point2: {
+            {
               type: 'point',
               xScaleID: 'x',
               yScaleID: 'y',
@@ -78,7 +78,7 @@ module.exports = {
               yValue: 20,
               radius: 3
             }
-          }
+          ]
         }
       }
     }
