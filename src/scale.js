@@ -15,16 +15,16 @@ export function verifyScaleOptions(annotations, scales) {
   }
 }
 
-function changeScaleLimit(scale, range, options, changedLimit = false) {
-  const {limit, suggestedLimit} = options;
-  if (isFinite(range[limit]) &&
-		typeof scale.options[limit] === 'undefined' &&
-		typeof scale.options[suggestedLimit] === 'undefined') {
+function changeScaleLimit(scale, range, limit, suggestedLimit) {
+  if (isFinite(range[limit]) && !scaleLimitDefined(scale.options, limit, suggestedLimit) {
     const changed = scale[limit] !== range[limit];
     scale[limit] = range[limit];
     return changed;
   }
-  return changedLimit;
+}
+
+function scaleLimitDefined(scaleOptions, limit, suggestedLimit)) {
+  return defined(scaleOptions[limit] || defined(scaleOptions[suggestedLimit];
 }
 
 function verifyScaleIDs(annotation, scales) {
