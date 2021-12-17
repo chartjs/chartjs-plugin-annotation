@@ -118,7 +118,7 @@ function measureRect(point, size, options, padding) {
   };
 }
 
-function calculatePosition(start, size, adjust, position) {
+function calculatePosition(start, size, adjust = 0, position) {
   return start - getRelativePosition(size, position) + adjust;
 }
 

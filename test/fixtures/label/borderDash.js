@@ -15,8 +15,8 @@ module.exports = {
       },
       plugins: {
         annotation: {
-          annotations: {
-            text1: {
+          annotations: [
+            {
               type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
@@ -28,7 +28,7 @@ module.exports = {
               borderWidth: 5,
               content: 'This is my text'
             },
-            text2: {
+            {
               type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
@@ -40,7 +40,7 @@ module.exports = {
               borderWidth: 4,
               content: 'This is my text'
             },
-            text3: {
+            {
               type: 'label',
               xScaleID: 'x',
               yScaleID: 'y',
@@ -55,7 +55,7 @@ module.exports = {
                 x: 'end'
               }
             }
-          }
+          ]
         }
       }
     }

@@ -5,6 +5,7 @@ import {annotationTypes} from './types';
 import {version} from '../package.json';
 
 const chartStates = new Map();
+const versionParts = Chart.version.split('.');
 
 export default {
   id: 'annotation',
@@ -13,6 +14,16 @@ export default {
 
   afterRegister() {
     Chart.register(annotationTypes);
+
+    // TODO: Remove this workaround when strictly requiring Chart.js v3.7 or newer
+    if (versionParts[0] === '3' && parseInt(versionParts[1], 10) <= 6) {
+      // Workaround for https://github.com/chartjs/chartjs-plugin-annotation/issues/572
+      Chart.defaults.set('elements.lineAnnotation', {
+        callout: {},
+        font: {},
+        padding: 6
+      });
+    }
   },
 
   afterUnregister() {
