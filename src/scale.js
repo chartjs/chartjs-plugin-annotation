@@ -1,4 +1,4 @@
-import {isFinite, valueOrDefault} from 'chart.js/helpers';
+import {isFinite, valueOrDefault, defined} from 'chart.js/helpers';
 
 export function adjustScaleRange(chart, scale, annotations) {
   const range = getScaleLimits(scale, annotations);
@@ -16,15 +16,15 @@ export function verifyScaleOptions(annotations, scales) {
 }
 
 function changeScaleLimit(scale, range, limit, suggestedLimit) {
-  if (isFinite(range[limit]) && !scaleLimitDefined(scale.options, limit, suggestedLimit) {
+  if (isFinite(range[limit]) && !scaleLimitDefined(scale.options, limit, suggestedLimit)) {
     const changed = scale[limit] !== range[limit];
     scale[limit] = range[limit];
     return changed;
   }
 }
 
-function scaleLimitDefined(scaleOptions, limit, suggestedLimit)) {
-  return defined(scaleOptions[limit] || defined(scaleOptions[suggestedLimit];
+function scaleLimitDefined(scaleOptions, limit, suggestedLimit) {
+  return defined(scaleOptions[limit]) || defined(scaleOptions[suggestedLimit]);
 }
 
 function verifyScaleIDs(annotation, scales) {
