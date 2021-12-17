@@ -49,18 +49,18 @@ export default class EllipseAnnotation extends Element {
 EllipseAnnotation.id = 'ellipseAnnotation';
 
 EllipseAnnotation.defaults = {
-  display: true,
   adjustScaleRange: true,
   borderDash: [],
   borderDashOffset: 0,
   borderWidth: 1,
+  display: true,
   rotation: 0,
-  xScaleID: 'x',
-  xMin: undefined,
   xMax: undefined,
-  yScaleID: 'y',
+  xMin: undefined,
+  xScaleID: 'x',
+  yMax: undefined,
   yMin: undefined,
-  yMax: undefined
+  yScaleID: 'y'
 };
 
 EllipseAnnotation.defaultRoutes = {
