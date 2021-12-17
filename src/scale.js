@@ -2,8 +2,8 @@ import {isFinite, valueOrDefault} from 'chart.js/helpers';
 
 export function adjustScaleRange(chart, scale, annotations) {
   const range = getScaleLimits(scale, annotations);
-  let changed = changeScaleLimit(scale, range, {limit: 'min', suggestedLimit: 'suggestedMin'});
-  changed = changeScaleLimit(scale, range, {limit: 'max', suggestedLimit: 'suggestedMax'}, changed);
+  let changed = changeScaleLimit(scale, range, 'min', 'suggestedMin');
+  changed = changeScaleLimit(scale, range, 'max', 'suggestedMax') || changed;
   if (changed && typeof scale.handleTickRangeOptions === 'function') {
     scale.handleTickRangeOptions();
   }
