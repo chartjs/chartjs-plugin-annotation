@@ -39,7 +39,7 @@ describe('Integration Tests', () => {
 
       exec('npm --quiet install', {cwd, stdio: 'inherit'});
       exec('npm --quiet test', {cwd, stdio: 'inherit'});
-    }).timeout(120000);
+    }).timeout(5 * 60 * 1000);
   }
 
   testOnNodeProject('ts');
