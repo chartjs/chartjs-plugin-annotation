@@ -144,11 +144,7 @@ function updateElements(chart, state, options, mode) {
 
   for (let i = 0; i < annotations.length; i++) {
     const annotation = annotations[i];
-    let el = elements[i];
-    const elementClass = annotationTypes[resolveType(annotation.type)];
-    if (!el || !(el instanceof elementClass)) {
-      el = elements[i] = new elementClass();
-    }
+    let el = elements[i] = createElement(annotation, elements[i]);
     const opts = resolveAnnotationOptions(annotation.setContext(getContext(chart, el, annotation)));
     const properties = el.resolveElementProperties(chart, opts);
     properties.skip = isNaN(properties.x) || isNaN(properties.y);
@@ -158,6 +154,14 @@ function updateElements(chart, state, options, mode) {
       drawableElements.push(el);
     }
   }
+}
+
+function createElement(annotation, element) {
+  const elementClass = annotationTypes[resolveType(annotation.type)];
+  if (!element || !(element instanceof elementClass)) {
+    return new elementClass();
+  }
+  return element;
 }
 
 function resolveAnnotationOptions(resolver) {
