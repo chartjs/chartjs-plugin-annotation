@@ -35,6 +35,7 @@ export default {
     chartStates.set(chart, {
       annotations: [],
       elements: [],
+      visibleElements: [],
       listeners: {},
       listened: false,
       moveListened: false
@@ -69,6 +70,7 @@ export default {
     const state = chartStates.get(chart);
     updateListeners(chart, state, options);
     updateElements(chart, state, options, args.mode);
+    state.visibleElements = state.elements.filter(el => !el.skip && el.options.display);
   },
 
   beforeDatasetsDraw(chart, _args, options) {
@@ -214,12 +216,11 @@ function resyncElements(elements, annotations) {
 function draw(chart, caller, clip) {
   const {ctx, chartArea} = chart;
   const state = chartStates.get(chart);
-  const elements = state.elements.filter(el => !el.skip && el.options.display);
 
   if (clip) {
     clipArea(ctx, chartArea);
   }
-  elements.forEach(el => {
+  state.visibleElements.forEach(el => {
     if (el.options.drawTime === caller) {
       el.draw(ctx);
     }
@@ -228,7 +229,7 @@ function draw(chart, caller, clip) {
     unclipArea(ctx);
   }
 
-  elements.forEach(el => {
+  state.visibleElements.forEach(el => {
     if ('drawLabel' in el && el.options.label && (el.options.label.drawTime || el.options.drawTime) === caller) {
       el.drawLabel(ctx, chartArea);
     }
