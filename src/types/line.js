@@ -166,11 +166,12 @@ export default class LineAnnotation extends Element {
 
 LineAnnotation.id = 'lineAnnotation';
 LineAnnotation.defaults = {
-  display: true,
   adjustScaleRange: true,
-  borderWidth: 2,
   borderDash: [],
   borderDashOffset: 0,
+  borderWidth: 2,
+  display: true,
+  endValue: undefined,
   label: {
     backgroundColor: 'rgba(0,0,0,0.8)',
     borderCapStyle: 'butt',
@@ -194,24 +195,23 @@ LineAnnotation.defaults = {
     },
     height: undefined,
     padding: 6,
-    xPadding: undefined, // TODO: v2 remove support for xPadding
-    yPadding: undefined, // TODO: v2 remove support for yPadding
     position: 'center',
     rotation: 0,
     textAlign: 'center',
     width: undefined,
     xAdjust: 0,
-    yAdjust: 0
+    xPadding: undefined, // TODO: v2 remove support for xPadding
+    yAdjust: 0,
+    yPadding: undefined, // TODO: v2 remove support for yPadding
   },
-  value: undefined,
-  endValue: undefined,
   scaleID: undefined,
-  xScaleID: 'x',
-  xMin: undefined,
+  value: undefined,
   xMax: undefined,
-  yScaleID: 'y',
+  xMin: undefined,
+  xScaleID: 'x',
+  yMax: undefined,
   yMin: undefined,
-  yMax: undefined
+  yScaleID: 'y'
 };
 
 LineAnnotation.defaultRoutes = {

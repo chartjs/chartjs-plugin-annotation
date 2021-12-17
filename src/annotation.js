@@ -101,8 +101,6 @@ export default {
   },
 
   defaults: {
-    drawTime: 'afterDatasetsDraw',
-    dblClickSpeed: 350, // ms
     animations: {
       numbers: {
         properties: ['x', 'y', 'x2', 'y2', 'width', 'height', 'pointX', 'pointY', 'labelX', 'labelY', 'labelWidth', 'labelHeight', 'radius'],
@@ -110,6 +108,8 @@ export default {
       },
     },
     clip: true,
+    dblClickSpeed: 350, // ms
+    drawTime: 'afterDatasetsDraw',
     label: {
       drawTime: null
     }

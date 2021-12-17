@@ -24,11 +24,11 @@ export default class PointAnnotation extends Element {
 PointAnnotation.id = 'pointAnnotation';
 
 PointAnnotation.defaults = {
-  display: true,
   adjustScaleRange: true,
   borderDash: [],
   borderDashOffset: 0,
   borderWidth: 1,
+  display: true,
   pointStyle: 'circle',
   radius: 10,
   rotation: 0,

@@ -55,15 +55,9 @@ BoxAnnotation.defaults = {
   borderDashOffset: 0,
   borderJoinStyle: 'miter',
   borderRadius: 0,
-  cornerRadius: undefined, // TODO: v2 remove support for cornerRadius
   borderWidth: 1,
+  cornerRadius: undefined, // TODO: v2 remove support for cornerRadius
   display: true,
-  xMax: undefined,
-  xMin: undefined,
-  xScaleID: 'x',
-  yMax: undefined,
-  yMin: undefined,
-  yScaleID: 'y',
   label: {
     color: 'black',
     content: null,
@@ -83,7 +77,13 @@ BoxAnnotation.defaults = {
     xAdjust: 0,
     yAdjust: 0,
     width: undefined
-  }
+  },
+  xMax: undefined,
+  xMin: undefined,
+  xScaleID: 'x',
+  yMax: undefined,
+  yMin: undefined,
+  yScaleID: 'y'
 };
 
 BoxAnnotation.defaultRoutes = {

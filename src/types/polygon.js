@@ -47,13 +47,13 @@ export default class PolygonAnnotation extends Element {
 PolygonAnnotation.id = 'polygonAnnotation';
 
 PolygonAnnotation.defaults = {
-  display: true,
   adjustScaleRange: true,
   borderCapStyle: 'butt',
   borderDash: [],
   borderDashOffset: 0,
   borderJoinStyle: 'miter',
   borderWidth: 1,
+  display: true,
   radius: 10,
   rotation: 0,
   sides: 3,
