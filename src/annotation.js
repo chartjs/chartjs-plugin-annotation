@@ -23,6 +23,7 @@ export default {
     chartStates.set(chart, {
       annotations: [],
       elements: [],
+      drawableElements: [],
       listeners: {},
       listened: false,
       moveListened: false
@@ -139,6 +140,7 @@ function updateElements(chart, state, options, mode) {
 
   const annotations = state.annotations;
   const elements = resyncElements(state.elements, annotations);
+  const drawableElements = state.drawableElements = [];
 
   for (let i = 0; i < annotations.length; i++) {
     const annotation = annotations[i];
@@ -152,6 +154,9 @@ function updateElements(chart, state, options, mode) {
     properties.skip = isNaN(properties.x) || isNaN(properties.y);
     properties.options = opts;
     animations.update(el, properties);
+    if (!properties.skip && opts.display) {
+      drawableElements.push(el);
+    }
   }
 }
 
@@ -202,12 +207,11 @@ function resyncElements(elements, annotations) {
 function draw(chart, caller, clip) {
   const {ctx, chartArea} = chart;
   const state = chartStates.get(chart);
-  const elements = state.elements.filter(el => !el.skip && el.options.display);
 
   if (clip) {
     clipArea(ctx, chartArea);
   }
-  elements.forEach(el => {
+  state.drawableElements.forEach(el => {
     if (el.options.drawTime === caller) {
       el.draw(ctx);
     }
@@ -216,7 +220,7 @@ function draw(chart, caller, clip) {
     unclipArea(ctx);
   }
 
-  elements.forEach(el => {
+  state.drawableElements.forEach(el => {
     if ('drawLabel' in el && el.options.label && (el.options.label.drawTime || el.options.drawTime) === caller) {
       el.drawLabel(ctx, chartArea);
     }
