@@ -15,6 +15,7 @@ export default {
   afterRegister() {
     Chart.register(annotationTypes);
 
+    // TODO: Remove this workaround when strictly requiring Chart.js v3.7 or newer
     if (versionParts[0] === '3' && parseInt(versionParts[1], 10) <= 6) {
       // Workaround for https://github.com/chartjs/chartjs-plugin-annotation/issues/572
       Chart.defaults.set('elements.lineAnnotation', {
