@@ -20,7 +20,6 @@ export function updateHooks(chart, state, options) {
         elementsHooks.forEach(hook => {
           if (typeof scope.options[hook] === 'function') {
             state.hooked = true;
-            resetDrawnStatus(scope);
           }
         });
       }
