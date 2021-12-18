@@ -1,7 +1,7 @@
 describe('Box annotation', function() {
   describe('auto', jasmine.fixtures('box'));
 
-  window.testEvents({
+  const options = {
     type: 'box',
     id: 'test',
     xScaleID: 'x',
@@ -11,6 +11,10 @@ describe('Box annotation', function() {
     xMax: 4,
     yMax: 4,
     borderWidth: 0
-  });
+  };
+
+  window.testEvents(options);
+
+  window.testHooks(options);
 
 });

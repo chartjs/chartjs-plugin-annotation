@@ -18,6 +18,8 @@ describe('Line annotation', function() {
 
   window.testEvents(options, 'labelRect');
 
+  window.testHooks(options);
+
   const optionsLimit = {
     type: 'line',
     id: 'test',

@@ -22,4 +22,6 @@ describe('Label annotation', function() {
 
   window.testEvents(options);
 
+  window.testHooks(options);
+
 });
