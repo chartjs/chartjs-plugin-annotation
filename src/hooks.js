@@ -4,7 +4,7 @@ export const elementsHooks = ['afterDraw', 'beforeDraw'];
 export const hasLabel = (el) => el && 'drawLabel' in el && el.options && el.options.label;
 
 export function updateHooks(chart, state, options) {
-  const visibleElements = state.visibleElements || [];
+  const visibleElements = state.visibleElements;
   state.hooked = false;
 
   elementsHooks.forEach(hook => {
