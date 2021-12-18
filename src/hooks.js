@@ -2,7 +2,6 @@ import {callback} from 'chart.js/helpers';
 
 export const elementsHooks = ['afterDraw', 'beforeDraw'];
 export const hasLabel = (el) => el && 'drawLabel' in el && el.options && el.options.label;
-const isLabelDrawn = (el) => hasLabel(el) ? el._drawLabel : true;
 
 export function updateHooks(chart, state, options) {
   const visibleElements = state.visibleElements || [];
@@ -30,10 +29,12 @@ export function updateHooks(chart, state, options) {
 }
 
 export function drawElement(chart, state, element) {
+console.log("element");
   draw(chart, state, element, {method: 'draw', status: '_drawElement'});
 }
 
 export function drawLabelElement(chart, state, element) {
+console.log("label");
   draw(chart, state, element, {method: 'drawLabel', status: '_drawLabel'});
 }
 
@@ -59,7 +60,7 @@ function beforeDraw(state, element) {
 }
 
 function afterDraw(state, element) {
-  if (state.hooked && element._drawElement && isLabelDrawn(element)) {
+  if (state.hooked && element._drawElement && (!hasLabel(element) || element._drawLabel)) {
     invokeHook(state, element, 'afterDraw');
     resetDrawnStatus(element);
   }
