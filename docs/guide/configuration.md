@@ -67,3 +67,14 @@ The following options are available for all annotation types. These options can 
 | `leave` | `(context, event) => void` | No | Called when the mouse leaves the annotation.
 | `click` | `(context, event) => void` | No | Called when a single click occurs on the annotation.
 | `dblClick` | `(context, event) => void` | No | Called when a double click occurs on the annotation.
+
+## Hooks
+
+The following options are available for all annotation types. These options can be specified per annotation, or at the top level which apply to all annotations.
+
+These options enable some user customizations on the annotations.
+
+| Name | Type | [Scriptable](options#scriptable-options) | Notes
+| ---- | ---- | :----: | ----
+| `beforeDraw` | `(context, event) => boolean | void ` | No | Called before that the element is being drawn. If it returns `false`, the element is not drawn.
+| `afterDraw` | `(context, event) => void` | No | Called after the element has been drawn. Note that this hook will not be called if `beforeDraw` hook returns `false`, canceling the element drawing.
