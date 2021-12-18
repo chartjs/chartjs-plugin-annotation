@@ -1,5 +1,5 @@
 import { Color, PointStyle, BorderRadius } from 'chart.js';
-import { AnnotationEvents, PartialEventContext } from './events';
+import { AnnotationEvents, PartialEventContext, EventContext } from './events';
 import { LabelOptions, BoxLabelOptions, LabelTypeOptions } from './label';
 
 export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw';
@@ -18,7 +18,12 @@ export type AnnotationType = keyof AnnotationTypeRegistry;
 export type AnnotationOptions<TYPE extends AnnotationType = AnnotationType> =
 	{ [key in TYPE]: { type: key } & AnnotationTypeRegistry[key] }[TYPE]
 
-export interface CoreAnnotationOptions extends AnnotationEvents {
+export interface AnnotationHooks {
+  beforeDraw?(context: EventContext): boolean | void,
+  afterDraw?(context: EventContext): void
+}
+
+export interface CoreAnnotationOptions extends AnnotationEvents, AnnotationHooks {
   id?: string,
   display?: Scriptable<boolean, PartialEventContext>,
   adjustScaleRange?: Scriptable<boolean, PartialEventContext>,
@@ -128,7 +133,7 @@ interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationPoin
   yAdjust?: Scriptable<number, PartialEventContext>,
 }
 
-export interface AnnotationPluginOptions extends AnnotationEvents {
+export interface AnnotationPluginOptions extends AnnotationEvents, AnnotationHooks {
   annotations: AnnotationOptions[] | Record<string, AnnotationOptions>,
   clip?: boolean,
   dblClickSpeed?: Scriptable<number, PartialEventContext>,
