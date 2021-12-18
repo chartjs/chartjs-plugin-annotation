@@ -1,6 +1,7 @@
 import {Animations, Chart} from 'chart.js';
 import {clipArea, unclipArea, isObject, isArray} from 'chart.js/helpers';
-import {handleEvent, hooks, updateListeners} from './events';
+import {handleEvent, eventsHooks, updateListeners} from './events';
+import {drawElement, drawLabelElement, elementsHooks, updateHooks, hasLabel} from './hooks';
 import {adjustScaleRange, verifyScaleOptions} from './scale';
 import {annotationTypes} from './types';
 import {version} from '../package.json';
@@ -38,6 +39,8 @@ export default {
       visibleElements: [],
       listeners: {},
       listened: false,
+      hooks: {},
+      hooked: false,
       moveListened: false
     });
   },
@@ -71,6 +74,7 @@ export default {
     updateListeners(chart, state, options);
     updateElements(chart, state, options, args.mode);
     state.visibleElements = state.elements.filter(el => !el.skip && el.options.display);
+    updateHooks(chart, state, options);
   },
 
   beforeDatasetsDraw(chart, _args, options) {
@@ -119,7 +123,7 @@ export default {
 
   descriptors: {
     _indexable: false,
-    _scriptable: (prop) => !hooks.includes(prop),
+    _scriptable: (prop) => !eventsHooks.includes(prop) && !elementsHooks.includes(prop),
     annotations: {
       _allKeys: false,
       _fallback: (prop, opts) => `elements.${annotationTypes[resolveType(opts.type)].id}`,
@@ -176,7 +180,7 @@ function resolveAnnotationOptions(resolver) {
   result.type = resolver.type;
   result.drawTime = resolver.drawTime;
   Object.assign(result, resolveObj(resolver, elementClass.defaults), resolveObj(resolver, elementClass.defaultRoutes));
-  for (const hook of hooks) {
+  for (const hook of eventsHooks.concat(elementsHooks)) {
     result[hook] = resolver[hook];
   }
   return result;
@@ -222,7 +226,7 @@ function draw(chart, caller, clip) {
   }
   state.visibleElements.forEach(el => {
     if (el.options.drawTime === caller) {
-      el.draw(ctx);
+      drawElement(chart, state, el);
     }
   });
   if (clip) {
@@ -230,8 +234,8 @@ function draw(chart, caller, clip) {
   }
 
   state.visibleElements.forEach(el => {
-    if ('drawLabel' in el && el.options.label && (el.options.label.drawTime || el.options.drawTime) === caller) {
-      el.drawLabel(ctx, chartArea);
+    if (hasLabel(el) && (el.options.label.drawTime || el.options.drawTime) === caller) {
+      drawLabelElement(chart, state, el);
     }
   });
 }
