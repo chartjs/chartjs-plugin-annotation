@@ -8,6 +8,7 @@ import {version} from '../package.json';
 
 const chartStates = new Map();
 const versionParts = Chart.version.split('.');
+const hooks = eventsHooks.concat(elementsHooks);
 
 export default {
   id: 'annotation',
@@ -123,7 +124,7 @@ export default {
 
   descriptors: {
     _indexable: false,
-    _scriptable: (prop) => !eventsHooks.includes(prop) && !elementsHooks.includes(prop),
+    _scriptable: (prop) => !hooks.includes(prop),
     annotations: {
       _allKeys: false,
       _fallback: (prop, opts) => `elements.${annotationTypes[resolveType(opts.type)].id}`,
@@ -180,7 +181,7 @@ function resolveAnnotationOptions(resolver) {
   result.type = resolver.type;
   result.drawTime = resolver.drawTime;
   Object.assign(result, resolveObj(resolver, elementClass.defaults), resolveObj(resolver, elementClass.defaultRoutes));
-  for (const hook of eventsHooks.concat(elementsHooks)) {
+  for (const hook of hooks) {
     result[hook] = resolver[hook];
   }
   return result;

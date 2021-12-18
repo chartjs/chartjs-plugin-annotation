@@ -29,12 +29,10 @@ export function updateHooks(chart, state, options) {
 }
 
 export function drawElement(chart, state, element) {
-console.log("element");
   draw(chart, state, element, {method: 'draw', status: '_drawElement'});
 }
 
 export function drawLabelElement(chart, state, element) {
-console.log("label");
   draw(chart, state, element, {method: 'drawLabel', status: '_drawLabel'});
 }
 
