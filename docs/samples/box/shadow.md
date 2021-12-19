@@ -88,22 +88,6 @@ function max(ctx, datasetIndex, prop) {
   return dataset.data.reduce((v, point) => Math.max(point[prop], v), -Infinity);
 }
 
-function addRoundedRectPath(ctx, rect) {
-  const {x, y, w, h, radius} = rect;
-  ctx.arc(x + radius.topLeft, y + radius.topLeft, radius.topLeft,
-    -HALF_PI, PI, true);
-  ctx.lineTo(x, y + h - radius.bottomLeft);
-  ctx.arc(x + radius.bottomLeft, y + h - radius.bottomLeft, radius.bottomLeft,
-    PI, HALF_PI, true);
-  ctx.lineTo(x + w - radius.bottomRight, y + h);
-  ctx.arc(x + w - radius.bottomRight, y + h - radius.bottomRight, radius.bottomRight,
-    HALF_PI, 0, true);
-  ctx.lineTo(x + w, y + radius.topRight);
-  ctx.arc(x + w - radius.topRight, y + radius.topRight, radius.topRight,
-    0, -HALF_PI, true);
-  ctx.lineTo(x + radius.topLeft, y);
-}
-
 function drawShadow(context) {
   const ctx = context.chart.ctx;
   const {x, y, width, height, options} = context.element;
@@ -111,7 +95,7 @@ function drawShadow(context) {
   ctx.fillStyle = 'transparent';
   ctx.strokeStyle = options.borderColor;
   ctx.beginPath();
-  addRoundedRectPath(ctx, {
+  Utils.addRoundedRect(ctx, {
     x, y, w: width, h: height,
     radius: options.borderRadius
   });

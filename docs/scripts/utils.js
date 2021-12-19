@@ -1,4 +1,4 @@
-import {valueOrDefault} from 'chart.js/helpers';
+import {valueOrDefault, addRoundedRectPath} from 'chart.js/helpers';
 
 // Adapted from http://indiegamr.com/generate-repeatable-random-numbers-in-js/
 var _seed = Date.now();
@@ -42,4 +42,8 @@ export function points(config) {
   const xs = this.numbers(config);
   const ys = this.numbers(config);
   return xs.map((x, i) => ({x, y: ys[i]}));
+}
+
+export function addRoundedRect(ctx, rect) {
+  addRoundedRectPath(ctx, rect);
 }

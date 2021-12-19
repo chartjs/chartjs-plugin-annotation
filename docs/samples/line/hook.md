@@ -43,7 +43,6 @@ function drawExtraLine(context) {
   ctx.strokeStyle = options.borderColor;
   ctx.setLineDash([6, 6]);
   ctx.lineDashOffset = options.borderDashOffset;
-  // Draw
   ctx.beginPath();
   ctx.moveTo(x - 40, y);
   ctx.lineTo(x, y);

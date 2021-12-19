@@ -28,7 +28,7 @@ export function testHooks(options) {
 
     [pluginOpts, options].forEach(function(targetOptions) {
 
-      it(`should detect before and after draw on ${options.type}`, function(done) {
+      it(`should call before and after draw on ${options.type}`, function(done) {
         const beforeSpy = jasmine.createSpy('beforeDraw');
         const afterSpy = jasmine.createSpy('afterDraw');
 
@@ -44,7 +44,7 @@ export function testHooks(options) {
         done();
       });
 
-      it(`should detect only before draw on ${options.type}`, function(done) {
+      it(`should call only before draw on ${options.type}`, function(done) {
         const before = () => false;
         const afterSpy = jasmine.createSpy('afterDraw');
 
