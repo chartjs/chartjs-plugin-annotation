@@ -27,7 +27,7 @@ export function testEvents(options, innerElement, getInnerPoint) {
   describe('events', function() {
     const pluginOpts = chartConfig.options.plugins.annotation;
 
-    it(`should detect only leave event on ${descr}`, function(done) {
+    it(`should not call removed hook on ${descr}`, function(done) {
       const enterSpy = jasmine.createSpy('enter');
       const leaveSpy = jasmine.createSpy('leave');
 
