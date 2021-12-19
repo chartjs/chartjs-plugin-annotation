@@ -27,6 +27,37 @@ export function testEvents(options, innerElement, getInnerPoint) {
   describe('events', function() {
     const pluginOpts = chartConfig.options.plugins.annotation;
 
+    it(`should detect only leave event on ${descr}`, function(done) {
+      const enterSpy = jasmine.createSpy('enter');
+      const leaveSpy = jasmine.createSpy('leave');
+
+      pluginOpts.enter = enterSpy;
+      pluginOpts.leave = leaveSpy;
+      pluginOpts.annotations = [options];
+
+      const chart = window.acquireChart(chartConfig);
+      pluginOpts.enter = undefined;
+      chart.update();
+      const eventPoint = getEventPoint(chart, getInnerPoint);
+
+      window.triggerMouseEvent(chart, 'mousemove', eventPoint);
+      window.afterEvent(chart, 'mousemove', function() {
+        expect(enterSpy.calls.count()).toBe(0);
+
+        window.triggerMouseEvent(chart, 'mousemove', {
+          x: 0,
+          y: 0
+        });
+
+        window.afterEvent(chart, 'mousemove', function() {
+          expect(leaveSpy.calls.count()).toBe(1);
+          delete pluginOpts.enter;
+          delete pluginOpts.leave;
+          done();
+        });
+      });
+    });
+
     [pluginOpts, options].forEach(function(targetOptions) {
 
       it(`should detect enter and leave events on ${descr}`, function(done) {
