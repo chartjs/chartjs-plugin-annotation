@@ -92,7 +92,7 @@ function drawShadow(context) {
   const ctx = context.chart.ctx;
   const {x, y, width, height, options} = context.element;
   ctx.save();
-  ctx.fillStyle = 'transparent';
+  ctx.fillStyle = options.backgroundColor;
   ctx.strokeStyle = options.borderColor;
   ctx.beginPath();
   Utils.addRoundedRect(ctx, {
