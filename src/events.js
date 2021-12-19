@@ -1,4 +1,4 @@
-import {distanceBetweenPoints, defined, callback as callHandler} from 'chart.js/helpers';
+import {distanceBetweenPoints, callback as callHandler} from 'chart.js/helpers';
 
 const clickHooks = ['click', 'dblclick'];
 const moveHooks = ['enter', 'leave'];
