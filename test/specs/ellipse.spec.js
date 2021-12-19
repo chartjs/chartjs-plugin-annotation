@@ -1,7 +1,7 @@
 describe('Ellipse annotation', function() {
   describe('auto', jasmine.fixtures('ellipse'));
 
-  window.testEvents({
+  const options = {
     type: 'ellipse',
     id: 'test',
     xScaleID: 'x',
@@ -11,6 +11,12 @@ describe('Ellipse annotation', function() {
     xMax: 4,
     yMax: 4,
     borderWidth: 0
-  });
+  };
+
+  window.testEvents(options);
+
+  options.rotation = 90;
+
+  window.testEvents(options);
 
 });
