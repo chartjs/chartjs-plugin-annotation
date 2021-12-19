@@ -1,14 +1,14 @@
 import {Animations, Chart} from 'chart.js';
 import {clipArea, unclipArea, isObject, isArray} from 'chart.js/helpers';
-import {handleEvent, eventsHooks, updateListeners} from './events';
-import {drawElement, drawLabelElement, elementsHooks, updateHooks, hasLabel} from './hooks';
+import {handleEvent, eventHooks, updateListeners} from './events';
+import {drawElement, drawLabelElement, elementHooks, updateHooks, hasLabel} from './hooks';
 import {adjustScaleRange, verifyScaleOptions} from './scale';
 import {annotationTypes} from './types';
 import {version} from '../package.json';
 
 const chartStates = new Map();
 const versionParts = Chart.version.split('.');
-const hooks = eventsHooks.concat(elementsHooks);
+const hooks = eventHooks.concat(elementHooks);
 
 export default {
   id: 'annotation',

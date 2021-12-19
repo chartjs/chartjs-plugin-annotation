@@ -47,8 +47,6 @@ function drawExtraLine(context) {
   ctx.beginPath();
   ctx.moveTo(x - 40, y);
   ctx.lineTo(x, y);
-  ctx.stroke();
-  ctx.beginPath();
   ctx.moveTo(x2, y2);
   ctx.lineTo(x2 + 40, y);
   ctx.stroke();
@@ -84,7 +82,7 @@ const config = {
 };
 /* </block:config> */
 
-var actions = [
+const actions = [
   {
     name: 'Randomize',
     handler: function(chart) {

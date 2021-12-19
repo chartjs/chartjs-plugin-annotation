@@ -2,14 +2,14 @@ import {distanceBetweenPoints, callback as callHandler} from 'chart.js/helpers';
 
 const clickHooks = ['click', 'dblclick'];
 const moveHooks = ['enter', 'leave'];
-export const eventsHooks = clickHooks.concat(moveHooks);
+export const eventHooks = clickHooks.concat(moveHooks);
 
 export function updateListeners(chart, state, options) {
   const annotations = state.annotations || [];
   state.listened = false;
   state.moveListened = false;
 
-  eventsHooks.forEach(hook => {
+  eventHooks.forEach(hook => {
     if (typeof options[hook] === 'function') {
       state.listened = true;
       state.listeners[hook] = options[hook];

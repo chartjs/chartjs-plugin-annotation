@@ -70,9 +70,9 @@ The following options are available for all annotation types. These options can 
 
 ## Hooks
 
-The following options are available for all annotation types. These options can be specified per annotation, or at the top level which apply to all annotations.
+The following hooks are available for all annotation types. These hooks can be specified per annotation, or at the top level which apply to all annotations.
 
-These options enable some user customizations on the annotations.
+These hooks enable some user customizations on the annotations.
 
 | Name | Type | [Scriptable](options#scriptable-options) | Notes
 | ---- | ---- | :----: | ----

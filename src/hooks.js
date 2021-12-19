@@ -1,23 +1,25 @@
-import {callback} from 'chart.js/helpers';
+import {callback, defined} from 'chart.js/helpers';
 
-export const elementsHooks = ['afterDraw', 'beforeDraw'];
+export const elementHooks = ['afterDraw', 'beforeDraw'];
 export const hasLabel = (el) => el && 'drawLabel' in el && el.options && el.options.label;
 
 export function updateHooks(chart, state, options) {
   const visibleElements = state.visibleElements;
   state.hooked = false;
 
-  elementsHooks.forEach(hook => {
+  elementHooks.forEach(hook => {
     if (typeof options[hook] === 'function') {
       state.hooked = true;
       state.hooks[hook] = options[hook];
+    } else if (defined(state.hooks[hook])) {
+      delete state.hooks[hook];
     }
   });
 
   if (!state.hooked) {
     visibleElements.forEach(scope => {
       if (!state.hooked) {
-        elementsHooks.forEach(hook => {
+        elementHooks.forEach(hook => {
           if (typeof scope.options[hook] === 'function') {
             state.hooked = true;
           }

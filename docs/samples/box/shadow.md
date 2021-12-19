@@ -20,8 +20,8 @@ const data = {
 // <block:annotation1:1>
 const annotation1 = {
   type: 'box',
-  backgroundColor: 'rgba(0,150,0,0.02)',
-  borderColor: 'rgb(0,150,0)',
+  backgroundColor: 'rgba(0, 150, 0, 0.02)',
+  borderColor: 'rgb(0, 150, 0)',
   borderRadius: {
     topLeft: 4,
     topRight: 4,
@@ -40,8 +40,8 @@ const annotation1 = {
 // <block:annotation2:2>
 const annotation2 = {
   type: 'box',
-  backgroundColor: 'rgba(150,0,0,0.02)',
-  borderColor: 'rgb(150,0,0)',
+  backgroundColor: 'rgba(150, 0, 0, 0.02)',
+  borderColor: 'rgb(150, 0, 0)',
   borderRadius: {
     topLeft: 4,
     topRight: 4,
@@ -128,7 +128,7 @@ function drawShadow(context) {
 }
 // </block:utils>
 
-var actions = [
+const actions = [
   {
     name: 'Randomize',
     handler: function(chart) {
