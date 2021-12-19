@@ -13,7 +13,7 @@ export function updateListeners(chart, state, options) {
     if (typeof options[hook] === 'function') {
       state.listened = true;
       state.listeners[hook] = options[hook];
-    } else if (defined(state.listeners[hook])) {
+    } else {
       delete state.listeners[hook];
     }
   });
