@@ -101,7 +101,7 @@ function maxValue(ctx) {
 }
 // </block:utils>
 
-var actions = [
+const actions = [
   {
     name: 'Randomize',
     handler: function(chart) {

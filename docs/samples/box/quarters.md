@@ -19,7 +19,7 @@ const data = {
 // <block:annotation1:1>
 const annotation1 = {
   type: 'box',
-  backgroundColor: 'rgba(255,245,157,0.2)',
+  backgroundColor: 'rgba(255, 245, 157, 0.2)',
   borderWidth: 0,
   xMax: 2.5,
   xMin: -0.5,
@@ -38,7 +38,7 @@ const annotation1 = {
 // <block:annotation2:2>
 const annotation2 = {
   type: 'box',
-  backgroundColor: 'rgba(188,170,164,0.2)',
+  backgroundColor: 'rgba(188, 170, 164, 0.2)',
   borderWidth: 0,
   xMax: 5.5,
   xMin: 2.5,
@@ -57,7 +57,7 @@ const annotation2 = {
 // <block:annotation3:3>
 const annotation3 = {
   type: 'box',
-  backgroundColor: 'rgba(165,214,167,0.2)',
+  backgroundColor: 'rgba(165, 214, 167, 0.2)',
   borderWidth: 0,
   xMax: 8.5,
   xMin: 5.5,
@@ -76,7 +76,7 @@ const annotation3 = {
 // <block:annotation4:4>
 const annotation4 = {
   type: 'box',
-  backgroundColor: 'rgba(159,168,218,0.2)',
+  backgroundColor: 'rgba(159, 168, 218, 0.2)',
   borderWidth: 0,
   xMin: 8.5,
   label: {
@@ -118,7 +118,7 @@ const config = {
 };
 /* </block:config> */
 
-var actions = [
+const actions = [
   {
     name: 'Randomize',
     handler: function(chart) {

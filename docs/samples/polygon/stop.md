@@ -129,7 +129,7 @@ function value(ctx, datasetIndex, index, prop) {
 }
 // </block:utils>
 
-var actions = [
+const actions = [
   {
     name: 'Randomize',
     handler: function(chart) {

@@ -20,8 +20,8 @@ const data = {
 // <block:annotation1:1>
 const annotation1 = {
   type: 'ellipse',
-  backgroundColor: 'rgba(0,150,0,0.02)',
-  borderColor: 'rgba(0,150,0,0.2)',
+  backgroundColor: 'rgba(0, 150, 0, 0.02)',
+  borderColor: 'rgba(0, 150, 0, 0.2)',
   borderWidth: 1,
   xMax: (ctx) => max(ctx, 0, 'x') + 10,
   xMin: (ctx) => min(ctx, 0, 'x') - 10,
@@ -33,8 +33,8 @@ const annotation1 = {
 // <block:annotation2:2>
 const annotation2 = {
   type: 'ellipse',
-  backgroundColor: 'rgba(150,0,0,0.02)',
-  borderColor: 'rgba(150,0,0,0.2)',
+  backgroundColor: 'rgba(150, 0, 0, 0.02)',
+  borderColor: 'rgba(150, 0, 0, 0.2)',
   borderWidth: 1,
   xMax: (ctx) => max(ctx, 1, 'x') + 10,
   xMin: (ctx) => min(ctx, 1, 'x') - 10,
@@ -73,7 +73,7 @@ function max(ctx, datasetIndex, prop) {
 
 // </block:utils>
 
-var actions = [
+const actions = [
   {
     name: 'Randomize',
     handler: function(chart) {

@@ -19,7 +19,7 @@ const data = {
 // <block:annotation:1>
 const annotation = {
   type: 'label',
-  backgroundColor: 'rgba(245,245,245)',
+  backgroundColor: 'rgba(245, 245, 245)',
   callout: {
     enabled: true,
     borderColor: (ctx) => ctx.chart.data.datasets[0].borderColor
@@ -79,7 +79,7 @@ function maxLabel(ctx) {
 }
 // </block:utils>
 
-var actions = [
+const actions = [
   {
     name: 'Randomize',
     handler: function(chart) {

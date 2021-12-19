@@ -30,7 +30,7 @@ const data = {
 // <block:annotation1:1>
 const annotation1 = {
   type: 'point',
-  backgroundColor: 'rgba(0,255,255,0.4)',
+  backgroundColor: 'rgba(0, 255, 255, 0.4)',
   borderColor: 'black',
   borderWidth: 3,
   scaleID: 'y',
@@ -93,7 +93,7 @@ function value(ctx, datasetIndex, index, prop) {
 }
 // </block:utils>
 
-var actions = [
+const actions = [
   {
     name: 'Randomize',
     handler: function(chart) {

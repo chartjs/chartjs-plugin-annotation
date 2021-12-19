@@ -8,8 +8,8 @@ const uniqueId = new Date().getTime();
 
 const data = {
   datasets: [{
-    backgroundColor: 'rgba(63,184,175,0.3)',
-    borderColor: 'rgba(255,0,0,0.0)',
+    backgroundColor: 'rgba(63, 184, 175, 0.3)',
+    borderColor: 'rgba(255, 0, 0, 0.0)',
     pointRadius: 0, // no dots
     tension: 0, // straight lines
     showLine: true,

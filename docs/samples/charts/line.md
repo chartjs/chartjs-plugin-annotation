@@ -62,8 +62,8 @@ const annotation3 = {
   xMax: 85,
   yMin: 80,
   yMax: 90,
-  backgroundColor: 'rgba(250,250,0,0.4)',
-  borderColor: 'rgba(0,150,0,0.2)',
+  backgroundColor: 'rgba(250, 250, 0, 0.4)',
+  borderColor: 'rgba(0, 150, 0, 0.2)',
   drawTime: 'beforeDatasetsDraw',
   borderWidth: 0,
   borderRadius: 0,
@@ -95,7 +95,7 @@ const config = {
 };
 /* </block:config> */
 
-var actions = [
+const actions = [
   {
     name: 'Zoom out',
     handler: function(chart) {
