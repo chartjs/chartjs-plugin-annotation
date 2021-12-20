@@ -85,7 +85,7 @@ function toggleLabel(ctx, event) {
 }
 // </block:utils>
 
-var actions = [
+const actions = [
   {
     name: 'Randomize',
     handler: function(chart) {

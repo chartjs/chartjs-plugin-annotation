@@ -102,7 +102,7 @@ function yValue(ctx, label) {
 }
 // </block:utils>
 
-var actions = [
+const actions = [
   {
     name: 'Randomize',
     handler: function(chart) {
