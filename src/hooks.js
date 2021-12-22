@@ -48,13 +48,8 @@ function draw(chart, state, element, options) {
 }
 
 function beforeDraw(state, element) {
-  if (element._draw === false) {
-    return false;
-  }
   if (state.hooked && !element._drawElement && !element._drawLabel) {
-    const result = invokeHook(state, element, 'beforeDraw');
-    element._draw = result !== false;
-    return result;
+    return invokeHook(state, element, 'beforeDraw');
   }
 }
 
@@ -71,7 +66,6 @@ function invokeHook(state, element, hook) {
 }
 
 function resetDrawnStatus(element) {
-  element._draw = true;
   element._drawElement = false;
   element._drawLabel = false;
 }

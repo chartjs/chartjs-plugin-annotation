@@ -44,7 +44,7 @@ export function testHooks(options) {
         done();
       });
 
-      it(`should call only before draw on ${options.type}`, function(done) {
+      it(`should call only before draw, avoiding drawing, on ${options.type}`, function(done) {
         const before = () => false;
         const afterSpy = jasmine.createSpy('afterDraw');
 
@@ -58,6 +58,31 @@ export function testHooks(options) {
         delete targetOptions.afterDraw;
         done();
       });
+
+      it(`should call before draw on ${options.type}`, function(done) {
+        const beforeSpy = jasmine.createSpy('beforeDraw');
+
+        targetOptions.beforeDraw = beforeSpy;
+        pluginOpts.annotations = [options];
+
+        window.acquireChart(chartConfig);
+        expect(beforeSpy.calls.count()).toBe(1);
+        delete targetOptions.beforeDraw;
+        done();
+      });
+
+      it(`should call after draw on ${options.type}`, function(done) {
+        const afterSpy = jasmine.createSpy('afterDraw');
+
+        targetOptions.afterDraw = afterSpy;
+        pluginOpts.annotations = [options];
+
+        window.acquireChart(chartConfig);
+        expect(afterSpy.calls.count()).toBe(1);
+        delete targetOptions.afterDraw;
+        done();
+      });
+
     });
   });
 }
