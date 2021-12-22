@@ -67,7 +67,7 @@ describe('Ellipse annotation', function() {
       const chart = window.acquireChart(chartConfig);
       const xScale = chart.scales.x;
       const yScale = chart.scales.y;
-      const eventPoint = {x: xScale.getPixelForValue(4), y: yScale.getPixelForValue(7)};
+      const eventPoint = {x: xScale.getPixelForValue(4), y: yScale.getPixelForValue(6.9)};
 
       window.afterEvent(chart, 'click', function() {
         expect(clickSpy.calls.count()).toBe(1);
