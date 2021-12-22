@@ -19,7 +19,7 @@ const data = {
 // <block:annotation1:1>
 const annotation1 = {
   type: 'label',
-  backgroundColor: 'rgba(245,245,245, 0.5)',
+  backgroundColor: 'rgba(245, 245, 245, 0.5)',
   content: (ctx) => 'Maximum value is ' + maxValue(ctx).toFixed(2),
   font: {
     size: 16
@@ -110,7 +110,7 @@ function maxLabel(ctx) {
 }
 // </block:utils>
 
-var actions = [
+const actions = [
   {
     name: 'Randomize',
     handler: function(chart) {

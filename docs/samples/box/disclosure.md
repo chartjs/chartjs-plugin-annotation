@@ -24,7 +24,7 @@ const annotation = {
   label: {
     drawTime: 'afterDatasetsDraw',
     enabled: true,
-    color: 'rgba(208,208,208,0.2)',
+    color: 'rgba(208, 208, 208, 0.2)',
     content: 'Draft',
     font: {
       size: (ctx) => ctx.chart.chartArea.height / 1.5
@@ -50,7 +50,7 @@ const config = {
 };
 /* </block:config> */
 
-var actions = [
+const actions = [
   {
     name: 'Randomize',
     handler: function(chart) {

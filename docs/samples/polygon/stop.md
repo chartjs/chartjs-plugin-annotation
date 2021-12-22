@@ -32,6 +32,7 @@ const annotation1 = {
   type: 'polygon',
   backgroundColor: 'white',
   borderColor: 'red',
+  borderJoinStyle: 'round',
   borderWidth: 7,
   radius: 40,
   rotation: 180,
@@ -45,6 +46,7 @@ const annotation2 = {
   type: 'polygon',
   backgroundColor: 'white',
   borderColor: 'red',
+  borderJoinStyle: 'round',
   borderWidth: 7,
   radius: 40,
   xValue: (ctx) => value(ctx, 0, 4, 'x'),
@@ -129,7 +131,7 @@ function value(ctx, datasetIndex, index, prop) {
 }
 // </block:utils>
 
-var actions = [
+const actions = [
   {
     name: 'Randomize',
     handler: function(chart) {

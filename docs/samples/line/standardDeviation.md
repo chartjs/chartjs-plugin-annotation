@@ -26,13 +26,13 @@ const data = {
 // <block:annotation1:1>
 const annotation1 = {
   type: 'line',
-  borderColor: 'rgb(100,149,237)',
+  borderColor: 'rgb(100, 149, 237)',
   borderDash: [6, 6],
   borderDashOffset: 0,
   borderWidth: 3,
   label: {
     enabled: true,
-    backgroundColor: 'rgba(100,149,237)',
+    backgroundColor: 'rgb(100, 149, 237)',
     content: (ctx) => 'Average: ' + average(ctx).toFixed(2)
   },
   scaleID: 'y',
@@ -43,13 +43,13 @@ const annotation1 = {
 // <block:annotation2:2>
 const annotation2 = {
   type: 'line',
-  borderColor: 'rgba(102,102,102,0.5)',
+  borderColor: 'rgba(102, 102, 102, 0.5)',
   borderDash: [6, 6],
   borderDashOffset: 0,
   borderWidth: 3,
   label: {
     enabled: true,
-    backgroundColor: 'rgba(102,102,102,0.5)',
+    backgroundColor: 'rgba(102, 102, 102, 0.5)',
     color: 'black',
     content: (ctx) => (average(ctx) + standardDeviation(ctx)).toFixed(2),
     position: 'start',
@@ -64,13 +64,13 @@ const annotation2 = {
 // <block:annotation3:3>
 const annotation3 = {
   type: 'line',
-  borderColor: 'rgba(102,102,102,0.5)',
+  borderColor: 'rgba(102, 102, 102, 0.5)',
   borderDash: [6, 6],
   borderDashOffset: 0,
   borderWidth: 3,
   label: {
     enabled: true,
-    backgroundColor: 'rgba(102,102,102,0.5)',
+    backgroundColor: 'rgba(102, 102, 102, 0.5)',
     color: 'black',
     content: (ctx) => (average(ctx) - standardDeviation(ctx)).toFixed(2),
     position: 'end',
@@ -122,7 +122,7 @@ function standardDeviation(ctx) {
 
 // </block:utils>
 
-var actions = [
+const actions = [
   {
     name: 'Randomize',
     handler: function(chart) {
