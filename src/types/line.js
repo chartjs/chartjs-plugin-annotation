@@ -46,7 +46,7 @@ export default class LineAnnotation extends Element {
   intersects(x, y, epsilon = 0.001, useFinalPosition) {
     // Adapted from https://stackoverflow.com/a/6853926/25507
     const sqr = v => v * v;
-    const {x: x1, y: y1, x2, y2, options} = this.getProps(['x', 'y', 'x2', 'y2', 'options'], useFinalPosition);
+    const {x: x1, y: y1, x2, y2} = this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition);
     const dx = x2 - x1;
     const dy = y2 - y1;
     const lenSq = sqr(dx) + sqr(dy);
@@ -62,7 +62,7 @@ export default class LineAnnotation extends Element {
       xx = x1 + t * dx;
       yy = y1 + t * dy;
     }
-    return (sqr(x - xx) + sqr(y - yy)) < (epsilon * (options.borderWidth - 1) / 4);
+    return (sqr(x - xx) + sqr(y - yy)) < (epsilon * (this.options.borderWidth - 1) / 4);
   }
 
   labelIsVisible(useFinalPosition, chartArea) {
