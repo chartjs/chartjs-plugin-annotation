@@ -71,7 +71,7 @@ LabelAnnotation.defaults = {
   },
   color: 'black',
   content: null,
-  display: true,
+  display: (ctx, opts) => !!opts.content,
   font: {
     family: undefined,
     lineHeight: undefined,
