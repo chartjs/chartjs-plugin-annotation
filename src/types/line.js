@@ -6,6 +6,7 @@ const PI = Math.PI;
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
+const sqr = v => v * v;
 
 function isLineInArea({x, y, x2, y2}, {top, right, bottom, left}) {
   return !(
@@ -43,9 +44,8 @@ function limitLineToArea(p1, p2, area) {
 }
 
 export default class LineAnnotation extends Element {
-  intersects(x, y, useFinalPosition) {
+  intersects(x, y, epsilon = 0.001, useFinalPosition) {
     // Adapted from https://stackoverflow.com/a/6853926/25507
-    const sqr = v => v * v;
     const {x: x1, y: y1, x2, y2} = this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition);
     const dx = x2 - x1;
     const dy = y2 - y1;
@@ -62,7 +62,7 @@ export default class LineAnnotation extends Element {
       xx = x1 + t * dx;
       yy = y1 + t * dy;
     }
-    return (sqr(x - xx) + sqr(y - yy)) < sqr(this.options.borderWidth / 2);
+    return (sqr(x - xx) + sqr(y - yy)) < epsilon;
   }
 
   labelIsVisible(useFinalPosition, chartArea) {
@@ -85,7 +85,8 @@ export default class LineAnnotation extends Element {
   }
 
   inRange(mouseX, mouseY, useFinalPosition) {
-    return this.intersects(mouseX, mouseY, useFinalPosition) || this.isOnLabel(mouseX, mouseY, useFinalPosition);
+    const epsilon = sqr(this.options.borderWidth / 2);
+    return this.intersects(mouseX, mouseY, epsilon, useFinalPosition) || this.isOnLabel(mouseX, mouseY, useFinalPosition);
   }
 
   getCenterPoint() {
