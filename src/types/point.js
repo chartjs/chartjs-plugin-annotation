@@ -1,5 +1,6 @@
 import {Element} from 'chart.js';
-import {drawPoint, inPointRange, getElementCenterPoint, resolvePointPosition} from '../helpers';
+import {drawPoint} from 'chart.js/helpers';
+import {inPointRange, getElementCenterPoint, resolvePointPosition, setBorderStyle} from '../helpers';
 
 export default class PointAnnotation extends Element {
 
@@ -13,7 +14,12 @@ export default class PointAnnotation extends Element {
   }
 
   draw(ctx) {
-    drawPoint(ctx, this, this.options);
+    const options = this.options;
+    ctx.save();
+    ctx.fillStyle = options.backgroundColor;
+    setBorderStyle(ctx, options);
+    drawPoint(ctx, options, this.x, this.y);
+    ctx.restore();
   }
 
   resolveElementProperties(chart, options) {

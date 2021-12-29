@@ -1,7 +1,6 @@
 import {isObject, valueOrDefault, defined} from 'chart.js/helpers';
 import {clamp} from './helpers.core';
 
-const isEnabled = (options) => options && (options.display || options.enabled);
 const isPercentString = (s) => typeof s === 'string' && s.endsWith('%');
 const toPercent = (s) => clamp(parseFloat(s) / 100, 0, 1);
 
@@ -25,14 +24,6 @@ export function getSize(size, value) {
     return toPercent(value) * size;
   }
   return size;
-}
-
-export function isLabelVisible(options) {
-  return isEnabled(options) && options.content;
-}
-
-export function isPointVisible(options) {
-  return isEnabled(options) && options.radius > 0.1;
 }
 
 export function calculateTextAlignment(size, options) {

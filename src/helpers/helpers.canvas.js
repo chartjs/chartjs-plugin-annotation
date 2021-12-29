@@ -1,6 +1,6 @@
-import {addRoundedRectPath, drawPoint as drawPointOnChart, isArray, toFont, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
+import {addRoundedRectPath, isArray, toFont, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
 import {clampAll} from './helpers.core';
-import {calculateTextAlignment, getSize, isLabelVisible, isPointVisible} from './helpers.options';
+import {calculateTextAlignment, getSize} from './helpers.options';
 
 const widthCache = new Map();
 
@@ -59,18 +59,6 @@ export function measureLabelSize(ctx, options) {
   return widthCache.get(mapKey);
 }
 
-export function drawPoint(ctx, point, options) {
-  if (!isPointVisible(options)) {
-    return;
-  }
-  ctx.save();
-  ctx.fillStyle = options.backgroundColor;
-  setBorderStyle(ctx, options);
-  drawPointOnChart(ctx, options, point.x, point.y);
-  ctx.restore();
-}
-
-
 /**
  * Draw a box with the size and the styling options.
  * @param {CanvasRenderingContext2D} ctx - chart canvas context
@@ -98,9 +86,6 @@ export function drawBox(ctx, rect, options) {
 }
 
 export function drawLabel(ctx, rect, options) {
-  if (!isLabelVisible(options)) {
-    return;
-  }
   const content = options.content;
   if (isImageOrCanvas(content)) {
     ctx.drawImage(content, rect.x, rect.y, rect.width, rect.height);

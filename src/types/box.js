@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {toPadding} from 'chart.js/helpers';
-import {drawBox, drawLabel, getRelativePosition, measureLabelSize, isLabelVisible, getRectCenterPoint, getChartRect, toPosition, inBoxRange} from '../helpers';
+import {drawBox, drawLabel, getRelativePosition, measureLabelSize, getRectCenterPoint, getChartRect, toPosition, inBoxRange} from '../helpers';
 
 export default class BoxAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
@@ -20,25 +20,22 @@ export default class BoxAnnotation extends Element {
   drawLabel(ctx) {
     const {x, y, width, height, options} = this;
     const labelOpts = options.label;
-    if (isLabelVisible(labelOpts)) {
-      // copies borderWidth to label options
-      labelOpts.borderWidth = options.borderWidth;
-      ctx.save();
-      ctx.beginPath();
-      ctx.rect(x + labelOpts.borderWidth / 2, y + labelOpts.borderWidth / 2, width - labelOpts.borderWidth, height - labelOpts.borderWidth);
-      ctx.clip();
-      const position = toPosition(labelOpts.position);
-      const padding = toPadding(labelOpts.padding);
-      const labelSize = measureLabelSize(ctx, labelOpts);
-      const labelRect = {
-        x: calculateX(this, labelSize, position, padding),
-        y: calculateY(this, labelSize, position, padding),
-        width: labelSize.width,
-        height: labelSize.height
-      };
-      drawLabel(ctx, labelRect, labelOpts);
-      ctx.restore();
-    }
+    labelOpts.borderWidth = options.borderWidth;
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(x + labelOpts.borderWidth / 2, y + labelOpts.borderWidth / 2, width - labelOpts.borderWidth, height - labelOpts.borderWidth);
+    ctx.clip();
+    const position = toPosition(labelOpts.position);
+    const padding = toPadding(labelOpts.padding);
+    const labelSize = measureLabelSize(ctx, labelOpts);
+    const labelRect = {
+      x: calculateX(this, labelSize, position, padding),
+      y: calculateY(this, labelSize, position, padding),
+      width: labelSize.width,
+      height: labelSize.height
+    };
+    drawLabel(ctx, labelRect, labelOpts);
+    ctx.restore();
   }
 
   resolveElementProperties(chart, options) {

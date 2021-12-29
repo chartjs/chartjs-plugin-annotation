@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {toRadians, toPadding} from 'chart.js/helpers';
-import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, isLabelVisible, getRelativePosition} from '../helpers';
+import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition} from '../helpers';
 
 const PI = Math.PI;
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
@@ -65,13 +65,16 @@ export default class LineAnnotation extends Element {
     return (sqr(x - xx) + sqr(y - yy)) < epsilon;
   }
 
+  // TODO: make private in v2
   labelIsVisible(useFinalPosition, chartArea) {
-    if (!this.labelVisible) {
+    const labelOpts = this.options.label;
+    if (!chartArea || !labelOpts || !labelOpts.enabled) {
       return false;
     }
-    return !chartArea || isLineInArea(this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), chartArea);
+    return isLineInArea(this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), chartArea);
   }
 
+  // TODO: make private in v2
   isOnLabel(mouseX, mouseY, useFinalPosition) {
     if (!this.labelIsVisible(useFinalPosition)) {
       return false;
@@ -115,11 +118,31 @@ export default class LineAnnotation extends Element {
   }
 
   drawLabel(ctx, chartArea) {
-    if (this.labelIsVisible(false, chartArea)) {
-      ctx.save();
-      applyLabel(ctx, this);
-      ctx.restore();
+    if (!this.labelIsVisible(false, chartArea)) {
+      return;
     }
+    const {labelX, labelY, labelWidth, labelHeight, labelRotation, labelPadding, labelTextSize, options: {label}} = this;
+
+    ctx.save();
+    ctx.translate(labelX, labelY);
+    ctx.rotate(labelRotation);
+
+    const boxRect = {
+      x: -(labelWidth / 2),
+      y: -(labelHeight / 2),
+      width: labelWidth,
+      height: labelHeight
+    };
+    drawBox(ctx, boxRect, label);
+
+    const labelTextRect = {
+      x: -(labelWidth / 2) + labelPadding.left + label.borderWidth / 2,
+      y: -(labelHeight / 2) + labelPadding.top + label.borderWidth / 2,
+      width: labelTextSize.width,
+      height: labelTextSize.height
+    };
+    drawLabel(ctx, labelTextRect, label);
+    ctx.restore();
   }
 
   resolveElementProperties(chart, options) {
@@ -155,9 +178,9 @@ export default class LineAnnotation extends Element {
     const properties = inside
       ? limitLineToArea({x, y}, {x: x2, y: y2}, chart.chartArea)
       : {x, y, x2, y2, width: Math.abs(x2 - x), height: Math.abs(y2 - y)};
+
     const label = options.label;
-    properties.labelVisible = !!isLabelVisible(label);
-    if (properties.labelVisible) {
+    if (label && label.content) {
       return loadLabelRect(properties, chart, label);
     }
     return properties;
@@ -241,30 +264,6 @@ function calculateAutoRotation(line) {
   const rotation = Math.atan2(y2 - y, x2 - x);
   // Flip the rotation if it goes > PI/2 or < -PI/2, so label stays upright
   return rotation > PI / 2 ? rotation - PI : rotation < PI / -2 ? rotation + PI : rotation;
-}
-
-function applyLabel(ctx, line) {
-  const {labelX, labelY, labelWidth, labelHeight, labelRotation, labelPadding, labelTextSize, options} = line;
-  const label = options.label;
-
-  ctx.translate(labelX, labelY);
-  ctx.rotate(labelRotation);
-
-  const boxRect = {
-    x: -(labelWidth / 2),
-    y: -(labelHeight / 2),
-    width: labelWidth,
-    height: labelHeight
-  };
-  drawBox(ctx, boxRect, label);
-
-  const labelTextRect = {
-    x: -(labelWidth / 2) + labelPadding.left + label.borderWidth / 2,
-    y: -(labelHeight / 2) + labelPadding.top + label.borderWidth / 2,
-    width: labelTextSize.width,
-    height: labelTextSize.height
-  };
-  drawLabel(ctx, labelTextRect, label);
 }
 
 // TODO: v2 remove support for xPadding and yPadding
