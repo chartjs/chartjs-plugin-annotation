@@ -64,8 +64,7 @@ describe('Line annotation', function() {
               line: {
                 type: 'line',
                 scaleID: 'y',
-                value: 5,
-                borderWidth: 60
+                value: 5
               }
             }
           }
@@ -75,41 +74,45 @@ describe('Line annotation', function() {
 
     const lineOpts = chartConfig.options.plugins.annotation.annotations.line;
 
-    it('should detect click event, considering the tickness on bottom', function(done) {
-      const clickSpy = jasmine.createSpy('click');
+    for (let i = 2; i <= 60; i++) {
 
-      lineOpts.click = clickSpy;
+      lineOpts.borderWidth = i;
 
-      const chart = window.acquireChart(chartConfig);
-      const xScale = chart.scales.x;
-      const yScale = chart.scales.y;
-      const eventPoint = {x: xScale.getPixelForValue(5), y: yScale.getPixelForValue(lineOpts.value) + lineOpts.borderWidth / 2 - 2};
+      it('should detect click event, considering the tickness on bottom', function(done) {
+        const clickSpy = jasmine.createSpy('click');
 
-      window.afterEvent(chart, 'click', function() {
-        expect(clickSpy.calls.count()).toBe(1);
-        delete lineOpts.click;
-        done();
+        lineOpts.click = clickSpy;
+
+        const chart = window.acquireChart(chartConfig);
+        const xScale = chart.scales.x;
+        const yScale = chart.scales.y;
+        const eventPoint = {x: xScale.getPixelForValue(5), y: yScale.getPixelForValue(lineOpts.value) + lineOpts.borderWidth / 2 - 1};
+
+        window.afterEvent(chart, 'click', function() {
+          expect(clickSpy.calls.count()).toBe(1);
+          delete lineOpts.click;
+          done();
+        });
+        window.triggerMouseEvent(chart, 'click', eventPoint);
       });
-      window.triggerMouseEvent(chart, 'click', eventPoint);
-    });
 
-    it('should detect click event, considering the tickness on top', function(done) {
-      const clickSpy = jasmine.createSpy('click');
+      it('should detect click event, considering the tickness on top', function(done) {
+        const clickSpy = jasmine.createSpy('click');
 
-      lineOpts.click = clickSpy;
+        lineOpts.click = clickSpy;
 
-      const chart = window.acquireChart(chartConfig);
-      const xScale = chart.scales.x;
-      const yScale = chart.scales.y;
-      const eventPoint = {x: xScale.getPixelForValue(5), y: yScale.getPixelForValue(lineOpts.value) - lineOpts.borderWidth / 2 + 2};
+        const chart = window.acquireChart(chartConfig);
+        const xScale = chart.scales.x;
+        const yScale = chart.scales.y;
+        const eventPoint = {x: xScale.getPixelForValue(5), y: yScale.getPixelForValue(lineOpts.value) - lineOpts.borderWidth / 2 + 1};
 
-      window.afterEvent(chart, 'click', function() {
-        expect(clickSpy.calls.count()).toBe(1);
-        delete lineOpts.click;
-        done();
+        window.afterEvent(chart, 'click', function() {
+          expect(clickSpy.calls.count()).toBe(1);
+          delete lineOpts.click;
+          done();
+        });
+        window.triggerMouseEvent(chart, 'click', eventPoint);
       });
-      window.triggerMouseEvent(chart, 'click', eventPoint);
-    });
-
+    }
   });
 });

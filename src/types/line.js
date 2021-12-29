@@ -43,7 +43,7 @@ function limitLineToArea(p1, p2, area) {
 }
 
 export default class LineAnnotation extends Element {
-  intersects(x, y, epsilon = 0.001, useFinalPosition) {
+  intersects(x, y, useFinalPosition) {
     // Adapted from https://stackoverflow.com/a/6853926/25507
     const sqr = v => v * v;
     const {x: x1, y: y1, x2, y2} = this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition);
@@ -62,7 +62,7 @@ export default class LineAnnotation extends Element {
       xx = x1 + t * dx;
       yy = y1 + t * dy;
     }
-    return (sqr(x - xx) + sqr(y - yy)) < (epsilon * (this.options.borderWidth - 1) / 4);
+    return (sqr(x - xx) + sqr(y - yy)) < sqr(this.options.borderWidth / 2);
   }
 
   labelIsVisible(useFinalPosition, chartArea) {
@@ -85,8 +85,7 @@ export default class LineAnnotation extends Element {
   }
 
   inRange(mouseX, mouseY, useFinalPosition) {
-    const epsilon = this.options.borderWidth || 1;
-    return this.intersects(mouseX, mouseY, epsilon, useFinalPosition) || this.isOnLabel(mouseX, mouseY, useFinalPosition);
+    return this.intersects(mouseX, mouseY, useFinalPosition) || this.isOnLabel(mouseX, mouseY, useFinalPosition);
   }
 
   getCenterPoint() {
