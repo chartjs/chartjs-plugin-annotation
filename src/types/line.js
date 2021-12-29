@@ -1,8 +1,7 @@
 import {Element} from 'chart.js';
-import {toRadians, toPadding} from 'chart.js/helpers';
+import {PI, toRadians, toPadding} from 'chart.js/helpers';
 import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition} from '../helpers';
 
-const PI = Math.PI;
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;

@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {toRadians} from 'chart.js/helpers';
+import {PI, toRadians} from 'chart.js/helpers';
 import {getRectCenterPoint, getChartRect} from '../helpers';
 
 export default class EllipseAnnotation extends Element {
@@ -32,7 +32,7 @@ export default class EllipseAnnotation extends Element {
     ctx.setLineDash(options.borderDash);
     ctx.lineDashOffset = options.borderDashOffset;
 
-    ctx.ellipse(0, 0, height / 2, width / 2, Math.PI / 2, 0, 2 * Math.PI);
+    ctx.ellipse(0, 0, height / 2, width / 2, PI / 2, 0, 2 * PI);
 
     ctx.fill();
     ctx.stroke();
