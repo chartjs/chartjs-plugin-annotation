@@ -1,8 +1,7 @@
 import {Element} from 'chart.js';
-import {toRadians, toPadding} from 'chart.js/helpers';
-import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setShadowStyle} from '../helpers';
+import {PI, toRadians, toPadding} from 'chart.js/helpers';
+import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle} from '../helpers';
 
-const PI = Math.PI;
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
@@ -104,13 +103,8 @@ export default class LineAnnotation extends Element {
     ctx.save();
 
     setShadowStyle(ctx, this.options);
-    ctx.lineWidth = options.borderWidth;
-    ctx.strokeStyle = options.borderColor;
-    ctx.setLineDash(options.borderDash);
-    ctx.lineDashOffset = options.borderDashOffset;
-
-    // Draw
     ctx.beginPath();
+    setBorderStyle(ctx, options);
     ctx.moveTo(x, y);
     ctx.lineTo(x2, y2);
     ctx.stroke();
