@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {toPadding} from 'chart.js/helpers';
-import {drawBox, drawLabel, getRelativePosition, measureLabelSize, isLabelVisible, getRectCenterPoint, getChartRect, toPosition, inBoxRange} from '../helpers';
+import {drawBox, drawLabel, getRelativePosition, measureLabelSize, getRectCenterPoint, getChartRect, toPosition, inBoxRange} from '../helpers';
 
 export default class BoxAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
@@ -20,8 +20,7 @@ export default class BoxAnnotation extends Element {
   drawLabel(ctx) {
     const {x, y, width, height, options} = this;
     const labelOpts = options.label;
-    if (isLabelVisible(labelOpts)) {
-      // copies borderWidth to label options
+    if (labelOpts && labelOpts.enabled) {
       labelOpts.borderWidth = options.borderWidth;
       ctx.save();
       ctx.beginPath();
