@@ -20,24 +20,22 @@ export default class BoxAnnotation extends Element {
   drawLabel(ctx) {
     const {x, y, width, height, options} = this;
     const labelOpts = options.label;
-    if (labelOpts && labelOpts.enabled) {
-      labelOpts.borderWidth = options.borderWidth;
-      ctx.save();
-      ctx.beginPath();
-      ctx.rect(x + labelOpts.borderWidth / 2, y + labelOpts.borderWidth / 2, width - labelOpts.borderWidth, height - labelOpts.borderWidth);
-      ctx.clip();
-      const position = toPosition(labelOpts.position);
-      const padding = toPadding(labelOpts.padding);
-      const labelSize = measureLabelSize(ctx, labelOpts);
-      const labelRect = {
-        x: calculateX(this, labelSize, position, padding),
-        y: calculateY(this, labelSize, position, padding),
-        width: labelSize.width,
-        height: labelSize.height
-      };
-      drawLabel(ctx, labelRect, labelOpts);
-      ctx.restore();
-    }
+    labelOpts.borderWidth = options.borderWidth;
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(x + labelOpts.borderWidth / 2, y + labelOpts.borderWidth / 2, width - labelOpts.borderWidth, height - labelOpts.borderWidth);
+    ctx.clip();
+    const position = toPosition(labelOpts.position);
+    const padding = toPadding(labelOpts.padding);
+    const labelSize = measureLabelSize(ctx, labelOpts);
+    const labelRect = {
+      x: calculateX(this, labelSize, position, padding),
+      y: calculateY(this, labelSize, position, padding),
+      width: labelSize.width,
+      height: labelSize.height
+    };
+    drawLabel(ctx, labelRect, labelOpts);
+    ctx.restore();
   }
 
   resolveElementProperties(chart, options) {

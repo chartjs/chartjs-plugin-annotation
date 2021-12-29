@@ -230,7 +230,7 @@ function draw(chart, caller, clip) {
   }
 
   state.visibleElements.forEach(el => {
-    if ('drawLabel' in el && el.options.label && (el.options.label.drawTime || el.options.drawTime) === caller) {
+    if ('drawLabel' in el && el.options.label && el.options.label.enabled && (el.options.label.drawTime || el.options.drawTime) === caller) {
       el.drawLabel(ctx, chartArea);
     }
   });

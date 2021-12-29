@@ -71,7 +71,7 @@ export default class LineAnnotation extends Element {
     if (!chartArea || !labelOpts || !labelOpts.enabled) {
       return false;
     }
-    return !chartArea || isLineInArea(this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), chartArea);
+    return isLineInArea(this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), chartArea);
   }
 
   // TODO: make private in v2
@@ -118,11 +118,31 @@ export default class LineAnnotation extends Element {
   }
 
   drawLabel(ctx, chartArea) {
-    if (this.labelIsVisible(false, chartArea)) {
-      ctx.save();
-      applyLabel(ctx, this);
-      ctx.restore();
+    if (!this.labelIsVisible(false, chartArea)) {
+      return;
     }
+    const {labelX, labelY, labelWidth, labelHeight, labelRotation, labelPadding, labelTextSize, options: {label}} = this;
+
+    ctx.save();
+    ctx.translate(labelX, labelY);
+    ctx.rotate(labelRotation);
+
+    const boxRect = {
+      x: -(labelWidth / 2),
+      y: -(labelHeight / 2),
+      width: labelWidth,
+      height: labelHeight
+    };
+    drawBox(ctx, boxRect, label);
+
+    const labelTextRect = {
+      x: -(labelWidth / 2) + labelPadding.left + label.borderWidth / 2,
+      y: -(labelHeight / 2) + labelPadding.top + label.borderWidth / 2,
+      width: labelTextSize.width,
+      height: labelTextSize.height
+    };
+    drawLabel(ctx, labelTextRect, label);
+    ctx.restore();
   }
 
   resolveElementProperties(chart, options) {
@@ -244,30 +264,6 @@ function calculateAutoRotation(line) {
   const rotation = Math.atan2(y2 - y, x2 - x);
   // Flip the rotation if it goes > PI/2 or < -PI/2, so label stays upright
   return rotation > PI / 2 ? rotation - PI : rotation < PI / -2 ? rotation + PI : rotation;
-}
-
-function applyLabel(ctx, line) {
-  const {labelX, labelY, labelWidth, labelHeight, labelRotation, labelPadding, labelTextSize, options} = line;
-  const label = options.label;
-
-  ctx.translate(labelX, labelY);
-  ctx.rotate(labelRotation);
-
-  const boxRect = {
-    x: -(labelWidth / 2),
-    y: -(labelHeight / 2),
-    width: labelWidth,
-    height: labelHeight
-  };
-  drawBox(ctx, boxRect, label);
-
-  const labelTextRect = {
-    x: -(labelWidth / 2) + labelPadding.left + label.borderWidth / 2,
-    y: -(labelHeight / 2) + labelPadding.top + label.borderWidth / 2,
-    width: labelTextSize.width,
-    height: labelTextSize.height
-  };
-  drawLabel(ctx, labelTextRect, label);
 }
 
 // TODO: v2 remove support for xPadding and yPadding
