@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {toRadians, toPadding} from 'chart.js/helpers';
-import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition} from '../helpers';
+import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setShadowStyle} from '../helpers';
 
 const PI = Math.PI;
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
@@ -103,6 +103,7 @@ export default class LineAnnotation extends Element {
     const {x, y, x2, y2, options} = this;
     ctx.save();
 
+    setShadowStyle(ctx, this.options);
     ctx.lineWidth = options.borderWidth;
     ctx.strokeStyle = options.borderColor;
     ctx.setLineDash(options.borderDash);
@@ -220,6 +221,10 @@ LineAnnotation.defaults = {
     padding: 6,
     position: 'center',
     rotation: 0,
+    shadowBlur: 0,
+    shadowColor: undefined,
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
     textAlign: 'center',
     width: undefined,
     xAdjust: 0,
@@ -228,6 +233,10 @@ LineAnnotation.defaults = {
     yPadding: undefined, // TODO: v2 remove support for yPadding
   },
   scaleID: undefined,
+  shadowBlur: 0,
+  shadowColor: undefined,
+  shadowOffsetX: 0,
+  shadowOffsetY: 0,
   value: undefined,
   xMax: undefined,
   xMin: undefined,

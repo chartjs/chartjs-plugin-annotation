@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {drawPoint} from 'chart.js/helpers';
-import {inPointRange, getElementCenterPoint, resolvePointPosition, setBorderStyle} from '../helpers';
+import {inPointRange, getElementCenterPoint, resolvePointPosition, setBorderStyle, setShadowStyle} from '../helpers';
 
 export default class PointAnnotation extends Element {
 
@@ -17,6 +17,7 @@ export default class PointAnnotation extends Element {
     const options = this.options;
     ctx.save();
     ctx.fillStyle = options.backgroundColor;
+    setShadowStyle(ctx, options);
     setBorderStyle(ctx, options);
     drawPoint(ctx, options, this.x, this.y);
     ctx.restore();
@@ -38,6 +39,10 @@ PointAnnotation.defaults = {
   pointStyle: 'circle',
   radius: 10,
   rotation: 0,
+  shadowBlur: 0,
+  shadowColor: undefined,
+  shadowOffsetX: 0,
+  shadowOffsetY: 0,
   xAdjust: 0,
   xMax: undefined,
   xMin: undefined,

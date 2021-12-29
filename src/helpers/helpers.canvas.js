@@ -9,7 +9,7 @@ function isImageOrCanvas(content) {
 }
 
 /**
- * Apply border options to the canvas context before drawing a box
+ * Apply border options to the canvas context before drawing a shape
  * @param {CanvasRenderingContext2D} ctx - chart canvas context
  * @param {Object} options - options with border configuration
  * @returns {boolean} true is the border options have been applied
@@ -24,6 +24,27 @@ export function setBorderStyle(ctx, options) {
     ctx.strokeStyle = options.borderColor;
     return true;
   }
+}
+
+/**
+ * Apply shadow options to the canvas context before drawing a shape
+ * @param {CanvasRenderingContext2D} ctx - chart canvas context
+ * @param {Object} options - options with shadow configuration
+ */
+export function setShadowStyle(ctx, options) {
+  ctx.shadowColor = options.shadowColor;
+  ctx.shadowBlur = options.shadowBlur;
+  ctx.shadowOffsetX = options.shadowOffsetX;
+  ctx.shadowOffsetY = options.shadowOffsetY;
+}
+
+/**
+ * Resets shadow options to the canvas context before stroking,
+ * in order to manage teh shadow at "fill" level
+ * @param {CanvasRenderingContext2D} ctx - chart canvas context
+ */
+export function resetShadow(ctx) {
+  ctx.shadowColor = 'transparent';
 }
 
 /**
@@ -69,6 +90,7 @@ export function measureLabelSize(ctx, options) {
 export function drawBox(ctx, rect, options) {
   const {x, y, width, height} = rect;
   ctx.save();
+  setShadowStyle(ctx, options);
   const stroke = setBorderStyle(ctx, options);
   ctx.fillStyle = options.backgroundColor;
   ctx.beginPath();
@@ -80,6 +102,7 @@ export function drawBox(ctx, rect, options) {
   ctx.closePath();
   ctx.fill();
   if (stroke) {
+    resetShadow(ctx);
     ctx.stroke();
   }
   ctx.restore();

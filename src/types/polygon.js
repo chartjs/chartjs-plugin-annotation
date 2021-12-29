@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, RAD_PER_DEG, isNumber} from 'chart.js/helpers';
-import {setBorderStyle, resolvePointPosition, getElementCenterPoint} from '../helpers';
+import {setBorderStyle, resolvePointPosition, getElementCenterPoint, setShadowStyle, resetShadow} from '../helpers';
 
 export default class PolygonAnnotation extends Element {
 
@@ -20,6 +20,7 @@ export default class PolygonAnnotation extends Element {
     ctx.save();
     ctx.beginPath();
     ctx.fillStyle = options.backgroundColor;
+    setShadowStyle(ctx, options);
     const stroke = setBorderStyle(ctx, options);
     ctx.moveTo(vertex.x, vertex.y);
     for (let i = 1; i < vertices.length; i++) {
@@ -30,6 +31,7 @@ export default class PolygonAnnotation extends Element {
     ctx.fill();
     // If no border, don't draw it
     if (stroke) {
+      resetShadow(ctx);
       ctx.stroke();
     }
     ctx.restore();
@@ -56,6 +58,10 @@ PolygonAnnotation.defaults = {
   display: true,
   radius: 10,
   rotation: 0,
+  shadowBlur: 0,
+  shadowColor: undefined,
+  shadowOffsetX: 0,
+  shadowOffsetY: 0,
   sides: 3,
   xAdjust: 0,
   xMax: undefined,
