@@ -13,6 +13,9 @@ export default class LabelAnnotation extends Element {
   }
 
   draw(ctx) {
+    if (!this.options.content) {
+      return;
+    }
     const {labelX, labelY, labelWidth, labelHeight, options} = this;
     drawCallout(ctx, this);
     if (this.boxVisible) {
