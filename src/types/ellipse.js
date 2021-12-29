@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {toRadians} from 'chart.js/helpers';
+import {PI, toRadians} from 'chart.js/helpers';
 import {getRectCenterPoint, getChartRect, setBorderStyle} from '../helpers';
 
 export default class EllipseAnnotation extends Element {
@@ -25,7 +25,7 @@ export default class EllipseAnnotation extends Element {
     ctx.beginPath();
     ctx.fillStyle = options.backgroundColor;
     const stroke = setBorderStyle(ctx, options);
-    ctx.ellipse(0, 0, height / 2, width / 2, Math.PI / 2, 0, 2 * Math.PI);
+    ctx.ellipse(0, 0, height / 2, width / 2, PI / 2, 0, 2 * PI);
     ctx.fill();
     if (stroke) {
       ctx.stroke();
