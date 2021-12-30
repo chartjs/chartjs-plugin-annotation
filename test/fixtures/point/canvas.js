@@ -1,6 +1,6 @@
 const canvas = window.createCanvas();
 module.exports = {
-  tolerance: 0.0055,
+  tolerance: 0.0095,
   config: {
     type: 'scatter',
     options: {
