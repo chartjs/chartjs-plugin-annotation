@@ -1,6 +1,7 @@
 import {Element} from 'chart.js';
 import {PI, RAD_PER_DEG, isNumber} from 'chart.js/helpers';
 import {setBorderStyle, resolvePointPosition, getElementCenterPoint} from '../helpers';
+import {common} from './_commonDefaults';
 
 export default class PolygonAnnotation extends Element {
 
@@ -46,28 +47,18 @@ export default class PolygonAnnotation extends Element {
 
 PolygonAnnotation.id = 'polygonAnnotation';
 
-PolygonAnnotation.defaults = {
-  adjustScaleRange: true,
+PolygonAnnotation.defaults = Object.assign({}, common, {
   borderCapStyle: 'butt',
-  borderDash: [],
-  borderDashOffset: 0,
   borderJoinStyle: 'miter',
   borderWidth: 1,
-  display: true,
   radius: 10,
   rotation: 0,
   sides: 3,
   xAdjust: 0,
-  xMax: undefined,
-  xMin: undefined,
-  xScaleID: 'x',
   xValue: undefined,
   yAdjust: 0,
-  yMax: undefined,
-  yMin: undefined,
-  yScaleID: 'y',
   yValue: undefined
-};
+});
 
 PolygonAnnotation.defaultRoutes = {
   borderColor: 'color',

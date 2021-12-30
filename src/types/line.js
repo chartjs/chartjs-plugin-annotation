@@ -1,6 +1,7 @@
 import {Element} from 'chart.js';
 import {PI, toRadians, toPadding} from 'chart.js/helpers';
 import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setBorderStyle} from '../helpers';
+import {common} from './_commonDefaults';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
@@ -182,12 +183,9 @@ export default class LineAnnotation extends Element {
 }
 
 LineAnnotation.id = 'lineAnnotation';
-LineAnnotation.defaults = {
-  adjustScaleRange: true,
-  borderDash: [],
-  borderDashOffset: 0,
+
+LineAnnotation.defaults = Object.assign({}, common, {
   borderWidth: 2,
-  display: true,
   endValue: undefined,
   label: {
     backgroundColor: 'rgba(0,0,0,0.8)',
@@ -222,14 +220,8 @@ LineAnnotation.defaults = {
     yPadding: undefined, // TODO: v2 remove support for yPadding
   },
   scaleID: undefined,
-  value: undefined,
-  xMax: undefined,
-  xMin: undefined,
-  xScaleID: 'x',
-  yMax: undefined,
-  yMin: undefined,
-  yScaleID: 'y'
-};
+  value: undefined
+});
 
 LineAnnotation.defaultRoutes = {
   borderColor: 'color'

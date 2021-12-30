@@ -1,6 +1,7 @@
 import {Element} from 'chart.js';
 import {PI, toRadians} from 'chart.js/helpers';
 import {getRectCenterPoint, getChartRect, setBorderStyle} from '../helpers';
+import {common} from './_commonDefaults';
 
 export default class EllipseAnnotation extends Element {
 
@@ -41,20 +42,10 @@ export default class EllipseAnnotation extends Element {
 
 EllipseAnnotation.id = 'ellipseAnnotation';
 
-EllipseAnnotation.defaults = {
-  adjustScaleRange: true,
-  borderDash: [],
-  borderDashOffset: 0,
+EllipseAnnotation.defaults = Object.assign({}, common, {
   borderWidth: 1,
-  display: true,
   rotation: 0,
-  xMax: undefined,
-  xMin: undefined,
-  xScaleID: 'x',
-  yMax: undefined,
-  yMin: undefined,
-  yScaleID: 'y'
-};
+});
 
 EllipseAnnotation.defaultRoutes = {
   borderColor: 'color',

@@ -1,6 +1,7 @@
 import {drawBox, drawLabel, measureLabelSize, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, getChartRect, getRelativePosition} from '../helpers';
 import {color, toPadding} from 'chart.js/helpers';
 import {Element} from 'chart.js';
+import {common} from './_commonDefaults';
 
 export default class LabelAnnotation extends Element {
 
@@ -50,12 +51,9 @@ export default class LabelAnnotation extends Element {
 
 LabelAnnotation.id = 'labelAnnotation';
 
-LabelAnnotation.defaults = {
-  adjustScaleRange: true,
+LabelAnnotation.defaults = Object.assign({}, common, {
   backgroundColor: 'transparent',
   borderCapStyle: 'butt',
-  borderDash: [],
-  borderDashOffset: 0,
   borderJoinStyle: 'miter',
   borderRadius: 0,
   borderWidth: 0,
@@ -74,7 +72,6 @@ LabelAnnotation.defaults = {
   },
   color: 'black',
   content: null,
-  display: true,
   font: {
     family: undefined,
     lineHeight: undefined,
@@ -88,20 +85,13 @@ LabelAnnotation.defaults = {
   textAlign: 'center',
   width: undefined,
   xAdjust: 0,
-  xMax: undefined,
-  xMin: undefined,
-  xScaleID: 'x',
   xValue: undefined,
   yAdjust: 0,
-  yMax: undefined,
-  yMin: undefined,
-  yScaleID: 'y',
   yValue: undefined
-};
+});
 
 LabelAnnotation.defaultRoutes = {
   borderColor: 'color',
-  backgroundColor: 'color',
 };
 
 function measureRect(point, size, options, padding) {

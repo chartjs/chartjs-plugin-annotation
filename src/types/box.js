@@ -1,6 +1,7 @@
 import {Element} from 'chart.js';
 import {toPadding} from 'chart.js/helpers';
 import {drawBox, drawLabel, getRelativePosition, measureLabelSize, getRectCenterPoint, getChartRect, toPosition, inBoxRange} from '../helpers';
+import {common} from './_commonDefaults';
 
 export default class BoxAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
@@ -45,16 +46,12 @@ export default class BoxAnnotation extends Element {
 
 BoxAnnotation.id = 'boxAnnotation';
 
-BoxAnnotation.defaults = {
-  adjustScaleRange: true,
+BoxAnnotation.defaults = Object.assign({}, common, {
   borderCapStyle: 'butt',
-  borderDash: [],
-  borderDashOffset: 0,
   borderJoinStyle: 'miter',
   borderRadius: 0,
   borderWidth: 1,
   cornerRadius: undefined, // TODO: v2 remove support for cornerRadius
-  display: true,
   label: {
     color: 'black',
     content: null,
@@ -75,13 +72,7 @@ BoxAnnotation.defaults = {
     yAdjust: 0,
     width: undefined
   },
-  xMax: undefined,
-  xMin: undefined,
-  xScaleID: 'x',
-  yMax: undefined,
-  yMin: undefined,
-  yScaleID: 'y'
-};
+});
 
 BoxAnnotation.defaultRoutes = {
   borderColor: 'color',
