@@ -60,6 +60,10 @@ The following options are available for point annotations.
 | [`pointStyle`](#styling) | [`PointStyle`](../options#point-style) | Yes | `'circle'`
 | [`radius`](#general) | `number` | Yes | `10`
 | [`rotation`](#general) | `number` | Yes | `0`
+| [`shadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
+| [`shadowBlur`](#styling) | `number` | Yes | `0`
+| [`shadowOffsetX`](#styling) | `number` | Yes | `0`
+| [`shadowOffsetY`](#styling) | `number` | Yes | `0`
 | [`xAdjust`](#general) | `number` | Yes | `0`
 | [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
@@ -106,3 +110,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | `borderDashOffset` | Offset for line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
 | `borderWidth` | Stroke width.
 | `pointStyle` | Style of the point.
+| `shadowColor` | The color of shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
+| `shadowBlur` | The amount of blur applied to shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
+| `shadowOffsetX` | The distance that shadow will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
+| `shadowOffsetY` | The distance that shadow will be offset  vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).

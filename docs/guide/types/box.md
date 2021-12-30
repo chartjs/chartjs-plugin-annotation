@@ -62,6 +62,10 @@ The following options are available for box annotations.
 | [`borderWidth`](#styling) | `number`| Yes | `1`
 | [`display`](#general) | `boolean` | Yes | `true`
 | [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
+| [`shadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
+| [`shadowBlur`](#styling) | `number` | Yes | `0`
+| [`shadowOffsetX`](#styling) | `number` | Yes | `0`
+| [`shadowOffsetY`](#styling) | `number` | Yes | `0`
 | [`xScaleID`](#general) | `string` | Yes | `'x'`
 | [`yScaleID`](#general) | `string` | Yes | `'y'`
 | [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
@@ -98,6 +102,10 @@ If one of the axes does not match an axis in the chart, the box will take the en
 | `borderJoinStyle` | Border line joint style. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
 | [`borderRadius`](#borderradius) | Radius of box rectangle (in pixels)
 | `borderWidth` | Border line width (in pixels).
+| `shadowColor` | The color of shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
+| `shadowBlur` | The amount of blur applied to shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
+| `shadowOffsetX` | The distance that shadow will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
+| `shadowOffsetY` | The distance that shadow will be offset  vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
 
 #### borderRadius
 

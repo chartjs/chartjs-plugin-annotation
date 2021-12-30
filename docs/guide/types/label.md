@@ -71,6 +71,10 @@ The following options are available for label annotations.
 | [`height`](#general) | `number`\|`string` | Yes | `undefined`
 | [`padding`](#general) | [`Padding`](../options#padding) | Yes | `6`
 | [`position`](#position) | `string`\|`{x: string, y: string}` | Yes | `'center'`
+| [`shadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
+| [`shadowBlur`](#styling) | `number` | Yes | `0`
+| [`shadowOffsetX`](#styling) | `number` | Yes | `0`
+| [`shadowOffsetY`](#styling) | `number` | Yes | `0`
 | [`textAlign`](#general) | `string` | Yes | `'center'`
 | [`width`](#general) | `number`\|`string` | Yes | `undefined`
 | [`xAdjust`](#general) | `number` | Yes | `0`
@@ -125,6 +129,10 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | `borderWidth` | Stroke width (in pixels).
 | `color` | Text color.
 | `font` | Text font.
+| `shadowColor` | The color of shadow of the box where the label is located. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
+| `shadowBlur` | The amount of blur applied to shadow of the box where the label is located. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
+| `shadowOffsetX` | The distance that shadow, of the box where the label is located, will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
+| `shadowOffsetY` | The distance that shadow, of the box where the label is located, will be offset  vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
 
 ### Position
 
