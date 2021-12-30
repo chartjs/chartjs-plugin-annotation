@@ -1,4 +1,4 @@
-# Shadow
+# Frame
 
 ```js chart-editor
 // <block:setup:4>
@@ -33,7 +33,7 @@ const annotation1 = {
   xMin: (ctx) => min(ctx, 0, 'x') - 2,
   yMax: (ctx) => max(ctx, 0, 'y') + 2,
   yMin: (ctx) => min(ctx, 0, 'y') - 2,
-  beforeDraw: (ctx) => drawShadow(ctx)
+  beforeDraw: (ctx) => drawFrame(ctx)
 };
 // </block:annotation1>
 
@@ -53,7 +53,7 @@ const annotation2 = {
   xMin: (ctx) => min(ctx, 1, 'x') - 2,
   yMax: (ctx) => max(ctx, 1, 'y') + 2,
   yMin: (ctx) => min(ctx, 1, 'y') - 2,
-  beforeDraw: (ctx) => drawShadow(ctx)
+  beforeDraw: (ctx) => drawFrame(ctx)
 };
 // </block:annotation2>
 
@@ -88,24 +88,17 @@ function max(ctx, datasetIndex, prop) {
   return dataset.data.reduce((v, point) => Math.max(point[prop], v), -Infinity);
 }
 
-function drawShadow(context) {
+function drawFrame(context) {
   const ctx = context.chart.ctx;
   const {x, y, width, height, options} = context.element;
   ctx.save();
-  ctx.fillStyle = options.backgroundColor;
   ctx.strokeStyle = options.borderColor;
   ctx.beginPath();
   Utils.addRoundedRect(ctx, {
-    x, y, w: width, h: height,
+    x: x - 5, y: y - 5, w: width + 10, h: height + 10,
     radius: options.borderRadius
   });
   ctx.closePath();
-  ctx.fill();
-  ctx.globalCompositeOperation = 'destination-over';
-  ctx.shadowColor = options.borderColor;
-  ctx.shadowBlur = 9;
-  ctx.shadowOffsetX = 5;
-  ctx.shadowOffsetY = -5;
   ctx.stroke();
   ctx.restore();
   return true;

@@ -107,7 +107,7 @@ module.exports = {
             'box/basic',
             'box/quarters',
             'box/disclosure',
-            'box/shadow'
+            'box/frame'
           ]
         },
         {
