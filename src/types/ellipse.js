@@ -51,7 +51,7 @@ EllipseAnnotation.defaults = {
   display: true,
   rotation: 0,
   shadowBlur: 0,
-  shadowColor: undefined,
+  shadowColor: 'transparent',
   shadowOffsetX: 0,
   shadowOffsetY: 0,
   xMax: undefined,

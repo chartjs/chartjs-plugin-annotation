@@ -86,7 +86,7 @@ LabelAnnotation.defaults = {
   padding: 6,
   position: 'center',
   shadowBlur: 0,
-  shadowColor: undefined,
+  shadowColor: 'transparent',
   shadowOffsetX: 0,
   shadowOffsetY: 0,
   textAlign: 'center',
