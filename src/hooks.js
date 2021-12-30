@@ -1,7 +1,7 @@
 import {callback, defined} from 'chart.js/helpers';
 
 export const elementHooks = ['afterDraw', 'beforeDraw'];
-export const hasLabel = (el) => el && 'drawLabel' in el && el.options && el.options.label;
+export const hasLabel = (el) => el && 'drawLabel' in el && el.options && el.options.label && el.options.label.enabled && el.options.label.content;
 
 export function updateHooks(chart, state, options) {
   const visibleElements = state.visibleElements;

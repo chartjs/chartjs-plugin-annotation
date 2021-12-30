@@ -1,11 +1,11 @@
-import {drawBox, drawLabel, measureLabelSize, isLabelVisible, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, getChartRect, getRelativePosition} from '../helpers';
+import {drawBox, drawLabel, measureLabelSize, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, getChartRect, getRelativePosition} from '../helpers';
 import {color, toPadding} from 'chart.js/helpers';
 import {Element} from 'chart.js';
 
 export default class LabelAnnotation extends Element {
 
   inRange(mouseX, mouseY, useFinalPosition) {
-    return this.visible && inBoxRange(mouseX, mouseY, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition));
+    return inBoxRange(mouseX, mouseY, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition));
   }
 
   getCenterPoint(useFinalPosition) {
@@ -13,7 +13,7 @@ export default class LabelAnnotation extends Element {
   }
 
   draw(ctx) {
-    if (!this.visible) {
+    if (!this.options.content) {
       return;
     }
     const {labelX, labelY, labelWidth, labelHeight, options} = this;
@@ -24,8 +24,8 @@ export default class LabelAnnotation extends Element {
     drawLabel(ctx, {x: labelX, y: labelY, width: labelWidth, height: labelHeight}, options);
   }
 
+  // TODO: make private in v2
   resolveElementProperties(chart, options) {
-    const visible = !!isLabelVisible(options);
     const point = !isBoundToPoint(options) ? getRectCenterPoint(getChartRect(chart, options)) : getChartPoint(chart, options);
     const padding = toPadding(options.padding);
     const labelSize = measureLabelSize(chart.ctx, options);
@@ -34,7 +34,6 @@ export default class LabelAnnotation extends Element {
     const boxVisible = options.borderWidth > 0 || (bgColor && bgColor.valid && bgColor.rgb.a > 0);
 
     const properties = {
-      visible,
       boxVisible,
       pointX: point.x,
       pointY: point.y,

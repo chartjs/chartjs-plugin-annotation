@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
-import {toRadians} from 'chart.js/helpers';
-import {getRectCenterPoint, getChartRect} from '../helpers';
+import {PI, toRadians} from 'chart.js/helpers';
+import {getRectCenterPoint, getChartRect, setBorderStyle} from '../helpers';
 
 export default class EllipseAnnotation extends Element {
 
@@ -22,21 +22,14 @@ export default class EllipseAnnotation extends Element {
     if (options.rotation) {
       ctx.rotate(toRadians(options.rotation));
     }
-
     ctx.beginPath();
-
-    ctx.lineWidth = options.borderWidth;
-    ctx.strokeStyle = options.borderColor;
     ctx.fillStyle = options.backgroundColor;
-
-    ctx.setLineDash(options.borderDash);
-    ctx.lineDashOffset = options.borderDashOffset;
-
-    ctx.ellipse(0, 0, height / 2, width / 2, Math.PI / 2, 0, 2 * Math.PI);
-
+    const stroke = setBorderStyle(ctx, options);
+    ctx.ellipse(0, 0, height / 2, width / 2, PI / 2, 0, 2 * PI);
     ctx.fill();
-    ctx.stroke();
-
+    if (stroke) {
+      ctx.stroke();
+    }
     ctx.restore();
   }
 
