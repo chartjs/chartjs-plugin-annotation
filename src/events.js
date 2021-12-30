@@ -1,4 +1,5 @@
-import {distanceBetweenPoints, defined, callback as callHandler} from 'chart.js/helpers';
+import {distanceBetweenPoints, callback as callHandler} from 'chart.js/helpers';
+import {loadHooks} from './helpers';
 
 const clickHooks = ['click', 'dblclick'];
 const moveHooks = ['enter', 'leave'];
@@ -6,17 +7,9 @@ export const eventHooks = clickHooks.concat(moveHooks);
 
 export function updateListeners(chart, state, options) {
   const annotations = state.annotations || [];
-  state.listened = false;
+  state.listened = loadHooks(options, eventHooks, state.listeners);
   state.moveListened = false;
 
-  eventHooks.forEach(hook => {
-    if (typeof options[hook] === 'function') {
-      state.listened = true;
-      state.listeners[hook] = options[hook];
-    } else if (defined(state.listeners[hook])) {
-      delete state.listeners[hook];
-    }
-  });
   moveHooks.forEach(hook => {
     if (typeof options[hook] === 'function') {
       state.moveListened = true;

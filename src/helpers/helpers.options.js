@@ -60,3 +60,23 @@ export function toPosition(value) {
 export function isBoundToPoint(options) {
   return options && (defined(options.xValue) || defined(options.yValue));
 }
+
+/**
+ * Loads top level hooks in the state.
+ * @param {Object} options - top level options of the plugin
+ * @param {Array} hooks - array of option names where hooks are stored
+ * @param {Object} hooksContainer - object of the state where the top level options are stored
+ * @returns {boolean} true if there is at least a hook, otherwise false
+ */
+export function loadHooks(options, hooks, hooksContainer) {
+  let activated = false;
+  hooks.forEach(hook => {
+    if (typeof options[hook] === 'function') {
+      activated = true;
+      hooksContainer[hook] = options[hook];
+    } else if (defined(hooksContainer[hook])) {
+      delete hooksContainer[hook];
+    }
+  });
+  return activated;
+}
