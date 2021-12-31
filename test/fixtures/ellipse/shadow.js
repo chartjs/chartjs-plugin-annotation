@@ -25,7 +25,7 @@ module.exports = {
               yMax: 10,
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
               borderColor: 'rgb(33, 101, 171)',
-              shadowColor: 'black',
+              backgroundShadowColor: 'black',
               shadowBlur: 3,
               shadowOffsetX: 10
             },
@@ -40,7 +40,7 @@ module.exports = {
               backgroundColor: 'rgba(101, 33, 171, 0.5)',
               borderColor: 'rgb(101, 33, 171)',
               borderWidth: 1,
-              shadowColor: 'black',
+              backgroundShadowColor: 'black',
               shadowBlur: 3,
               shadowOffsetY: 10
             },
@@ -55,7 +55,7 @@ module.exports = {
               backgroundColor: 'rgba(101, 33, 171, 0.5)',
               borderColor: 'rgb(101, 33, 171)',
               borderWidth: 1,
-              shadowColor: 'black',
+              backgroundShadowColor: 'black',
               shadowBlur: 3,
               shadowOffsetX: 10,
               shadowOffsetY: 10

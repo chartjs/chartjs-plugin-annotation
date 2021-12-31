@@ -27,7 +27,7 @@ module.exports = {
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgb(255, 99, 132)',
               borderWidth: 1,
-              shadowColor: 'black',
+              backgroundShadowColor: 'black',
               shadowBlur: 3,
               label: {
                 enabled: true,
@@ -45,7 +45,7 @@ module.exports = {
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 1,
-              shadowColor: 'black',
+              backgroundShadowColor: 'black',
               shadowBlur: 3,
               shadowOffsetX: 10,
               label: {
@@ -64,7 +64,7 @@ module.exports = {
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 1,
-              shadowColor: 'black',
+              backgroundShadowColor: 'black',
               shadowBlur: 3,
               shadowOffsetY: 10,
               label: {
@@ -83,7 +83,7 @@ module.exports = {
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 1,
-              shadowColor: 'black',
+              backgroundShadowColor: 'black',
               shadowBlur: 3,
               shadowOffsetX: 10,
               shadowOffsetY: 10,

@@ -106,7 +106,8 @@ export interface LabelOptions extends ContainedLabelOptions {
    * @deprecated
    */
   yPadding?: Scriptable<number, PartialEventContext>,
-  shadowColor?: Scriptable<Color, PartialEventContext>,
+  backgroundShadowColor?: Scriptable<Color, PartialEventContext>,
+  borderShadowColor?: Scriptable<Color, PartialEventContext>,
   shadowBlur?: Scriptable<number, PartialEventContext>,
   shadowOffsetX?: Scriptable<number, PartialEventContext>,
   shadowOffsetY?: Scriptable<number, PartialEventContext>

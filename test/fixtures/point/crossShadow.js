@@ -31,7 +31,7 @@ module.exports = {
               borderWidth: 3,
               pointStyle: 'cross',
               radius: 10,
-              shadowColor: 'black',
+              borderShadowColor: 'black',
               shadowBlur: 3,
               shadowOffsetX: 10,
               shadowOffsetY: 10
@@ -47,7 +47,7 @@ module.exports = {
               borderWidth: 5,
               pointStyle: 'cross',
               radius: 25,
-              shadowColor: 'black',
+              borderShadowColor: 'black',
               shadowBlur: 3,
               shadowOffsetX: 10,
               shadowOffsetY: 10
@@ -63,7 +63,7 @@ module.exports = {
               borderWidth: 15,
               pointStyle: 'cross',
               radius: 50,
-              shadowColor: 'black',
+              borderShadowColor: 'black',
               shadowBlur: 3,
               shadowOffsetX: 15,
               shadowOffsetY: 15

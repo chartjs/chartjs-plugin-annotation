@@ -30,7 +30,7 @@ module.exports = {
               borderColor: 'rgb(153, 153, 102)',
               borderWidth: 1,
               radius: 50,
-              shadowColor: 'black',
+              backgroundShadowColor: 'black',
               shadowBlur: 3,
               shadowOffsetX: 10,
               shadowOffsetY: 10

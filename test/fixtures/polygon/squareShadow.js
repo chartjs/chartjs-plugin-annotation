@@ -32,7 +32,7 @@ module.exports = {
               radius: 50,
               sides: 4,
               rotation: 45,
-              shadowColor: 'black',
+              backgroundShadowColor: 'black',
               shadowBlur: 3,
               shadowOffsetX: 10,
               shadowOffsetY: 10

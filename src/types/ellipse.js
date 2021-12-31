@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, toRadians} from 'chart.js/helpers';
-import {getRectCenterPoint, getChartRect, setBorderStyle, setShadowStyle, removeShadowStyle} from '../helpers';
+import {getRectCenterPoint, getChartRect, setBorderStyle, setShadowStyle} from '../helpers';
 
 export default class EllipseAnnotation extends Element {
 
@@ -29,8 +29,8 @@ export default class EllipseAnnotation extends Element {
     ctx.ellipse(0, 0, height / 2, width / 2, PI / 2, 0, 2 * PI);
     ctx.fill();
     if (stroke) {
-      // only shape shadow, without border
-      removeShadowStyle(ctx);
+      // sets shadow color for border
+      ctx.shadowColor = options.borderShadowColor;
       ctx.stroke();
     }
     ctx.restore();
@@ -52,7 +52,8 @@ EllipseAnnotation.defaults = {
   display: true,
   rotation: 0,
   shadowBlur: 0,
-  shadowColor: 'transparent',
+  backgroundShadowColor: 'transparent',
+  borderShadowColor: 'transparent',
   shadowOffsetX: 0,
   shadowOffsetY: 0,
   xMax: undefined,

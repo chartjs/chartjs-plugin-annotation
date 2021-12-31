@@ -65,8 +65,9 @@ The following options are available for ellipse annotations.
 | [`borderWidth`](#styling) | `number`| Yes | `1`
 | [`borderDash`](#styling) | `number[]`| Yes | `[]`
 | [`borderDashOffset`](#styling) | `number`| Yes | `0`
+| [`borderShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
 | [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
-| [`shadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
+| [`backgroundShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
 | [`shadowBlur`](#styling) | `number` | Yes | `0`
 | [`shadowOffsetX`](#styling) | `number` | Yes | `0`
 | [`shadowOffsetY`](#styling) | `number` | Yes | `0`
@@ -96,7 +97,9 @@ If one of the axes does not match an axis in the chart, the ellipse will take th
 | `borderWidth` | Stroke width
 | `borderDash` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | Offset for line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
+| `borderShadowColor` | The color of the border shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `backgroundColor` | Fill color
+| `backgroundShadowColor` | The color of shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `shadowColor` | The color of shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `shadowBlur` | The amount of blur applied to shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
 | `shadowOffsetX` | The distance that shadow will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).

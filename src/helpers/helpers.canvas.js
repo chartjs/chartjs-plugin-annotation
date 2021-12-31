@@ -32,18 +32,10 @@ export function setBorderStyle(ctx, options) {
  * @param {Object} options - options with shadow configuration
  */
 export function setShadowStyle(ctx, options) {
-  ctx.shadowColor = options.shadowColor;
+  ctx.shadowColor = options.backgroundShadowColor;
   ctx.shadowBlur = options.shadowBlur;
   ctx.shadowOffsetX = options.shadowOffsetX;
   ctx.shadowOffsetY = options.shadowOffsetY;
-}
-
-/**
- * Remove shadow style from the canvas context
- * @param {CanvasRenderingContext2D} ctx - chart canvas context
- */
-export function removeShadowStyle(ctx) {
-  ctx.shadowColor = 'transparent';
 }
 
 /**
@@ -101,8 +93,8 @@ export function drawBox(ctx, rect, options) {
   ctx.closePath();
   ctx.fill();
   if (stroke) {
-    // only shape shadow, without border
-    removeShadowStyle(ctx);
+    // sets shadow color for border
+    ctx.shadowColor = options.borderShadowColor;
     ctx.stroke();
   }
   ctx.restore();

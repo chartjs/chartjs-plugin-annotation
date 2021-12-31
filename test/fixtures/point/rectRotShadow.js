@@ -31,7 +31,7 @@ module.exports = {
               borderWidth: 3,
               pointStyle: 'rectRot',
               radius: 10,
-              shadowColor: 'black',
+              backgroundShadowColor: 'black',
               shadowBlur: 3,
               shadowOffsetX: 10,
               shadowOffsetY: 10
@@ -47,7 +47,7 @@ module.exports = {
               borderWidth: 5,
               pointStyle: 'rectRot',
               radius: 25,
-              shadowColor: 'black',
+              backgroundShadowColor: 'black',
               shadowBlur: 3,
               shadowOffsetX: 10,
               shadowOffsetY: 10
@@ -63,7 +63,7 @@ module.exports = {
               borderWidth: 15,
               pointStyle: 'rectRot',
               radius: 50,
-              shadowColor: 'black',
+              backgroundShadowColor: 'black',
               shadowBlur: 3,
               shadowOffsetX: 15,
               shadowOffsetY: 15
