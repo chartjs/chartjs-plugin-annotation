@@ -43,7 +43,7 @@ function limitLineToArea(p1, p2, area) {
 }
 
 export default class LineAnnotation extends Element {
-  
+
   // TODO: make private in v2
   intersects(x, y, epsilon = 0.001, useFinalPosition) {
     // Adapted from https://stackoverflow.com/a/6853926/25507
