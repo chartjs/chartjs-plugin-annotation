@@ -43,6 +43,8 @@ function limitLineToArea(p1, p2, area) {
 }
 
 export default class LineAnnotation extends Element {
+  
+  // TODO: make private in v2
   intersects(x, y, epsilon = 0.001, useFinalPosition) {
     // Adapted from https://stackoverflow.com/a/6853926/25507
     const {x: x1, y: y1, x2, y2} = this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition);
@@ -65,6 +67,11 @@ export default class LineAnnotation extends Element {
   }
 
   // TODO: make private in v2
+  /**
+   * @param {boolean} useFinalPosition - use the element's animation target instead of current position
+   * @param {top, right, bottom, left} [chartArea] - optional, area of the chart
+   * @returns {boolean} true if the label is visible
+   */
   labelIsVisible(useFinalPosition, chartArea) {
     const labelOpts = this.options.label;
     if (!labelOpts || !labelOpts.enabled) {
