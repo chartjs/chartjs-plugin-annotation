@@ -67,10 +67,10 @@ export default class LineAnnotation extends Element {
   // TODO: make private in v2
   labelIsVisible(useFinalPosition, chartArea) {
     const labelOpts = this.options.label;
-    if (!chartArea || !labelOpts || !labelOpts.enabled) {
+    if (!labelOpts || !labelOpts.enabled) {
       return false;
     }
-    return isLineInArea(this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), chartArea);
+    return !chartArea || isLineInArea(this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), chartArea);
   }
 
   // TODO: make private in v2
