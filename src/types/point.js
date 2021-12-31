@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {drawPoint} from 'chart.js/helpers';
-import {inPointRange, getElementCenterPoint, resolvePointPosition, setBorderStyle, setShadowStyle, resetShadow} from '../helpers';
+import {inPointRange, getElementCenterPoint, resolvePointPosition, setBorderStyle, setShadowStyle, removeShadowStyle, isImageOrCanvas} from '../helpers';
 
 export default class PointAnnotation extends Element {
 
@@ -22,9 +22,10 @@ export default class PointAnnotation extends Element {
     const stroke = setBorderStyle(ctx, options);
     options.borderWidth = 0;
     drawPoint(ctx, options, this.x, this.y);
-    if (stroke) {
-      if (!(typeof pointStyle === 'string') || pointStyle === 'circle' || pointStyle === 'triangle' || pointStyle.startsWith('rect')) {
-        resetShadow(ctx);
+    if (stroke && !isImageOrCanvas(pointStyle)) {
+      if (isFillablePointStyle(pointStyle)) {
+        // only shape shadow, without border
+        removeShadowStyle(ctx);
       }
       ctx.stroke();
     }
@@ -68,3 +69,7 @@ PointAnnotation.defaultRoutes = {
   borderColor: 'color',
   backgroundColor: 'color'
 };
+
+function isFillablePointStyle(pointStyle) {
+  return !(typeof pointStyle === 'string') || pointStyle === 'circle' || pointStyle === 'triangle' || pointStyle.startsWith('rect');
+}

@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, RAD_PER_DEG, isNumber} from 'chart.js/helpers';
-import {setBorderStyle, resolvePointPosition, getElementCenterPoint, setShadowStyle, resetShadow} from '../helpers';
+import {setBorderStyle, resolvePointPosition, getElementCenterPoint, setShadowStyle, removeShadowStyle} from '../helpers';
 
 export default class PolygonAnnotation extends Element {
 
@@ -31,7 +31,8 @@ export default class PolygonAnnotation extends Element {
     ctx.fill();
     // If no border, don't draw it
     if (stroke) {
-      resetShadow(ctx);
+      // only shape shadow, without border
+      removeShadowStyle(ctx);
       ctx.stroke();
     }
     ctx.restore();

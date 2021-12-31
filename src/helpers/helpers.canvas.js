@@ -4,7 +4,7 @@ import {calculateTextAlignment, getSize} from './helpers.options';
 
 const widthCache = new Map();
 
-function isImageOrCanvas(content) {
+export function isImageOrCanvas(content) {
   return content instanceof Image || content instanceof HTMLCanvasElement;
 }
 
@@ -39,11 +39,10 @@ export function setShadowStyle(ctx, options) {
 }
 
 /**
- * Resets shadow options to the canvas context before stroking,
- * in order to manage teh shadow at "fill" level
+ * Remove shadow style from the canvas context
  * @param {CanvasRenderingContext2D} ctx - chart canvas context
  */
-export function resetShadow(ctx) {
+export function removeShadowStyle(ctx) {
   ctx.shadowColor = 'transparent';
 }
 
@@ -102,7 +101,8 @@ export function drawBox(ctx, rect, options) {
   ctx.closePath();
   ctx.fill();
   if (stroke) {
-    resetShadow(ctx);
+    // only shape shadow, without border
+    removeShadowStyle(ctx);
     ctx.stroke();
   }
   ctx.restore();
