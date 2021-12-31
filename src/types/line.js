@@ -67,7 +67,7 @@ export default class LineAnnotation extends Element {
   }
 
   /**
-   * TODO: make private in v2
+   * @todo make private in v2
    * @param {boolean} useFinalPosition - use the element's animation target instead of current position
    * @param {top, right, bottom, left} [chartArea] - optional, area of the chart
    * @returns {boolean} true if the label is visible
