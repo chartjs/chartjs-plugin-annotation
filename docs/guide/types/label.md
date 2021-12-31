@@ -98,9 +98,9 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 
 | Name | Description |
 | ---- | ---- |
-| `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range
+| `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
 | `content` | The content to show in the text annotation.
-| `display` | Whether or not this annotation is visible
+| `display` | Whether or not this annotation is visible.
 | `drawTime` | See [drawTime](../options#draw-time).
 | `height` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
 | `padding` | The padding to add around the text label.
