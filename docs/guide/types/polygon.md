@@ -88,8 +88,8 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 
 | Name | Description |
 | ---- | ---- |
-| `display` | Whether or not this annotation is visible.
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
+| `display` | Whether or not this annotation is visible.
 | `drawTime` | See [drawTime](../options#draw-time).
 | `radius` | Size of the polygon in pixels.
 | `rotation` | Rotation of polygon, in degrees.
@@ -109,15 +109,15 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 
 | Name | Description |
 | ---- | ---- |
-| `backgroundColor` | Fill color
+| `backgroundColor` | Fill color.
 | `backgroundShadowColor` | The color of shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
-| `borderColor` | Stroke color
+| `borderColor` | Stroke color.
 | `borderCapStyle` | Cap style of the border of polygon. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap).
 | `borderDash` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | Offset for line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
 | `borderJoinStyle` | Border line joint style. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
 | `borderShadowColor` | The color of the border shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
-| `borderWidth` | Stroke width
+| `borderWidth` | Stroke width.
 | `shadowBlur` | The amount of blur applied to shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
 | `shadowOffsetX` | The distance that shadow will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
 | `shadowOffsetY` | The distance that shadow will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).

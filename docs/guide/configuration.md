@@ -8,10 +8,10 @@ The following options are available at the top level. They apply to all annotati
 
 | Name | Type | [Scriptable](options#scriptable-options) | Default | Notes
 | ---- | ---- | :----: | ---- | ----
+| [`animations`](#animations) | `object` | No | [see here](#default-animations) | To configure which element properties are animated and how.
 | `clip` | `boolean` | No | `true` | Are the annotations clipped to the chartArea.
-| `drawTime` | `string` | Yes | `'afterDatasetsDraw'` | See [drawTime](options#draw-time)
 | `dblClickSpeed` | `number` | Yes | `350` | Time to detect a double click in ms.
-| [`animations`](#animations) | `object` | No | [see here](#default-animations) | To configure which element properties are animated and how
+| `drawTime` | `string` | Yes | `'afterDatasetsDraw'` | See [drawTime](options#draw-time).
 
 :::warning
 
@@ -63,7 +63,7 @@ The following options are available for all annotation types. These options can 
 
 | Name | Type | [Scriptable](options#scriptable-options) | Notes
 | ---- | ---- | :----: | ----
-| `enter` | `(context, event) => void` | No | Called when the mouse enters the annotation.
-| `leave` | `(context, event) => void` | No | Called when the mouse leaves the annotation.
 | `click` | `(context, event) => void` | No | Called when a single click occurs on the annotation.
 | `dblClick` | `(context, event) => void` | No | Called when a double click occurs on the annotation.
+| `enter` | `(context, event) => void` | No | Called when the mouse enters the annotation.
+| `leave` | `(context, event) => void` | No | Called when the mouse leaves the annotation.
