@@ -29,7 +29,6 @@ export default class EllipseAnnotation extends Element {
     ctx.ellipse(0, 0, height / 2, width / 2, PI / 2, 0, 2 * PI);
     ctx.fill();
     if (stroke) {
-      // sets shadow color for border
       ctx.shadowColor = options.borderShadowColor;
       ctx.stroke();
     }

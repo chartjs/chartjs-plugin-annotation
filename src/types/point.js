@@ -23,7 +23,6 @@ export default class PointAnnotation extends Element {
     options.borderWidth = 0;
     drawPoint(ctx, options, this.x, this.y);
     if (stroke && !isImageOrCanvas(options.pointStyle)) {
-      // sets shadow color for border
       ctx.shadowColor = options.borderShadowColor;
       ctx.stroke();
     }

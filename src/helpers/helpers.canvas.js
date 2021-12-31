@@ -93,7 +93,6 @@ export function drawBox(ctx, rect, options) {
   ctx.closePath();
   ctx.fill();
   if (stroke) {
-    // sets shadow color for border
     ctx.shadowColor = options.borderShadowColor;
     ctx.stroke();
   }

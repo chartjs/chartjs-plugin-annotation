@@ -31,7 +31,6 @@ export default class PolygonAnnotation extends Element {
     ctx.fill();
     // If no border, don't draw it
     if (stroke) {
-      // sets shadow color for border
       ctx.shadowColor = options.borderShadowColor;
       ctx.stroke();
     }
