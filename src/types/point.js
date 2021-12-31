@@ -2,6 +2,8 @@ import {Element} from 'chart.js';
 import {drawPoint} from 'chart.js/helpers';
 import {inPointRange, getElementCenterPoint, resolvePointPosition, setBorderStyle, setShadowStyle, removeShadowStyle, isImageOrCanvas} from '../helpers';
 
+const isFillablePointStyle = (ps) => !(typeof ps === 'string') || ps === 'circle' || ps === 'triangle' || ps.startsWith('rect');
+
 export default class PointAnnotation extends Element {
 
   inRange(mouseX, mouseY, useFinalPosition) {
@@ -69,7 +71,3 @@ PointAnnotation.defaultRoutes = {
   borderColor: 'color',
   backgroundColor: 'color'
 };
-
-function isFillablePointStyle(pointStyle) {
-  return !(typeof pointStyle === 'string') || pointStyle === 'circle' || pointStyle === 'triangle' || pointStyle.startsWith('rect');
-}
