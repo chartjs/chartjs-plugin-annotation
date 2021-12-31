@@ -53,15 +53,20 @@ The following options are available for box annotations.
 | ---- | ---- | :----: | ----
 | [`adjustScaleRange`](#general) | `boolean` | Yes | `true`
 | [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
+| [`backgroundShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
 | [`borderCapStyle`](#styling) | `string` | Yes | `'butt'`
 | [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
 | [`borderDash`](#styling) | `number[]` | Yes | `[]`
 | [`borderDashOffset`](#styling) | `number` | Yes | `0`
 | [`borderJoinStyle`](#styling) | `string` | Yes | `'miter'`
 | [`borderRadius`](#styling) | `number` \| `object` | Yes | `0`
+| [`borderShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
 | [`borderWidth`](#styling) | `number`| Yes | `1`
 | [`display`](#general) | `boolean` | Yes | `true`
 | [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
+| [`shadowBlur`](#styling) | `number` | Yes | `0`
+| [`shadowOffsetX`](#styling) | `number` | Yes | `0`
+| [`shadowOffsetY`](#styling) | `number` | Yes | `0`
 | [`xScaleID`](#general) | `string` | Yes | `'x'`
 | [`yScaleID`](#general) | `string` | Yes | `'y'`
 | [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
@@ -91,13 +96,18 @@ If one of the axes does not match an axis in the chart, the box will take the en
 | Name | Description |
 | ---- | ---- |
 | `backgroundColor` | Fill color.
+| `backgroundShadowColor` | The color of shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderColor` | Stroke color.
 | `borderCapStyle` | Cap style of the border line. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap).
 | `borderDash` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | Offset for border line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
 | `borderJoinStyle` | Border line joint style. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
 | [`borderRadius`](#borderradius) | Radius of box rectangle (in pixels)
+| `borderShadowColor` | The color of the border shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderWidth` | Border line width (in pixels).
+| `shadowBlur` | The amount of blur applied to shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
+| `shadowOffsetX` | The distance that shadow will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
+| `shadowOffsetY` | The distance that shadow will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
 
 #### borderRadius
 

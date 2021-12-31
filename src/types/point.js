@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {drawPoint} from 'chart.js/helpers';
-import {inPointRange, getElementCenterPoint, resolvePointPosition, setBorderStyle} from '../helpers';
+import {inPointRange, getElementCenterPoint, resolvePointPosition, setBorderStyle, setShadowStyle, isImageOrCanvas} from '../helpers';
 
 export default class PointAnnotation extends Element {
 
@@ -15,11 +15,19 @@ export default class PointAnnotation extends Element {
 
   draw(ctx) {
     const options = this.options;
+    const borderWidth = options.borderWidth;
     ctx.save();
     ctx.fillStyle = options.backgroundColor;
-    setBorderStyle(ctx, options);
+    setShadowStyle(ctx, options);
+    const stroke = setBorderStyle(ctx, options);
+    options.borderWidth = 0;
     drawPoint(ctx, options, this.x, this.y);
+    if (stroke && !isImageOrCanvas(options.pointStyle)) {
+      ctx.shadowColor = options.borderShadowColor;
+      ctx.stroke();
+    }
     ctx.restore();
+    options.borderWidth = borderWidth;
   }
 
   resolveElementProperties(chart, options) {
@@ -38,6 +46,11 @@ PointAnnotation.defaults = {
   pointStyle: 'circle',
   radius: 10,
   rotation: 0,
+  backgroundShadowColor: 'transparent',
+  borderShadowColor: 'transparent',
+  shadowBlur: 0,
+  shadowOffsetX: 0,
+  shadowOffsetY: 0,
   xAdjust: 0,
   xMax: undefined,
   xMin: undefined,

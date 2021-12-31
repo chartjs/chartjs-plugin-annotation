@@ -4,12 +4,12 @@ import {calculateTextAlignment, getSize} from './helpers.options';
 
 const widthCache = new Map();
 
-function isImageOrCanvas(content) {
+export function isImageOrCanvas(content) {
   return content instanceof Image || content instanceof HTMLCanvasElement;
 }
 
 /**
- * Apply border options to the canvas context before drawing a box
+ * Apply border options to the canvas context before drawing a shape
  * @param {CanvasRenderingContext2D} ctx - chart canvas context
  * @param {Object} options - options with border configuration
  * @returns {boolean} true is the border options have been applied
@@ -24,6 +24,18 @@ export function setBorderStyle(ctx, options) {
     ctx.strokeStyle = options.borderColor;
     return true;
   }
+}
+
+/**
+ * Apply shadow options to the canvas context before drawing a shape
+ * @param {CanvasRenderingContext2D} ctx - chart canvas context
+ * @param {Object} options - options with shadow configuration
+ */
+export function setShadowStyle(ctx, options) {
+  ctx.shadowColor = options.backgroundShadowColor;
+  ctx.shadowBlur = options.shadowBlur;
+  ctx.shadowOffsetX = options.shadowOffsetX;
+  ctx.shadowOffsetY = options.shadowOffsetY;
 }
 
 /**
@@ -69,6 +81,7 @@ export function measureLabelSize(ctx, options) {
 export function drawBox(ctx, rect, options) {
   const {x, y, width, height} = rect;
   ctx.save();
+  setShadowStyle(ctx, options);
   const stroke = setBorderStyle(ctx, options);
   ctx.fillStyle = options.backgroundColor;
   ctx.beginPath();
@@ -80,6 +93,7 @@ export function drawBox(ctx, rect, options) {
   ctx.closePath();
   ctx.fill();
   if (stroke) {
+    ctx.shadowColor = options.borderShadowColor;
     ctx.stroke();
   }
   ctx.restore();

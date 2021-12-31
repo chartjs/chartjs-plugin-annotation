@@ -75,6 +75,11 @@ BoxAnnotation.defaults = {
     yAdjust: 0,
     width: undefined
   },
+  backgroundShadowColor: 'transparent',
+  borderShadowColor: 'transparent',
+  shadowBlur: 0,
+  shadowOffsetX: 0,
+  shadowOffsetY: 0,
   xMax: undefined,
   xMin: undefined,
   xScaleID: 'x',

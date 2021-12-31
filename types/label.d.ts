@@ -106,6 +106,11 @@ export interface LabelOptions extends ContainedLabelOptions {
    * @deprecated
    */
   yPadding?: Scriptable<number, PartialEventContext>,
+  backgroundShadowColor?: Scriptable<Color, PartialEventContext>,
+  borderShadowColor?: Scriptable<Color, PartialEventContext>,
+  shadowBlur?: Scriptable<number, PartialEventContext>,
+  shadowOffsetX?: Scriptable<number, PartialEventContext>,
+  shadowOffsetY?: Scriptable<number, PartialEventContext>
 }
 
 export interface BoxLabelOptions extends CoreLabelOptions {

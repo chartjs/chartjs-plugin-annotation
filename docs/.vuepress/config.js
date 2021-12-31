@@ -145,6 +145,7 @@ module.exports = {
             'point/basic',
             'point/combined',
             'point/outsideChartArea',
+            'point/shadow',
           ]
         },
         {
@@ -153,6 +154,7 @@ module.exports = {
             'polygon/basic',
             'polygon/stop',
             'polygon/outsideChartArea',
+            'polygon/shadow',
             ]
         },
         {
