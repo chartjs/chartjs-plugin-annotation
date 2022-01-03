@@ -107,15 +107,34 @@ export default class LineAnnotation extends Element {
 
   draw(ctx) {
     const {x, y, x2, y2, options} = this;
-    ctx.save();
+    const borderWidth = options.borderWidth;
+    const arrowHeadStart = options.arrowheads && options.arrowheads.start || [];
+    const arrowHeadEnd = options.arrowheads && options.arrowheads.end || [];
 
-    setShadowStyle(ctx, this.options);
+    const start = arrowHeadStart.display ?
+      limitPointToArea({x: x + borderWidth / 2, y: y + borderWidth / 2}, {x, y}, {top: y, left: x, bottom: y2, right: x2}) :
+      {x, y};
+    const end = arrowHeadEnd.display ?
+      limitPointToArea({x: x2 - borderWidth / 2, y: y2 - borderWidth / 2}, {x: x2, y: y2}, {top: y, left: x, bottom: y2, right: x2}) :
+      {x: x2, y: y2};
+
+    const dx = end.x - start.x;
+    const dy = end.y - start.y;
+    const angle = Math.atan2(dy, dx);
+    const lineLength = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+
+    ctx.save();
+    setShadowStyle(ctx, options);
     ctx.beginPath();
     setBorderStyle(ctx, options);
-    ctx.moveTo(x, y);
-    ctx.lineTo(x2, y2);
+    ctx.translate(start.x, start.y);
+    ctx.rotate(angle);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(lineLength, 0);
     ctx.stroke();
-
+    drawArrowHead(ctx, 0, arrowHeadStart, options);
+    drawArrowHead(ctx, lineLength, arrowHeadEnd, options);
     ctx.restore();
   }
 
@@ -197,6 +216,34 @@ LineAnnotation.defaults = {
   borderWidth: 2,
   display: true,
   endValue: undefined,
+  arrowheads: {
+    start: {
+      backgroundColor: undefined,
+      borderCapStyle: 'butt',
+      borderColor: undefined,
+      borderDash: [],
+      borderDashOffset: 0,
+      borderJoinStyle: 'miter',
+      borderWidth: undefined,
+      display: false,
+      fill: false,
+      length: 12,
+      width: 6
+    },
+    end: {
+      backgroundColor: undefined,
+      borderCapStyle: 'butt',
+      borderColor: undefined,
+      borderDash: [],
+      borderDashOffset: 0,
+      borderJoinStyle: 'miter',
+      borderWidth: undefined,
+      display: false,
+      fill: false,
+      length: 12,
+      width: 6
+    }
+  },
   label: {
     backgroundColor: 'rgba(0,0,0,0.8)',
     borderCapStyle: 'butt',
@@ -367,4 +414,26 @@ function adjustLabelCoordinate(coordinate, labelSizes) {
     coordinate = max - padding - halfSize;
   }
   return coordinate;
+}
+
+function drawArrowHead(ctx, offset, arrowHead, options) {
+  const {length, width, display} = arrowHead;
+  if (!display) {
+    return;
+  }
+  const arrowOffsetX = Math.abs(offset - length);
+  ctx.beginPath();
+  const stroke = setBorderStyle(ctx, arrowHead);
+  ctx.moveTo(arrowOffsetX, -width);
+  ctx.lineTo(offset, 0);
+  ctx.lineTo(arrowOffsetX, width);
+  if (arrowHead.fill === true) {
+    ctx.fillStyle = arrowHead.backgroundColor || arrowHead.borderColor;
+    ctx.closePath();
+    ctx.fill();
+  }
+  if (stroke) {
+    ctx.shadowColor = options.borderShadowColor;
+    ctx.stroke();
+  }
 }
