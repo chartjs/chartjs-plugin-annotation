@@ -110,14 +110,8 @@ export default class LineAnnotation extends Element {
     const borderWidth = options.borderWidth;
     const arrowHeadStart = options.arrowheads && options.arrowheads.start || [];
     const arrowHeadEnd = options.arrowheads && options.arrowheads.end || [];
-
-    const start = arrowHeadStart.display ?
-      limitPointToArea({x: x + borderWidth / 2, y: y + borderWidth / 2}, {x, y}, {top: y, left: x, bottom: y2, right: x2}) :
-      {x, y};
-    const end = arrowHeadEnd.display ?
-      limitPointToArea({x: x2 - borderWidth / 2, y: y2 - borderWidth / 2}, {x: x2, y: y2}, {top: y, left: x, bottom: y2, right: x2}) :
-      {x: x2, y: y2};
-
+    const start = getLineLimit(this, {x, y}, arrowHeadStart, borderWidth / 2);
+    const end = getLineLimit(this, {x: x2, y: y2}, arrowHeadEnd, -borderWidth / 2);
     const dx = end.x - start.x;
     const dy = end.y - start.y;
     const angle = Math.atan2(dy, dx);
@@ -414,6 +408,14 @@ function adjustLabelCoordinate(coordinate, labelSizes) {
     coordinate = max - padding - halfSize;
   }
   return coordinate;
+}
+
+function getLineLimit(line, point, arrowHead, adjust) {
+  const {x, y, x2, y2} = line;
+  if (arrowHead.display) {
+    return limitPointToArea({x: point.x + adjust, y: point.y + adjust}, point, {top: y, left: x, bottom: y2, right: x2});
+  }
+  return point;
 }
 
 function drawArrowHead(ctx, offset, arrowHead, options) {
