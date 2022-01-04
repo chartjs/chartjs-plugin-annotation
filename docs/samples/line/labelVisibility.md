@@ -47,7 +47,7 @@ const annotation1 = {
     chart.draw();
   }
 };
-// </block:annotation>
+// </block:annotation1>
 
 // <block:annotation2:2>
 const annotation2 = {
@@ -76,7 +76,7 @@ const annotation2 = {
     ctx.chart.update();
   }
 };
-// </block:annotation>
+// </block:annotation2>
 
 /* <block:config:0> */
 const config = {
