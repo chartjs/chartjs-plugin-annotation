@@ -107,28 +107,29 @@ export default class LineAnnotation extends Element {
 
   draw(ctx) {
     const {x, y, x2, y2, options} = this;
-    const borderWidth = options.borderWidth;
-    const arrowHeadStart = options.arrowheads && options.arrowheads.start || [];
-    const arrowHeadEnd = options.arrowheads && options.arrowheads.end || [];
-    const start = getLineLimit(this, {x, y}, arrowHeadStart, borderWidth / 2);
-    const end = getLineLimit(this, {x: x2, y: y2}, arrowHeadEnd, -borderWidth / 2);
-    const dx = end.x - start.x;
-    const dy = end.y - start.y;
+    const arrowHeadStart = options.arrowHeads && options.arrowHeads.start || [];
+    const arrowHeadEnd = options.arrowHeads && options.arrowHeads.end || [];
+
+    const dx = x2 - x;
+    const dy = y2 - y;
     const angle = Math.atan2(dy, dx);
-    const lineLength = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+    const length = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+
+    const adjustLineStart = getLineLimit(this, arrowHeadStart);
+    const adjustLineEnd = getLineLimit(this, arrowHeadEnd);
 
     ctx.save();
     setShadowStyle(ctx, options);
     ctx.beginPath();
     setBorderStyle(ctx, options);
-    ctx.translate(start.x, start.y);
+    ctx.translate(x, y);
     ctx.rotate(angle);
     ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(lineLength, 0);
+    ctx.moveTo(0 + adjustLineStart, 0);
+    ctx.lineTo(length - adjustLineEnd, 0);
     ctx.stroke();
-    drawArrowHead(ctx, 0, arrowHeadStart, options);
-    drawArrowHead(ctx, lineLength, arrowHeadEnd, options);
+    drawArrowHead(ctx, 0, arrowHeadStart, options, adjustLineStart);
+    drawArrowHead(ctx, length, arrowHeadEnd, options, -adjustLineEnd);
     ctx.restore();
   }
 
@@ -205,39 +206,33 @@ export default class LineAnnotation extends Element {
 LineAnnotation.id = 'lineAnnotation';
 LineAnnotation.defaults = {
   adjustScaleRange: true,
-  borderDash: [],
-  borderDashOffset: 0,
-  borderWidth: 2,
-  display: true,
-  endValue: undefined,
-  arrowheads: {
-    start: {
+  arrowHeads: {
+    end: {
       backgroundColor: undefined,
-      borderCapStyle: 'butt',
       borderColor: undefined,
       borderDash: [],
       borderDashOffset: 0,
-      borderJoinStyle: 'miter',
-      borderWidth: undefined,
       display: false,
       fill: false,
       length: 12,
       width: 6
     },
-    end: {
+    start: {
       backgroundColor: undefined,
-      borderCapStyle: 'butt',
       borderColor: undefined,
       borderDash: [],
       borderDashOffset: 0,
-      borderJoinStyle: 'miter',
-      borderWidth: undefined,
       display: false,
       fill: false,
       length: 12,
       width: 6
     }
   },
+  borderDash: [],
+  borderDashOffset: 0,
+  borderWidth: 2,
+  display: true,
+  endValue: undefined,
   label: {
     backgroundColor: 'rgba(0,0,0,0.8)',
     borderCapStyle: 'butt',
@@ -410,24 +405,28 @@ function adjustLabelCoordinate(coordinate, labelSizes) {
   return coordinate;
 }
 
-function getLineLimit(line, point, arrowHead, adjust) {
-  const {x, y, x2, y2} = line;
-  if (arrowHead.display) {
-    return limitPointToArea({x: point.x + adjust, y: point.y + adjust}, point, {top: y, left: x, bottom: y2, right: x2});
+function getLineLimit(line, arrowHead) {
+  const {length, width, display} = arrowHead;
+  if (display) {
+    const adjust = line.options.borderWidth / 2;
+    const p1 = {x: length, y: width + adjust};
+    const p2 = {x: 0, y: adjust};
+    return Math.abs(interpolateX(0, p1, p2));
   }
-  return point;
+  return 0;
 }
 
-function drawArrowHead(ctx, offset, arrowHead, options) {
-  const {length, width, display} = arrowHead;
-  if (!display) {
+function drawArrowHead(ctx, offset, arrowHead, options, adjust) {
+  if (!arrowHead || !arrowHead.display) {
     return;
   }
-  const arrowOffsetX = Math.abs(offset - length);
+  arrowHead.borderWidth = options.borderWidth;
+  const {length, width} = arrowHead;
+  const arrowOffsetX = Math.abs(offset - length) + adjust;
   ctx.beginPath();
   const stroke = setBorderStyle(ctx, arrowHead);
   ctx.moveTo(arrowOffsetX, -width);
-  ctx.lineTo(offset, 0);
+  ctx.lineTo(offset + adjust, 0);
   ctx.lineTo(arrowOffsetX, width);
   if (arrowHead.fill === true) {
     ctx.fillStyle = arrowHead.backgroundColor || arrowHead.borderColor;
