@@ -1,7 +1,7 @@
 # Label visibility
 
 ```js chart-editor
-// <block:setup:2>
+// <block:setup:3>
 const DATA_COUNT = 8;
 const MIN = 10;
 const MAX = 100;
@@ -23,29 +23,57 @@ const data = {
 };
 // </block:setup>
 
-// <block:annotation:1>
-const annotation = {
+// <block:annotation1:1>
+const annotation1 = {
   type: 'line',
   borderColor: 'lightGreen',
-  borderDashOffset: 0,
   borderWidth: 10,
-  drawTime: 'beforeDatasetsDraw',
   label: {
     enabled: false,
     backgroundColor: 'green',
-    borderWidth: 0,
     drawTime: 'afterDatasetsDraw',
-    color: 'white',
-    content: (ctx) => ['Average of dataset', 'is: ' + average(ctx).toFixed(3)],
-    textAlign: 'center'
+    content: (ctx) => ['Average of dataset', 'is: ' + average(ctx).toFixed(3)]
   },
   scaleID: 'y',
   value: (ctx) => average(ctx),
+  // For simple property changes, you can directly modify the annotation
+  // element's properties then call chart.draw().  This is faster.
+  enter({chart, element}, event) {
+    element.options.label.enabled = true;
+    chart.draw();
+  },
+  leave({chart, element}, event) {
+    element.options.label.enabled = false;
+    chart.draw();
+  }
+};
+// </block:annotation>
+
+// <block:annotation2:2>
+const annotation2 = {
+  type: 'line',
+  borderColor: 'lightBlue',
+  borderWidth: 10,
+  label: {
+    enabled: (ctx) => ctx.hovered,
+    backgroundColor: 'blue',
+    drawTime: 'afterDatasetsDraw',
+    content: (ctx) => ['Min of dataset', 'is: ' + min(ctx).toFixed(3)],
+    position: (ctx) => ctx.hoverPosition
+  },
+  scaleID: 'y',
+  value: (ctx) => min(ctx),
+  // For more complex dynamic properties, you can store values on the persistent
+  // context object then retrieve them via scriptable properties.  You'll have
+  // to call chart.update() to reprocess the chart.
   enter(ctx, event) {
-    toggleLabel(ctx, event);
+    ctx.hovered = true;
+    ctx.hoverPosition = (event.x / ctx.chart.chartArea.width * 100) + '%';
+    ctx.chart.update();
   },
   leave(ctx, event) {
-    toggleLabel(ctx, event);
+    ctx.hovered = false;
+    ctx.chart.update();
   }
 };
 // </block:annotation>
@@ -60,8 +88,10 @@ const config = {
         enabled: false,
       },
       annotation: {
+        drawTime: 'beforeDatasetsDraw',
         annotations: {
-          annotation
+          annotation1,
+          annotation2
         }
       }
     }
@@ -69,19 +99,14 @@ const config = {
 };
 /* </block:config> */
 
-// <block:utils:3>
+// <block:utils:4>
 function average(ctx) {
   const values = ctx.chart.data.datasets[0].data;
   return values.reduce((a, b) => a + b, 0) / values.length;
 }
-
-function toggleLabel(ctx, event) {
-  const oneThirdWidth = ctx.element.width / 3;
-  const chart = ctx.chart;
-  const annotationOpts = chart.options.plugins.annotation.annotations.annotation;
-  annotationOpts.label.enabled = !annotationOpts.label.enabled;
-  annotationOpts.label.position = (event.x / ctx.chart.chartArea.width * 100) + '%';
-  chart.update();
+function min(ctx) {
+  const values = ctx.chart.data.datasets[0].data;
+  return values.reduce((a, b) => Math.min(a, b), Infinity);
 }
 // </block:utils>
 
