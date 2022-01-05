@@ -107,16 +107,16 @@ export default class LineAnnotation extends Element {
 
   draw(ctx) {
     const {x, y, x2, y2, options} = this;
-    const arrowHeadStart = options.arrowHeads && options.arrowHeads.start || [];
-    const arrowHeadEnd = options.arrowHeads && options.arrowHeads.end || [];
+    const arrowStartOpts = options.arrowHeads && options.arrowHeads.start || [];
+    const arrowEndOpts = options.arrowHeads && options.arrowHeads.end || [];
 
     const dx = x2 - x;
     const dy = y2 - y;
     const angle = Math.atan2(dy, dx);
     const length = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 
-    const adjustLineStart = getLineLimit(this, arrowHeadStart);
-    const adjustLineEnd = getLineLimit(this, arrowHeadEnd);
+    const adjustStart = getLineAdjust(this, arrowStartOpts);
+    const adjustEnd = getLineAdjust(this, arrowEndOpts);
 
     ctx.save();
     setShadowStyle(ctx, options);
@@ -125,11 +125,11 @@ export default class LineAnnotation extends Element {
     ctx.translate(x, y);
     ctx.rotate(angle);
     ctx.beginPath();
-    ctx.moveTo(0 + adjustLineStart, 0);
-    ctx.lineTo(length - adjustLineEnd, 0);
+    ctx.moveTo(0 + adjustStart, 0);
+    ctx.lineTo(length - adjustEnd, 0);
     ctx.stroke();
-    drawArrowHead(ctx, 0, arrowHeadStart, options, adjustLineStart);
-    drawArrowHead(ctx, length, arrowHeadEnd, options, -adjustLineEnd);
+    drawArrowHead(ctx, {offset: 0, adjust: adjustStart}, arrowStartOpts, options);
+    drawArrowHead(ctx, {offset: length, adjust: -adjustEnd}, arrowEndOpts, options);
     ctx.restore();
   }
 
@@ -405,8 +405,8 @@ function adjustLabelCoordinate(coordinate, labelSizes) {
   return coordinate;
 }
 
-function getLineLimit(line, arrowHead) {
-  const {length, width, display} = arrowHead;
+function getLineAdjust(line, arrowOpts) {
+  const {length, width, display} = arrowOpts;
   if (display) {
     const adjust = line.options.borderWidth / 2;
     const p1 = {x: length, y: width + adjust};
@@ -416,20 +416,20 @@ function getLineLimit(line, arrowHead) {
   return 0;
 }
 
-function drawArrowHead(ctx, offset, arrowHead, options, adjust) {
-  if (!arrowHead || !arrowHead.display) {
+function drawArrowHead(ctx, {offset, adjust}, arrowOpts, options) {
+  if (!arrowOpts || !arrowOpts.display) {
     return;
   }
-  arrowHead.borderWidth = options.borderWidth;
-  const {length, width} = arrowHead;
+  arrowOpts.borderWidth = options.borderWidth;
+  const {length, width, fill, backgroundColor, borderColor} = arrowOpts;
   const arrowOffsetX = Math.abs(offset - length) + adjust;
   ctx.beginPath();
-  const stroke = setBorderStyle(ctx, arrowHead);
+  const stroke = setBorderStyle(ctx, arrowOpts);
   ctx.moveTo(arrowOffsetX, -width);
   ctx.lineTo(offset + adjust, 0);
   ctx.lineTo(arrowOffsetX, width);
-  if (arrowHead.fill === true) {
-    ctx.fillStyle = arrowHead.backgroundColor || arrowHead.borderColor;
+  if (fill === true) {
+    ctx.fillStyle = backgroundColor || borderColor;
     ctx.closePath();
     ctx.fill();
   }
