@@ -53,11 +53,13 @@ LabelAnnotation.id = 'labelAnnotation';
 LabelAnnotation.defaults = {
   adjustScaleRange: true,
   backgroundColor: 'transparent',
+  backgroundShadowColor: 'transparent',
   borderCapStyle: 'butt',
   borderDash: [],
   borderDashOffset: 0,
   borderJoinStyle: 'miter',
   borderRadius: 0,
+  borderShadowColor: 'transparent',
   borderWidth: 0,
   callout: {
     borderCapStyle: 'butt',
@@ -85,8 +87,6 @@ LabelAnnotation.defaults = {
   height: undefined,
   padding: 6,
   position: 'center',
-  backgroundShadowColor: 'transparent',
-  borderShadowColor: 'transparent',
   shadowBlur: 0,
   shadowOffsetX: 0,
   shadowOffsetY: 0,
