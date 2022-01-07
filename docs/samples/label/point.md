@@ -30,13 +30,6 @@ const annotation1 = {
     right: 6,
     bottom: 12
   },
-  point: {
-    enabled: true,
-    backgroundColor: 'transparent',
-    borderColor: (ctx) => ctx.chart.data.datasets[0].borderColor,
-    pointStyle: 'rectRounded',
-    radius: 10
-  },
   position: {
     x: (ctx) => maxIndex(ctx) <= 3 ? 'start' : maxIndex(ctx) >= 10 ? 'end' : 'center',
     y: 'end'

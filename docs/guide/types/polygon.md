@@ -1,6 +1,6 @@
-# Polygin Annotations
+# Polygon Annotations
 
-Polygin annotations are used to mark whatever polygon (for instance triangle, square or pentagon) on the chart area. This can be useful for highlighting values that are of interest.
+Polygon annotations are used to mark whatever polygon (for instance triangle, square or pentagon) on the chart area. This can be useful for highlighting values that are of interest.
 
 ```js chart-editor
 /* <block:options:0> */

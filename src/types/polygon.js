@@ -50,16 +50,16 @@ PolygonAnnotation.id = 'polygonAnnotation';
 
 PolygonAnnotation.defaults = {
   adjustScaleRange: true,
+  backgroundShadowColor: 'transparent',
   borderCapStyle: 'butt',
   borderDash: [],
   borderDashOffset: 0,
   borderJoinStyle: 'miter',
+  borderShadowColor: 'transparent',
   borderWidth: 1,
   display: true,
   radius: 10,
   rotation: 0,
-  backgroundShadowColor: 'transparent',
-  borderShadowColor: 'transparent',
   shadowBlur: 0,
   shadowOffsetX: 0,
   shadowOffsetY: 0,

@@ -120,7 +120,7 @@ If `scaleID` is unset, then `xScaleID` and `yScaleID` are used to draw a line fr
 | `shadowOffsetX` | The distance that shadow will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
 | `shadowOffsetY` | The distance that shadow will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
 
-### Label
+## Label
 
 Namespace: `options.annotations[annotationID].label`, it defines options for the line annotation label.
 
