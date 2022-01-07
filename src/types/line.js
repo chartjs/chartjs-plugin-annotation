@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, toRadians, toPadding} from 'chart.js/helpers';
-import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle} from '../helpers';
+import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, isNotTransparent} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
@@ -110,7 +110,12 @@ export default class LineAnnotation extends Element {
 
     ctx.save();
     ctx.beginPath();
+    const currentBgShadowColor = options.backgroundShadowColor;
+    if (!isNotTransparent(currentBgShadowColor)) {
+      options.backgroundShadowColor = options.borderShadowColor;
+    }
     setShadowStyle(ctx, options);
+    options.backgroundShadowColor = currentBgShadowColor;
     const stroke = setBorderStyle(ctx, options);
     // no border width, then line is not drawn
     if (!stroke) {
@@ -119,20 +124,16 @@ export default class LineAnnotation extends Element {
     }
     const angle = Math.atan2(y2 - y, x2 - x);
     const length = Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2));
-
-    const arrowStartOpts = options.arrowHeads && options.arrowHeads.start;
-    const arrowEndOpts = options.arrowHeads && options.arrowHeads.end;
-    const adjustStart = getLineAdjust(this, arrowStartOpts);
-    const adjustEnd = getLineAdjust(this, arrowEndOpts);
+    const {startOpts, endOpts, startAdjust, endAdjust} = getArrowHeads(this);
 
     ctx.translate(x, y);
     ctx.rotate(angle);
     ctx.beginPath();
-    ctx.moveTo(0 + adjustStart, 0);
-    ctx.lineTo(length - adjustEnd, 0);
+    ctx.moveTo(0 + startAdjust, 0);
+    ctx.lineTo(length - endAdjust, 0);
     ctx.stroke();
-    drawArrowHead(ctx, {offset: 0, adjust: adjustStart}, arrowStartOpts, options);
-    drawArrowHead(ctx, {offset: length, adjust: -adjustEnd}, arrowEndOpts, options);
+    drawArrowHead(ctx, {offset: 0, adjust: startAdjust}, startOpts, options);
+    drawArrowHead(ctx, {offset: length, adjust: -endAdjust}, endOpts, options);
     ctx.restore();
   }
 
@@ -400,6 +401,18 @@ function adjustLabelCoordinate(coordinate, labelSizes) {
     coordinate = max - padding - halfSize;
   }
   return coordinate;
+}
+
+function getArrowHeads(line) {
+  const options = line.options;
+  const arrowStartOpts = options.arrowHeads && options.arrowHeads.start;
+  const arrowEndOpts = options.arrowHeads && options.arrowHeads.end;
+  return {
+    startOpts: arrowStartOpts,
+    endOpts: arrowEndOpts,
+    startAdjust: getLineAdjust(line, arrowStartOpts),
+    endAdjust: getLineAdjust(line, arrowEndOpts)
+  };
 }
 
 function getLineAdjust(line, arrowOpts) {

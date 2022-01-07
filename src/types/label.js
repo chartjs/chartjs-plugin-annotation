@@ -1,5 +1,5 @@
-import {drawBox, drawLabel, measureLabelSize, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, getChartRect, getRelativePosition} from '../helpers';
-import {color, toPadding} from 'chart.js/helpers';
+import {drawBox, drawLabel, measureLabelSize, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, getChartRect, getRelativePosition, isNotTransparent} from '../helpers';
+import {toPadding} from 'chart.js/helpers';
 import {Element} from 'chart.js';
 
 export default class LabelAnnotation extends Element {
@@ -30,8 +30,7 @@ export default class LabelAnnotation extends Element {
     const padding = toPadding(options.padding);
     const labelSize = measureLabelSize(chart.ctx, options);
     const boxSize = measureRect(point, labelSize, options, padding);
-    const bgColor = color(options.backgroundColor);
-    const boxVisible = options.borderWidth > 0 || (bgColor && bgColor.valid && bgColor.rgb.a > 0);
+    const boxVisible = options.borderWidth > 0 || isNotTransparent(options.backgroundColor);
 
     const properties = {
       boxVisible,
