@@ -121,7 +121,9 @@ export function testEvents(options, innerElement, getInnerPoint) {
       it(`should not detect any events on ${descr}`, function(done) {
         const enterSpy = jasmine.createSpy('enter');
         const leaveSpy = jasmine.createSpy('leave');
+        const clickSpy = jasmine.createSpy('click');
 
+        targetOptions.click = clickSpy;
         pluginOpts.annotations = [options];
 
         const chart = window.acquireChart(chartConfig);
@@ -138,6 +140,7 @@ export function testEvents(options, innerElement, getInnerPoint) {
 
           window.afterEvent(chart, 'mousemove', function() {
             expect(leaveSpy.calls.count()).toBe(0);
+            delete targetOptions.click;
             done();
           });
         });
