@@ -128,7 +128,7 @@ Namespace: `options.annotations[annotationID].label`, it defines options for the
 All of these options can be [Scriptable](../options#scriptable-options)
 
 | Name | Type | Default | Notes
-| ---- | ---- | :----: | ----
+| ---- | ---- | :----: | ---- | ----
 | `backgroundColor` | [`Color`](../options#color) | `'rgba(0,0,0,0.8)'` | Background color of the label container.
 | `backgroundShadowColor` | [`Color`](../options#color) | `'transparent'` | The color of shadow of the box where the label is located. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderCapStyle` | `string` | `'butt'` | Cap style of the border line. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap).
