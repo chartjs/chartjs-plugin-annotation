@@ -76,4 +76,96 @@ describe('Point annotation', function() {
       expect(createAndUpdateChart).not.toThrow();
     });
   });
+
+  describe('events on point with radius 0', function() {
+
+    const chartConfig = {
+      type: 'scatter',
+      options: {
+        animation: false,
+        scales: {
+          x: {
+            display: false,
+            min: 0,
+            max: 10
+          },
+          y: {
+            display: false,
+            min: 0,
+            max: 10
+          }
+        },
+        plugins: {
+          legend: false,
+          annotation: {
+            annotations: {
+              point: {
+                type: 'point',
+                id: 'test',
+                xScaleID: 'x',
+                yScaleID: 'y',
+                xValue: 5,
+                yValue: 5,
+                radius: 0,
+                borderWidth: 0,
+                xAdjust: 0,
+                yAdjust: 0
+              }
+            }
+          }
+        }
+      },
+    };
+
+    const pointOpts = chartConfig.options.plugins.annotation.annotations.point;
+
+    it('should not detect any enter and leave events on the point', function(done) {
+      const enterSpy = jasmine.createSpy('enter');
+      const leaveSpy = jasmine.createSpy('leave');
+
+      pointOpts.enter = enterSpy;
+      pointOpts.leave = leaveSpy;
+
+      const chart = window.acquireChart(chartConfig);
+      const xScale = chart.scales.x;
+      const yScale = chart.scales.y;
+      const eventPoint = {x: xScale.getPixelForValue(5), y: yScale.getPixelForValue(5)};
+
+      window.triggerMouseEvent(chart, 'mousemove', eventPoint);
+      window.afterEvent(chart, 'mousemove', function() {
+        expect(enterSpy.calls.count()).toBe(0);
+
+        window.triggerMouseEvent(chart, 'mousemove', {
+          x: 0,
+          y: 0
+        });
+
+        window.afterEvent(chart, 'mousemove', function() {
+          expect(leaveSpy.calls.count()).toBe(0);
+          delete pointOpts.enter;
+          delete pointOpts.leave;
+          done();
+        });
+      });
+    });
+
+    it('should not detect click event on the point', function(done) {
+      const clickSpy = jasmine.createSpy('click');
+
+      pointOpts.click = clickSpy;
+
+      const chart = window.acquireChart(chartConfig);
+      const xScale = chart.scales.x;
+      const yScale = chart.scales.y;
+      const eventPoint = {x: xScale.getPixelForValue(5), y: yScale.getPixelForValue(5)};
+
+      window.afterEvent(chart, 'click', function() {
+        expect(clickSpy.calls.count()).toBe(0);
+        delete pointOpts.click;
+        done();
+      });
+      window.triggerMouseEvent(chart, 'click', eventPoint);
+    });
+
+  });
 });
