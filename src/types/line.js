@@ -207,29 +207,23 @@ export default class LineAnnotation extends Element {
 }
 
 LineAnnotation.id = 'lineAnnotation';
+
+const arrowHeadsDefaults = {
+  backgroundColor: undefined,
+  borderColor: undefined,
+  borderDash: [],
+  borderDashOffset: 0,
+  display: false,
+  fill: false,
+  length: 12,
+  width: 6
+};
+
 LineAnnotation.defaults = {
   adjustScaleRange: true,
   arrowHeads: {
-    end: {
-      backgroundColor: undefined,
-      borderColor: undefined,
-      borderDash: [],
-      borderDashOffset: 0,
-      display: false,
-      fill: false,
-      length: 12,
-      width: 6
-    },
-    start: {
-      backgroundColor: undefined,
-      borderColor: undefined,
-      borderDash: [],
-      borderDashOffset: 0,
-      display: false,
-      fill: false,
-      length: 12,
-      width: 6
-    }
+    end: arrowHeadsDefaults,
+    start: arrowHeadsDefaults
   },
   backgroundShadowColor: 'transparent',
   borderDash: [],
