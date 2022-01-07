@@ -37,14 +37,10 @@ export function calculateTextAlignment(size, options) {
   return x;
 }
 
-function readValueToProps(value, props, defValue) {
+function readValueToProps(value, keys, defValue) {
   const ret = {};
-  const objProps = isObject(props);
-  const keys = objProps ? Object.keys(props) : props;
   const read = isObject(value)
-    ? objProps
-      ? prop => valueOrDefault(value[prop], value[props[prop]])
-      : prop => value[prop]
+    ? prop => value[prop]
     : () => value;
 
   for (const prop of keys) {
