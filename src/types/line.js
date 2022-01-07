@@ -112,18 +112,16 @@ export default class LineAnnotation extends Element {
     ctx.beginPath();
     setShadowStyle(ctx, options);
     const stroke = setBorderStyle(ctx, options);
-    // no border, then line is not drawn
+    // no border width, then line is not drawn
     if (!stroke) {
       ctx.restore();
       return;
     }
-    const dx = x2 - x;
-    const dy = y2 - y;
-    const angle = Math.atan2(dy, dx);
-    const length = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+    const angle = Math.atan2(y2 - y, x2 - x);
+    const length = Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2));
 
-    const arrowStartOpts = options.arrowHeads && options.arrowHeads.start || [];
-    const arrowEndOpts = options.arrowHeads && options.arrowHeads.end || [];
+    const arrowStartOpts = options.arrowHeads && options.arrowHeads.start;
+    const arrowEndOpts = options.arrowHeads && options.arrowHeads.end;
     const adjustStart = getLineAdjust(this, arrowStartOpts);
     const adjustEnd = getLineAdjust(this, arrowEndOpts);
 
@@ -411,14 +409,14 @@ function adjustLabelCoordinate(coordinate, labelSizes) {
 }
 
 function getLineAdjust(line, arrowOpts) {
-  const {length, width, display} = arrowOpts;
-  if (display) {
-    const adjust = line.options.borderWidth / 2;
-    const p1 = {x: length, y: width + adjust};
-    const p2 = {x: 0, y: adjust};
-    return Math.abs(interpolateX(0, p1, p2));
+  if (!arrowOpts || !arrowOpts.display) {
+    return 0;
   }
-  return 0;
+  const {length, width} = arrowOpts;
+  const adjust = line.options.borderWidth / 2;
+  const p1 = {x: length, y: width + adjust};
+  const p2 = {x: 0, y: adjust};
+  return Math.abs(interpolateX(0, p1, p2));
 }
 
 function drawArrowHead(ctx, {offset, adjust}, arrowOpts, options) {
@@ -430,7 +428,7 @@ function drawArrowHead(ctx, {offset, adjust}, arrowOpts, options) {
   const arrowOffsetX = Math.abs(offset - length) + adjust;
   ctx.beginPath();
   setShadowStyle(ctx, options);
-  const stroke = setBorderStyle(ctx, arrowOpts);
+  setBorderStyle(ctx, arrowOpts);
   ctx.moveTo(arrowOffsetX, -width);
   ctx.lineTo(offset + adjust, 0);
   ctx.lineTo(arrowOffsetX, width);
@@ -439,8 +437,6 @@ function drawArrowHead(ctx, {offset, adjust}, arrowOpts, options) {
     ctx.closePath();
     ctx.fill();
   }
-  if (stroke) {
-    ctx.shadowColor = options.borderShadowColor;
-    ctx.stroke();
-  }
+  ctx.shadowColor = options.borderShadowColor;
+  ctx.stroke();
 }
