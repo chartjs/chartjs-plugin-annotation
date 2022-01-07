@@ -107,21 +107,26 @@ export default class LineAnnotation extends Element {
 
   draw(ctx) {
     const {x, y, x2, y2, options} = this;
-    const arrowStartOpts = options.arrowHeads && options.arrowHeads.start || [];
-    const arrowEndOpts = options.arrowHeads && options.arrowHeads.end || [];
 
+    ctx.save();
+    ctx.beginPath();
+    setShadowStyle(ctx, options);
+    const stroke = setBorderStyle(ctx, options);
+    // no border, then line is not drawn
+    if (!stroke) {
+      ctx.restore();
+      return;
+    }
     const dx = x2 - x;
     const dy = y2 - y;
     const angle = Math.atan2(dy, dx);
     const length = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 
+    const arrowStartOpts = options.arrowHeads && options.arrowHeads.start || [];
+    const arrowEndOpts = options.arrowHeads && options.arrowHeads.end || [];
     const adjustStart = getLineAdjust(this, arrowStartOpts);
     const adjustEnd = getLineAdjust(this, arrowEndOpts);
 
-    ctx.save();
-    setShadowStyle(ctx, options);
-    ctx.beginPath();
-    setBorderStyle(ctx, options);
     ctx.translate(x, y);
     ctx.rotate(angle);
     ctx.beginPath();
@@ -424,6 +429,7 @@ function drawArrowHead(ctx, {offset, adjust}, arrowOpts, options) {
   const {length, width, fill, backgroundColor, borderColor} = arrowOpts;
   const arrowOffsetX = Math.abs(offset - length) + adjust;
   ctx.beginPath();
+  setShadowStyle(ctx, options);
   const stroke = setBorderStyle(ctx, arrowOpts);
   ctx.moveTo(arrowOffsetX, -width);
   ctx.lineTo(offset + adjust, 0);
