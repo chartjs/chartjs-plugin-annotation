@@ -89,6 +89,60 @@ export function testEvents(options, innerElement, getInnerPoint) {
         });
       });
 
+      it(`should detect enter (by mousemove) and leave (by mouseout) events on ${descr}`, function(done) {
+        const enterSpy = jasmine.createSpy('enter');
+        const leaveSpy = jasmine.createSpy('leave');
+
+        targetOptions.enter = enterSpy;
+        targetOptions.leave = leaveSpy;
+        pluginOpts.annotations = [options];
+
+        const chart = window.acquireChart(chartConfig);
+        const eventPoint = getEventPoint(chart, getInnerPoint);
+
+        window.triggerMouseEvent(chart, 'mousemove', eventPoint);
+        window.afterEvent(chart, 'mousemove', function() {
+          expect(enterSpy.calls.count()).toBe(1);
+
+          window.triggerMouseEvent(chart, 'mouseout', {
+            x: 0,
+            y: 0
+          });
+
+          window.afterEvent(chart, 'mouseout', function() {
+            expect(leaveSpy.calls.count()).toBe(1);
+            delete targetOptions.enter;
+            delete targetOptions.leave;
+            done();
+          });
+        });
+      });
+
+      it(`should not detect any events on ${descr}`, function(done) {
+        const enterSpy = jasmine.createSpy('enter');
+        const leaveSpy = jasmine.createSpy('leave');
+
+        pluginOpts.annotations = [options];
+
+        const chart = window.acquireChart(chartConfig);
+        const eventPoint = getEventPoint(chart, getInnerPoint);
+
+        window.triggerMouseEvent(chart, 'mousemove', eventPoint);
+        window.afterEvent(chart, 'mousemove', function() {
+          expect(enterSpy.calls.count()).toBe(0);
+
+          window.triggerMouseEvent(chart, 'mousemove', {
+            x: 0,
+            y: 0
+          });
+
+          window.afterEvent(chart, 'mousemove', function() {
+            expect(leaveSpy.calls.count()).toBe(0);
+            done();
+          });
+        });
+      });
+
       it(`should detect click event on ${descr}`, function(done) {
         const clickSpy = jasmine.createSpy('click');
 
