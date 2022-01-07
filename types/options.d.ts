@@ -27,16 +27,22 @@ export interface CoreAnnotationOptions extends AnnotationEvents, AnnotationHooks
   id?: string,
   display?: Scriptable<boolean, PartialEventContext>,
   adjustScaleRange?: Scriptable<boolean, PartialEventContext>,
+  backgroundShadowColor?: Scriptable<Color, PartialEventContext>,
   borderColor?: Scriptable<Color, PartialEventContext>,
   borderWidth?: Scriptable<number, PartialEventContext>,
   borderDash?: Scriptable<number[], PartialEventContext>,
   borderDashOffset?: Scriptable<number, PartialEventContext>,
+  borderShadowColor?: Scriptable<Color, PartialEventContext>,
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
   endValue?: Scriptable<number|string, PartialEventContext>,
   scaleID?: Scriptable<string, PartialEventContext>,
   value?: Scriptable<number|string, PartialEventContext>,
   xScaleID?: Scriptable<string, PartialEventContext>,
   yScaleID?: Scriptable<string, PartialEventContext>,
+  yPadding?: Scriptable<number, PartialEventContext>,
+  shadowBlur?: Scriptable<number, PartialEventContext>,
+  shadowOffsetX?: Scriptable<number, PartialEventContext>,
+  shadowOffsetY?: Scriptable<number, PartialEventContext>
 }
 
 export type Scriptable<T, TContext> = T | ((ctx: TContext, options: AnnotationOptions) => T);

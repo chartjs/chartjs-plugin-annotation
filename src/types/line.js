@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, toRadians, toPadding} from 'chart.js/helpers';
-import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setBorderStyle} from '../helpers';
+import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
@@ -43,6 +43,8 @@ function limitLineToArea(p1, p2, area) {
 }
 
 export default class LineAnnotation extends Element {
+
+  // TODO: make private in v2
   intersects(x, y, epsilon = 0.001, useFinalPosition) {
     // Adapted from https://stackoverflow.com/a/6853926/25507
     const {x: x1, y: y1, x2, y2} = this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition);
@@ -64,13 +66,18 @@ export default class LineAnnotation extends Element {
     return (sqr(x - xx) + sqr(y - yy)) < epsilon;
   }
 
-  // TODO: make private in v2
+  /**
+   * @todo make private in v2
+   * @param {boolean} useFinalPosition - use the element's animation target instead of current position
+   * @param {top, right, bottom, left} [chartArea] - optional, area of the chart
+   * @returns {boolean} true if the label is visible
+   */
   labelIsVisible(useFinalPosition, chartArea) {
     const labelOpts = this.options.label;
-    if (!chartArea || !labelOpts || !labelOpts.enabled) {
+    if (!labelOpts || !labelOpts.enabled) {
       return false;
     }
-    return isLineInArea(this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), chartArea);
+    return !chartArea || isLineInArea(this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), chartArea);
   }
 
   // TODO: make private in v2
@@ -102,6 +109,7 @@ export default class LineAnnotation extends Element {
     const {x, y, x2, y2, options} = this;
     ctx.save();
 
+    setShadowStyle(ctx, this.options);
     ctx.beginPath();
     setBorderStyle(ctx, options);
     ctx.moveTo(x, y);
@@ -184,19 +192,23 @@ export default class LineAnnotation extends Element {
 LineAnnotation.id = 'lineAnnotation';
 LineAnnotation.defaults = {
   adjustScaleRange: true,
+  backgroundShadowColor: 'transparent',
   borderDash: [],
   borderDashOffset: 0,
+  borderShadowColor: 'transparent',
   borderWidth: 2,
   display: true,
   endValue: undefined,
   label: {
     backgroundColor: 'rgba(0,0,0,0.8)',
+    backgroundShadowColor: 'transparent',
     borderCapStyle: 'butt',
     borderColor: 'black',
     borderDash: [],
     borderDashOffset: 0,
     borderJoinStyle: 'miter',
     borderRadius: 6,
+    borderShadowColor: 'transparent',
     borderWidth: 0,
     color: '#fff',
     content: null,
@@ -214,6 +226,9 @@ LineAnnotation.defaults = {
     padding: 6,
     position: 'center',
     rotation: 0,
+    shadowBlur: 0,
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
     textAlign: 'center',
     width: undefined,
     xAdjust: 0,
@@ -222,6 +237,9 @@ LineAnnotation.defaults = {
     yPadding: undefined, // TODO: v2 remove support for yPadding
   },
   scaleID: undefined,
+  shadowBlur: 0,
+  shadowOffsetX: 0,
+  shadowOffsetY: 0,
   value: undefined,
   xMax: undefined,
   xMin: undefined,

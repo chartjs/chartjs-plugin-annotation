@@ -47,11 +47,13 @@ BoxAnnotation.id = 'boxAnnotation';
 
 BoxAnnotation.defaults = {
   adjustScaleRange: true,
+  backgroundShadowColor: 'transparent',
   borderCapStyle: 'butt',
   borderDash: [],
   borderDashOffset: 0,
   borderJoinStyle: 'miter',
   borderRadius: 0,
+  borderShadowColor: 'transparent',
   borderWidth: 1,
   cornerRadius: undefined, // TODO: v2 remove support for cornerRadius
   display: true,
@@ -75,6 +77,9 @@ BoxAnnotation.defaults = {
     yAdjust: 0,
     width: undefined
   },
+  shadowBlur: 0,
+  shadowOffsetX: 0,
+  shadowOffsetY: 0,
   xMax: undefined,
   xMin: undefined,
   xScaleID: 'x',

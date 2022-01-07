@@ -50,23 +50,27 @@ The following options are available for line annotations. All of these options c
 
 | Name | Type | [Scriptable](../options#scriptable-options) | Default
 | ---- | ---- | ---- | :----: | ----
-| [`display`](#general) | `boolean` | Yes | `true`
 | [`adjustScaleRange`](#general) | `boolean` | Yes | `true`
-| [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
-| [`scaleID`](#positioning) | `string` | Yes | `undefined`
-| [`value`](#positioning) | `number` | Yes | `undefined`
-| [`endValue`](#positioning) | `number` | Yes | `undefined`
-| [`xScaleID`](#positioning) | `string` | Yes | `'x'`
-| [`yScaleID`](#positioning) | `string` | Yes | `'y'`
-| [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
-| [`borderWidth`](#styling) | `number` | Yes | `1`
 | [`borderDash`](#styling) | `number[]` | Yes | `[]`
 | [`borderDashOffset`](#styling) | `number` | Yes | `0`
+| [`borderShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
+| [`borderWidth`](#styling) | `number` | Yes | `1`
+| [`display`](#general) | `boolean` | Yes | `true`
+| [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
+| [`endValue`](#positioning) | `number` | Yes | `undefined`
 | [`label`](#label) | `object` | Yes |
+| [`scaleID`](#positioning) | `string` | Yes | `undefined`
+| [`shadowBlur`](#styling) | `number` | Yes | `0`
+| [`shadowOffsetX`](#styling) | `number` | Yes | `0`
+| [`shadowOffsetY`](#styling) | `number` | Yes | `0`
+| [`value`](#positioning) | `number` | Yes | `undefined`
+| [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
+| [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
+| [`xScaleID`](#positioning) | `string` | Yes | `'x'`
+| [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yScaleID`](#positioning) | `string` | Yes | `'y'`
 
 ### General
 
@@ -81,9 +85,9 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the li
 
 | Name | Description |
 | ---- | ---- |
-| `display` | Whether or not this annotation is visible
-| `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range
-| `drawTime` | See [drawTime](../options#draw-time)
+| `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
+| `display` | Whether or not this annotation is visible.
+| `drawTime` | See [drawTime](../options#draw-time).
 
 ### Positioning
 
@@ -93,27 +97,30 @@ If `scaleID` is unset, then `xScaleID` and `yScaleID` are used to draw a line fr
 
 | Name | Description |
 | ---- | ---- |
+| `endValue` | End two of the line when a single scale is specified.
 | `scaleID` | ID of the scale in single scale mode. If unset, `xScaleID` and `yScaleID` are used.
 | `value` | End one of the line when a single scale is specified.
-| `endValue` | End two of the line when a single scale is specified.
-| `xScaleID` | ID of the X scale to bind onto, default is 'x'.
-| `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
-| `xMin` | X coordinate of end one of the line in units along the x axis.
 | `xMax` | X coordinate of end two of the line in units along the x axis.
-| `yMin` | Y coordinate of end one of the line in units along the y axis.
+| `xMin` | X coordinate of end one of the line in units along the x axis.
+| `xScaleID` | ID of the X scale to bind onto, default is 'x'.
 | `yMax` | Y coordinate of end two of the line in units along the y axis.
+| `yMin` | Y coordinate of end one of the line in units along the y axis.
+| `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
 
 ### Styling
 
 | Name | Description |
 | ---- | ---- |
-| `borderColor` | Stroke color
-| `borderWidth` | Stroke width
+| `borderColor` | Stroke color.
 | `borderDash` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | Offset for line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
-| `backgroundColor` | Fill color
+| `borderShadowColor` | The color of shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
+| `borderWidth` | Stroke width.
+| `shadowBlur` | The amount of blur applied to shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
+| `shadowOffsetX` | The distance that shadow will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
+| `shadowOffsetY` | The distance that shadow will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
 
-### Label
+## Label
 
 Namespace: `options.annotations[annotationID].label`, it defines options for the line annotation label.
 
@@ -122,28 +129,33 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | Name | Type | Default | Notes
 | ---- | ---- | :----: | ---- | ----
 | `backgroundColor` | [`Color`](../options#color) | `'rgba(0,0,0,0.8)'` | Background color of the label container.
+| `backgroundShadowColor` | [`Color`](../options#color) | `'transparent'` | The color of shadow of the box where the label is located. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderCapStyle` | `string` | `'butt'` | Cap style of the border line. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap).
 | `borderColor` | [`Color`](../options#color) | `black` | The border line color.
 | `borderDash` | `number[]` | `[]` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | `number` | `0` | Offset for border line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
 | `borderJoinStyle` | `string` | `'miter'` | Border line joint style. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
 | [`borderRadius`](#borderradius) | `number` \| `object` | `6` | Radius of label box corners in pixels.
+| `borderShadowColor` | [`Color`](../options#color) | `'transparent'` | The color of border shadow of the box where the label is located. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderWidth` | `number` | `0` | The border line width (in pixels).
 | `color` | [`Color`](../options#color) | `'#fff'` | Text color.
 | `content` | `string`\|`string[]`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image)\|[`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) | `null` | The content to show in the label.
-| `drawTime` | `string` | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the line annotation draw time if unset
+| `drawTime` | `string` | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the line annotation draw time if unset.
 | `enabled` | `boolean` | `false` | Whether or not the label is shown.
-| `font` | [`Font`](../options#font) | `{ style: 'bold' }` | Label font
+| `font` | [`Font`](../options#font) | `{ style: 'bold' }` | Label font.
 | `height` | `number`\|`string` | `undefined` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
 | `padding` | [`Padding`](../options#padding) | `6` | The padding to add around the text label.
-| `xPadding` | `number` | `6` | Padding of label to add left/right. This is **deprecated**. Use `padding`.
-| `yPadding` | `number` | `6` | Padding of label to add top/bottom. This is **deprecated**. Use `padding`.
 | `position` | `string` | `'center'` | Anchor position of label on line. Possible options are: `'start'`, `'center'`, `'end'`. It can be set by a string in percentage format `'number%'` which are representing the percentage on the width of the line where the label will be located.
-| `rotation` | `number`\|`'auto'` | `0` | Rotation of label, in degrees, or 'auto' to use the degrees of the line
+| `rotation` | `number`\|`'auto'` | `0` | Rotation of label, in degrees, or 'auto' to use the degrees of the line.
+| `shadowBlur` | `number` | `0` | The amount of blur applied to shadow of the box where the label is located. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
+| `shadowOffsetX` | `number` | `0` | The distance that shadow, of the box where the label is located, will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
+| `shadowOffsetY` | `number` | `0` | The distance that shadow, of the box where the label is located, will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
 | `textAlign` | `string` | `'center'` | Text alignment of label content when there's more than one line. Possible options are: `'start'`, `'center'`, `'end'`.
 | `width` | `number`\|`string` | `undefined` | Overrides the width of the image or canvas element. Could be set in pixel by a number, or in percentage of current width of image or canvas element by a string. If undefined, uses the width of the image or canvas element. It is used only when the content is an image or canvas element.
 | `xAdjust` | `number` | `0` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
+| `xPadding` | `number` | `6` | Padding of label to add left/right. This is **deprecated**. Use `padding`.
 | `yAdjust` | `number` | `0` | Adjustment along y-axis (top-bottom) of label relative to computed position. Negative values move the label up, positive down.
+| `yPadding` | `number` | `6` | Padding of label to add top/bottom. This is **deprecated**. Use `padding`.
 
 #### borderRadius
 

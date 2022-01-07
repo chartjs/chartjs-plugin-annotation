@@ -53,22 +53,27 @@ The following options are available for box annotations.
 | ---- | ---- | :----: | ----
 | [`adjustScaleRange`](#general) | `boolean` | Yes | `true`
 | [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
+| [`backgroundShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
 | [`borderCapStyle`](#styling) | `string` | Yes | `'butt'`
 | [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
 | [`borderDash`](#styling) | `number[]` | Yes | `[]`
 | [`borderDashOffset`](#styling) | `number` | Yes | `0`
 | [`borderJoinStyle`](#styling) | `string` | Yes | `'miter'`
 | [`borderRadius`](#styling) | `number` \| `object` | Yes | `0`
+| [`borderShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
 | [`borderWidth`](#styling) | `number`| Yes | `1`
 | [`display`](#general) | `boolean` | Yes | `true`
 | [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
-| [`xScaleID`](#general) | `string` | Yes | `'x'`
-| [`yScaleID`](#general) | `string` | Yes | `'y'`
-| [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
+| [`label`](#label) | `object` | Yes |
+| [`shadowBlur`](#styling) | `number` | Yes | `0`
+| [`shadowOffsetX`](#styling) | `number` | Yes | `0`
+| [`shadowOffsetY`](#styling) | `number` | Yes | `0`
 | [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
+| [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
+| [`xScaleID`](#general) | `string` | Yes | `'x'`
 | [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
-| [`label`](#label) | `object` | Yes |
+| [`yScaleID`](#general) | `string` | Yes | `'y'`
 
 ### General
 
@@ -76,34 +81,39 @@ If one of the axes does not match an axis in the chart, the box will take the en
 
 | Name | Description |
 | ---- | ---- |
-| `display` | Whether or not this annotation is visible
-| `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range
-| `drawTime` | See [drawTime](../options#draw-time)
-| `xScaleID` | ID of the X scale to bind onto, default is 'x'.
-| `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
-| `xMin` | Left edge of the box in units along the x axis.
+| `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
+| `display` | Whether or not this annotation is visible.
+| `drawTime` | See [drawTime](../options#draw-time).
 | `xMax` | Right edge of the box in units along the x axis.
-| `yMin` | Top edge of the box in units along the y axis.
+| `xMin` | Left edge of the box in units along the x axis.
+| `xScaleID` | ID of the X scale to bind onto, default is 'x'.
 | `yMax` | Bottom edge of the box in units along the y axis.
+| `yMin` | Top edge of the box in units along the y axis.
+| `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
 
 ### Styling
 
 | Name | Description |
 | ---- | ---- |
 | `backgroundColor` | Fill color.
-| `borderColor` | Stroke color.
+| `backgroundShadowColor` | The color of shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderCapStyle` | Cap style of the border line. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap).
+| `borderColor` | Stroke color.
 | `borderDash` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | Offset for border line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
 | `borderJoinStyle` | Border line joint style. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
-| [`borderRadius`](#borderradius) | Radius of box rectangle (in pixels)
+| [`borderRadius`](#borderradius) | Radius of box rectangle (in pixels).
+| `borderShadowColor` | The color of the border shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderWidth` | Border line width (in pixels).
+| `shadowBlur` | The amount of blur applied to shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
+| `shadowOffsetX` | The distance that shadow will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
+| `shadowOffsetY` | The distance that shadow will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
 
 #### borderRadius
 
 If this value is a number, it is applied to all corners of the rectangle (topLeft, topRight, bottomLeft, bottomRight). If this value is an object, the `topLeft` property defines the top-left corners border radius. Similarly, the `topRight`, `bottomLeft`, and `bottomRight` properties can also be specified. Omitted corners have radius of 0.
 
-### Label
+## Label
 
 Namespace: `options.annotations[annotationID].label`, it defines options for the box annotation label.
 

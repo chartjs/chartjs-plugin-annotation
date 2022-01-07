@@ -51,21 +51,26 @@ The following options are available for ellipse annotations.
 
 | Name | Type | [Scriptable](../options#scriptable-options) | Default
 | ---- | ---- | :----: | ----
-| [`display`](#general) | `boolean` | Yes | `true`
 | [`adjustScaleRange`](#general) | `boolean` | Yes | `true`
-| [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
-| [`rotation`](#general) | `number`| Yes | `0`
-| [`xScaleID`](#general) | `string` | Yes | `'x'`
-| [`yScaleID`](#general) | `string` | Yes | `'y'`
-| [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
+| [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
+| [`backgroundShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
 | [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
-| [`borderWidth`](#styling) | `number`| Yes | `1`
 | [`borderDash`](#styling) | `number[]`| Yes | `[]`
 | [`borderDashOffset`](#styling) | `number`| Yes | `0`
-| [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
+| [`borderShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
+| [`borderWidth`](#styling) | `number`| Yes | `1`
+| [`display`](#general) | `boolean` | Yes | `true`
+| [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
+| [`rotation`](#general) | `number`| Yes | `0`
+| [`shadowBlur`](#styling) | `number` | Yes | `0`
+| [`shadowOffsetX`](#styling) | `number` | Yes | `0`
+| [`shadowOffsetY`](#styling) | `number` | Yes | `0`
+| [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
+| [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
+| [`xScaleID`](#general) | `string` | Yes | `'x'`
+| [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
+| [`yScaleID`](#general) | `string` | Yes | `'y'`
 
 ### General
 
@@ -73,23 +78,28 @@ If one of the axes does not match an axis in the chart, the ellipse will take th
 
 | Name | Description |
 | ---- | ---- |
-| `display` | Whether or not this annotation is visible
-| `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range
-| `drawTime` | See [drawTime](../options#draw-time)
+| `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
+| `display` | Whether or not this annotation is visible.
+| `drawTime` | See [drawTime](../options#draw-time).
 | `rotation` | Rotatation of the ellipse in degrees, default is 0.
-| `xScaleID` | ID of the X scale to bind onto, default is 'x'.
-| `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
-| `xMin` | Left edge of the ellipse in units along the x axis.
 | `xMax` | Right edge of the ellipse in units along the x axis.
-| `yMin` | Top edge of the ellipse in units along the y axis.
+| `xMin` | Left edge of the ellipse in units along the x axis.
+| `xScaleID` | ID of the X scale to bind onto, default is 'x'.
 | `yMax` | Bottom edge of the ellipse in units along the y axis.
+| `yMin` | Top edge of the ellipse in units along the y axis.
+| `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
 
 ### Styling
 
 | Name | Description |
 | ---- | ---- |
-| `borderColor` | Stroke color
-| `borderWidth` | Stroke width
+| `backgroundColor` | Fill color.
+| `backgroundShadowColor` | The color of shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
+| `borderColor` | Stroke color.
 | `borderDash` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | Offset for line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
-| `backgroundColor` | Fill color
+| `borderShadowColor` | The color of the border shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
+| `borderWidth` | Stroke width.
+| `shadowBlur` | The amount of blur applied to shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
+| `shadowOffsetX` | The distance that shadow will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
+| `shadowOffsetY` | The distance that shadow will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).

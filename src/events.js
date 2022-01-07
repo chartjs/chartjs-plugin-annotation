@@ -1,4 +1,4 @@
-import {distanceBetweenPoints, callback as callHandler} from 'chart.js/helpers';
+import {distanceBetweenPoints, callback} from 'chart.js/helpers';
 import {loadHooks} from './helpers';
 
 const clickHooks = ['click', 'dblclick'];
@@ -105,7 +105,7 @@ function handleClickEvents(state, event, options) {
 }
 
 function dispatchEvent(handler, element, event) {
-  callHandler(handler, [element.$context, event]);
+  callback(handler, [element.$context, event]);
 }
 
 function getNearestItem(elements, position) {
