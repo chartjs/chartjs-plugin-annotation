@@ -24,7 +24,6 @@ const data = {
 const annotation1 = {
   type: 'line',
   borderColor: 'green',
-  borderDash: [6, 6],
   borderWidth: 3,
   label: {
     enabled: true,
@@ -32,6 +31,16 @@ const annotation1 = {
     borderRadius: 0,
     color: 'green',
     content: 'Summer time'
+  },
+  arrowHeads: {
+    start: {
+      display: true,
+      borderColor: 'green'
+    },
+    end: {
+      display: true,
+      borderColor: 'green'
+    }
   },
   xMax: 8,
   xMin: 5,
