@@ -45,14 +45,14 @@ EllipseAnnotation.id = 'ellipseAnnotation';
 
 EllipseAnnotation.defaults = {
   adjustScaleRange: true,
+  backgroundShadowColor: 'transparent',
   borderDash: [],
   borderDashOffset: 0,
+  borderShadowColor: 'transparent',
   borderWidth: 1,
   display: true,
   rotation: 0,
   shadowBlur: 0,
-  backgroundShadowColor: 'transparent',
-  borderShadowColor: 'transparent',
   shadowOffsetX: 0,
   shadowOffsetY: 0,
   xMax: undefined,

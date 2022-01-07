@@ -39,15 +39,15 @@ PointAnnotation.id = 'pointAnnotation';
 
 PointAnnotation.defaults = {
   adjustScaleRange: true,
+  backgroundShadowColor: 'transparent',
   borderDash: [],
   borderDashOffset: 0,
+  borderShadowColor: 'transparent',
   borderWidth: 1,
   display: true,
   pointStyle: 'circle',
   radius: 10,
   rotation: 0,
-  backgroundShadowColor: 'transparent',
-  borderShadowColor: 'transparent',
   shadowBlur: 0,
   shadowOffsetX: 0,
   shadowOffsetY: 0,
