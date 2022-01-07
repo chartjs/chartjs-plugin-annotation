@@ -146,6 +146,23 @@ export function testEvents(options, innerElement, getInnerPoint) {
         });
       });
 
+      it(`should not detect any events (because unmanaged event) on ${descr}`, function(done) {
+        const clickSpy = jasmine.createSpy('click');
+
+        targetOptions.click = clickSpy;
+        pluginOpts.annotations = [options];
+
+        const chart = window.acquireChart(chartConfig);
+        const eventPoint = getEventPoint(chart, getInnerPoint);
+
+        window.afterEvent(chart, 'touchstart', function() {
+          expect(clickSpy.calls.count()).toBe(0);
+          delete targetOptions.click;
+          done();
+        });
+        window.triggerMouseEvent(chart, 'touchstart', eventPoint);
+      });
+
       it(`should detect click event on ${descr}`, function(done) {
         const clickSpy = jasmine.createSpy('click');
 
