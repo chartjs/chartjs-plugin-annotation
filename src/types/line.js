@@ -110,10 +110,7 @@ export default class LineAnnotation extends Element {
 
     ctx.save();
     ctx.beginPath();
-    const currentBgShadowColor = options.backgroundShadowColor;
-    if (!isNotTransparent(currentBgShadowColor)) {
-      options.backgroundShadowColor = options.borderShadowColor;
-    }
+    const currentBgShadowColor = setShadowColor(options);
     setShadowStyle(ctx, options);
     options.backgroundShadowColor = currentBgShadowColor;
     const stroke = setBorderStyle(ctx, options);
@@ -401,6 +398,14 @@ function adjustLabelCoordinate(coordinate, labelSizes) {
     coordinate = max - padding - halfSize;
   }
   return coordinate;
+}
+
+function setShadowColor(options) {
+  const currentBgShadowColor = options.backgroundShadowColor;
+  if (!isNotTransparent(currentBgShadowColor)) {
+    options.backgroundShadowColor = options.borderShadowColor;
+  }
+  return currentBgShadowColor;
 }
 
 function getArrowHeads(line) {
