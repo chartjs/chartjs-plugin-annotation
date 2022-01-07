@@ -54,7 +54,24 @@ interface AnnotationPointCoordinates extends AnnotationCoordinates {
   yValue?: Scriptable<ScaleValue, PartialEventContext>,
 }
 
+export interface ArrowHeadOptions {
+  backgroundColor?: Scriptable<Color, PartialEventContext>,
+  borderColor?: Scriptable<Color, PartialEventContext>,
+  borderDash?: Scriptable<number[], PartialEventContext>,
+  borderDashOffset?: Scriptable<number, PartialEventContext>,
+  display?: Scriptable<boolean, PartialEventContext>,
+  fill?: Scriptable<boolean, PartialEventContext>,
+  length?: Scriptable<number, PartialEventContext>,
+  width?: Scriptable<number, PartialEventContext>,
+}
+
+export interface ArrowHeadsOptions {
+  end?: ArrowHeadOptions,
+  start?: ArrowHeadOptions,
+}
+
 export interface LineAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
+  arrowHeads?: ArrowHeadsOptions,
   label?: LabelOptions
 }
 
