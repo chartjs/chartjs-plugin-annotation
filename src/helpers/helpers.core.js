@@ -7,11 +7,11 @@ export function clampAll(obj, from, to) {
   return obj;
 }
 
-export function inPointRange(point, center, radius) {
+export function inPointRange(point, center, radius, borderWidth) {
   if (!point || !center || radius <= 0) {
     return false;
   }
-  return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius, 2);
+  return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius + borderWidth, 2);
 }
 
 export function inBoxRange(mouseX, mouseY, {x, y, width, height}) {
