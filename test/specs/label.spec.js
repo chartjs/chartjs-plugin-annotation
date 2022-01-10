@@ -42,19 +42,19 @@ describe('Label annotation', function() {
     font: {}
   };
 
-  window.testEventsOnBorder(optionsWithBorder, 'top', function(xScale, yScale, element) {
+  window.testEvents(optionsWithBorder, 'top', function(xScale, yScale, element) {
     const opts = element.options;
     return {x: element.x, y: element.y - opts.borderWidth / 2 + 1};
   });
-  window.testEventsOnBorder(optionsWithBorder, 'bottom', function(xScale, yScale, element) {
+  window.testEvents(optionsWithBorder, 'bottom', function(xScale, yScale, element) {
     const opts = element.options;
     return {x: element.x, y: element.y + element.height + opts.borderWidth / 2 - 1};
   });
-  window.testEventsOnBorder(optionsWithBorder, 'left', function(xScale, yScale, element) {
+  window.testEvents(optionsWithBorder, 'left', function(xScale, yScale, element) {
     const opts = element.options;
     return {x: element.x - opts.borderWidth / 2 + 1, y: element.y};
   });
-  window.testEventsOnBorder(optionsWithBorder, 'right', function(xScale, yScale, element) {
+  window.testEvents(optionsWithBorder, 'right', function(xScale, yScale, element) {
     const opts = element.options;
     return {x: element.x + element.width + opts.borderWidth / 2 - 1, y: element.y};
   });

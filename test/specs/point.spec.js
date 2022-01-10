@@ -27,20 +27,20 @@ describe('Point annotation', function() {
     yAdjust: 0
   };
 
-  window.testEventsOnBorder(optionsWithBorder, 'top', function(xScale, yScale, element) {
+  window.testEvents(optionsWithBorder, 'top', function(xScale, yScale, element) {
     const opts = element.options;
     return {x: xScale.getPixelForValue(opts.xValue), y: yScale.getPixelForValue(opts.yValue) - opts.radius - opts.borderWidth / 2 + 1};
   });
-  window.testEventsOnBorder(optionsWithBorder, 'bottom', function(xScale, yScale, element) {
+  window.testEvents(optionsWithBorder, 'bottom', function(xScale, yScale, element) {
     const opts = element.options;
     return {x: xScale.getPixelForValue(opts.xValue), y: yScale.getPixelForValue(opts.yValue) + opts.radius + opts.borderWidth / 2 - 1};
   });
-  window.testEventsOnBorder(optionsWithBorder, 'left', function(xScale, yScale, element) {
+  window.testEvents(optionsWithBorder, 'left', function(xScale, yScale, element) {
     const opts = element.options;
     return {x: xScale.getPixelForValue(opts.xValue) - opts.radius - opts.borderWidth / 2 + 1, y: yScale.getPixelForValue(opts.yValue)};
   });
 
-  window.testEventsOnBorder(optionsWithBorder, 'right', function(xScale, yScale, element) {
+  window.testEvents(optionsWithBorder, 'right', function(xScale, yScale, element) {
     const opts = element.options;
     return {x: xScale.getPixelForValue(opts.xValue) + opts.radius + opts.borderWidth / 2 - 1, y: yScale.getPixelForValue(opts.yValue)};
   });
