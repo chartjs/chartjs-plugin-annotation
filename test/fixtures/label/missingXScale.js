@@ -21,7 +21,7 @@ module.exports = {
               xScaleID: 'missing',
               yScaleID: 'y',
               xValue: 'February',
-              yValue: 10,
+              yValue: 2,
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
               borderColor: 'rgb(33, 101, 171)',
               borderWidth: 1,
