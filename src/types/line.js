@@ -87,8 +87,9 @@ export default class LineAnnotation extends Element {
     }
     const {labelX, labelY, labelWidth, labelHeight, labelRotation} = this.getProps(['labelX', 'labelY', 'labelWidth', 'labelHeight', 'labelRotation'], useFinalPosition);
     const {x, y} = rotated({x: mouseX, y: mouseY}, {x: labelX, y: labelY}, -labelRotation);
-    const w2 = labelWidth / 2;
-    const h2 = labelHeight / 2;
+    const hBorderWidth = this.options.label.borderWidth / 2 || 0;
+    const w2 = labelWidth / 2 + hBorderWidth;
+    const h2 = labelHeight / 2 + hBorderWidth;
     return x >= labelX - w2 && x <= labelX + w2 &&
       y >= labelY - h2 && y <= labelY + h2;
   }

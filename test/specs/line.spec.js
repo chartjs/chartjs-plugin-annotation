@@ -39,6 +39,37 @@ describe('Line annotation', function() {
 
   window.testEvents(optionsLimit, 'labelRect');
 
+  const optionsWithBorder = {
+    type: 'line',
+    id: 'test',
+    scaleID: 'y',
+    value: 5,
+    borderWidth: 1,
+    label: {
+      enabled: true,
+      content: 'This is my label',
+      borderWidth: 17,
+      rotation: 0
+    }
+  };
+
+  window.testEventsOnBorder(optionsWithBorder, 'top', function(xScale, yScale, element) {
+    const opts = element.options.label;
+    return {x: element.labelX, y: element.labelY - opts.borderWidth / 2 + 1};
+  });
+  window.testEventsOnBorder(optionsWithBorder, 'bottom', function(xScale, yScale, element) {
+    const opts = element.options.label;
+    return {x: element.labelX, y: element.labelY + element.labelHeight / 2 + opts.borderWidth / 2 - 1};
+  });
+  window.testEventsOnBorder(optionsWithBorder, 'left', function(xScale, yScale, element) {
+    const opts = element.options.label;
+    return {x: element.labelX - opts.borderWidth / 2 + 1, y: element.labelY};
+  });
+  window.testEventsOnBorder(optionsWithBorder, 'right', function(xScale, yScale, element) {
+    const opts = element.options.label;
+    return {x: element.labelX + element.labelWidth / 2 + opts.borderWidth / 2 - 1, y: element.labelY};
+  });
+
   describe('events on line label', function() {
 
     const chartConfig = {
