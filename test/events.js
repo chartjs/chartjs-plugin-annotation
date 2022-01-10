@@ -40,9 +40,7 @@ export function testEvents(options, position = 'center', getEventPoint = getDefa
       const chart = window.acquireChart(chartConfig);
       pluginOpts.enter = undefined;
       chart.update();
-      const xScale = chart.scales.x;
-      const yScale = chart.scales.y;
-      const eventPoint = getEventPoint(xScale, yScale, getElement(chart));
+      const eventPoint = retrieveEventPoint(chart, getEventPoint);
 
       window.triggerMouseEvent(chart, 'mousemove', eventPoint);
       window.afterEvent(chart, 'mousemove', function() {
@@ -73,9 +71,7 @@ export function testEvents(options, position = 'center', getEventPoint = getDefa
         pluginOpts.annotations = [options];
 
         const chart = window.acquireChart(chartConfig);
-        const xScale = chart.scales.x;
-        const yScale = chart.scales.y;
-        const eventPoint = getEventPoint(xScale, yScale, getElement(chart));
+        const eventPoint = retrieveEventPoint(chart, getEventPoint);
 
         window.triggerMouseEvent(chart, 'mousemove', eventPoint);
         window.afterEvent(chart, 'mousemove', function() {
@@ -102,9 +98,7 @@ export function testEvents(options, position = 'center', getEventPoint = getDefa
         pluginOpts.annotations = [options];
 
         const chart = window.acquireChart(chartConfig);
-        const xScale = chart.scales.x;
-        const yScale = chart.scales.y;
-        const eventPoint = getEventPoint(xScale, yScale, getElement(chart));
+        const eventPoint = retrieveEventPoint(chart, getEventPoint);
 
         window.afterEvent(chart, 'click', function() {
           expect(clickSpy.calls.count()).toBe(1);
@@ -122,9 +116,7 @@ export function testEvents(options, position = 'center', getEventPoint = getDefa
         pluginOpts.annotations = [options];
 
         const chart = window.acquireChart(chartConfig);
-        const xScale = chart.scales.x;
-        const yScale = chart.scales.y;
-        const eventPoint = getEventPoint(xScale, yScale, getElement(chart));
+        const eventPoint = retrieveEventPoint(chart, getEventPoint);
 
         let dblClick = false;
         window.afterEvent(chart, 'click', function() {
@@ -149,9 +141,7 @@ export function testEvents(options, position = 'center', getEventPoint = getDefa
         pluginOpts.annotations = [options];
 
         const chart = window.acquireChart(chartConfig);
-        const xScale = chart.scales.x;
-        const yScale = chart.scales.y;
-        const eventPoint = getEventPoint(xScale, yScale, getElement(chart));
+        const eventPoint = retrieveEventPoint(chart, getEventPoint);
 
         let dblClick = false;
         window.afterEvent(chart, 'click', function() {
@@ -181,9 +171,7 @@ export function testEvents(options, position = 'center', getEventPoint = getDefa
         pluginOpts.annotations = [options];
 
         const chart = window.acquireChart(chartConfig);
-        const xScale = chart.scales.x;
-        const yScale = chart.scales.y;
-        const eventPoint = getEventPoint(xScale, yScale, getElement(chart));
+        const eventPoint = retrieveEventPoint(chart, getEventPoint);
 
         window.triggerMouseEvent(chart, 'mousemove', eventPoint);
         window.afterEvent(chart, 'mousemove', function() {
@@ -207,4 +195,10 @@ function getElement(chart) {
   const Annotation = window['chartjs-plugin-annotation'];
   const state = Annotation._getState(chart);
   return state.elements[0];
+}
+
+function retrieveEventPoint(chart, getEventPoint) {
+  const xScale = chart.scales.x;
+  const yScale = chart.scales.y;
+  return getEventPoint(xScale, yScale, getElement(chart));
 }
