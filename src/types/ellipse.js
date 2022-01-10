@@ -5,7 +5,7 @@ import {getRectCenterPoint, getChartRect, setBorderStyle, setShadowStyle} from '
 export default class EllipseAnnotation extends Element {
 
   inRange(mouseX, mouseY, useFinalPosition) {
-    return pointInEllipse({x: mouseX, y: mouseY}, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), this.options.rotation, this.options.borderWidth);
+    return pointInEllipse({x: mouseX, y: mouseY}, this.getProps(['width', 'height'], useFinalPosition), this.options.rotation, this.options.borderWidth);
   }
 
   getCenterPoint(useFinalPosition) {
