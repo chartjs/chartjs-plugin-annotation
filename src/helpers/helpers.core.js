@@ -7,18 +7,20 @@ export function clampAll(obj, from, to) {
   return obj;
 }
 
-export function inPointRange(point, center, radius) {
+export function inPointRange(point, center, radius, borderWidth) {
   if (!point || !center || radius <= 0) {
     return false;
   }
-  return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius, 2);
+  const hBorderWidth = borderWidth / 2 || 0;
+  return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius + hBorderWidth, 2);
 }
 
-export function inBoxRange(mouseX, mouseY, {x, y, width, height}) {
-  return mouseX >= x &&
-         mouseX <= x + width &&
-         mouseY >= y &&
-         mouseY <= y + height;
+export function inBoxRange(mouseX, mouseY, {x, y, width, height}, borderWidth) {
+  const hBorderWidth = borderWidth / 2 || 0;
+  return mouseX >= x - hBorderWidth &&
+         mouseX <= x + width + hBorderWidth &&
+         mouseY >= y - hBorderWidth &&
+         mouseY <= y + height + hBorderWidth;
 }
 
 export function getElementCenterPoint(element, useFinalPosition) {

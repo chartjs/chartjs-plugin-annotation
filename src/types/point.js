@@ -6,7 +6,7 @@ export default class PointAnnotation extends Element {
 
   inRange(mouseX, mouseY, useFinalPosition) {
     const {width} = this.getProps(['width'], useFinalPosition);
-    return inPointRange({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), width / 2 + this.options.borderWidth);
+    return inPointRange({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), width / 2, this.options.borderWidth);
   }
 
   getCenterPoint(useFinalPosition) {

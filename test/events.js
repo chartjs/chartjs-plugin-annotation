@@ -207,6 +207,90 @@ export function testEvents(options, innerElement, getInnerPoint) {
   });
 }
 
+export function testEventsOnBorder(options, where, retrieveEventPoint) {
+  const descr = options.type;
+
+  const chartConfig = {
+    type: 'scatter',
+    options: {
+      animation: false,
+      scales: {
+        x: {
+          display: false,
+          min: 0,
+          max: 10
+        },
+        y: {
+          display: false,
+          min: 0,
+          max: 10
+        }
+      },
+      plugins: {
+        legend: false,
+        annotation: {
+        }
+      }
+    },
+  };
+
+  describe('events, triggered on border,', function() {
+    const pluginOpts = chartConfig.options.plugins.annotation;
+
+    [pluginOpts, options].forEach(function(targetOptions) {
+      it(`should detect enter and leave events on ${where} of the ${descr}`, function(done) {
+        const enterSpy = jasmine.createSpy('enter');
+        const leaveSpy = jasmine.createSpy('leave');
+
+        targetOptions.enter = enterSpy;
+        targetOptions.leave = leaveSpy;
+        pluginOpts.annotations = [options];
+
+        const chart = window.acquireChart(chartConfig);
+        const xScale = chart.scales.x;
+        const yScale = chart.scales.y;
+        const eventPoint = retrieveEventPoint(xScale, yScale, options);
+
+        window.triggerMouseEvent(chart, 'mousemove', eventPoint);
+        window.afterEvent(chart, 'mousemove', function() {
+          expect(enterSpy.calls.count()).toBe(1);
+
+          window.triggerMouseEvent(chart, 'mousemove', {
+            x: 0,
+            y: 0
+          });
+
+          window.afterEvent(chart, 'mousemove', function() {
+            expect(leaveSpy.calls.count()).toBe(1);
+            delete targetOptions.enter;
+            delete targetOptions.leave;
+            done();
+          });
+        });
+      });
+
+      it(`should detect click event on ${where} of the ${descr}`, function(done) {
+        const clickSpy = jasmine.createSpy('click');
+
+        targetOptions.click = clickSpy;
+        pluginOpts.annotations = [options];
+
+        const chart = window.acquireChart(chartConfig);
+        const xScale = chart.scales.x;
+        const yScale = chart.scales.y;
+        const eventPoint = retrieveEventPoint(xScale, yScale, options);
+
+        window.afterEvent(chart, 'click', function() {
+          expect(clickSpy.calls.count()).toBe(1);
+          delete targetOptions.click;
+          done();
+        });
+        window.triggerMouseEvent(chart, 'click', eventPoint);
+      });
+    });
+  });
+}
+
 function getElement(chart) {
   const Annotation = window['chartjs-plugin-annotation'];
   const state = Annotation._getState(chart);

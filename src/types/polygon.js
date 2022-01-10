@@ -5,7 +5,7 @@ import {setBorderStyle, resolvePointPosition, getElementCenterPoint, setShadowSt
 export default class PolygonAnnotation extends Element {
 
   inRange(mouseX, mouseY, useFinalPosition) {
-    const vertices = getVertices(this.getProps(['x', 'y'], useFinalPosition), this.options);
+    const vertices = getVertices(this.getProps(['x', 'y'], useFinalPosition), this.options, true);
     return vertices && vertices.length > 0 && pointIsInPolygon(vertices, mouseX, mouseY);
   }
 
@@ -81,15 +81,16 @@ PolygonAnnotation.defaultRoutes = {
   backgroundColor: 'color'
 };
 
-function getVertices(point, options) {
+function getVertices(point, options, useBorderWidth = false) {
   const {sides, radius} = options;
+  const hBorderWidth = useBorderWidth ? options.borderWidth / 2 || 0 : 0;
   let angle = (2 * PI) / sides;
   let rad = options.rotation * RAD_PER_DEG;
   const vertices = new Array();
-  addVertex(vertices, point, rad, radius);
+  addVertex(vertices, point, rad, radius + hBorderWidth);
   for (let i = 0; i < sides; i++) {
     rad += angle;
-    addVertex(vertices, point, rad, radius);
+    addVertex(vertices, point, rad, radius + hBorderWidth);
   }
   return vertices;
 }
