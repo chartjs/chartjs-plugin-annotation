@@ -33,16 +33,20 @@ describe('Ellipse annotation', function() {
     yAdjust: 0
   };
 
-  window.testEventsOnBorder(optionsWithBorder, 'top', function(xScale, yScale, opts) {
+  window.testEventsOnBorder(optionsWithBorder, 'top', function(xScale, yScale, element) {
+    const opts = element.options;
     return {x: xScale.getPixelForValue(opts.xMin) + (xScale.getPixelForValue(opts.xMax) - xScale.getPixelForValue(opts.xMin)) / 2, y: yScale.getPixelForValue(opts.yMin) - opts.borderWidth / 2 + 1};
   });
-  window.testEventsOnBorder(optionsWithBorder, 'bottom', function(xScale, yScale, opts) {
+  window.testEventsOnBorder(optionsWithBorder, 'bottom', function(xScale, yScale, element) {
+    const opts = element.options;
     return {x: xScale.getPixelForValue(opts.xMin) + (xScale.getPixelForValue(opts.xMax) - xScale.getPixelForValue(opts.xMin)) / 2, y: yScale.getPixelForValue(opts.yMax) + opts.borderWidth / 2 - 1};
   });
-  window.testEventsOnBorder(optionsWithBorder, 'left', function(xScale, yScale, opts) {
+  window.testEventsOnBorder(optionsWithBorder, 'left', function(xScale, yScale, element) {
+    const opts = element.options;
     return {x: xScale.getPixelForValue(opts.xMin) - opts.borderWidth / 2 + 1, y: yScale.getPixelForValue(opts.yMin) + (yScale.getPixelForValue(opts.yMax) - yScale.getPixelForValue(opts.yMin)) / 2};
   });
-  window.testEventsOnBorder(optionsWithBorder, 'right', function(xScale, yScale, opts) {
+  window.testEventsOnBorder(optionsWithBorder, 'right', function(xScale, yScale, element) {
+    const opts = element.options;
     return {x: xScale.getPixelForValue(opts.xMax) + opts.borderWidth / 2 - 1, y: yScale.getPixelForValue(opts.yMin) + (yScale.getPixelForValue(opts.yMax) - yScale.getPixelForValue(opts.yMin)) / 2};
   });
 

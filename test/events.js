@@ -249,7 +249,7 @@ export function testEventsOnBorder(options, where, retrieveEventPoint) {
         const chart = window.acquireChart(chartConfig);
         const xScale = chart.scales.x;
         const yScale = chart.scales.y;
-        const eventPoint = retrieveEventPoint(xScale, yScale, options);
+        const eventPoint = retrieveEventPoint(xScale, yScale, getElement(chart));
 
         window.triggerMouseEvent(chart, 'mousemove', eventPoint);
         window.afterEvent(chart, 'mousemove', function() {
@@ -278,7 +278,7 @@ export function testEventsOnBorder(options, where, retrieveEventPoint) {
         const chart = window.acquireChart(chartConfig);
         const xScale = chart.scales.x;
         const yScale = chart.scales.y;
-        const eventPoint = retrieveEventPoint(xScale, yScale, options);
+        const eventPoint = retrieveEventPoint(xScale, yScale, getElement(chart));
 
         window.afterEvent(chart, 'click', function() {
           expect(clickSpy.calls.count()).toBe(1);

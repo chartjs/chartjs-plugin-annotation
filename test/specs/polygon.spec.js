@@ -34,7 +34,8 @@ describe('Polygon annotation', function() {
 
   for (let i = 3; i <= 10; i++) {
     optionsWithBorder.sides = i;
-    window.testEventsOnBorder(optionsWithBorder, 'top', function(xScale, yScale, opts) {
+    window.testEventsOnBorder(optionsWithBorder, 'top', function(xScale, yScale, element) {
+      const opts = element.options;
       return {x: xScale.getPixelForValue(opts.xValue), y: yScale.getPixelForValue(opts.yValue) - opts.radius - opts.borderWidth / 2 + 1};
     });
   }
