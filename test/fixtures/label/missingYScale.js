@@ -29,11 +29,6 @@ module.exports = {
               position: {
                 x: 'center',
                 y: 'center'
-              },
-              xAdjust: 0,
-              yAdjust: -100,
-              callout: {
-                enabled: true,
               }
             }
           }
