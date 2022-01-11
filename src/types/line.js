@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, toRadians, toPadding} from 'chart.js/helpers';
-import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, isNotTransparent} from '../helpers';
+import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
@@ -110,15 +110,13 @@ export default class LineAnnotation extends Element {
 
     ctx.save();
     ctx.beginPath();
-    const currentBgShadowColor = setShadowColor(options);
-    setShadowStyle(ctx, options);
-    options.backgroundShadowColor = currentBgShadowColor;
     const stroke = setBorderStyle(ctx, options);
     // no border width, then line is not drawn
     if (!stroke) {
       ctx.restore();
       return;
     }
+    setShadowStyle(ctx, options);
     const angle = Math.atan2(y2 - y, x2 - x);
     const length = Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2));
     const {startOpts, endOpts, startAdjust, endAdjust} = getArrowHeads(this);
@@ -128,6 +126,7 @@ export default class LineAnnotation extends Element {
     ctx.beginPath();
     ctx.moveTo(0 + startAdjust, 0);
     ctx.lineTo(length - endAdjust, 0);
+    ctx.shadowColor = options.borderShadowColor;
     ctx.stroke();
     drawArrowHead(ctx, {offset: 0, adjust: startAdjust}, startOpts, options);
     drawArrowHead(ctx, {offset: length, adjust: -endAdjust}, endOpts, options);
@@ -400,14 +399,6 @@ function adjustLabelCoordinate(coordinate, labelSizes) {
   return coordinate;
 }
 
-function setShadowColor(options) {
-  const currentBgShadowColor = options.backgroundShadowColor;
-  if (!isNotTransparent(currentBgShadowColor)) {
-    options.backgroundShadowColor = options.borderShadowColor;
-  }
-  return currentBgShadowColor;
-}
-
 function getArrowHeads(line) {
   const options = line.options;
   const arrowStartOpts = options.arrowHeads && options.arrowHeads.start;
@@ -448,7 +439,9 @@ function drawArrowHead(ctx, {offset, adjust}, arrowOpts, options) {
     ctx.fillStyle = backgroundColor || borderColor;
     ctx.closePath();
     ctx.fill();
+    ctx.shadowColor = 'transparent';
+  } else {
+    ctx.shadowColor = options.borderShadowColor;
   }
-  ctx.shadowColor = options.borderShadowColor;
   ctx.stroke();
 }

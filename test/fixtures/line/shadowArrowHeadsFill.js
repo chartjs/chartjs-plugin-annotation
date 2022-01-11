@@ -18,6 +18,7 @@ module.exports = {
               yMax: 8,
               borderColor: 'blue',
               borderWidth: 4,
+              borderShadowColor: 'black',
               backgroundShadowColor: 'black',
               shadowBlur: 12,
               arrowHeads: {
@@ -45,6 +46,7 @@ module.exports = {
               yMax: 5,
               borderColor: 'purple',
               borderWidth: 4,
+              borderShadowColor: 'black',
               backgroundShadowColor: 'black',
               shadowBlur: 12,
               shadowOffsetX: 10,
@@ -73,6 +75,7 @@ module.exports = {
               yMax: 2,
               borderColor: 'red',
               borderWidth: 4,
+              borderShadowColor: 'black',
               backgroundShadowColor: 'black',
               shadowBlur: 12,
               shadowOffsetX: 10,

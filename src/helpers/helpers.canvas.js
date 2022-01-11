@@ -1,4 +1,4 @@
-import {addRoundedRectPath, isArray, toFont, toTRBLCorners, valueOrDefault, color} from 'chart.js/helpers';
+import {addRoundedRectPath, isArray, toFont, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
 import {clampAll} from './helpers.core';
 import {calculateTextAlignment, getSize} from './helpers.options';
 
@@ -115,9 +115,4 @@ export function drawLabel(ctx, rect, options) {
   ctx.textAlign = options.textAlign;
   ctx.fillStyle = options.color;
   labels.forEach((l, i) => ctx.fillText(l, x, y + (i * lh)));
-}
-
-export function isNotTransparent(colorOpt) {
-  const calcColor = color(colorOpt);
-  return calcColor && calcColor.valid && calcColor.rgb.a > 0;
 }
