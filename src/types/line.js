@@ -109,7 +109,6 @@ export default class LineAnnotation extends Element {
     const {x, y, x2, y2, options} = this;
 
     ctx.save();
-    ctx.beginPath();
     const stroke = setBorderStyle(ctx, options);
     // no border width, then line is not drawn
     if (!stroke) {
