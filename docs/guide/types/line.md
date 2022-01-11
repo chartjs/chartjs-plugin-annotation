@@ -49,7 +49,7 @@ module.exports = {
 The following options are available for line annotations. All of these options can be .
 
 | Name | Type | [Scriptable](../options#scriptable-options) | Default
-| ---- | ---- | ---- | :----: | ----
+| ---- | ---- | :----: | ----
 | [`adjustScaleRange`](#general) | `boolean` | Yes | `true`
 | [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
 | [`borderDash`](#styling) | `number[]` | Yes | `[]`
@@ -83,8 +83,8 @@ If one of the axes does not match an axis in the chart and the line behaviors ar
 The 2 coordinates, start, end, are optional. If not specified, the line is expanded out to the edges in the respective direction.
 The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the line is expanded out to the edges in the respective direction.
 
-| Name | Description |
-| ---- | ---- |
+| Name | Description
+| ---- | ----
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
 | `display` | Whether or not this annotation is visible.
 | `drawTime` | See [drawTime](../options#draw-time).
@@ -95,8 +95,8 @@ The line can be positioned in two different ways. If `scaleID` is set, then `val
 
 If `scaleID` is unset, then `xScaleID` and `yScaleID` are used to draw a line from `(xMin, yMin)` to `(xMax, yMax)`.
 
-| Name | Description |
-| ---- | ---- |
+| Name | Description
+| ---- | ----
 | `endValue` | End two of the line when a single scale is specified.
 | `scaleID` | ID of the scale in single scale mode. If unset, `xScaleID` and `yScaleID` are used.
 | `value` | End one of the line when a single scale is specified.
@@ -109,8 +109,8 @@ If `scaleID` is unset, then `xScaleID` and `yScaleID` are used to draw a line fr
 
 ### Styling
 
-| Name | Description |
-| ---- | ---- |
+| Name | Description
+| ---- | ----
 | `borderColor` | Stroke color.
 | `borderDash` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | Offset for line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
@@ -127,7 +127,7 @@ Namespace: `options.annotations[annotationID].label`, it defines options for the
 All of these options can be [Scriptable](../options#scriptable-options)
 
 | Name | Type | Default | Notes
-| ---- | ---- | :----: | ---- | ----
+| ---- | ---- | :----: | ----
 | `backgroundColor` | [`Color`](../options#color) | `'rgba(0,0,0,0.8)'` | Background color of the label container.
 | `backgroundShadowColor` | [`Color`](../options#color) | `'transparent'` | The color of shadow of the box where the label is located. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderCapStyle` | `string` | `'butt'` | Cap style of the border line. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap).

@@ -9,7 +9,7 @@ const options = {
     autocolors: false,
     annotation: {
       annotations: {
-        box1: {
+        ellipse1: {
           type: 'ellipse',
           xMin: 1,
           xMax: 2,
@@ -76,8 +76,8 @@ The following options are available for ellipse annotations.
 
 If one of the axes does not match an axis in the chart, the ellipse will take the entire chart dimension. The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the ellipse is expanded out to the edges in the respective direction.
 
-| Name | Description |
-| ---- | ---- |
+| Name | Description
+| ---- | ----
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
 | `display` | Whether or not this annotation is visible.
 | `drawTime` | See [drawTime](../options#draw-time).
@@ -91,8 +91,8 @@ If one of the axes does not match an axis in the chart, the ellipse will take th
 
 ### Styling
 
-| Name | Description |
-| ---- | ---- |
+| Name | Description
+| ---- | ----
 | `backgroundColor` | Fill color.
 | `backgroundShadowColor` | The color of shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderColor` | Stroke color.

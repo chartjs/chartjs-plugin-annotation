@@ -1,7 +1,7 @@
 # Annotating dataset bars 
 
 ```js chart-editor
-// <block:setup:5>
+// <block:setup:6>
 const DATA_COUNT = 4;
 const MIN = 20;
 const MAX = 100;
@@ -102,7 +102,26 @@ const annotation4 = {
 };
 // </block:annotation4>
 
-// <block:utils:6>
+/* <block:config:0> */
+const config = {
+  type: 'bar',
+  data,
+  options: {
+    plugins: {
+      annotation: {
+        annotations: {
+          annotation1,
+          annotation2,
+          annotation3,
+          annotation4
+        }
+      }
+    }
+  }
+};
+/* </block:config> */
+
+// <block:utils:5>
 // categoryPercentage is 0.8 by default
 // barPercentage is 0.9 by default
 // 1 * 0.8 * 0.9 = 0.72
@@ -122,25 +141,6 @@ function middleValue(ctx, index, perc) {
   return dataset.data[index] * perc;
 }
 // </block:utils>
-
-/* <block:config:0> */
-const config = {
-  type: 'bar',
-  data,
-  options: {
-    plugins: {
-      annotation: {
-        annotations: {
-          annotation1,
-          annotation2,
-          annotation3,
-          annotation4
-        }
-      }
-    }
-  }
-};
-/* </block:config> */
 
 const actions = [
   {

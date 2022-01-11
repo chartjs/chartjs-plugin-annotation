@@ -1,7 +1,7 @@
 # Point
 
 ```js chart-editor
-// <block:setup:3>
+// <block:setup:4>
 const DATA_COUNT = 12;
 const MIN = 0;
 const MAX = 100;
@@ -82,7 +82,7 @@ const config = {
 };
 /* </block:config> */
 
-// <block:utils:4>
+// <block:utils:3>
 function maxValue(ctx) {
   let max = 0;
   const dataset = ctx.chart.data.datasets[0];

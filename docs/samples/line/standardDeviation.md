@@ -1,7 +1,7 @@
 # Standard deviation
 
 ```js chart-editor
-// <block:setup:4>
+// <block:setup:5>
 const DATA_COUNT = 16;
 const MIN = 10;
 const MAX = 100;
@@ -107,7 +107,7 @@ const config = {
 };
 /* </block:config> */
 
-// <block:utils:5>
+// <block:utils:4>
 function average(ctx) {
   const values = ctx.chart.data.datasets[0].data;
   return values.reduce((a, b) => a + b, 0) / values.length;

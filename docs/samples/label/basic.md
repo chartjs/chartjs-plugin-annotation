@@ -1,7 +1,7 @@
 # Basic
 
 ```js chart-editor
-// <block:setup:4>
+// <block:setup:5>
 const DATA_COUNT = 12;
 const MIN = 0;
 const MAX = 100;
@@ -94,7 +94,7 @@ const config = {
 };
 /* </block:config> */
 
-// <block:utils:5>
+// <block:utils:4>
 function yValue(ctx, label) {
   const chart = ctx.chart;
   const dataset = chart.data.datasets[0];

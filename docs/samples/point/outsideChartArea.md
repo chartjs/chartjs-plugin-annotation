@@ -1,7 +1,7 @@
 # Points outside of chart area
 
 ```js chart-editor
-// <block:setup:6>
+// <block:setup:3>
 const DATA_COUNT = 12;
 const MIN = 10;
 const MAX = 100;
