@@ -45,7 +45,8 @@ describe('Polygon annotation', function() {
         xValue: 8,
         yValue: 8,
         rotation: 0,
-        radius: 30
+        radius: 30,
+        borderWidth: 0
       };
 
       // enter

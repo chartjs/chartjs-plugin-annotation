@@ -50,6 +50,7 @@ describe('Point annotation', function() {
       xValue: 8,
       yValue: 8,
       radius: 30,
+      borderWidth: 0
     };
 
     // enter

@@ -9,8 +9,7 @@ describe('Box annotation', function() {
     xMin: 2,
     yMin: 2,
     xMax: 4,
-    yMax: 4,
-    borderWidth: 0
+    yMax: 4
   });
 
   // event point callbacks

@@ -63,7 +63,8 @@ describe('Label annotation', function() {
       callout: {
         enabled: false,
       },
-      font: {}
+      font: {},
+      borderWidth: 0
     };
 
     // enter
