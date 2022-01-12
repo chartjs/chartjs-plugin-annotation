@@ -1,27 +1,16 @@
 describe('Ellipse annotation', function() {
   describe('auto', jasmine.fixtures('ellipse'));
 
-  describe('centered', function() {
-    const options = {
-      type: 'ellipse',
-      id: 'test',
-      xScaleID: 'x',
-      yScaleID: 'y',
-      xMin: 2,
-      yMin: 2,
-      xMax: 4,
-      yMax: 4,
-      borderWidth: 0
-    };
-
-    // center event
-    window.catchEnterEvent(options);
-    window.catchLeaveEvent(options);
-    window.catchClickEvent(options);
-    // x: 0, y:0
-    window.notCatchEnterEvent(options);
-    window.notCatchLeaveEvent(options);
-    window.notCatchClickEvent(options);
+  window.testCommonEvents({
+    type: 'ellipse',
+    id: 'test',
+    xScaleID: 'x',
+    yScaleID: 'y',
+    xMin: 2,
+    yMin: 2,
+    xMax: 4,
+    yMax: 4,
+    borderWidth: 0
   });
 
   // event point callbacks
@@ -38,7 +27,7 @@ describe('Ellipse annotation', function() {
     return {x: element.x + element.width + xAdjust, y: element.y + element.height / 2 + yAdjust};
   };
 
-  describe('without border', function() {
+  describe('(without border)', function() {
     const options = {
       type: 'ellipse',
       id: 'test',
@@ -83,7 +72,7 @@ describe('Ellipse annotation', function() {
 
   });
 
-  describe('with rotation', function() {
+  describe('(with rotation)', function() {
     const options = {
       type: 'ellipse',
       id: 'test',
@@ -128,7 +117,7 @@ describe('Ellipse annotation', function() {
     window.notCatchClickEvent(options, 'right', (xScale, yScale, element) => right(xScale, yScale, element, 1, 0));
   });
 
-  describe('with border', function() {
+  describe('(with border)', function() {
     const options = {
       type: 'ellipse',
       id: 'test',
@@ -172,7 +161,7 @@ describe('Ellipse annotation', function() {
     window.notCatchClickEvent(options, 'right', (xScale, yScale, element) => right(xScale, yScale, element, element.options.borderWidth / 2 + 1, 0));
   });
 
-  describe('events on ellipse with radius 0', function() {
+  describe('(with radius 0)', function() {
     const options = {
       type: 'ellipse',
       id: 'test',
@@ -194,7 +183,7 @@ describe('Ellipse annotation', function() {
 
   });
 
-  describe('events on rotated ellipse', function() {
+  describe('(with rotation)', function() {
     const options = {
       type: 'ellipse',
       id: 'test',
@@ -214,12 +203,12 @@ describe('Ellipse annotation', function() {
       return {x: xScale.getPixelForValue(3), y: yScale.getPixelForValue(5)};
     };
 
-    window.catchEnterEvent(options, 'rotated point', eventIn);
-    window.catchLeaveEvent(options, 'rotated point', eventOut);
-    window.catchClickEvent(options, 'rotated point', eventIn);
-    window.notCatchEnterEvent(options, 'rotated point', eventOut);
-    window.notCatchLeaveEvent(options, 'rotated point', eventIn);
-    window.notCatchClickEvent(options, 'rotated point', eventOut);
+    window.catchEnterEvent(options, 'point', eventIn);
+    window.catchLeaveEvent(options, 'point', eventOut);
+    window.catchClickEvent(options, 'point', eventIn);
+    window.notCatchEnterEvent(options, 'point', eventOut);
+    window.notCatchLeaveEvent(options, 'point', eventIn);
+    window.notCatchClickEvent(options, 'point', eventOut);
 
   });
 
@@ -281,13 +270,15 @@ describe('Ellipse annotation', function() {
       window.afterEvent(chart, 'click', function() {
         expect(clickSpy.calls.count()).toBe(0);
 
-        const eventPoint2 = {x: xScale.getPixelForValue(5), y: yScale.getPixelForValue(5)};
         window.afterEvent(chart, 'click', function() {
           expect(clickSpy.calls.count()).toBe(1);
           delete ellipseOpts.click;
           done();
         });
-        window.triggerMouseEvent(chart, 'click', eventPoint2);
+        window.triggerMouseEvent(chart, 'click', {
+          x: xScale.getPixelForValue(5),
+          y: yScale.getPixelForValue(5)
+        });
       });
       window.triggerMouseEvent(chart, 'click', eventPoint);
     });

@@ -1,234 +1,55 @@
-const getDefaultEventPoint = (xScale, yScale, element) => element.getCenterPoint();
-const getDefaultLeaveEventPoint = function() {
-  return {x: 0, y: 0};
+const getCenterPoint = (xScale, yScale, element) => element.getCenterPoint();
+const getX0Y0Point = function() {
+  return {
+    x: 0,
+    y: 0
+  };
 };
 
-export function catchEnterEvent(options, position = 'center', getEventPoint = getDefaultEventPoint) {
-  testEnterEvent(options, true, position, getEventPoint);
-}
-
-export function notCatchEnterEvent(options, position = 'center', getEventPoint = getDefaultLeaveEventPoint) {
-  testEnterEvent(options, false, position, getEventPoint);
-}
-
-export function catchLeaveEvent(options, position = 'center', getEventPoint = getDefaultLeaveEventPoint) {
-  testLeaveEvent(options, true, position, getEventPoint);
-}
-
-export function notCatchLeaveEvent(options, position = 'center', getEventPoint = getDefaultEventPoint) {
-  testLeaveEvent(options, false, position, getEventPoint);
-}
-
-export function catchClickEvent(options, position = 'center', getEventPoint = getDefaultEventPoint) {
-  testClickEvent(options, true, position, getEventPoint);
-}
-
-export function notCatchClickEvent(options, position = 'center', getEventPoint = getDefaultLeaveEventPoint) {
-  testClickEvent(options, false, position, getEventPoint);
-}
-
-// TO BE REMOVED
-export function testEvents(options, position = 'center', getEventPoint = getDefaultEventPoint) {
-  const descr = options.type;
-  const chartConfig = {
-    type: 'scatter',
-    options: {
-      animation: false,
-      scales: {
-        x: {
-          display: false,
-          min: 0,
-          max: 10
-        },
-        y: {
-          display: false,
-          min: 0,
-          max: 10
-        }
-      },
-      plugins: {
-        legend: false,
-        annotation: {
-        }
-      }
-    },
-  };
-
-  describe('events', function() {
-    const pluginOpts = chartConfig.options.plugins.annotation;
-
-    it(`should not call removed hook on ${position} of the ${descr}`, function(done) {
-      const enterSpy = jasmine.createSpy('enter');
-      const leaveSpy = jasmine.createSpy('leave');
-
-      pluginOpts.enter = enterSpy;
-      pluginOpts.leave = leaveSpy;
-      pluginOpts.annotations = [options];
-
-      const chart = window.acquireChart(chartConfig);
-      pluginOpts.enter = undefined;
-      chart.update();
-      const eventPoint = retrieveEventPoint(chart, getEventPoint);
-
-      window.triggerMouseEvent(chart, 'mousemove', eventPoint);
-      window.afterEvent(chart, 'mousemove', function() {
-        expect(enterSpy.calls.count()).toBe(0);
-
-        window.triggerMouseEvent(chart, 'mousemove', {
-          x: 0,
-          y: 0
-        });
-
-        window.afterEvent(chart, 'mousemove', function() {
-          expect(leaveSpy.calls.count()).toBe(1);
-          delete pluginOpts.enter;
-          delete pluginOpts.leave;
-          done();
-        });
-      });
-    });
-
-    [pluginOpts, options].forEach(function(targetOptions) {
-
-      it(`should detect enter and leave events on ${position} of the ${descr}`, function(done) {
-        const enterSpy = jasmine.createSpy('enter');
-        const leaveSpy = jasmine.createSpy('leave');
-
-        targetOptions.enter = enterSpy;
-        targetOptions.leave = leaveSpy;
-        pluginOpts.annotations = [options];
-
-        const chart = window.acquireChart(chartConfig);
-        const eventPoint = retrieveEventPoint(chart, getEventPoint);
-
-        window.triggerMouseEvent(chart, 'mousemove', eventPoint);
-        window.afterEvent(chart, 'mousemove', function() {
-          expect(enterSpy.calls.count()).toBe(1);
-
-          window.triggerMouseEvent(chart, 'mousemove', {
-            x: 0,
-            y: 0
-          });
-
-          window.afterEvent(chart, 'mousemove', function() {
-            expect(leaveSpy.calls.count()).toBe(1);
-            delete targetOptions.enter;
-            delete targetOptions.leave;
-            done();
-          });
-        });
-      });
-
-      it(`should detect click event on ${position} of the ${descr}`, function(done) {
-        const clickSpy = jasmine.createSpy('click');
-
-        targetOptions.click = clickSpy;
-        pluginOpts.annotations = [options];
-
-        const chart = window.acquireChart(chartConfig);
-        const eventPoint = retrieveEventPoint(chart, getEventPoint);
-
-        window.afterEvent(chart, 'click', function() {
-          expect(clickSpy.calls.count()).toBe(1);
-          delete targetOptions.click;
-          done();
-        });
-        window.triggerMouseEvent(chart, 'click', eventPoint);
-      });
-
-      it(`should detect dbl click event on ${position} of the ${descr}`, function(done) {
-        const dblClickSpy = jasmine.createSpy('dblclick');
-
-        targetOptions.dblclick = dblClickSpy;
-        pluginOpts.dblClickSpeed = 1000;
-        pluginOpts.annotations = [options];
-
-        const chart = window.acquireChart(chartConfig);
-        const eventPoint = retrieveEventPoint(chart, getEventPoint);
-
-        let dblClick = false;
-        window.afterEvent(chart, 'click', function() {
-          if (!dblClick) {
-            dblClick = true;
-            window.triggerMouseEvent(chart, 'click', eventPoint);
-          } else {
-            expect(dblClickSpy.calls.count()).toBe(1);
-            delete targetOptions.dblclick;
-            delete pluginOpts.dblClickSpeed;
-            done();
-          }
-        });
-        window.triggerMouseEvent(chart, 'click', eventPoint);
-      });
-
-      it(`should detect a click event even if 2 clicks are fired on ${position} of the ${descr}`, function(done) {
-        const dblClickSpy = jasmine.createSpy('dblclick');
-
-        targetOptions.dblclick = dblClickSpy;
-        pluginOpts.dblClickSpeed = 1;
-        pluginOpts.annotations = [options];
-
-        const chart = window.acquireChart(chartConfig);
-        const eventPoint = retrieveEventPoint(chart, getEventPoint);
-
-        let dblClick = false;
-        window.afterEvent(chart, 'click', function() {
-          if (!dblClick) {
-            dblClick = true;
-            setTimeout(() => {
-              window.triggerMouseEvent(chart, 'click', eventPoint);
-            }, 50);
-          } else {
-            expect(dblClickSpy.calls.count()).toBe(0);
-            delete targetOptions.dblclick;
-            delete pluginOpts.dblClickSpeed;
-            done();
-          }
-        });
-        window.triggerMouseEvent(chart, 'click', eventPoint);
-      });
-
-      it(`should detect a property in the context, to check persistency, on ${position} of the ${descr}`, function(done) {
-        targetOptions.enter = function(ctx) {
-          ctx.persistency = true;
-        };
-        targetOptions.leave = function(ctx) {
-          expect(ctx.persistency).toBe(true);
-          done();
-        };
-        pluginOpts.annotations = [options];
-
-        const chart = window.acquireChart(chartConfig);
-        const eventPoint = retrieveEventPoint(chart, getEventPoint);
-
-        window.triggerMouseEvent(chart, 'mousemove', eventPoint);
-        window.afterEvent(chart, 'mousemove', function() {
-
-          window.triggerMouseEvent(chart, 'mousemove', {
-            x: 0,
-            y: 0
-          });
-
-          window.afterEvent(chart, 'mousemove', function() {
-            delete targetOptions.enter;
-            delete targetOptions.leave;
-          });
-        });
-      });
-    });
+export function testCommonEvents(options, description = '(common test)') {
+  describe(`${description}`, function() {
+    window.catchEnterEvent(options, 'center');
+    window.catchLeaveEvent(options, '{x: 0, y: 0}');
+    window.catchClickEvent(options, 'center');
+    window.notCatchEnterEvent(options, '{x: 0, y: 0}');
+    window.notCatchLeaveEvent(options, 'center');
+    window.notCatchClickEvent(options, '{x: 0, y: 0}');
   });
 }
-// END TO BE REMOVED
+
+export function catchEnterEvent(options, position, getEventPoint = getCenterPoint) {
+  testEnterEvent(options, 1, position, getEventPoint);
+}
+
+export function notCatchEnterEvent(options, position, getEventPoint = getX0Y0Point) {
+  testEnterEvent(options, 0, position, getEventPoint);
+}
+
+export function catchLeaveEvent(options, position, getEventPoint = getX0Y0Point) {
+  testLeaveEvent(options, 1, position, getEventPoint);
+}
+
+export function notCatchLeaveEvent(options, position, getEventPoint = getCenterPoint) {
+  testLeaveEvent(options, 0, position, getEventPoint);
+}
+
+export function catchClickEvent(options, position, getEventPoint = getCenterPoint) {
+  testClickEvent(options, 1, position, getEventPoint);
+}
+
+export function notCatchClickEvent(options, position, getEventPoint = getX0Y0Point) {
+  testClickEvent(options, 0, position, getEventPoint);
+}
 
 function testEnterEvent(options, toBe, position, getEventPoint) {
-  const context = getTestCaseContext(options, toBe);
+  const context = getTestCaseContext(toBe);
 
   describe('events', function() {
     const pluginOpts = context.chartConfig.options.plugins.annotation;
 
     [pluginOpts, options].forEach(function(targetOptions) {
 
-      it(`${context.description} detect enter event on ${position} of the ${context.type}`, function(done) {
+      it(`${context.description} detect enter event on ${position}`, function(done) {
         const enterSpy = jasmine.createSpy('enter');
 
         targetOptions.enter = enterSpy;
@@ -250,14 +71,14 @@ function testEnterEvent(options, toBe, position, getEventPoint) {
 }
 
 function testLeaveEvent(options, toBe, position, getEventPoint) {
-  const context = getTestCaseContext(options, toBe);
+  const context = getTestCaseContext(toBe);
 
   describe('events', function() {
     const pluginOpts = context.chartConfig.options.plugins.annotation;
 
     [pluginOpts, options].forEach(function(targetOptions) {
 
-      it(`${context.description} detect leave event on ${position} of the ${context.type}`, function(done) {
+      it(`${context.description} detect leave event on ${position}`, function(done) {
         const enterSpy = jasmine.createSpy('enter');
         const leaveSpy = jasmine.createSpy('leave');
 
@@ -266,7 +87,7 @@ function testLeaveEvent(options, toBe, position, getEventPoint) {
         pluginOpts.annotations = [options];
 
         const chart = window.acquireChart(context.chartConfig);
-        const eventPoint = retrieveEventPoint(chart, getDefaultEventPoint);
+        const eventPoint = retrieveEventPoint(chart, getCenterPoint);
 
         window.triggerMouseEvent(chart, 'mousemove', eventPoint);
         window.afterEvent(chart, 'mousemove', function() {
@@ -287,14 +108,14 @@ function testLeaveEvent(options, toBe, position, getEventPoint) {
 }
 
 function testClickEvent(options, toBe, position, getEventPoint) {
-  const context = getTestCaseContext(options, toBe);
+  const context = getTestCaseContext(toBe);
 
   describe('events', function() {
     const pluginOpts = context.chartConfig.options.plugins.annotation;
 
     [pluginOpts, options].forEach(function(targetOptions) {
 
-      it(`${context.description} detect click event on ${position} of the ${context.type}`, function(done) {
+      it(`${context.description} detect click event on ${position}`, function(done) {
         const clickSpy = jasmine.createSpy('click');
 
         targetOptions.click = clickSpy;
@@ -311,7 +132,7 @@ function testClickEvent(options, toBe, position, getEventPoint) {
         window.triggerMouseEvent(chart, 'click', eventPoint);
       });
 
-      it(`${context.description} detect dbl click event on ${position} of the ${context.type}`, function(done) {
+      it(`${context.description} detect dbl click event on ${position}`, function(done) {
         const dblClickSpy = jasmine.createSpy('dblclick');
 
         targetOptions.dblclick = dblClickSpy;
@@ -351,7 +172,7 @@ function retrieveEventPoint(chart, getEventPoint) {
   return getEventPoint(xScale, yScale, getElement(chart));
 }
 
-function getTestCaseContext(options, toBe) {
+function getTestCaseContext(toBe) {
   const chartConfig = {
     type: 'scatter',
     options: {
@@ -376,9 +197,8 @@ function getTestCaseContext(options, toBe) {
     },
   };
   return {
-    type: options.type,
     description: toBe ? 'should' : 'should not',
-    compare: toBe + 0,
+    compare: toBe,
     chartConfig
   };
 }

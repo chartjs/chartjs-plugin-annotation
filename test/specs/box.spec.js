@@ -1,28 +1,16 @@
 describe('Box annotation', function() {
   describe('auto', jasmine.fixtures('box'));
 
-  describe('centered', function() {
-    const options = {
-      type: 'box',
-      id: 'test',
-      xScaleID: 'x',
-      yScaleID: 'y',
-      xMin: 2,
-      yMin: 2,
-      xMax: 4,
-      yMax: 4,
-      borderWidth: 0
-    };
-
-    // center event
-    window.catchEnterEvent(options);
-    window.catchLeaveEvent(options);
-    window.catchClickEvent(options);
-    // x: 0, y:0
-    window.notCatchEnterEvent(options);
-    window.notCatchLeaveEvent(options);
-    window.notCatchClickEvent(options);
-
+  window.testCommonEvents({
+    type: 'box',
+    id: 'test',
+    xScaleID: 'x',
+    yScaleID: 'y',
+    xMin: 2,
+    yMin: 2,
+    xMax: 4,
+    yMax: 4,
+    borderWidth: 0
   });
 
   // event point callbacks
@@ -43,7 +31,7 @@ describe('Box annotation', function() {
     return {x: xScale.getPixelForValue(opts.xMax) + xAdjust, y: yScale.getPixelForValue(opts.yMin) + yAdjust};
   };
 
-  describe('without border', function() {
+  describe('(without border)', function() {
     const options = {
       type: 'box',
       id: 'test',
@@ -87,7 +75,7 @@ describe('Box annotation', function() {
     window.notCatchClickEvent(options, 'right', (xScale, yScale, element) => right(xScale, yScale, element, 1, 1));
   });
 
-  describe('with border', function() {
+  describe('(with border)', function() {
     const options = {
       type: 'box',
       id: 'test',
