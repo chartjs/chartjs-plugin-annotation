@@ -111,10 +111,7 @@ export default {
     },
     clip: true,
     dblClickSpeed: 350, // ms
-    drawTime: 'afterDatasetsDraw',
-    label: {
-      drawTime: null
-    }
+    drawTime: 'afterDatasetsDraw'
   },
 
   descriptors: {
