@@ -1,28 +1,6 @@
 describe('Point annotation', function() {
   describe('auto', jasmine.fixtures('point'));
 
-  window.testCommonEvents({
-    type: 'point',
-    id: 'test',
-    xScaleID: 'x',
-    yScaleID: 'y',
-    xValue: 8,
-    yValue: 8,
-    radius: 30,
-  }, '(located by a point)');
-
-  window.testCommonEvents({
-    type: 'point',
-    id: 'test',
-    xScaleID: 'x',
-    yScaleID: 'y',
-    xMin: 2,
-    yMin: 2,
-    xMax: 4,
-    yMax: 4,
-    radius: 30,
-  }, '(located by a box)');
-
   // event point callbacks
   const top = function(xScale, yScale, element, xAdjust, yAdjust) {
     const opts = element.options;
@@ -41,92 +19,38 @@ describe('Point annotation', function() {
     return {x: xScale.getPixelForValue(opts.xValue) + opts.radius + xAdjust, y: yScale.getPixelForValue(opts.yValue) + yAdjust};
   };
 
-  describe('(without border)', function() {
-    const options = {
-      type: 'point',
-      id: 'test',
-      xScaleID: 'x',
-      yScaleID: 'y',
-      xValue: 8,
-      yValue: 8,
-      radius: 30,
-      borderWidth: 0
-    };
+  window.testCommonEvents({
+    type: 'point',
+    id: 'test',
+    xScaleID: 'x',
+    yScaleID: 'y',
+    xValue: 8,
+    yValue: 8,
+    radius: 30,
+  }, '(located by a point, without border)');
 
-    // enter
-    window.catchEnterEvent(options, 'top', (xScale, yScale, element) => top(xScale, yScale, element, 0, 1));
-    window.catchEnterEvent(options, 'bottom', (xScale, yScale, element) => bottom(xScale, yScale, element, 0, -1));
-    window.catchEnterEvent(options, 'left', (xScale, yScale, element) => left(xScale, yScale, element, 1, 0));
-    window.catchEnterEvent(options, 'right', (xScale, yScale, element) => right(xScale, yScale, element, -1, 0));
-    window.notCatchEnterEvent(options, 'top', (xScale, yScale, element) => top(xScale, yScale, element, 0, -1));
-    window.notCatchEnterEvent(options, 'bottom', (xScale, yScale, element) => bottom(xScale, yScale, element, 0, 1));
-    window.notCatchEnterEvent(options, 'left', (xScale, yScale, element) => left(xScale, yScale, element, -1, 0));
-    window.notCatchEnterEvent(options, 'right', (xScale, yScale, element) => right(xScale, yScale, element, 1, 0));
+  window.testCommonEvents({
+    type: 'point',
+    id: 'test',
+    xScaleID: 'x',
+    yScaleID: 'y',
+    xMin: 2,
+    yMin: 2,
+    xMax: 4,
+    yMax: 4,
+    radius: 30,
+  }, '(located by a box, without border)');
 
-    // leave
-    window.catchLeaveEvent(options, 'top', (xScale, yScale, element) => top(xScale, yScale, element, 0, -1));
-    window.catchLeaveEvent(options, 'bottom', (xScale, yScale, element) => bottom(xScale, yScale, element, 0, 1));
-    window.catchLeaveEvent(options, 'left', (xScale, yScale, element) => left(xScale, yScale, element, -1, 0));
-    window.catchLeaveEvent(options, 'right', (xScale, yScale, element) => right(xScale, yScale, element, 1, 0));
-    window.notCatchLeaveEvent(options, 'top', (xScale, yScale, element) => top(xScale, yScale, element, 0, 1));
-    window.notCatchLeaveEvent(options, 'bottom', (xScale, yScale, element) => bottom(xScale, yScale, element, 0, -1));
-    window.notCatchLeaveEvent(options, 'left', (xScale, yScale, element) => left(xScale, yScale, element, 1, 0));
-    window.notCatchLeaveEvent(options, 'right', (xScale, yScale, element) => right(xScale, yScale, element, -1, 0));
-
-    // click
-    window.catchClickEvent(options, 'top', (xScale, yScale, element) => top(xScale, yScale, element, 0, 1));
-    window.catchClickEvent(options, 'bottom', (xScale, yScale, element) => bottom(xScale, yScale, element, 0, -1));
-    window.catchClickEvent(options, 'left', (xScale, yScale, element) => left(xScale, yScale, element, 1, 0));
-    window.catchClickEvent(options, 'right', (xScale, yScale, element) => right(xScale, yScale, element, -1, 0));
-    window.notCatchClickEvent(options, 'top', (xScale, yScale, element) => top(xScale, yScale, element, 0, -1));
-    window.notCatchClickEvent(options, 'bottom', (xScale, yScale, element) => bottom(xScale, yScale, element, 0, 1));
-    window.notCatchClickEvent(options, 'left', (xScale, yScale, element) => left(xScale, yScale, element, -1, 0));
-    window.notCatchClickEvent(options, 'right', (xScale, yScale, element) => right(xScale, yScale, element, 1, 0));
-
-  });
-
-  describe('(with border)', function() {
-    const options = {
-      type: 'point',
-      id: 'test',
-      xScaleID: 'x',
-      yScaleID: 'y',
-      xValue: 8,
-      yValue: 8,
-      radius: 30,
-      borderWidth: 12
-    };
-
-    // enter
-    window.catchEnterEvent(options, 'top', (xScale, yScale, element) => top(xScale, yScale, element, 0, -element.options.borderWidth / 2 + 1));
-    window.catchEnterEvent(options, 'bottom', (xScale, yScale, element) => bottom(xScale, yScale, element, 0, element.options.borderWidth / 2 - 1));
-    window.catchEnterEvent(options, 'left', (xScale, yScale, element) => left(xScale, yScale, element, -element.options.borderWidth / 2 + 1, 0));
-    window.catchEnterEvent(options, 'right', (xScale, yScale, element) => right(xScale, yScale, element, element.options.borderWidth / 2 - 1, 0));
-    window.notCatchEnterEvent(options, 'top', (xScale, yScale, element) => top(xScale, yScale, element, 0, -element.options.borderWidth / 2 - 1));
-    window.notCatchEnterEvent(options, 'bottom', (xScale, yScale, element) => bottom(xScale, yScale, element, 0, element.options.borderWidth / 2 + 1));
-    window.notCatchEnterEvent(options, 'left', (xScale, yScale, element) => left(xScale, yScale, element, -element.options.borderWidth / 2 - 1, 0));
-    window.notCatchEnterEvent(options, 'right', (xScale, yScale, element) => right(xScale, yScale, element, element.options.borderWidth / 2 + 1, 0));
-
-    // leave
-    window.catchLeaveEvent(options, 'top', (xScale, yScale, element) => top(xScale, yScale, element, 0, -element.options.borderWidth / 2 - 1));
-    window.catchLeaveEvent(options, 'bottom', (xScale, yScale, element) => bottom(xScale, yScale, element, 0, element.options.borderWidth / 2 + 1));
-    window.catchLeaveEvent(options, 'left', (xScale, yScale, element) => left(xScale, yScale, element, -element.options.borderWidth / 2 - 1, 1));
-    window.catchLeaveEvent(options, 'right', (xScale, yScale, element) => right(xScale, yScale, element, element.options.borderWidth / 2 + 1, 1));
-    window.notCatchLeaveEvent(options, 'top', (xScale, yScale, element) => top(xScale, yScale, element, 0, -element.options.borderWidth / 2 + 1));
-    window.notCatchLeaveEvent(options, 'bottom', (xScale, yScale, element) => bottom(xScale, yScale, element, 0, element.options.borderWidth / 2 - 1));
-    window.notCatchLeaveEvent(options, 'left', (xScale, yScale, element) => left(xScale, yScale, element, -element.options.borderWidth / 2 + 1, 0));
-    window.notCatchLeaveEvent(options, 'right', (xScale, yScale, element) => right(xScale, yScale, element, element.options.borderWidth / 2 - 1, 0));
-
-    // click
-    window.catchClickEvent(options, 'top', (xScale, yScale, element) => top(xScale, yScale, element, 0, -element.options.borderWidth / 2 + 1));
-    window.catchClickEvent(options, 'bottom', (xScale, yScale, element) => bottom(xScale, yScale, element, 0, element.options.borderWidth / 2 - 1));
-    window.catchClickEvent(options, 'left', (xScale, yScale, element) => left(xScale, yScale, element, -element.options.borderWidth / 2 + 1, 0));
-    window.catchClickEvent(options, 'right', (xScale, yScale, element) => right(xScale, yScale, element, element.options.borderWidth / 2 - 1, 0));
-    window.notCatchClickEvent(options, 'top', (xScale, yScale, element) => top(xScale, yScale, element, 0, -element.options.borderWidth / 2 - 1));
-    window.notCatchClickEvent(options, 'bottom', (xScale, yScale, element) => bottom(xScale, yScale, element, 0, element.options.borderWidth / 2 + 1));
-    window.notCatchClickEvent(options, 'left', (xScale, yScale, element) => left(xScale, yScale, element, -element.options.borderWidth / 2 - 1, 0));
-    window.notCatchClickEvent(options, 'right', (xScale, yScale, element) => right(xScale, yScale, element, element.options.borderWidth / 2 + 1, 0));
-  });
+  window.testEventsOnBorder({
+    type: 'point',
+    id: 'test',
+    xScaleID: 'x',
+    yScaleID: 'y',
+    xValue: 8,
+    yValue: 8,
+    radius: 30,
+    borderWidth: 12
+  }, top, bottom, left, right);
 
   describe('(with radius 0)', function() {
     const options = {
@@ -139,15 +63,12 @@ describe('Point annotation', function() {
       radius: 0,
       borderWidth: 12
     };
-
     const center = function(xScale, yScale, element) {
       const opts = element.options;
       return {x: xScale.getPixelForValue(opts.xValue), y: yScale.getPixelForValue(opts.yValue)};
     };
-
     window.notCatchEnterEvent(options, 'center', center);
     window.notCatchClickEvent(options, 'center', center);
-
   });
 
   describe('applying defaults', function() {

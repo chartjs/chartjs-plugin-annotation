@@ -5,8 +5,9 @@ const getX0Y0Point = function() {
     y: 0
   };
 };
+const isFunction = (obj) => typeof obj === 'function';
 
-export function testCommonEvents(options, description = '(common test)') {
+export function testCommonEvents(options, description) {
   describe(`${description}`, function() {
     window.catchEnterEvent(options, 'center');
     window.catchLeaveEvent(options, '{x: 0, y: 0}');
@@ -168,6 +169,36 @@ export function testCommonEvents(options, description = '(common test)') {
   });
 }
 
+export function testEventsOnBorder(options, top, bottom, left, right, borderWidth) {
+  describe('(with border)', function() {
+    const hBorderWidth = (borderWidth || options.borderWidth) / 2;
+    const adjustStartIn = -hBorderWidth + 1;
+    const adjustEndIn = hBorderWidth - 1;
+    const adjustStartOut = -hBorderWidth - 1;
+    const adjustEndOut = hBorderWidth + 1;
+    if (isFunction(top)) {
+      testEventsByPosition(options, 'top',
+        (xScale, yScale, element) => top(xScale, yScale, element, 0, adjustStartIn),
+        (xScale, yScale, element) => top(xScale, yScale, element, 0, adjustStartOut));
+    }
+    if (isFunction(bottom)) {
+      testEventsByPosition(options, 'bottom',
+        (xScale, yScale, element) => bottom(xScale, yScale, element, 0, adjustEndIn),
+        (xScale, yScale, element) => bottom(xScale, yScale, element, 0, adjustEndOut));
+    }
+    if (isFunction(left)) {
+      testEventsByPosition(options, 'left',
+        (xScale, yScale, element) => left(xScale, yScale, element, adjustStartIn, 0),
+        (xScale, yScale, element) => left(xScale, yScale, element, adjustStartOut, 0));
+    }
+    if (isFunction(right)) {
+      testEventsByPosition(options, 'right',
+        (xScale, yScale, element) => right(xScale, yScale, element, adjustEndIn, 0),
+        (xScale, yScale, element) => right(xScale, yScale, element, adjustEndOut, 0));
+    }
+  });
+}
+
 export function catchEnterEvent(options, position, getEventPoint = getCenterPoint) {
   testEnterEvent(options, 1, position, getEventPoint);
 }
@@ -190,6 +221,15 @@ export function catchClickEvent(options, position, getEventPoint = getCenterPoin
 
 export function notCatchClickEvent(options, position, getEventPoint = getX0Y0Point) {
   testClickEvent(options, 0, position, getEventPoint);
+}
+
+function testEventsByPosition(options, position, callbackIn, callbackOut) {
+  window.catchEnterEvent(options, position, callbackIn);
+  window.notCatchEnterEvent(options, position, callbackOut);
+  window.catchLeaveEvent(options, position, callbackOut);
+  window.notCatchLeaveEvent(options, position, callbackIn);
+  window.catchClickEvent(options, position, callbackIn);
+  window.notCatchClickEvent(options, position, callbackOut);
 }
 
 function testEnterEvent(options, toBe, position, getEventPoint) {

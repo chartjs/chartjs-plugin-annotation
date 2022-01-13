@@ -1,5 +1,5 @@
 import {acquireChart, addMatchers, releaseCharts, specsFromFixtures, triggerMouseEvent, afterEvent} from 'chartjs-test-utils';
-import {testCommonEvents, catchEnterEvent, notCatchEnterEvent, catchLeaveEvent, notCatchLeaveEvent, catchClickEvent, notCatchClickEvent} from './events';
+import {testCommonEvents, testEventsOnBorder, catchEnterEvent, notCatchEnterEvent, catchLeaveEvent, notCatchLeaveEvent, catchClickEvent, notCatchClickEvent} from './events';
 import {createCanvas} from './utils';
 
 window.devicePixelRatio = 1;
@@ -7,6 +7,7 @@ window.acquireChart = acquireChart;
 window.afterEvent = afterEvent;
 window.triggerMouseEvent = triggerMouseEvent;
 window.testCommonEvents = testCommonEvents;
+window.testEventsOnBorder = testEventsOnBorder;
 window.catchEnterEvent = catchEnterEvent;
 window.notCatchEnterEvent = notCatchEnterEvent;
 window.catchLeaveEvent = catchLeaveEvent;
