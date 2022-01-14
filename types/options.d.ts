@@ -59,7 +59,7 @@ export interface ArrowHeadOptions {
   borderColor?: Scriptable<Color, PartialEventContext>,
   borderDash?: Scriptable<number[], PartialEventContext>,
   borderDashOffset?: Scriptable<number, PartialEventContext>,
-  display?: Scriptable<boolean, PartialEventContext>,
+  enabled?: Scriptable<boolean, PartialEventContext>,
   fill?: Scriptable<boolean, PartialEventContext>,
   length?: Scriptable<number, PartialEventContext>,
   width?: Scriptable<number, PartialEventContext>,
