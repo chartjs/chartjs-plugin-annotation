@@ -177,6 +177,8 @@ All of these options can be [Scriptable](../options#scriptable-options)
 
 Enabling it, you can add arrow heads at start and/or end of a line. It uses the `borderWidth` of the line options to configure the line width of the arrow head.
 
+The following options are available for can be specified per (`start` and/or `end`) arrow head, or at the top level (`arrowHeads`) which apply to all arrow heads.
+
 All of these options can be [Scriptable](../options#scriptable-options)
 
 | Name | Type | Default | Notes

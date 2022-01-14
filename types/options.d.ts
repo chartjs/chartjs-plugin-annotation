@@ -68,7 +68,7 @@ export interface ArrowHeadOptions extends ShadowOptions {
   width?: Scriptable<number, PartialEventContext>,
 }
 
-export interface ArrowHeadsOptions {
+export interface ArrowHeadsOptions extends ArrowHeadOptions{
   end?: ArrowHeadOptions,
   start?: ArrowHeadOptions,
 }

@@ -36,4 +36,12 @@ Object.keys(annotationTypes).forEach(key => {
   defaults.describe(`elements.${annotationTypes[key].id}`, {
     _fallback: 'plugins.annotation'
   });
+  if (key === 'line') {
+    defaults.describe(`elements.${annotationTypes[key].id}.arrowHeads.start`, {
+      _fallback: true
+    });
+    defaults.describe(`elements.${annotationTypes[key].id}.arrowHeads.end`, {
+      _fallback: true
+    });
+  }
 });

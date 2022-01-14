@@ -206,25 +206,38 @@ LineAnnotation.id = 'lineAnnotation';
 
 const arrowHeadsDefaults = {
   backgroundColor: undefined,
-  backgroundShadowColor: 'transparent',
+  backgroundShadowColor: undefined,
   borderColor: undefined,
-  borderDash: [],
-  borderDashOffset: 0,
-  borderShadowColor: 'transparent',
-  enabled: false,
-  fill: false,
-  length: 12,
-  shadowBlur: 0,
-  shadowOffsetX: 0,
-  shadowOffsetY: 0,
-  width: 6
+  borderDash: undefined,
+  borderDashOffset: undefined,
+  borderShadowColor: undefined,
+  enabled: undefined,
+  fill: undefined,
+  length: undefined,
+  shadowBlur: undefined,
+  shadowOffsetX: undefined,
+  shadowOffsetY: undefined,
+  width: undefined
 };
 
 LineAnnotation.defaults = {
   adjustScaleRange: true,
   arrowHeads: {
+    backgroundColor: undefined,
+    backgroundShadowColor: 'transparent',
+    borderColor: undefined,
+    borderDash: [],
+    borderDashOffset: 0,
+    borderShadowColor: 'transparent',
+    enabled: false,
     end: Object.assign({}, arrowHeadsDefaults),
-    start: Object.assign({}, arrowHeadsDefaults)
+    fill: false,
+    length: 12,
+    shadowBlur: 0,
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
+    start: Object.assign({}, arrowHeadsDefaults),
+    width: 6
   },
   borderDash: [],
   borderDashOffset: 0,
