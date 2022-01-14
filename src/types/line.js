@@ -109,11 +109,9 @@ export default class LineAnnotation extends Element {
     const {x, y, x2, y2, options} = this;
 
     ctx.save();
-    const stroke = setBorderStyle(ctx, options);
-    // no border width, then line is not drawn
-    if (!stroke) {
-      ctx.restore();
-      return;
+    if (!setBorderStyle(ctx, options)) {
+      // no border width, then line is not drawn
+      return ctx.restore();
     }
     setShadowStyle(ctx, options);
     const angle = Math.atan2(y2 - y, x2 - x);
