@@ -18,19 +18,22 @@ module.exports = {
               yMax: 8,
               borderColor: 'blue',
               borderWidth: 4,
-              backgroundShadowColor: 'black',
               borderShadowColor: 'black',
               shadowBlur: 12,
               arrowHeads: {
                 start: {
                   enabled: true,
                   borderColor: 'blue',
+                  borderShadowColor: 'black',
+                  shadowBlur: 12,
                   length: 30,
                   width: 15
                 },
                 end: {
                   enabled: true,
                   borderColor: 'blue',
+                  borderShadowColor: 'black',
+                  shadowBlur: 12,
                   length: 30,
                   width: 15
                 }
@@ -52,12 +55,18 @@ module.exports = {
                 start: {
                   enabled: true,
                   borderColor: 'purple',
+                  borderShadowColor: 'black',
+                  shadowBlur: 12,
+                  shadowOffsetX: 10,
                   length: 30,
                   width: 15
                 },
                 end: {
                   enabled: true,
                   borderColor: 'purple',
+                  borderShadowColor: 'black',
+                  shadowBlur: 12,
+                  shadowOffsetX: 10,
                   length: 30,
                   width: 15
                 }
@@ -80,12 +89,20 @@ module.exports = {
                 start: {
                   enabled: true,
                   borderColor: 'red',
+                  borderShadowColor: 'black',
+                  shadowBlur: 12,
+                  shadowOffsetX: 10,
+                  shadowOffsetY: 10,
                   length: 30,
                   width: 15
                 },
                 end: {
                   enabled: true,
                   borderColor: 'red',
+                  borderShadowColor: 'black',
+                  shadowBlur: 12,
+                  shadowOffsetX: 10,
+                  shadowOffsetY: 10,
                   length: 30,
                   width: 15
                 }

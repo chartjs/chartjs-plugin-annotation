@@ -19,13 +19,14 @@ module.exports = {
               borderColor: 'blue',
               borderWidth: 4,
               borderShadowColor: 'black',
-              backgroundShadowColor: 'black',
               shadowBlur: 12,
               arrowHeads: {
                 start: {
                   enabled: true,
                   fill: true,
                   borderColor: 'blue',
+                  backgroundShadowColor: 'black',
+                  shadowBlur: 12,
                   length: 30,
                   width: 15
                 },
@@ -33,6 +34,8 @@ module.exports = {
                   enabled: true,
                   fill: true,
                   borderColor: 'blue',
+                  backgroundShadowColor: 'black',
+                  shadowBlur: 12,
                   length: 30,
                   width: 15
                 }
@@ -47,7 +50,6 @@ module.exports = {
               borderColor: 'purple',
               borderWidth: 4,
               borderShadowColor: 'black',
-              backgroundShadowColor: 'black',
               shadowBlur: 12,
               shadowOffsetX: 10,
               arrowHeads: {
@@ -55,6 +57,9 @@ module.exports = {
                   enabled: true,
                   fill: true,
                   borderColor: 'purple',
+                  backgroundShadowColor: 'black',
+                  shadowBlur: 12,
+                  shadowOffsetX: 10,
                   length: 30,
                   width: 15
                 },
@@ -62,6 +67,9 @@ module.exports = {
                   enabled: true,
                   fill: true,
                   borderColor: 'purple',
+                  backgroundShadowColor: 'black',
+                  shadowOffsetX: 10,
+                  shadowBlur: 12,
                   length: 30,
                   width: 15
                 }
@@ -76,7 +84,6 @@ module.exports = {
               borderColor: 'red',
               borderWidth: 4,
               borderShadowColor: 'black',
-              backgroundShadowColor: 'black',
               shadowBlur: 12,
               shadowOffsetX: 10,
               shadowOffsetY: 10,
@@ -85,6 +92,10 @@ module.exports = {
                   enabled: true,
                   fill: true,
                   borderColor: 'red',
+                  backgroundShadowColor: 'black',
+                  shadowBlur: 12,
+                  shadowOffsetX: 10,
+                  shadowOffsetY: 10,
                   length: 30,
                   width: 15
                 },
@@ -92,6 +103,10 @@ module.exports = {
                   enabled: true,
                   fill: true,
                   borderColor: 'red',
+                  backgroundShadowColor: 'black',
+                  shadowOffsetX: 10,
+                  shadowOffsetY: 10,
+                  shadowBlur: 12,
                   length: 30,
                   width: 15
                 }

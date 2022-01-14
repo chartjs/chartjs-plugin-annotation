@@ -1,6 +1,6 @@
 import { Color, FontSpec, BorderRadius } from 'chart.js';
 import { PartialEventContext } from './events';
-import { DrawTime, Scriptable } from './options';
+import { DrawTime, Scriptable, ShadowOptions } from './options';
 
 export interface CoreLabelOptions {
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
@@ -82,7 +82,7 @@ export interface ContainedLabelOptions extends CoreLabelOptions {
   cornerRadius?: Scriptable<number | BorderRadius, PartialEventContext>,
 }
 
-export interface LabelOptions extends ContainedLabelOptions {
+export interface LabelOptions extends ContainedLabelOptions, ShadowOptions {
   position?: Scriptable<LabelPosition, PartialEventContext>,
   /**
    * Whether the label is enabled and should be displayed
@@ -106,11 +106,6 @@ export interface LabelOptions extends ContainedLabelOptions {
    * @deprecated
    */
   yPadding?: Scriptable<number, PartialEventContext>,
-  backgroundShadowColor?: Scriptable<Color, PartialEventContext>,
-  borderShadowColor?: Scriptable<Color, PartialEventContext>,
-  shadowBlur?: Scriptable<number, PartialEventContext>,
-  shadowOffsetX?: Scriptable<number, PartialEventContext>,
-  shadowOffsetY?: Scriptable<number, PartialEventContext>
 }
 
 export interface BoxLabelOptions extends CoreLabelOptions {

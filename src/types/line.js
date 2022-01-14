@@ -206,12 +206,17 @@ LineAnnotation.id = 'lineAnnotation';
 
 const arrowHeadsDefaults = {
   backgroundColor: undefined,
+  backgroundShadowColor: 'transparent',
   borderColor: undefined,
   borderDash: [],
   borderDashOffset: 0,
+  borderShadowColor: 'transparent',
   enabled: false,
   fill: false,
   length: 12,
+  shadowBlur: 0,
+  shadowOffsetX: 0,
+  shadowOffsetY: 0,
   width: 6
 };
 
@@ -221,7 +226,6 @@ LineAnnotation.defaults = {
     end: Object.assign({}, arrowHeadsDefaults),
     start: Object.assign({}, arrowHeadsDefaults)
   },
-  backgroundShadowColor: 'transparent',
   borderDash: [],
   borderDashOffset: 0,
   borderShadowColor: 'transparent',
@@ -429,7 +433,7 @@ function drawArrowHead(ctx, {offset, adjust}, arrowOpts, options) {
   const {length, width, fill, backgroundColor, borderColor} = arrowOpts;
   const arrowOffsetX = Math.abs(offset - length) + adjust;
   ctx.beginPath();
-  setShadowStyle(ctx, options);
+  setShadowStyle(ctx, arrowOpts);
   setBorderStyle(ctx, arrowOpts);
   ctx.moveTo(arrowOffsetX, -width);
   ctx.lineTo(offset + adjust, 0);
@@ -440,7 +444,7 @@ function drawArrowHead(ctx, {offset, adjust}, arrowOpts, options) {
     ctx.fill();
     ctx.shadowColor = 'transparent';
   } else {
-    ctx.shadowColor = options.borderShadowColor;
+    ctx.shadowColor = arrowOpts.borderShadowColor;
   }
   ctx.stroke();
 }

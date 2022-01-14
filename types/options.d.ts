@@ -18,26 +18,29 @@ export type AnnotationType = keyof AnnotationTypeRegistry;
 export type AnnotationOptions<TYPE extends AnnotationType = AnnotationType> =
 	{ [key in TYPE]: { type: key } & AnnotationTypeRegistry[key] }[TYPE]
 
-export interface CoreAnnotationOptions extends AnnotationEvents {
+interface ShadowOptions {
+  backgroundShadowColor?: Scriptable<Color, PartialEventContext>,
+  borderShadowColor?: Scriptable<Color, PartialEventContext>,
+  shadowBlur?: Scriptable<number, PartialEventContext>,
+  shadowOffsetX?: Scriptable<number, PartialEventContext>,
+  shadowOffsetY?: Scriptable<number, PartialEventContext>
+}
+
+export interface CoreAnnotationOptions extends AnnotationEvents, ShadowOptions {
   id?: string,
   display?: Scriptable<boolean, PartialEventContext>,
   adjustScaleRange?: Scriptable<boolean, PartialEventContext>,
-  backgroundShadowColor?: Scriptable<Color, PartialEventContext>,
   borderColor?: Scriptable<Color, PartialEventContext>,
   borderWidth?: Scriptable<number, PartialEventContext>,
   borderDash?: Scriptable<number[], PartialEventContext>,
   borderDashOffset?: Scriptable<number, PartialEventContext>,
-  borderShadowColor?: Scriptable<Color, PartialEventContext>,
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
   endValue?: Scriptable<number|string, PartialEventContext>,
   scaleID?: Scriptable<string, PartialEventContext>,
   value?: Scriptable<number|string, PartialEventContext>,
   xScaleID?: Scriptable<string, PartialEventContext>,
   yScaleID?: Scriptable<string, PartialEventContext>,
-  yPadding?: Scriptable<number, PartialEventContext>,
-  shadowBlur?: Scriptable<number, PartialEventContext>,
-  shadowOffsetX?: Scriptable<number, PartialEventContext>,
-  shadowOffsetY?: Scriptable<number, PartialEventContext>
+  yPadding?: Scriptable<number, PartialEventContext>
 }
 
 export type Scriptable<T, TContext> = T | ((ctx: TContext, options: AnnotationOptions) => T);
@@ -54,7 +57,7 @@ interface AnnotationPointCoordinates extends AnnotationCoordinates {
   yValue?: Scriptable<ScaleValue, PartialEventContext>,
 }
 
-export interface ArrowHeadOptions {
+export interface ArrowHeadOptions extends ShadowOptions {
   backgroundColor?: Scriptable<Color, PartialEventContext>,
   borderColor?: Scriptable<Color, PartialEventContext>,
   borderDash?: Scriptable<number[], PartialEventContext>,
