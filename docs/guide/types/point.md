@@ -83,8 +83,8 @@ If one of the axes does not match an axis in the chart, the point annotation wil
 The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges in the respective direction and the box size is used to calculated the center of the point. To enable to use the box positioning, the `radius` must be set to `0` or `NaN`. 
 
 
-| Name | Description |
-| ---- | ---- |
+| Name | Description
+| ---- | ----
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
 | `display` | Whether or not this annotation is visible.
 | `drawTime` | See [drawTime](../options#draw-time).
@@ -103,8 +103,8 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 
 ### Styling
 
-| Name | Description |
-| ---- | ---- |
+| Name | Description
+| ---- | ----
 | `backgroundColor` | Fill color.
 | `backgroundShadowColor` | The color of shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderColor` | Stroke color.

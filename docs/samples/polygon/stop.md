@@ -1,7 +1,7 @@
 # Stop
 
 ```js chart-editor
-// <block:setup:6>
+// <block:setup:7>
 const DATA_COUNT = 8;
 const MIN = 10;
 const MAX = 100;
@@ -67,7 +67,7 @@ const annotation3 = {
   xValue: (ctx) => value(ctx, 0, 4, 'x'),
   yValue: (ctx) => value(ctx, 0, 4, 'y')
 };
-// </block:annotation5>
+// </block:annotation3>
 
 // <block:annotation4:4>
 const annotation4 = {
@@ -123,7 +123,7 @@ const config = {
 };
 /* </block:config> */
 
-// <block:utils:7>
+// <block:utils:6>
 function value(ctx, datasetIndex, index, prop) {
   const meta = ctx.chart.getDatasetMeta(datasetIndex);
   const parsed = meta.controller.getParsed(index);

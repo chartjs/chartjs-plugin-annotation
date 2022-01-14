@@ -1,7 +1,7 @@
 # Shadow
 
 ```js chart-editor
-// <block:setup:4>
+// <block:setup:5>
 const DATA_COUNT = 8;
 const MIN = 10;
 const MAX = 100;
@@ -97,7 +97,7 @@ const config = {
 };
 /* </block:config> */
 
-// <block:utils:3>
+// <block:utils:4>
 function value(ctx, datasetIndex, index, prop) {
   const meta = ctx.chart.getDatasetMeta(datasetIndex);
   const parsed = meta.controller.getParsed(index);
