@@ -79,8 +79,8 @@ The following options are available for box annotations.
 
 If one of the axes does not match an axis in the chart, the box will take the entire chart dimension. The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges in the respective direction.
 
-| Name | Description |
-| ---- | ---- |
+| Name | Description
+| ---- | ----
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
 | `display` | Whether or not this annotation is visible.
 | `drawTime` | See [drawTime](../options#draw-time).
@@ -93,8 +93,8 @@ If one of the axes does not match an axis in the chart, the box will take the en
 
 ### Styling
 
-| Name | Description |
-| ---- | ---- |
+| Name | Description
+| ---- | ----
 | `backgroundColor` | Fill color.
 | `backgroundShadowColor` | The color of shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderCapStyle` | Cap style of the border line. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap).
@@ -120,7 +120,7 @@ Namespace: `options.annotations[annotationID].label`, it defines options for the
 All of these options can be [Scriptable](../options#scriptable-options)
 
 | Name | Type | Default | Notes
-| ---- | ---- | :----: | ---- | ----
+| ---- | ---- | :----: | ----
 | `color` | [`Color`](../options#color) | `'#fff'` | Text color.
 | `content` | `string`\|`string[]`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image)\|[`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) | `null` | The content to show in the label.
 | `drawTime` | `string` | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the box annotation draw time if unset

@@ -3,7 +3,7 @@
 <input id="update" type="range" style="width:100%"/>
 
 ```js chart-editor
-// <block:setup:2>
+// <block:setup:3>
 const uniqueId = new Date().getTime();
 
 const data = {
@@ -56,7 +56,7 @@ const config = {
 };
 /* </block:config> */
 
-// <block:utils:3>
+// <block:utils:2>
 document.getElementById('update').addEventListener('input', update);
 
 function update() {
