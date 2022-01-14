@@ -62,6 +62,7 @@ export interface ArrowHeadOptions extends ShadowOptions {
   borderColor?: Scriptable<Color, PartialEventContext>,
   borderDash?: Scriptable<number[], PartialEventContext>,
   borderDashOffset?: Scriptable<number, PartialEventContext>,
+  borderWidth?: Scriptable<number, PartialEventContext>,
   enabled?: Scriptable<boolean, PartialEventContext>,
   fill?: Scriptable<boolean, PartialEventContext>,
   length?: Scriptable<number, PartialEventContext>,

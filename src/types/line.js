@@ -125,8 +125,8 @@ export default class LineAnnotation extends Element {
     ctx.lineTo(length - endAdjust, 0);
     ctx.shadowColor = options.borderShadowColor;
     ctx.stroke();
-    drawArrowHead(ctx, {offset: 0, adjust: startAdjust}, startOpts, options);
-    drawArrowHead(ctx, {offset: length, adjust: -endAdjust}, endOpts, options);
+    drawArrowHead(ctx, 0, startAdjust, startOpts);
+    drawArrowHead(ctx, length, -endAdjust, endOpts);
     ctx.restore();
   }
 
@@ -209,6 +209,7 @@ const arrowHeadsDefaults = {
   borderDash: undefined,
   borderDashOffset: undefined,
   borderShadowColor: undefined,
+  borderWidth: undefined,
   enabled: undefined,
   fill: undefined,
   length: undefined,
@@ -227,6 +228,7 @@ LineAnnotation.defaults = {
     borderDash: [],
     borderDashOffset: 0,
     borderShadowColor: 'transparent',
+    borderWidth: undefined,
     enabled: false,
     end: Object.assign({}, arrowHeadsDefaults),
     fill: false,
@@ -436,11 +438,10 @@ function getLineAdjust(line, arrowOpts) {
   return Math.abs(interpolateX(0, p1, p2));
 }
 
-function drawArrowHead(ctx, {offset, adjust}, arrowOpts, options) {
+function drawArrowHead(ctx, offset, adjust, arrowOpts) {
   if (!arrowOpts || !arrowOpts.enabled) {
     return;
   }
-  arrowOpts.borderWidth = options.borderWidth;
   const {length, width, fill, backgroundColor, borderColor} = arrowOpts;
   const arrowOffsetX = Math.abs(offset - length) + adjust;
   ctx.beginPath();
