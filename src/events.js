@@ -31,12 +31,14 @@ export function updateListeners(chart, state, options) {
           }
         });
       }
-      moveHooks.forEach(hook => {
-        if (typeof scope[hook] === 'function') {
-          state.listened = true;
-          state.moveListened = true;
-        }
-      });
+      if (!state.moveListened) {
+        moveHooks.forEach(hook => {
+          if (typeof scope[hook] === 'function') {
+            state.listened = true;
+            state.moveListened = true;
+          }
+        });
+      }
     });
   }
 }
