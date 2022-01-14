@@ -1,7 +1,7 @@
 # Lower and upper bounds labels
 
 ```js chart-editor
-// <block:setup:3>
+// <block:setup:4>
 const DATA_COUNT = 8;
 const MIN = 10;
 const MAX = 100;
@@ -79,7 +79,7 @@ const config = {
 };
 /* </block:config> */
 
-// <block:utils:4>
+// <block:utils:3>
 function minValue(ctx) {
   const dataset = ctx.chart.data.datasets[0];
   const min = dataset.data.reduce((max, point) => Math.min(point, max), Infinity);

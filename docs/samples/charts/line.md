@@ -1,13 +1,12 @@
 # Line Chart
 
 ```js chart-editor
-// <block:setup:5>
+// <block:setup:4>
 const DATA_COUNT = 8;
 const MIN = 10;
 const MAX = 100;
 
 Utils.srand(8);
-
 
 const numberCfg = {count: DATA_COUNT, min: MIN, max: MAX};
 

@@ -84,7 +84,6 @@ function max(ctx, datasetIndex, prop) {
   const dataset = ctx.chart.data.datasets[datasetIndex];
   return dataset.data.reduce((v, point) => Math.max(point[prop], v), -Infinity);
 }
-
 // </block:utils>
 
 const actions = [

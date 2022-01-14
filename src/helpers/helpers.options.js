@@ -37,24 +37,18 @@ export function calculateTextAlignment(size, options) {
   return x;
 }
 
-function readValueToProps(value, props, defValue) {
-  const ret = {};
-  const objProps = isObject(props);
-  const keys = objProps ? Object.keys(props) : props;
-  const read = isObject(value)
-    ? objProps
-      ? prop => valueOrDefault(value[prop], value[props[prop]])
-      : prop => value[prop]
-    : () => value;
-
-  for (const prop of keys) {
-    ret[prop] = valueOrDefault(read(prop), defValue);
-  }
-  return ret;
-}
-
 export function toPosition(value) {
-  return readValueToProps(value, ['x', 'y'], 'center');
+  if (isObject(value)) {
+    return {
+      x: valueOrDefault(value.x, 'center'),
+      y: valueOrDefault(value.y, 'center'),
+    };
+  }
+  value = valueOrDefault(value, 'center');
+  return {
+    x: value,
+    y: value
+  };
 }
 
 export function isBoundToPoint(options) {

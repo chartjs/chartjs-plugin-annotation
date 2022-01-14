@@ -5,7 +5,6 @@ const moveHooks = ['enter', 'leave'];
 export const hooks = clickHooks.concat(moveHooks);
 
 export function updateListeners(chart, state, options) {
-  const annotations = state.annotations || [];
   state.listened = false;
   state.moveListened = false;
 
@@ -24,7 +23,7 @@ export function updateListeners(chart, state, options) {
   });
 
   if (!state.listened || !state.moveListened) {
-    annotations.forEach(scope => {
+    state.annotations.forEach(scope => {
       if (!state.listened) {
         clickHooks.forEach(hook => {
           if (typeof scope[hook] === 'function') {

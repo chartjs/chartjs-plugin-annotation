@@ -1,7 +1,7 @@
 # Callout
 
 ```js chart-editor
-// <block:setup:2>
+// <block:setup:3>
 const DATA_COUNT = 12;
 const MIN = 0;
 const MAX = 100;
@@ -62,7 +62,7 @@ const config = {
 };
 /* </block:config> */
 
-// <block:utils:3>
+// <block:utils:2>
 function maxValue(ctx) {
   const values = ctx.chart.data.datasets[0].data;
   return Math.max(...values);

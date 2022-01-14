@@ -1,7 +1,7 @@
 # Disclosure
 
 ```js chart-editor
-// <block:setup:5>
+// <block:setup:2>
 const DATA_COUNT = 12;
 const MIN = 10;
 const MAX = 100;

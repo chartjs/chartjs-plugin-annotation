@@ -1,7 +1,7 @@
 # Basic
 
 ```js chart-editor
-// <block:setup:4>
+// <block:setup:2>
 const DATA_COUNT = 8;
 const MIN = 10;
 const MAX = 100;
