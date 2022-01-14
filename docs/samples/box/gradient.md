@@ -1,4 +1,4 @@
-# Frame
+# Using gradients
 
 ```js chart-editor
 // <block:setup:4>
@@ -20,7 +20,6 @@ const data = {
 // <block:annotation1:1>
 const annotation1 = {
   type: 'box',
-  backgroundColor: 'rgba(0, 150, 0, 0.02)',
   borderColor: 'rgb(0, 150, 0)',
   borderRadius: {
     topLeft: 4,
@@ -33,14 +32,13 @@ const annotation1 = {
   xMin: (ctx) => min(ctx, 0, 'x') - 2,
   yMax: (ctx) => max(ctx, 0, 'y') + 2,
   yMin: (ctx) => min(ctx, 0, 'y') - 2,
-  beforeDraw: (ctx) => drawFrame(ctx)
+  beforeDraw: (ctx) => getGradient(ctx, 'rgba(0, 150, 0, 0.3)')
 };
 // </block:annotation1>
 
 // <block:annotation2:2>
 const annotation2 = {
   type: 'box',
-  backgroundColor: 'rgba(150, 0, 0, 0.02)',
   borderColor: 'rgb(150, 0, 0)',
   borderRadius: {
     topLeft: 4,
@@ -53,7 +51,7 @@ const annotation2 = {
   xMin: (ctx) => min(ctx, 1, 'x') - 2,
   yMax: (ctx) => max(ctx, 1, 'y') + 2,
   yMin: (ctx) => min(ctx, 1, 'y') - 2,
-  beforeDraw: (ctx) => drawFrame(ctx)
+  beforeDraw: (ctx) => getGradient(ctx, 'rgba(150, 0, 0, 0.3)')
 };
 // </block:annotation2>
 
@@ -88,19 +86,15 @@ function max(ctx, datasetIndex, prop) {
   return dataset.data.reduce((v, point) => Math.max(point[prop], v), -Infinity);
 }
 
-function drawFrame(context) {
-  const ctx = context.chart.ctx;
-  const {x, y, width, height, options} = context.element;
-  ctx.save();
-  ctx.strokeStyle = options.borderColor;
-  ctx.beginPath();
-  Utils.addRoundedRect(ctx, {
-    x: x - 5, y: y - 5, w: width + 10, h: height + 10,
-    radius: options.borderRadius
-  });
-  ctx.closePath();
-  ctx.stroke();
-  ctx.restore();
+function getGradient(context, color) {
+  const {x, y, x2, y2, options} = context.element;
+  const g = context.chart.ctx.createLinearGradient(
+    x, y,
+    x2, y2
+  );
+  g.addColorStop(0, 'transparent');
+  g.addColorStop(1, color);
+  options.backgroundColor = g;
   return true;
 }
 // </block:utils>

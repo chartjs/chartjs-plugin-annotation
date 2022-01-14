@@ -107,14 +107,14 @@ module.exports = {
             'box/basic',
             'box/quarters',
             'box/disclosure',
-            'box/frame'
+            'box/gradient'
           ]
         },
         {
           title: 'Ellipse annotations',
           children: [
             'ellipse/basic',
-            'ellipse/rotation',
+            'ellipse/rotation'
           ]
         },
         {
