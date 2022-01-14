@@ -34,11 +34,11 @@ module.exports = {
               },
               arrowHeads: {
                 start: {
-                  display: true,
+                  enabled: true,
                   borderColor: 'black'
                 },
                 end: {
-                  display: true,
+                  enabled: true,
                   borderColor: 'black'
                 }
               },

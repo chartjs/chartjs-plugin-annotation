@@ -209,7 +209,7 @@ const arrowHeadsDefaults = {
   borderColor: undefined,
   borderDash: [],
   borderDashOffset: 0,
-  display: false,
+  enabled: false,
   fill: false,
   length: 12,
   width: 6
@@ -218,8 +218,8 @@ const arrowHeadsDefaults = {
 LineAnnotation.defaults = {
   adjustScaleRange: true,
   arrowHeads: {
-    end: arrowHeadsDefaults,
-    start: arrowHeadsDefaults
+    end: Object.assign({}, arrowHeadsDefaults),
+    start: Object.assign({}, arrowHeadsDefaults)
   },
   backgroundShadowColor: 'transparent',
   borderDash: [],
@@ -411,7 +411,7 @@ function getArrowHeads(line) {
 }
 
 function getLineAdjust(line, arrowOpts) {
-  if (!arrowOpts || !arrowOpts.display) {
+  if (!arrowOpts || !arrowOpts.enabled) {
     return 0;
   }
   const {length, width} = arrowOpts;
@@ -422,7 +422,7 @@ function getLineAdjust(line, arrowOpts) {
 }
 
 function drawArrowHead(ctx, {offset, adjust}, arrowOpts, options) {
-  if (!arrowOpts || !arrowOpts.display) {
+  if (!arrowOpts || !arrowOpts.enabled) {
     return;
   }
   arrowOpts.borderWidth = options.borderWidth;

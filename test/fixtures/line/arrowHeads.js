@@ -31,12 +31,12 @@ module.exports = {
               },
               arrowHeads: {
                 start: {
-                  display: true,
+                  enabled: true,
                   length: 30,
                   width: 15
                 },
                 end: {
-                  display: true,
+                  enabled: true,
                   length: 30,
                   width: 15
                 }
@@ -59,7 +59,7 @@ module.exports = {
               },
               arrowHeads: {
                 start: {
-                  display: true,
+                  enabled: true,
                   length: 30,
                   width: 15
                 },
@@ -82,7 +82,7 @@ module.exports = {
               },
               arrowHeads: {
                 end: {
-                  display: true,
+                  enabled: true,
                   length: 30,
                   width: 15
                 },
@@ -105,7 +105,7 @@ module.exports = {
               },
               arrowHeads: {
                 start: {
-                  display: true,
+                  enabled: true,
                   borderDash: [3, 6],
                   borderDashOffset: 0,
                   length: 30,
@@ -131,7 +131,7 @@ module.exports = {
               },
               arrowHeads: {
                 end: {
-                  display: true,
+                  enabled: true,
                   length: 40,
                   width: 30
                 },
@@ -154,12 +154,12 @@ module.exports = {
               },
               arrowHeads: {
                 start: {
-                  display: true,
+                  enabled: true,
                   length: 15,
                   width: 5
                 },
                 end: {
-                  display: true,
+                  enabled: true,
                   length: 15,
                   width: 5
                 }
@@ -182,12 +182,12 @@ module.exports = {
               },
               arrowHeads: {
                 start: {
-                  display: true,
+                  enabled: true,
                   length: 15,
                   width: 5
                 },
                 end: {
-                  display: true,
+                  enabled: true,
                   length: 15,
                   width: 5
                 }
@@ -210,12 +210,12 @@ module.exports = {
               },
               arrowHeads: {
                 start: {
-                  display: true,
+                  enabled: true,
                   length: 15,
                   width: 5
                 },
                 end: {
-                  display: true,
+                  enabled: true,
                   length: 15,
                   width: 5
                 }

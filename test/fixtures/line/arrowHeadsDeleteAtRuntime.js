@@ -34,10 +34,10 @@ module.exports = {
               },
               arrowHeads: {
                 start: {
-                  display: true
+                  enabled: true
                 },
                 end: {
-                  display: true
+                  enabled: true
                 }
               },
               click({chart, element}) {

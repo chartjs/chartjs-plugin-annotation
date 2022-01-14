@@ -187,7 +187,7 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `borderColor` | [`Color`](../options#color) | `undefined` | The border arrow head color.
 | `borderDash` | `number[]` | `[]` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | `number` | `0` | Offset for border arrow head dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
-| `display` | `boolean` | `false` | Whether or not the arrow head is shown.
+| `enabled` | `boolean` | `false` | Whether or not the arrow head is shown.
 | `fill` | `boolean` | `false` | Whether or not the arrow head is filled.
 | `length` | `number` | `12` | The length of the arrow head in pixels.
 | `width` | `number` | `6` | The width of the arrow head in pixels.

@@ -31,13 +31,13 @@ module.exports = {
               },
               arrowHeads: {
                 start: {
-                  display: () => true,
+                  enabled: () => true,
                   fill: () => true,
                   length: () => 30,
                   width: () => 15
                 },
                 end: {
-                  display: () => true,
+                  enabled: () => true,
                   fill: () => true,
                   length: () => 30,
                   width: () => 15
@@ -62,7 +62,7 @@ module.exports = {
               arrowHeads: {
                 start() {
                   return {
-                    display: true,
+                    enabled: true,
                     fill: true,
                     backgroundColor: 'orange',
                     length: 30,
@@ -90,7 +90,7 @@ module.exports = {
               arrowHeads: {
                 end() {
                   return {
-                    display: true,
+                    enabled: true,
                     fill: true,
                     backgroundColor: 'orange',
                     borderColor: 'orange',

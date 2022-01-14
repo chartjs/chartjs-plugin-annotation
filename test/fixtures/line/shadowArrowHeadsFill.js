@@ -23,14 +23,14 @@ module.exports = {
               shadowBlur: 12,
               arrowHeads: {
                 start: {
-                  display: true,
+                  enabled: true,
                   fill: true,
                   borderColor: 'blue',
                   length: 30,
                   width: 15
                 },
                 end: {
-                  display: true,
+                  enabled: true,
                   fill: true,
                   borderColor: 'blue',
                   length: 30,
@@ -52,14 +52,14 @@ module.exports = {
               shadowOffsetX: 10,
               arrowHeads: {
                 start: {
-                  display: true,
+                  enabled: true,
                   fill: true,
                   borderColor: 'purple',
                   length: 30,
                   width: 15
                 },
                 end: {
-                  display: true,
+                  enabled: true,
                   fill: true,
                   borderColor: 'purple',
                   length: 30,
@@ -82,14 +82,14 @@ module.exports = {
               shadowOffsetY: 10,
               arrowHeads: {
                 start: {
-                  display: true,
+                  enabled: true,
                   fill: true,
                   borderColor: 'red',
                   length: 30,
                   width: 15
                 },
                 end: {
-                  display: true,
+                  enabled: true,
                   fill: true,
                   borderColor: 'red',
                   length: 30,

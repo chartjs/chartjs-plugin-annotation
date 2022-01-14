@@ -23,13 +23,13 @@ module.exports = {
               shadowBlur: 12,
               arrowHeads: {
                 start: {
-                  display: true,
+                  enabled: true,
                   borderColor: 'blue',
                   length: 30,
                   width: 15
                 },
                 end: {
-                  display: true,
+                  enabled: true,
                   borderColor: 'blue',
                   length: 30,
                   width: 15
@@ -50,13 +50,13 @@ module.exports = {
               shadowOffsetX: 10,
               arrowHeads: {
                 start: {
-                  display: true,
+                  enabled: true,
                   borderColor: 'purple',
                   length: 30,
                   width: 15
                 },
                 end: {
-                  display: true,
+                  enabled: true,
                   borderColor: 'purple',
                   length: 30,
                   width: 15
@@ -78,13 +78,13 @@ module.exports = {
               shadowOffsetY: 10,
               arrowHeads: {
                 start: {
-                  display: true,
+                  enabled: true,
                   borderColor: 'red',
                   length: 30,
                   width: 15
                 },
                 end: {
-                  display: true,
+                  enabled: true,
                   borderColor: 'red',
                   length: 30,
                   width: 15

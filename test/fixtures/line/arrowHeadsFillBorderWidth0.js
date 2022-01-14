@@ -31,13 +31,13 @@ module.exports = {
               },
               arrowHeads: {
                 start: {
-                  display: true,
+                  enabled: true,
                   fill: true,
                   length: 30,
                   width: 15
                 },
                 end: {
-                  display: true,
+                  enabled: true,
                   fill: true,
                   length: 30,
                   width: 15
@@ -61,7 +61,7 @@ module.exports = {
               },
               arrowHeads: {
                 start: {
-                  display: true,
+                  enabled: true,
                   fill: true,
                   backgroundColor: 'orange',
                   length: 30,
@@ -86,7 +86,7 @@ module.exports = {
               },
               arrowHeads: {
                 end: {
-                  display: true,
+                  enabled: true,
                   fill: true,
                   backgroundColor: 'orange',
                   borderColor: 'orange',
@@ -113,7 +113,7 @@ module.exports = {
               },
               arrowHeads: {
                 start: {
-                  display: true,
+                  enabled: true,
                   borderDash: [3, 6],
                   borderDashOffset: 0,
                   fill: true,
@@ -141,7 +141,7 @@ module.exports = {
               },
               arrowHeads: {
                 end: {
-                  display: true,
+                  enabled: true,
                   fill: true,
                   backgroundColor: 'transparent',
                   length: 40,
@@ -166,13 +166,13 @@ module.exports = {
               },
               arrowHeads: {
                 start: {
-                  display: true,
+                  enabled: true,
                   length: 15,
                   width: 5,
                   fill: true,
                 },
                 end: {
-                  display: true,
+                  enabled: true,
                   length: 15,
                   width: 5,
                   fill: true,
@@ -197,14 +197,14 @@ module.exports = {
               },
               arrowHeads: {
                 start: {
-                  display: true,
+                  enabled: true,
                   length: 15,
                   width: 5,
                   fill: true,
                   backgroundColor: 'lightGreen',
                 },
                 end: {
-                  display: true,
+                  enabled: true,
                   length: 15,
                   width: 5,
                   fill: true,
@@ -229,14 +229,14 @@ module.exports = {
               },
               arrowHeads: {
                 start: {
-                  display: true,
+                  enabled: true,
                   length: 15,
                   width: 5,
                   fill: true,
                   backgroundColor: 'lightGreen',
                 },
                 end: {
-                  display: true,
+                  enabled: true,
                   length: 15,
                   width: 5,
                   fill: true,

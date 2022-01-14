@@ -34,11 +34,11 @@ const annotation1 = {
   },
   arrowHeads: {
     start: {
-      display: true,
+      enabled: true,
       borderColor: 'green'
     },
     end: {
-      display: true,
+      enabled: true,
       borderColor: 'green'
     }
   },

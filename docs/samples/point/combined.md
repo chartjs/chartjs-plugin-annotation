@@ -35,7 +35,7 @@ const annotation1 = {
   },
   arrowHeads: {
     end: {
-      display: true,
+      enabled: true,
       fill: true,
       borderColor: 'green'
     }
