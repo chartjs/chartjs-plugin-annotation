@@ -29,6 +29,11 @@ export function drawLabelElement(chart, state, element) {
   draw(chart, state, element, {method: 'drawLabel', status: '_drawLabel'});
 }
 
+export function resetDrawnStatus(element) {
+  element._drawElement = false;
+  element._drawLabel = false;
+}
+
 function draw(chart, state, element, options) {
   if (beforeDraw(state, element) === false) {
     return;
@@ -48,16 +53,10 @@ function beforeDraw(state, element) {
 function afterDraw(state, element) {
   if (state.hooked && element._drawElement && (!hasLabel(element) || element._drawLabel)) {
     invokeHook(state, element, 'afterDraw');
-    resetDrawnStatus(element);
   }
 }
 
 function invokeHook(state, element, hook) {
   const callbackHook = element.options[hook] || state.hooks[hook];
   return callback(callbackHook, [element.$context]);
-}
-
-function resetDrawnStatus(element) {
-  element._drawElement = false;
-  element._drawLabel = false;
 }

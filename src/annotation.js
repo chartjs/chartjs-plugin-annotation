@@ -1,7 +1,7 @@
 import {Animations, Chart} from 'chart.js';
 import {clipArea, unclipArea, isObject, isArray} from 'chart.js/helpers';
 import {handleEvent, eventHooks, updateListeners} from './events';
-import {drawElement, drawLabelElement, elementHooks, updateHooks, hasLabel} from './hooks';
+import {resetDrawnStatus, drawElement, drawLabelElement, elementHooks, updateHooks, hasLabel} from './hooks';
 import {adjustScaleRange, verifyScaleOptions} from './scale';
 import {annotationTypes} from './types';
 import {version} from '../package.json';
@@ -87,6 +87,10 @@ export default {
   },
 
   beforeDraw(chart, _args, options) {
+    const state = chartStates.get(chart);
+    state.visibleElements.forEach(element => {
+      resetDrawnStatus(element);
+    });
     draw(chart, 'beforeDraw', options.clip);
   },
 
