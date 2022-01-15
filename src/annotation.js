@@ -45,18 +45,26 @@ export default {
   beforeUpdate(chart, args, options) {
     const state = chartStates.get(chart);
     const annotations = state.annotations = [];
+    const annotationsOption = chart.config.options.plugins.annotation.annotations;
+    const annotationsResolver = options.annotations;
 
-    let annotationOptions = options.annotations;
-    if (isObject(annotationOptions)) {
-      Object.keys(annotationOptions).forEach(key => {
-        const value = annotationOptions[key];
+    if (isObject(annotationsOption)) {
+      Object.keys(annotationsOption).forEach(key => {
+        const value = annotationsOption[key];
         if (isObject(value)) {
-          value.id = key;
-          annotations.push(value);
+          const resolver = annotationsResolver[key];
+          annotations.push(Object.assign(
+            {
+              id: key,
+              display: resolver.display,
+              adjustScaleRange: resolver.adjustScaleRange
+            },
+            value
+          ));
         }
       });
-    } else if (isArray(annotationOptions)) {
-      annotations.push(...annotationOptions);
+    } else if (isArray(annotationsOption)) {
+      annotations.push(...annotationsOption);
     }
     verifyScaleOptions(annotations, chart.scales);
   },
@@ -161,7 +169,7 @@ function updateElements(chart, state, options, mode) {
     if (!el || !(el instanceof elementClass)) {
       el = elements[i] = new elementClass();
     }
-    const opts = resolveAnnotationOptions(annotation.setContext(getContext(chart, el, annotation)));
+    const opts = resolveAnnotationOptions(chart, annotation, elementClass, getContext(chart, el, annotation));
     const properties = el.resolveElementProperties(chart, opts);
     properties.skip = isNaN(properties.x) || isNaN(properties.y);
     properties.options = opts;
@@ -169,8 +177,12 @@ function updateElements(chart, state, options, mode) {
   }
 }
 
-function resolveAnnotationOptions(resolver) {
-  const elementClass = annotationTypes[resolveType(resolver.type)];
+function resolveAnnotationOptions(chart, annotation, elementClass, context) {
+  const scopes = chart.config.getOptionScopes(annotation, [[
+    `elements.${elementClass.id}`,
+    'plugins.annotation'
+  ]]);
+  const resolver = chart.config.createResolver(scopes, context);
   const result = {};
   result.id = resolver.id;
   result.type = resolver.type;
