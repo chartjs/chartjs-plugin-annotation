@@ -108,14 +108,16 @@ export default {
       },
     },
     clip: true,
-    drawTime: 'afterDatasetsDraw',
-    interaction: {
-      mode: undefined,
-      axis: undefined,
-      intersect: undefined
-    },
-    label: {
-      drawTime: null
+    dblClickSpeed: 350, // ms
+    common: {
+      drawTime: 'afterDatasetsDraw',
+      interaction: {
+        mode: undefined,
+        axis: undefined,
+        intersect: undefined
+      },
+      label: {
+      }
     }
   },
 
@@ -124,10 +126,15 @@ export default {
     _scriptable: (prop) => !hooks.includes(prop),
     annotations: {
       _allKeys: false,
-      _fallback: (prop, opts) => `elements.${annotationTypes[resolveType(opts.type)].id}`,
+      _fallback: (prop, opts) => `elements.${annotationTypes[resolveType(opts.type)].id}`
     },
-    interaction: {
-      _fallback: true,
+    common: {
+      interaction: {
+        _fallback: true
+      },
+      label: {
+        _fallback: true
+      }
     }
   },
 
@@ -155,7 +162,7 @@ function draw(chart, caller, clip) {
       return;
     }
     const label = el.options.label;
-    if (label && label.display && label.content && (label.drawTime || el.options.drawTime) === caller) {
+    if (label && label.display && label.content && label.drawTime === caller) {
       el.drawLabel(ctx, chartArea);
     }
   });

@@ -1,6 +1,13 @@
 module.exports = {
   config: {
     type: 'scatter',
+    data: {
+      datasets: [{
+        backgroundColor: 'rgba(255,165,0,0.9)',
+        radius: 20,
+        data: [{x: 15, y: 25}, {x: 35, y: 50}, {x: 50, y: 95}, {x: 82, y: 75}, {x: 82, y: 5}]
+      }]
+    },
     options: {
       scales: {
         x: {
@@ -15,8 +22,11 @@ module.exports = {
         }
       },
       plugins: {
+        legend: false,
         annotation: {
-          drawTime: 'beforeDraw',
+          common: {
+            drawTime: 'beforeDraw',
+          },
           annotations: {
             left: {
               drawTime: 'afterDraw',
@@ -39,7 +49,7 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 5,
               label: {
-                drawTime: 'beforeDraw',
+                drawTime: 'afterDraw',
                 position: 'center',
                 backgroundColor: 'red',
                 content: 'beforeDraw/afterDraw',
@@ -56,7 +66,7 @@ module.exports = {
               label: {
                 drawTime: 'beforeDraw',
                 position: 'end',
-                backgroundColor: 'black',
+                backgroundColor: 'green',
                 content: 'afterDraw/beforeDraw',
                 display: true
               },
