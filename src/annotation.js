@@ -249,12 +249,11 @@ function draw(chart, caller, clip) {
   }
 
   drawElements(ctx, visibleElements, caller);
+  drawSubElements(ctx, visibleElements, caller);
 
   if (clip) {
     unclipArea(ctx);
   }
-
-  drawSubElements(ctx, visibleElements, caller);
 
   visibleElements.forEach(el => {
     if (!('drawLabel' in el)) {
