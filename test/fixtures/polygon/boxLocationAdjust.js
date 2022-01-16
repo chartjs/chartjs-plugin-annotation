@@ -1,5 +1,4 @@
 module.exports = {
-  tolerance: 0.0085,
   config: {
     type: 'scatter',
     options: {
@@ -18,12 +17,9 @@ module.exports = {
       plugins: {
         legend: false,
         annotation: {
-          drawTime: 'afterDraw',
           annotations: {
             polygon1: {
               type: 'polygon',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 1,
               yMin: 1,
               xMax: 8,
@@ -39,8 +35,6 @@ module.exports = {
             },
             center1: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 1,
               yMin: 1,
               xMax: 8,
@@ -50,8 +44,6 @@ module.exports = {
             },
             pointCenter1: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 1,
               yMin: 1,
               xMax: 8,
@@ -61,8 +53,6 @@ module.exports = {
             },
             polygon2: {
               type: 'polygon',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: -1,
               yMin: 1,
               xMax: -8,
@@ -78,8 +68,6 @@ module.exports = {
             },
             center2: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: -1,
               yMin: 1,
               xMax: -8,
@@ -92,8 +80,6 @@ module.exports = {
             },
             pointCenter2: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: -1,
               yMin: 1,
               xMax: -8,
@@ -103,8 +89,6 @@ module.exports = {
             },
             polygon3: {
               type: 'polygon',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: -1,
               yMin: -1,
               xMax: -8,
@@ -120,8 +104,6 @@ module.exports = {
             },
             center3: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: -1,
               yMin: -1,
               xMax: -8,
@@ -131,8 +113,6 @@ module.exports = {
             },
             pointCenter3: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: -1,
               yMin: -1,
               xMax: -8,
@@ -142,8 +122,6 @@ module.exports = {
             },
             polygon4: {
               type: 'polygon',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 1,
               yMin: -1,
               xMax: 8,
@@ -159,8 +137,6 @@ module.exports = {
             },
             center4: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 1,
               yMin: -1,
               xMax: 8,
@@ -173,8 +149,6 @@ module.exports = {
             },
             pointCenter4: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 1,
               yMin: -1,
               xMax: 8,
@@ -186,5 +160,8 @@ module.exports = {
         }
       }
     }
+  },
+  options: {
+    spriteText: true
   }
 };

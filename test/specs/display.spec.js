@@ -22,13 +22,10 @@ describe('Display options', function() {
             },
             plugins: {
               annotation: {
-                drawTime: 'afterDatasetsDraw',
-                dblClickSpeed: 350,
                 annotations: {
                   my: {
                     display: true,
-                    type: key,
-                    xScaleID: 'y'
+                    type: key
                   }
                 }
               }

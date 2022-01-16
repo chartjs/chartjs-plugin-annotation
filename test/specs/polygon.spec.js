@@ -5,16 +5,12 @@ describe('Polygon annotation', function() {
     window.testEvents({
       type: 'polygon',
       id: 'test',
-      xScaleID: 'x',
-      yScaleID: 'y',
       xValue: 8,
       yValue: 8,
       sides: i,
       rotation: 45,
       radius: 50,
-      borderWidth: 0,
-      xAdjust: 0,
-      yAdjust: 0
+      borderWidth: 0
     });
   }
 });

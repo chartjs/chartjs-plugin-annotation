@@ -18,8 +18,6 @@ module.exports = {
           annotations: {
             text1: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 3.5,
               yValue: 20,
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
@@ -40,8 +38,6 @@ module.exports = {
             },
             text2: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 'May',
               yValue: 10,
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
@@ -62,16 +58,12 @@ module.exports = {
             },
             point2: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 'May',
               yValue: 10,
               radius: 3
             },
             text3: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 'March',
               yValue: 12,
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
@@ -88,8 +80,6 @@ module.exports = {
             },
             point3: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 'March',
               yValue: 12,
               radius: 3

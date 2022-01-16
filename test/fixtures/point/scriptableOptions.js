@@ -18,7 +18,6 @@ module.exports = {
       plugins: {
         legend: false,
         annotation: {
-          drawTime: 'afterDraw',
           annotations: {
             circle: {
               type: 'point',

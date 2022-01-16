@@ -18,12 +18,9 @@ module.exports = {
       plugins: {
         legend: false,
         annotation: {
-          drawTime: 'afterDraw',
           annotations: {
             rectRoundedSmall: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: -5,
               yValue: -5,
               backgroundColor: 'rgba(153, 153, 102, 0.5)',
@@ -38,8 +35,6 @@ module.exports = {
             },
             rectRounded: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 0,
               yValue: 0,
               backgroundColor: 'rgba(153, 153, 102, 0.5)',
@@ -54,8 +49,6 @@ module.exports = {
             },
             rectRoundedBig: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 5,
               yValue: 5,
               backgroundColor: 'rgba(153, 153, 102, 0.5)',

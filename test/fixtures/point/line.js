@@ -18,12 +18,9 @@ module.exports = {
       plugins: {
         legend: false,
         annotation: {
-          drawTime: 'afterDraw',
           annotations: {
             lineSmall: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: -5,
               yValue: -5,
               backgroundColor: 'rgba(101, 33, 171, 0.5)',
@@ -34,8 +31,6 @@ module.exports = {
             },
             line: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 0,
               yValue: 0,
               backgroundColor: 'rgba(101, 33, 171, 0.5)',
@@ -46,8 +41,6 @@ module.exports = {
             },
             lineBig: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 5,
               yValue: 5,
               backgroundColor: 'rgba(101, 33, 171, 0.5)',

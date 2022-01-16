@@ -19,8 +19,6 @@ module.exports = {
           annotations: {
             annotation1: {
               type: 'line',
-              xScaleID: 'x',
-              yScaleID: 'y',
               borderWidth: 3,
               borderColor: 'black',
               xMin: 'B',

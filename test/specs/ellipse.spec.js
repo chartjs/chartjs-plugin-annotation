@@ -4,8 +4,6 @@ describe('Ellipse annotation', function() {
   const options = {
     type: 'ellipse',
     id: 'test',
-    xScaleID: 'x',
-    yScaleID: 'y',
     xMin: 2,
     yMin: 2,
     xMax: 4,
@@ -43,8 +41,6 @@ describe('Ellipse annotation', function() {
             annotations: {
               ellipse: {
                 type: 'ellipse',
-                xScaleID: 'x',
-                yScaleID: 'y',
                 xMin: 2,
                 yMin: 4,
                 xMax: 8,
@@ -151,8 +147,6 @@ describe('Ellipse annotation', function() {
             annotations: {
               ellipse: {
                 type: 'ellipse',
-                xScaleID: 'x',
-                yScaleID: 'y',
                 xMin: 5,
                 yMin: 5,
                 xMax: 5,

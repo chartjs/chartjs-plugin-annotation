@@ -18,8 +18,6 @@ module.exports = {
           annotations: {
             labelcross: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 'January',
               yValue: 22,
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
@@ -38,8 +36,6 @@ module.exports = {
             },
             cross: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 'January',
               yValue: 22,
               pointStyle: 'cross',
@@ -48,8 +44,6 @@ module.exports = {
             },
             labelRectRounded: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 'February',
               yValue: 18,
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
@@ -68,8 +62,6 @@ module.exports = {
             },
             rectRounded: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 'February',
               yValue: 18,
               pointStyle: 'rectRounded',
@@ -79,8 +71,6 @@ module.exports = {
             },
             labelTriangle: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 'March',
               yValue: 14,
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
@@ -99,8 +89,6 @@ module.exports = {
             },
             triangle: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 'March',
               yValue: 14,
               pointStyle: 'triangle',
@@ -110,8 +98,6 @@ module.exports = {
             },
             labelStar: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 'April',
               yValue: 10,
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
@@ -130,8 +116,6 @@ module.exports = {
             },
             star: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 'April',
               yValue: 10,
               pointStyle: 'star',
@@ -141,8 +125,6 @@ module.exports = {
             },
             labelTriangleRot: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 'May',
               yValue: 6,
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
@@ -161,8 +143,6 @@ module.exports = {
             },
             triangleRot: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 'May',
               yValue: 6,
               pointStyle: 'triangle',

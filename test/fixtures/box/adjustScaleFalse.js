@@ -23,8 +23,6 @@ module.exports = {
             box1: {
               type: 'box',
               adjustScaleRange: false,
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 1,
               xMax: 3,
               yMin: -2.3,
@@ -36,8 +34,6 @@ module.exports = {
             box2: {
               type: 'box',
               adjustScaleRange: false,
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 4,
               xMax: 6,
               yMin: 10,

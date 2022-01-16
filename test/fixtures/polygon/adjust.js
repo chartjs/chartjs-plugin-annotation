@@ -1,5 +1,4 @@
 module.exports = {
-  tolerance: 0.0085,
   config: {
     type: 'scatter',
     options: {
@@ -18,12 +17,9 @@ module.exports = {
       plugins: {
         legend: false,
         annotation: {
-          drawTime: 'afterDraw',
           annotations: {
             polygon1: {
               type: 'polygon',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 4.5,
               yValue: 4.5,
               xAdjust: 30,
@@ -36,8 +32,6 @@ module.exports = {
             },
             center1: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 4.5,
               yValue: 4.5,
               content: 'x: +30, y: +40',
@@ -45,8 +39,6 @@ module.exports = {
             },
             point1: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 4.5,
               yValue: 4.5,
               backgroundColor: 'black',
@@ -54,8 +46,6 @@ module.exports = {
             },
             polygon2: {
               type: 'polygon',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: -4.5,
               yValue: 4.5,
               xAdjust: 30,
@@ -68,8 +58,6 @@ module.exports = {
             },
             center2: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: -4.5,
               yValue: 4.5,
               content: 'x: +30, y: -40',
@@ -80,8 +68,6 @@ module.exports = {
             },
             point2: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: -4.5,
               yValue: 4.5,
               backgroundColor: 'black',
@@ -89,8 +75,6 @@ module.exports = {
             },
             polygon3: {
               type: 'polygon',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: -4.5,
               yValue: -4.5,
               xAdjust: -30,
@@ -103,8 +87,6 @@ module.exports = {
             },
             center3: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: -4.5,
               yValue: -4.5,
               content: 'x: -30, y: -40',
@@ -112,8 +94,6 @@ module.exports = {
             },
             point3: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: -4.5,
               yValue: -4.5,
               backgroundColor: 'black',
@@ -121,8 +101,6 @@ module.exports = {
             },
             polygon4: {
               type: 'polygon',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 4.5,
               yValue: -4.5,
               xAdjust: -30,
@@ -135,8 +113,6 @@ module.exports = {
             },
             center4: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 4.5,
               yValue: -4.5,
               content: 'x: -30, y: +40',
@@ -147,8 +123,6 @@ module.exports = {
             },
             point4: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 4.5,
               yValue: -4.5,
               backgroundColor: 'black',
@@ -158,5 +132,8 @@ module.exports = {
         }
       }
     }
+  },
+  options: {
+    spriteText: true
   }
 };

@@ -18,12 +18,9 @@ module.exports = {
       plugins: {
         legend: false,
         annotation: {
-          drawTime: 'afterDraw',
           annotations: {
             triangle: {
               type: 'polygon',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 1,
               yValue: 1,
               backgroundColor: 'rgba(153, 153, 102, 0.5)',
@@ -34,8 +31,6 @@ module.exports = {
             },
             pentagon: {
               type: 'polygon',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 6,
               yValue: 6,
               sides: 5,
