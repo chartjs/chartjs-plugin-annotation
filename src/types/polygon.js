@@ -58,7 +58,7 @@ export default class PolygonAnnotation extends Element {
         }
       });
     }
-    return {x, y, elements};
+    return {x, y, elements, initProperties: {x, y}};
   }
 }
 

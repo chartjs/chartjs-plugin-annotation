@@ -159,7 +159,7 @@ function updateElements(chart, state, options, mode) {
     properties.options = resolvedOptions;
 
     if ('elements' in properties) {
-      updateSubElements(element, properties.elements, resolver, animations);
+      updateSubElements(element, properties, resolver, animations);
       // Remove the sub-element definitions from properties, so the actual elements
       // are not overwritten by their definitions
       delete properties.elements;
@@ -169,24 +169,27 @@ function updateElements(chart, state, options, mode) {
   }
 }
 
-function updateSubElements(mainElement, definitions, resolver, animations) {
+function updateSubElements(mainElement, {elements, initProperties}, resolver, animations) {
   const subElements = mainElement.elements || (mainElement.elements = []);
-  subElements.length = definitions.length;
-  for (let i = 0; i < definitions.length; i++) {
-    const definition = definitions[i];
+  subElements.length = elements.length;
+  for (let i = 0; i < elements.length; i++) {
+    const definition = elements[i];
     const properties = definition.properties;
-    const subElement = getOrCreateElement(subElements, i, definition.type);
+    const subElement = getOrCreateElement(subElements, i, definition.type, initProperties);
     const subResolver = resolver[definition.optionScope].override(definition);
     properties.options = resolveAnnotationOptions(subResolver);
     animations.update(subElement, properties);
   }
 }
 
-function getOrCreateElement(elements, index, type) {
+function getOrCreateElement(elements, index, type, initProperties) {
   const elementClass = annotationTypes[resolveType(type)];
   let element = elements[index];
   if (!element || !(element instanceof elementClass)) {
     element = elements[index] = new elementClass();
+    if (isObject(initProperties)) {
+      Object.assign(element, initProperties);
+    }
   }
   return element;
 }
