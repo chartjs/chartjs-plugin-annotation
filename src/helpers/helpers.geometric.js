@@ -1,3 +1,11 @@
+/**
+ * @typedef {import('chart.js').Point} Point
+ */
+
+/**
+ * @param {{x: number, y: number, width: number, height: number}} rect
+ * @returns {Point}
+ */
 export function getRectCenterPoint(rect) {
   const {x, y, width, height} = rect;
   return {
@@ -8,10 +16,10 @@ export function getRectCenterPoint(rect) {
 
 /**
  * Rotate a `point` relative to `center` point by `angle`
- * @param {{x: number, y: number}} point - the point to rotate
- * @param {{x: number, y: number}} center - center point for rotation
+ * @param {Point} point - the point to rotate
+ * @param {Point} center - center point for rotation
  * @param {number} angle - angle for rotation, in radians
- * @returns {{x: number, y: number}} rotated point
+ * @returns {Point} rotated point
  */
 export function rotated(point, center, angle) {
   var cos = Math.cos(angle);

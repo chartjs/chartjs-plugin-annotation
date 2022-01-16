@@ -2,11 +2,30 @@ import {isFinite} from 'chart.js/helpers';
 import {getRectCenterPoint} from './helpers.geometric';
 import {isBoundToPoint} from './helpers.options';
 
+/**
+ * @typedef { import("chart.js").Chart } Chart
+ * @typedef { import("chart.js").Scale } Scale
+ * @typedef { import("chart.js").Point } Point
+ * @typedef { import('../../types/options').CoreAnnotationOptions } CoreAnnotationOptions
+ * @typedef { import('../../types/options').PointAnnotationOptions } PointAnnotationOptions
+ */
+
+/**
+ * @param {Scale} scale
+ * @param {number|string} value
+ * @param {number} fallback
+ * @returns {number}
+ */
 export function scaleValue(scale, value, fallback) {
   value = typeof value === 'number' ? value : scale.parse(value);
   return isFinite(value) ? scale.getPixelForValue(value) : fallback;
 }
 
+/**
+ * @param {Scale} scale
+ * @param {{start: number, end: number}} options
+ * @returns {{start: number, end: number}}
+ */
 function getChartDimensionByScale(scale, options) {
   if (scale) {
     const min = scaleValue(scale, options.min, options.start);
@@ -22,6 +41,11 @@ function getChartDimensionByScale(scale, options) {
   };
 }
 
+/**
+ * @param {Chart} chart
+ * @param {CoreAnnotationOptions} options
+ * @returns {Point}
+ */
 export function getChartPoint(chart, options) {
   const {chartArea, scales} = chart;
   const xScale = scales[options.xScaleID];
@@ -39,13 +63,18 @@ export function getChartPoint(chart, options) {
   return {x, y};
 }
 
+/**
+ * @param {Chart} chart
+ * @param {CoreAnnotationOptions} options
+ * @returns {{x?:number, y?: number, x2?: number, y2?: number, width?: number, height?: number}}
+ */
 export function getChartRect(chart, options) {
   const xScale = chart.scales[options.xScaleID];
   const yScale = chart.scales[options.yScaleID];
   let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
 
   if (!xScale && !yScale) {
-    return {options: {}};
+    return {};
   }
 
   const xDim = getChartDimensionByScale(xScale, {min: options.xMin, max: options.xMax, start: x, end: x2});
@@ -65,6 +94,10 @@ export function getChartRect(chart, options) {
   };
 }
 
+/**
+ * @param {Chart} chart
+ * @param {PointAnnotationOptions} options
+ */
 export function getChartCircle(chart, options) {
   const point = getChartPoint(chart, options);
   return {
@@ -75,6 +108,11 @@ export function getChartCircle(chart, options) {
   };
 }
 
+/**
+ * @param {Chart} chart
+ * @param {PointAnnotationOptions} options
+ * @returns
+ */
 export function resolvePointPosition(chart, options) {
   if (!isBoundToPoint(options)) {
     const box = getChartRect(chart, options);
