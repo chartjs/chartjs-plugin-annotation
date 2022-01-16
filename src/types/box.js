@@ -18,12 +18,11 @@ export default class BoxAnnotation extends Element {
   }
 
   drawLabel(ctx) {
-    const {x, y, width, height, options} = this;
-    const labelOpts = options.label;
-    labelOpts.borderWidth = options.borderWidth;
+    const {x, y, width, height, options: {label: labelOpts}} = this;
+    const halfBorder = labelOpts.borderWidth / 2;
     ctx.save();
     ctx.beginPath();
-    ctx.rect(x + labelOpts.borderWidth / 2, y + labelOpts.borderWidth / 2, width - labelOpts.borderWidth, height - labelOpts.borderWidth);
+    ctx.rect(x + halfBorder, y + halfBorder, width - halfBorder, height - halfBorder);
     ctx.clip();
     const position = toPosition(labelOpts.position);
     const padding = toPadding(labelOpts.padding);
@@ -58,6 +57,7 @@ BoxAnnotation.defaults = {
   cornerRadius: undefined, // TODO: v2 remove support for cornerRadius
   display: true,
   label: {
+    borderWidth: undefined,
     color: 'black',
     content: null,
     drawTime: undefined,
@@ -91,6 +91,12 @@ BoxAnnotation.defaults = {
 BoxAnnotation.defaultRoutes = {
   borderColor: 'color',
   backgroundColor: 'color'
+};
+
+BoxAnnotation.descriptors = {
+  label: {
+    _fallback: true
+  }
 };
 
 function calculateX(box, labelSize, position, padding) {
