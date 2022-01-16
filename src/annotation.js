@@ -274,13 +274,8 @@ function drawElements(ctx, elements, caller) {
 
 function drawSubElements(ctx, elements, caller) {
   for (const el of elements) {
-    if (!isArray(el.elements)) {
-      continue;
-    }
-    for (const subElem of el.elements) {
-      if (subElem.options.drawTime === caller) {
-        subElem.draw(ctx);
-      }
+    if (isArray(el.elements)) {
+      drawElements(ctx, el.elements, caller);
     }
   }
 }
