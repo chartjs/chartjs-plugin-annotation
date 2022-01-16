@@ -16,6 +16,9 @@ export default class PointAnnotation extends Element {
   draw(ctx) {
     const options = this.options;
     const borderWidth = options.borderWidth;
+    if (options.radius < 0.1) {
+      return;
+    }
     ctx.save();
     ctx.fillStyle = options.backgroundColor;
     setShadowStyle(ctx, options);

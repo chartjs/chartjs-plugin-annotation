@@ -1,12 +1,10 @@
 import {Element} from 'chart.js';
-import {PI, RAD_PER_DEG, isNumber} from 'chart.js/helpers';
+import {PI, RAD_PER_DEG} from 'chart.js/helpers';
 import {setBorderStyle, resolvePointPosition, getElementCenterPoint, setShadowStyle} from '../helpers';
 
 export default class PolygonAnnotation extends Element {
-
-  inRange(mouseX, mouseY, useFinalPosition) {
-    const vertices = getVertices(this.getProps(['x', 'y'], useFinalPosition), this.options, true);
-    return vertices && vertices.length > 0 && pointIsInPolygon(vertices, mouseX, mouseY);
+  inRange(x, y) {
+    return pointIsInPolygon(this.elements, x, y);
   }
 
   getCenterPoint(useFinalPosition) {
@@ -14,18 +12,20 @@ export default class PolygonAnnotation extends Element {
   }
 
   draw(ctx) {
-    const {x, y, options} = this;
-    const vertices = getVertices({x, y}, options);
-    let vertex = vertices[0];
+    const {elements, options} = this;
     ctx.save();
     ctx.beginPath();
     ctx.fillStyle = options.backgroundColor;
     setShadowStyle(ctx, options);
     const stroke = setBorderStyle(ctx, options);
-    ctx.moveTo(vertex.x, vertex.y);
-    for (let i = 1; i < vertices.length; i++) {
-      vertex = vertices[i];
-      ctx.lineTo(vertex.x, vertex.y);
+    let first = true;
+    for (const el of elements) {
+      if (first) {
+        ctx.moveTo(el.x, el.y);
+        first = false;
+      } else {
+        ctx.lineTo(el.x, el.y);
+      }
     }
     ctx.closePath();
     ctx.fill();
@@ -38,12 +38,28 @@ export default class PolygonAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    if (isNumber(options.sides) && options.sides >= 1) {
-      return resolvePointPosition(chart, options);
+    const {x, y} = resolvePointPosition(chart, options);
+    const {sides, radius, rotation, borderWidth} = options;
+    const halfBorder = borderWidth / 2;
+    const elements = [];
+    const angle = (2 * PI) / sides;
+    let rad = rotation * RAD_PER_DEG;
+    for (let i = 0; i < sides; i++, rad += angle) {
+      const sin = Math.sin(rad);
+      const cos = Math.cos(rad);
+      elements.push({
+        type: 'point',
+        optionScope: 'point',
+        properties: {
+          x: x + sin * radius,
+          y: y - cos * radius,
+          bX: x + sin * (radius + halfBorder),
+          by: y - cos * (radius + halfBorder)
+        }
+      });
     }
-    return {options: {}};
+    return {x, y, elements};
   }
-
 }
 
 PolygonAnnotation.id = 'polygonAnnotation';
@@ -58,6 +74,9 @@ PolygonAnnotation.defaults = {
   borderShadowColor: 'transparent',
   borderWidth: 1,
   display: true,
+  point: {
+    radius: 0
+  },
   radius: 10,
   rotation: 0,
   shadowBlur: 0,
@@ -81,34 +100,12 @@ PolygonAnnotation.defaultRoutes = {
   backgroundColor: 'color'
 };
 
-function getVertices(point, options, useBorderWidth = false) {
-  const {sides, radius} = options;
-  const hBorderWidth = useBorderWidth ? options.borderWidth / 2 || 0 : 0;
-  let angle = (2 * PI) / sides;
-  let rad = options.rotation * RAD_PER_DEG;
-  const vertices = new Array();
-  addVertex(vertices, point, rad, radius + hBorderWidth);
-  for (let i = 0; i < sides; i++) {
-    rad += angle;
-    addVertex(vertices, point, rad, radius + hBorderWidth);
-  }
-  return vertices;
-}
 
-function addVertex(array, point, rad, radius) {
-  array.push({
-    x: point.x + Math.sin(rad) * radius,
-    y: point.y - Math.cos(rad) * radius
-  });
-}
-
-function pointIsInPolygon(vertices, x, y) {
+function pointIsInPolygon(points, x, y) {
   let isInside = false;
-  let i = 0;
-  let j = vertices.length - 1;
-  for (i, j; i < vertices.length; j = i++) {
-    if ((vertices[i].y > y) !== (vertices[j].y > y) &&
-         x < (vertices[j].x - vertices[i].x) * (y - vertices[i].y) / (vertices[j].y - vertices[i].y) + vertices[i].x) {
+  for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
+    if ((points[i].bY > y) !== (points[j].bY > y) &&
+         x < (points[j].bX - points[i].bX) * (y - points[i].bY) / (points[j].nY - points[i].nY) + points[i].bX) {
       isInside = !isInside;
     }
   }

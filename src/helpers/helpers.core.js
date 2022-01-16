@@ -27,3 +27,19 @@ export function getElementCenterPoint(element, useFinalPosition) {
   const {x, y} = element.getProps(['x', 'y'], useFinalPosition);
   return {x, y};
 }
+
+const isOlderPart = (act, req) => req > act || (act.length > req.length && act.substr(0, req.length) === req);
+
+export function requireVersion(pkg, min, ver) {
+  const parts = ver.split('.');
+  let i = 0;
+  for (const req of min.split('.')) {
+    const act = parts[i++];
+    if (parseInt(req, 10) < parseInt(act, 10)) {
+      break;
+    }
+    if (isOlderPart(act, req)) {
+      throw new Error(`${pkg} v${ver} is not supported. v${min} or newer is required.`);
+    }
+  }
+}
