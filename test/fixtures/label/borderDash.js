@@ -18,8 +18,6 @@ module.exports = {
           annotations: [
             {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 3.5,
               yValue: 10,
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
@@ -30,8 +28,6 @@ module.exports = {
             },
             {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 'February',
               yValue: 11,
               backgroundColor: 'rgba(101, 33, 171, 0.5)',
@@ -42,8 +38,6 @@ module.exports = {
             },
             {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 'July',
               yValue: 20,
               backgroundColor: 'rgba(101, 33, 171, 0.5)',

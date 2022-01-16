@@ -9,8 +9,7 @@ describe('Line annotation', function() {
     borderWidth: 6,
     label: {
       enabled: true,
-      content: 'This is my label',
-      rotation: 0
+      content: 'This is my label'
     }
   };
 
@@ -21,8 +20,6 @@ describe('Line annotation', function() {
   const optionsLimit = {
     type: 'line',
     id: 'test',
-    xScaleID: 'x',
-    yScaleID: 'y',
     xMin: 0,
     yMin: 2,
     xMax: 10,
@@ -30,8 +27,7 @@ describe('Line annotation', function() {
     borderWidth: 6,
     label: {
       enabled: true,
-      content: 'This is my label',
-      rotation: 0
+      content: 'This is my label'
     }
   };
 
@@ -68,8 +64,7 @@ describe('Line annotation', function() {
                 borderWidth: 1,
                 label: {
                   enabled: true,
-                  content: 'This is my label',
-                  rotation: 0
+                  content: 'This is my label'
                 }
               }
             }

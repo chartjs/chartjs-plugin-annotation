@@ -18,8 +18,6 @@ module.exports = {
           annotations: {
             box1: {
               type: 'box',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 1.5,
               xMax: 3.5,
               yMin: 5,
@@ -36,8 +34,6 @@ module.exports = {
             },
             box2: {
               type: 'box',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 'May',
               xMax: 'July',
               yMin: 11,
@@ -55,8 +51,6 @@ module.exports = {
             },
             box3: {
               type: 'box',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 0.5,
               xMax: 'May',
               yMin: 16,
@@ -74,8 +68,6 @@ module.exports = {
             },
             box4: {
               type: 'box',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 'June',
               xMax: 'July',
               yMin: 5,

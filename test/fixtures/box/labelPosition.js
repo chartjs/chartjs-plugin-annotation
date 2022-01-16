@@ -18,12 +18,9 @@ module.exports = {
       plugins: {
         legend: false,
         annotation: {
-          drawTime: 'afterDraw',
           annotations: {
             box1: {
               type: 'box',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: -9,
               yMin: 9,
               xMax: -1,
@@ -42,8 +39,6 @@ module.exports = {
             },
             box2: {
               type: 'box',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 1,
               yMin: 9,
               xMax: 9,
@@ -62,8 +57,6 @@ module.exports = {
             },
             box3: {
               type: 'box',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: -9,
               yMin: -1,
               xMax: -1,
@@ -82,8 +75,6 @@ module.exports = {
             },
             box4: {
               type: 'box',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 1,
               yMin: -1,
               xMax: 9,

@@ -4,14 +4,10 @@ describe('Point annotation', function() {
   window.testEvents({
     type: 'point',
     id: 'test',
-    xScaleID: 'x',
-    yScaleID: 'y',
     xValue: 8,
     yValue: 8,
     radius: 30,
-    borderWidth: 5,
-    xAdjust: 0,
-    yAdjust: 0
+    borderWidth: 5
   });
 
   describe('applying defaults', function() {
@@ -50,8 +46,6 @@ describe('Point annotation', function() {
                   },
                   point2: {
                     type: 'point',
-                    xScaleID: 'x',
-                    yScaleID: 'y',
                     xValue: 8,
                     yValue: 8,
                     borderWidth: 0,

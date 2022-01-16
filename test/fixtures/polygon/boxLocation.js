@@ -18,12 +18,9 @@ module.exports = {
       plugins: {
         legend: false,
         annotation: {
-          drawTime: 'afterDraw',
           annotations: {
             triangle1: {
               type: 'polygon',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 1,
               yMin: 1,
               xMax: 8,
@@ -35,8 +32,6 @@ module.exports = {
             },
             box1: {
               type: 'box',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 1,
               yMin: 1,
               xMax: 8,
@@ -47,8 +42,6 @@ module.exports = {
             },
             circle1: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 1,
               yMin: 1,
               xMax: 8,
@@ -60,8 +53,6 @@ module.exports = {
             },
             triangle2: {
               type: 'polygon',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: -8,
               yMin: -8,
               xMax: 1,
@@ -73,8 +64,6 @@ module.exports = {
             },
             box2: {
               type: 'box',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: -8,
               yMin: -8,
               xMax: 1,
@@ -85,8 +74,6 @@ module.exports = {
             },
             circle2: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: -8,
               yMin: -8,
               xMax: 1,

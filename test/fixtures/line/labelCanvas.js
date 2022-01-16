@@ -16,7 +16,6 @@ module.exports = {
       },
       plugins: {
         annotation: {
-          drawTime: 'afterDatasetsDraw',
           annotations: {
             line1: {
               type: 'line',

@@ -16,8 +16,10 @@ module.exports = {
       },
       plugins: {
         annotation: {
-          drawTime() {
-            return 'afterDatasetsDraw';
+          common: {
+            drawTime() {
+              return 'afterDatasetsDraw';
+            }
           },
           annotations: {
             auto1: {
