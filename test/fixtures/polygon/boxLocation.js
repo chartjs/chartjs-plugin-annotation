@@ -1,5 +1,4 @@
 module.exports = {
-  tolerance: 0.0080,
   config: {
     type: 'scatter',
     options: {
@@ -87,5 +86,8 @@ module.exports = {
         }
       }
     }
+  },
+  options: {
+    spriteText: true
   }
 };
