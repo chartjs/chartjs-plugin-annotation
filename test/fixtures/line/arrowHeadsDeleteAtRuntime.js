@@ -27,6 +27,7 @@ module.exports = {
               borderWidth: 4,
               label: {
                 enabled: true,
+                backgroundColor: 'white',
                 content: 'remove start'
               },
               arrowHeads: {
@@ -54,6 +55,7 @@ module.exports = {
               borderWidth: 4,
               label: {
                 enabled: true,
+                backgroundColor: 'white',
                 content: 'remove end'
               },
               arrowHeads: {
@@ -81,6 +83,7 @@ module.exports = {
               borderWidth: 4,
               label: {
                 enabled: true,
+                backgroundColor: 'white',
                 content: 'remove start and end'
               },
               arrowHeads: {
