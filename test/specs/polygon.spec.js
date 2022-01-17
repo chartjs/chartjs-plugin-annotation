@@ -13,7 +13,7 @@ describe('Polygon annotation', function() {
   };
 
   window.testEvents({
-    type: 'point',
+    type: 'polygon',
     id: 'test',
     xScaleID: 'x',
     yScaleID: 'y',
