@@ -4,8 +4,6 @@ describe('Box annotation', function() {
   describe('inRange', function() {
     const annotation = {
       type: 'box',
-      xScaleID: 'x',
-      yScaleID: 'y',
       xMin: 2,
       yMin: 4,
       xMax: 8,
