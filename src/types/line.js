@@ -222,25 +222,10 @@ const arrowHeadsDefaults = {
 LineAnnotation.defaults = {
   adjustScaleRange: true,
   arrowHeads: {
-    end: Object.assign({}, arrowHeadsDefaults),
-    length: 12,
-    start: Object.assign({}, arrowHeadsDefaults),
-    width: 6
-  }
-    backgroundColor: undefined,
-    backgroundShadowColor: 'transparent',
-    borderColor: undefined,
-    borderDash: undefined,
-    borderDashOffset: undefined,
-    borderShadowColor: undefined,
-    borderWidth: undefined,
     enabled: false,
     end: Object.assign({}, arrowHeadsDefaults),
     fill: false,
     length: 12,
-    shadowBlur: undefined,
-    shadowOffsetX: undefined,
-    shadowOffsetY: undefined,
     start: Object.assign({}, arrowHeadsDefaults),
     width: 6
   },
