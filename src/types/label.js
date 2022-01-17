@@ -105,8 +105,7 @@ LabelAnnotation.defaults = {
 };
 
 LabelAnnotation.defaultRoutes = {
-  borderColor: 'color',
-  backgroundColor: 'color',
+  borderColor: 'color'
 };
 
 function measureRect(point, size, options, padding) {
