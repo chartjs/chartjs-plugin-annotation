@@ -23,7 +23,6 @@ module.exports = {
               yMax: 10,
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
-              borderDash: [6, 6],
               borderWidth: 5,
               label: {
                 enabled: true,
@@ -40,7 +39,6 @@ module.exports = {
               yMax: 15,
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
-              borderDash: [6, 6],
               borderWidth: 5,
               label: {
                 enabled: true,
@@ -57,7 +55,6 @@ module.exports = {
               yMax: 20,
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
-              borderDash: [6, 6],
               borderWidth: 5,
               label: {
                 enabled: true,
@@ -74,7 +71,6 @@ module.exports = {
               yMax: 9,
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
-              borderDash: [6, 6],
               borderWidth: 5,
               label: {
                 enabled: true,

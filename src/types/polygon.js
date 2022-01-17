@@ -3,8 +3,8 @@ import {PI, RAD_PER_DEG} from 'chart.js/helpers';
 import {setBorderStyle, resolvePointPosition, getElementCenterPoint, setShadowStyle} from '../helpers';
 
 export default class PolygonAnnotation extends Element {
-  inRange(x, y) {
-    return pointIsInPolygon(this.elements, x, y);
+  inRange(mouseX, mouseY, useFinalPosition) {
+    return this.elements.length > 1 && pointIsInPolygon(this.elements, mouseX, mouseY, useFinalPosition);
   }
 
   getCenterPoint(useFinalPosition) {
@@ -38,7 +38,7 @@ export default class PolygonAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    const {x, y} = resolvePointPosition(chart, options);
+    const {x, y, width, height} = resolvePointPosition(chart, options);
     const {sides, radius, rotation, borderWidth} = options;
     const halfBorder = borderWidth / 2;
     const elements = [];
@@ -54,11 +54,11 @@ export default class PolygonAnnotation extends Element {
           x: x + sin * radius,
           y: y - cos * radius,
           bX: x + sin * (radius + halfBorder),
-          by: y - cos * (radius + halfBorder)
+          bY: y - cos * (radius + halfBorder)
         }
       });
     }
-    return {x, y, elements, initProperties: {x, y}};
+    return {x, y, width, height, elements, initProperties: {x, y}};
   }
 }
 
@@ -101,13 +101,15 @@ PolygonAnnotation.defaultRoutes = {
 };
 
 
-function pointIsInPolygon(points, x, y) {
+function pointIsInPolygon(points, x, y, useFinalPosition) {
   let isInside = false;
-  for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
-    if ((points[i].bY > y) !== (points[j].bY > y) &&
-         x < (points[j].bX - points[i].bX) * (y - points[i].bY) / (points[j].nY - points[i].nY) + points[i].bX) {
+  let A = points[points.length - 1].getProps(['bX', 'bY'], useFinalPosition);
+  for (const point of points) {
+    const B = point.getProps(['bX', 'bY'], useFinalPosition);
+    if ((B.bY > y) !== (A.bY > y) && x < (A.bX - B.bX) * (y - B.bY) / (A.bY - B.bY) + B.bX) {
       isInside = !isInside;
     }
+    A = B;
   }
   return isInside;
 }
