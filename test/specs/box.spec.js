@@ -16,8 +16,6 @@ describe('Box annotation', function() {
   window.testEvents({
     type: 'box',
     id: 'test',
-    xScaleID: 'x',
-    yScaleID: 'y',
     xMin: 2,
     yMin: 2,
     xMax: 4,

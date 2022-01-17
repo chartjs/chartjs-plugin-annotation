@@ -25,12 +25,9 @@ module.exports = {
       plugins: {
         legend: false,
         annotation: {
-          drawTime: 'afterDraw',
           annotations: {
             label1: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 1,
               yMin: 1,
               xMax: 8,
@@ -53,8 +50,6 @@ module.exports = {
             },
             label2: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: -8,
               yMin: -8,
               xMax: 1,
@@ -77,8 +72,6 @@ module.exports = {
             },
             label3: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: -8,
               yMin: 8,
               xMax: -1,

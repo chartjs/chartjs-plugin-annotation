@@ -18,12 +18,9 @@ module.exports = {
       plugins: {
         legend: false,
         annotation: {
-          drawTime: 'afterDraw',
           annotations: {
             canvas: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 6,
               yValue: -6,
               content: window.createCanvas,

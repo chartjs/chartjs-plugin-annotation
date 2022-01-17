@@ -18,12 +18,9 @@ module.exports = {
       plugins: {
         legend: false,
         annotation: {
-          drawTime: 'afterDraw',
           annotations: {
             point: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 0,
               yValue: 0,
               backgroundColor: 'rgba(101, 33, 171, 0.5)',

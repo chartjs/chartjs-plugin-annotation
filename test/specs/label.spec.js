@@ -16,8 +16,6 @@ describe('Label annotation', function() {
   window.testEvents({
     type: 'label',
     id: 'test',
-    xScaleID: 'x',
-    yScaleID: 'y',
     xValue: 5,
     yValue: 5,
     content: 'This is my text',

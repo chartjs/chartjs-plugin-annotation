@@ -16,7 +16,6 @@ module.exports = {
       },
       plugins: {
         annotation: {
-          drawTime: 'afterDatasetsDraw',
           annotations: {
             auto1: {
               type: 'line',
@@ -36,8 +35,6 @@ module.exports = {
             },
             auto2: {
               type: 'line',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 90,
               yMin: 10,
               xMax: 80,
@@ -55,8 +52,6 @@ module.exports = {
             },
             auto3: {
               type: 'line',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 30,
               yMin: 80,
               xMax: 60,

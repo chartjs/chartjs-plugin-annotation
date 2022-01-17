@@ -3,28 +3,26 @@ module.exports = {
     type: 'line',
     data: {
       datasets: [{
-        data: [10, 20, 30, 0, 55],
+        data: [40, 20, 30, 60, 55],
       }],
       labels: ['A', 'B', 'C', 'D', 'E']
     },
     options: {
-      scales: {
-        x: {
-          min: 'C'
-        },
-      },
       plugins: {
         legend: false,
         annotation: {
           annotations: {
             annotation1: {
               type: 'line',
+              scaleID: 'y',
               borderWidth: 3,
               borderColor: 'black',
-              xMin: 'B',
-              xMax: 'D',
-              yMin: 0,
-              yMax: 60,
+              value: 0,
+              label: {
+                backgroundColor: 'red',
+                content: 'should be drawn',
+                enabled: true
+              }
             }
           }
         }

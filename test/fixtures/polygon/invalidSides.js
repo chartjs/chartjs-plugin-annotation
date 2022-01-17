@@ -18,12 +18,9 @@ module.exports = {
       plugins: {
         legend: false,
         annotation: {
-          drawTime: 'afterDraw',
           annotations: {
             sides0: {
               type: 'polygon',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 1,
               yValue: 1,
               sides: 0,
@@ -34,8 +31,6 @@ module.exports = {
             },
             sidesString: {
               type: 'polygon',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 8,
               yValue: 8,
               sides: 'wrong',

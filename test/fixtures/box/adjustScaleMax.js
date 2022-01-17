@@ -23,8 +23,6 @@ module.exports = {
           annotations: {
             box: {
               type: 'box',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 1.5,
               xMax: 3.5,
               yMin: 5,

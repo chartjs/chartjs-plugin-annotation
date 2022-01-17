@@ -18,12 +18,9 @@ module.exports = {
       plugins: {
         legend: false,
         annotation: {
-          drawTime: 'afterDraw',
           annotations: {
             nonagon: {
               type: 'polygon',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 1,
               yValue: 1,
               sides: 9,

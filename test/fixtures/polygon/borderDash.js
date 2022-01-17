@@ -1,5 +1,4 @@
 module.exports = {
-  tolerance: 0.0055,
   config: {
     type: 'scatter',
     options: {
@@ -18,12 +17,9 @@ module.exports = {
       plugins: {
         legend: false,
         annotation: {
-          drawTime: 'afterDraw',
           annotations: {
             triangle: {
               type: 'polygon',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: -6,
               yValue: -6,
               backgroundColor: 'rgba(255, 99, 132, 0.25',
@@ -34,8 +30,6 @@ module.exports = {
             },
             pentagon: {
               type: 'polygon',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 1,
               yValue: 1,
               sides: 5,
@@ -47,8 +41,6 @@ module.exports = {
             },
             rhombus: {
               type: 'polygon',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 6,
               yValue: 6,
               sides: 4,

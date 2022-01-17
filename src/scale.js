@@ -56,7 +56,7 @@ function getScaleLimits(scale, annotations) {
 function updateLimits(annotation, scale, props, limits) {
   for (const prop of props) {
     const raw = annotation[prop];
-    if (raw) {
+    if (defined(raw)) {
       const value = scale.parse(raw);
       limits.min = Math.min(limits.min, value);
       limits.max = Math.max(limits.max, value);

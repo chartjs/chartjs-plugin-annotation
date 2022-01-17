@@ -21,8 +21,6 @@ module.exports = {
           annotations: {
             text1: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: -8,
               yValue: 8,
               backgroundColor: 'transparent',
@@ -35,8 +33,6 @@ module.exports = {
             },
             point1: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: -8,
               yValue: 8,
               radius: 20,
@@ -47,8 +43,6 @@ module.exports = {
             },
             text2: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: -4,
               yValue: 4,
               backgroundColor: 'transparent',
@@ -61,8 +55,6 @@ module.exports = {
             },
             point2: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: -4,
               yValue: 4,
               radius: 20,
@@ -73,8 +65,6 @@ module.exports = {
             },
             text3: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 0,
               yValue: 0,
               backgroundColor: 'transparent',
@@ -87,8 +77,6 @@ module.exports = {
             },
             point3: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 0,
               yValue: 0,
               radius: 20,
@@ -99,8 +87,6 @@ module.exports = {
             },
             text4: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 4,
               yValue: -4,
               backgroundColor: 'transparent',
@@ -113,8 +99,6 @@ module.exports = {
             },
             point4: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 4,
               yValue: -4,
               radius: 20,
@@ -125,8 +109,6 @@ module.exports = {
             },
             text5: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 8,
               yValue: -8,
               backgroundColor: 'transparent',
@@ -139,8 +121,6 @@ module.exports = {
             },
             point5: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 8,
               yValue: -8,
               radius: 20,
@@ -151,8 +131,6 @@ module.exports = {
             },
             text6: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: -8,
               yValue: -6,
               backgroundColor: 'transparent',
@@ -165,8 +143,6 @@ module.exports = {
             },
             point6: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: -8,
               yValue: -6,
               radius: 20,
@@ -177,8 +153,6 @@ module.exports = {
             },
             text7: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 8,
               yValue: 8,
               backgroundColor: 'transparent',
@@ -191,8 +165,6 @@ module.exports = {
             },
             point7: {
               type: 'point',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 8,
               yValue: 8,
               radius: 20,

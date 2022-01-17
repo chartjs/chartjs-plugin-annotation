@@ -60,8 +60,6 @@ describe('Point annotation', function() {
                   },
                   point2: {
                     type: 'point',
-                    xScaleID: 'x',
-                    yScaleID: 'y',
                     xValue: 8,
                     yValue: 8,
                     borderWidth: 0,

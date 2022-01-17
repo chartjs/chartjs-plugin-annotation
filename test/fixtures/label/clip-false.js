@@ -18,8 +18,6 @@ module.exports = {
           annotations: {
             text1: {
               type: 'label',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xValue: 4,
               yValue: 0,
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
