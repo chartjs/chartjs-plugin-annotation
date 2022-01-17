@@ -7,19 +7,8 @@ const getX0Y0Point = function() {
 };
 const isFunction = (obj) => typeof obj === 'function';
 
-export function testCommonEvents(options, description) {
-  describe(`${description}`, function() {
-    window.catchEnterEvent(options, 'center');
-    window.catchLeaveEvent(options, '{x: 0, y: 0}');
-    window.catchClickEvent(options, 'center');
-    window.notCatchEnterEvent(options, '{x: 0, y: 0}');
-    window.notCatchLeaveEvent(options, 'center');
-    window.notCatchClickEvent(options, '{x: 0, y: 0}');
-  });
-}
-
-export function testEventsOnBorder(options, top, bottom, left, right, borderWidth) {
-  describe('(with border)', function() {
+export function testEvents(options, top, bottom, left, right, borderWidth) {
+  describe('(adjusting with border)', function() {
     const hBorderWidth = (borderWidth || options.borderWidth) / 2;
     const adjustStartIn = -hBorderWidth + 1;
     const adjustEndIn = hBorderWidth - 1;

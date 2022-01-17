@@ -1,45 +1,6 @@
-describe('Common events', function() {
+describe('Common', function() {
 
-  describe('state', function() {
-    const chartConfig = {
-      type: 'scatter',
-      options: {
-        animation: false,
-        plugins: {
-          legend: false,
-          annotation: {
-            annotations: [
-              {
-                type: 'line',
-                scaleID: 'y',
-                value: 3
-              },
-              {
-                type: 'line',
-                scaleID: 'y',
-                value: 3,
-                enter: () => true
-              },
-              {
-                type: 'line',
-                scaleID: 'y',
-                value: 3
-              }
-            ]
-          }
-        }
-      }
-    };
-    it('should detect listened and moveListened state set to true', function() {
-      const chart = window.acquireChart(chartConfig);
-      const Annotation = window['chartjs-plugin-annotation'];
-      const state = Annotation._getState(chart);
-      expect(state.listened).toBe(true);
-      expect(state.moveListened).toBe(true);
-    });
-  });
-
-  describe('check', function() {
+  describe('events', function() {
     const chartConfig = {
       type: 'scatter',
       options: {
@@ -105,29 +66,6 @@ describe('Common events', function() {
         });
       });
 
-      it('should not detect any move events (because only click is set)', function(done) {
-        const enterSpy = jasmine.createSpy('enter');
-        const leaveSpy = jasmine.createSpy('leave');
-        const clickSpy = jasmine.createSpy('click');
-
-        targetOptions.click = clickSpy;
-        pluginOpts.annotations = [options];
-
-        const chart = window.acquireChart(chartConfig);
-        window.triggerMouseEvent(chart, 'mousemove', center(chart));
-        window.afterEvent(chart, 'mousemove', function() {
-          expect(enterSpy.calls.count()).toBe(0);
-
-          window.triggerMouseEvent(chart, 'mousemove', x0y0);
-
-          window.afterEvent(chart, 'mousemove', function() {
-            expect(leaveSpy.calls.count()).toBe(0);
-            delete targetOptions.click;
-            done();
-          });
-        });
-      });
-
       it('should not detect any events (because unmanaged event)', function(done) {
         const clickSpy = jasmine.createSpy('click');
 
@@ -170,7 +108,7 @@ describe('Common events', function() {
         });
       });
 
-      it('should detect a property in the context, to check persistency', function(done) {
+      it('should persist properties set in context', function(done) {
         targetOptions.enter = function(ctx) {
           ctx.persistency = true;
         };

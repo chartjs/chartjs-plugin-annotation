@@ -6,42 +6,8 @@ describe('Point annotation', function() {
     const opts = element.options;
     return {x: xScale.getPixelForValue(opts.xValue) + xAdjust, y: yScale.getPixelForValue(opts.yValue) - opts.radius + yAdjust};
   };
-  const bottom = function(xScale, yScale, element, xAdjust, yAdjust) {
-    const opts = element.options;
-    return {x: xScale.getPixelForValue(opts.xValue) + xAdjust, y: yScale.getPixelForValue(opts.yValue) + opts.radius + yAdjust};
-  };
-  const left = function(xScale, yScale, element, xAdjust, yAdjust) {
-    const opts = element.options;
-    return {x: xScale.getPixelForValue(opts.xValue) - opts.radius + xAdjust, y: yScale.getPixelForValue(opts.yValue) + yAdjust};
-  };
-  const right = function(xScale, yScale, element, xAdjust, yAdjust) {
-    const opts = element.options;
-    return {x: xScale.getPixelForValue(opts.xValue) + opts.radius + xAdjust, y: yScale.getPixelForValue(opts.yValue) + yAdjust};
-  };
 
-  window.testCommonEvents({
-    type: 'point',
-    id: 'test',
-    xScaleID: 'x',
-    yScaleID: 'y',
-    xValue: 8,
-    yValue: 8,
-    radius: 30,
-  }, '(located by a point, without border)');
-
-  window.testCommonEvents({
-    type: 'point',
-    id: 'test',
-    xScaleID: 'x',
-    yScaleID: 'y',
-    xMin: 2,
-    yMin: 2,
-    xMax: 4,
-    yMax: 4,
-    radius: 30,
-  }, '(located by a box, without border)');
-
-  window.testEventsOnBorder({
+  window.testEvents({
     type: 'point',
     id: 'test',
     xScaleID: 'x',
@@ -50,7 +16,7 @@ describe('Point annotation', function() {
     yValue: 8,
     radius: 30,
     borderWidth: 12
-  }, top, bottom, left, right);
+  }, top);
 
   describe('(with radius 0)', function() {
     const options = {
@@ -68,7 +34,6 @@ describe('Point annotation', function() {
       return {x: xScale.getPixelForValue(opts.xValue), y: yScale.getPixelForValue(opts.yValue)};
     };
     window.notCatchEnterEvent(options, 'center', center);
-    window.notCatchClickEvent(options, 'center', center);
   });
 
   describe('events, removing borderWidth by callback, ', function() {
