@@ -103,6 +103,30 @@ module.exports = {
               type: 'point',
               xValue: 'February',
               yValue: 4
+            },
+            text5: {
+              type: 'label',
+              xValue: 'January',
+              yValue: 10,
+              backgroundColor: 'rgba(33, 101, 171, 0.5)',
+              borderColor: 'rgb(33, 101, 171)',
+              borderWidth: 1,
+              content: 'no callout',
+              position: {
+                x: 'start',
+                y: 'center'
+              },
+              xAdjust: 50,
+              callout: {
+                enabled: true,
+                position: 'left',
+                borderWidth: 0
+              },
+            },
+            point5: {
+              type: 'point',
+              xValue: 'January',
+              yValue: 10
             }
           }
         }

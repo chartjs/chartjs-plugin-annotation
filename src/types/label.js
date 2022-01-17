@@ -131,11 +131,15 @@ function drawCallout(ctx, element) {
     return;
   }
   const callout = options.callout;
-  const {separatorStart, separatorEnd} = getCalloutSeparatorCoord(element, calloutPosition);
-  const {sideStart, sideEnd} = getCalloutSideCoord(element, calloutPosition, separatorStart);
+
   ctx.save();
   ctx.beginPath();
   const stroke = setBorderStyle(ctx, callout);
+  if (!stroke) {
+    return ctx.restore();
+  }
+  const {separatorStart, separatorEnd} = getCalloutSeparatorCoord(element, calloutPosition);
+  const {sideStart, sideEnd} = getCalloutSideCoord(element, calloutPosition, separatorStart);
   if (callout.margin > 0 || options.borderWidth === 0) {
     ctx.moveTo(separatorStart.x, separatorStart.y);
     ctx.lineTo(separatorEnd.x, separatorEnd.y);
@@ -143,9 +147,7 @@ function drawCallout(ctx, element) {
   ctx.moveTo(sideStart.x, sideStart.y);
   ctx.lineTo(sideEnd.x, sideEnd.y);
   ctx.lineTo(pointX, pointY);
-  if (stroke) {
-    ctx.stroke();
-  }
+  ctx.stroke();
   ctx.restore();
 }
 
