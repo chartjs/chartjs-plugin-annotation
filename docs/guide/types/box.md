@@ -134,7 +134,7 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `xAdjust` | `number` | `0` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
 | `yAdjust` | `number` | `0` | Adjustment along y-axis (top-bottom) of label relative to computed position. Negative values move the label up, positive down.
 
-#### Position
+### Position
 
 A position can be set in 2 different values types:
 

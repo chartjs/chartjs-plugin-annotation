@@ -19,22 +19,24 @@ export default class BoxAnnotation extends Element {
 
   drawLabel(ctx) {
     const {x, y, width, height, options} = this;
-    const labelOpts = options.label;
-    labelOpts.borderWidth = options.borderWidth;
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(x + labelOpts.borderWidth / 2, y + labelOpts.borderWidth / 2, width - labelOpts.borderWidth, height - labelOpts.borderWidth);
-    ctx.clip();
-    const position = toPosition(labelOpts.position);
-    const padding = toPadding(labelOpts.padding);
-    const labelSize = measureLabelSize(ctx, labelOpts);
+    const {label, borderWidth} = options;
+    const halfBorder = borderWidth / 2;
+    const position = toPosition(label.position);
+    const padding = toPadding(label.padding);
+    const labelSize = measureLabelSize(ctx, label);
     const labelRect = {
       x: calculateX(this, labelSize, position, padding),
       y: calculateY(this, labelSize, position, padding),
       width: labelSize.width,
       height: labelSize.height
     };
-    drawLabel(ctx, labelRect, labelOpts);
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(x + halfBorder + padding.left, y + halfBorder + padding.top,
+      width - borderWidth - padding.width, height - borderWidth - padding.height);
+    ctx.clip();
+    drawLabel(ctx, labelRect, label);
     ctx.restore();
   }
 
@@ -58,6 +60,7 @@ BoxAnnotation.defaults = {
   cornerRadius: undefined, // TODO: v2 remove support for cornerRadius
   display: true,
   label: {
+    borderWidth: undefined,
     color: 'black',
     content: null,
     drawTime: undefined,
@@ -91,6 +94,12 @@ BoxAnnotation.defaults = {
 BoxAnnotation.defaultRoutes = {
   borderColor: 'color',
   backgroundColor: 'color'
+};
+
+BoxAnnotation.descriptors = {
+  label: {
+    _fallback: true
+  }
 };
 
 function calculateX(box, labelSize, position, padding) {

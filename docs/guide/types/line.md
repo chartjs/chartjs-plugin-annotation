@@ -158,7 +158,7 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `yAdjust` | `number` | `0` | Adjustment along y-axis (top-bottom) of label relative to computed position. Negative values move the label up, positive down.
 | `yPadding` | `number` | `6` | Padding of label to add top/bottom. This is **deprecated**. Use `padding`.
 
-#### borderRadius
+### borderRadius
 
 If this value is a number, it is applied to all corners of the rectangle (topLeft, topRight, bottomLeft, bottomRight). If this value is an object, the `topLeft` property defines the top-left corners border radius. Similarly, the `topRight`, `bottomLeft`, and `bottomRight` properties can also be specified. Omitted corners have radius of 0.
 

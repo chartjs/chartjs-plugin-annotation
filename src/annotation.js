@@ -3,28 +3,22 @@ import {clipArea, unclipArea, isObject, isArray} from 'chart.js/helpers';
 import {handleEvent, hooks, updateListeners} from './events';
 import {adjustScaleRange, verifyScaleOptions} from './scale';
 import {annotationTypes} from './types';
+import {requireVersion} from './helpers';
 import {version} from '../package.json';
 
 const chartStates = new Map();
-const versionParts = Chart.version.split('.');
 
 export default {
   id: 'annotation',
 
   version,
 
+  beforeRegister() {
+    requireVersion('chart.js', '3.7', Chart.version);
+  },
+
   afterRegister() {
     Chart.register(annotationTypes);
-
-    // TODO: Remove this workaround when strictly requiring Chart.js v3.7 or newer
-    if (versionParts[0] === '3' && parseInt(versionParts[1], 10) <= 6) {
-      // Workaround for https://github.com/chartjs/chartjs-plugin-annotation/issues/572
-      Chart.defaults.set('elements.lineAnnotation', {
-        callout: {},
-        font: {},
-        padding: 6
-      });
-    }
   },
 
   afterUnregister() {
@@ -155,18 +149,49 @@ function updateElements(chart, state, options, mode) {
   const elements = resyncElements(state.elements, annotations);
 
   for (let i = 0; i < annotations.length; i++) {
-    const annotation = annotations[i];
-    let el = elements[i];
-    const elementClass = annotationTypes[resolveType(annotation.type)];
-    if (!el || !(el instanceof elementClass)) {
-      el = elements[i] = new elementClass();
-    }
-    const opts = resolveAnnotationOptions(annotation.setContext(getContext(chart, el, annotation)));
-    const properties = el.resolveElementProperties(chart, opts);
+    const annotationOptions = annotations[i];
+    const element = getOrCreateElement(elements, i, annotationOptions.type);
+    const resolver = annotationOptions.setContext(getContext(chart, element, annotationOptions));
+    const resolvedOptions = resolveAnnotationOptions(resolver);
+    const properties = element.resolveElementProperties(chart, resolvedOptions);
+
     properties.skip = isNaN(properties.x) || isNaN(properties.y);
-    properties.options = opts;
-    animations.update(el, properties);
+    properties.options = resolvedOptions;
+
+    if ('elements' in properties) {
+      updateSubElements(element, properties, resolver, animations);
+      // Remove the sub-element definitions from properties, so the actual elements
+      // are not overwritten by their definitions
+      delete properties.elements;
+    }
+
+    animations.update(element, properties);
   }
+}
+
+function updateSubElements(mainElement, {elements, initProperties}, resolver, animations) {
+  const subElements = mainElement.elements || (mainElement.elements = []);
+  subElements.length = elements.length;
+  for (let i = 0; i < elements.length; i++) {
+    const definition = elements[i];
+    const properties = definition.properties;
+    const subElement = getOrCreateElement(subElements, i, definition.type, initProperties);
+    const subResolver = resolver[definition.optionScope].override(definition);
+    properties.options = resolveAnnotationOptions(subResolver);
+    animations.update(subElement, properties);
+  }
+}
+
+function getOrCreateElement(elements, index, type, initProperties) {
+  const elementClass = annotationTypes[resolveType(type)];
+  let element = elements[index];
+  if (!element || !(element instanceof elementClass)) {
+    element = elements[index] = new elementClass();
+    if (isObject(initProperties)) {
+      Object.assign(element, initProperties);
+    }
+  }
+  return element;
 }
 
 function resolveAnnotationOptions(resolver) {
@@ -175,7 +200,9 @@ function resolveAnnotationOptions(resolver) {
   result.id = resolver.id;
   result.type = resolver.type;
   result.drawTime = resolver.drawTime;
-  Object.assign(result, resolveObj(resolver, elementClass.defaults), resolveObj(resolver, elementClass.defaultRoutes));
+  Object.assign(result,
+    resolveObj(resolver, elementClass.defaults),
+    resolveObj(resolver, elementClass.defaultRoutes));
   for (const hook of hooks) {
     result[hook] = resolver[hook];
   }
@@ -215,21 +242,20 @@ function resyncElements(elements, annotations) {
 
 function draw(chart, caller, clip) {
   const {ctx, chartArea} = chart;
-  const state = chartStates.get(chart);
+  const {visibleElements} = chartStates.get(chart);
 
   if (clip) {
     clipArea(ctx, chartArea);
   }
-  state.visibleElements.forEach(el => {
-    if (el.options.drawTime === caller) {
-      el.draw(ctx);
-    }
-  });
+
+  drawElements(ctx, visibleElements, caller);
+  drawSubElements(ctx, visibleElements, caller);
+
   if (clip) {
     unclipArea(ctx);
   }
 
-  state.visibleElements.forEach(el => {
+  visibleElements.forEach(el => {
     if (!('drawLabel' in el)) {
       return;
     }
@@ -238,4 +264,20 @@ function draw(chart, caller, clip) {
       el.drawLabel(ctx, chartArea);
     }
   });
+}
+
+function drawElements(ctx, elements, caller) {
+  for (const el of elements) {
+    if (el.options.drawTime === caller) {
+      el.draw(ctx);
+    }
+  }
+}
+
+function drawSubElements(ctx, elements, caller) {
+  for (const el of elements) {
+    if (isArray(el.elements)) {
+      drawElements(ctx, el.elements, caller);
+    }
+  }
 }

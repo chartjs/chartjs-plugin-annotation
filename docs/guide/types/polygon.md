@@ -63,6 +63,7 @@ The following options are available for polygon annotations.
 | [`borderWidth`](#styling) | `number`| Yes | `1`
 | [`display`](#general) | `boolean` | Yes | `true`
 | [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
+| [`point`](#point) | `object` | Yes | `{radius: 0}`
 | [`radius`](#general) | `number` | Yes | `10`
 | [`rotation`](#general) | `number` | Yes | `0`
 | [`shadowBlur`](#styling) | `number` | Yes | `0`
@@ -84,7 +85,7 @@ The following options are available for polygon annotations.
 
 If one of the axes does not match an axis in the chart, the polygon annotation will take the center of the chart as point. The 2 coordinates, xValue, yValue are optional. If not specified, the polygon annotation will take the center of the chart.
 
-The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges in the respective direction and the box size is used to calculated the center of the point. To enable to use the box positioning, the `radius` must be set to `0` or `NaN`. 
+The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges in the respective direction and the box size is used to calculated the center of the point. To enable to use the box positioning, the `radius` must be set to `0` or `NaN`.
 
 | Name | Description
 | ---- | ----
@@ -121,3 +122,58 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | `shadowBlur` | The amount of blur applied to shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
 | `shadowOffsetX` | The distance that shadow will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
 | `shadowOffsetY` | The distance that shadow will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
+
+### Point
+
+Polygon consists of points. These points are actually [Point Annotations](point) and all of the [styling options](point#styling) can be configured. General options affecting the location of the point are ignored.
+
+Namespace: `options.annotations[annotationID].point`, it defines options for the callout on the annotation label.
+
+```js chart-editor
+/* <block:options:0> */
+const options = {
+  plugins: {
+    autocolors: false,
+    annotation: {
+      annotations: {
+        pentagon: {
+          type: 'polygon',
+          xValue: 1,
+          yValue: 60,
+          sides: 4,
+          radius: 60,
+          backgroundColor: 'rgba(255, 99, 132, 0.25)',
+          point: {
+            radius: 10,
+            borderWidth: 2,
+            borderColor: '#666',
+            backgroundColor: 'rgba(99, 132, 255, 0.25)',
+          }
+        }
+      }
+    }
+  }
+};
+/* </block:options> */
+
+/* <block:config:1> */
+const config = {
+  type: 'line',
+  data: {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [{
+      label: 'My First Dataset',
+      data: [65, 59, 80, 81, 56, 55, 40],
+      fill: false,
+      borderColor: 'rgb(75, 192, 192)',
+      tension: 0.1
+    }]
+  },
+  options
+};
+/* </block:config> */
+
+module.exports = {
+  config
+};
+```

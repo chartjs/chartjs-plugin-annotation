@@ -123,6 +123,20 @@ const actions = [
       });
       chart.update();
     }
+  },
+  {
+    name: 'Add a side to annotation 1',
+    handler: function(chart) {
+      chart.options.plugins.annotation.annotations.annotation1.sides++;
+      chart.update();
+    }
+  },
+  {
+    name: 'Remove a side from annotation 1',
+    handler: function(chart) {
+      chart.options.plugins.annotation.annotations.annotation1.sides--;
+      chart.update();
+    }
   }
 ];
 

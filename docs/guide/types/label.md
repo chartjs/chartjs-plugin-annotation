@@ -95,7 +95,6 @@ If one of the axes does not match an axis in the chart, the content will be rend
 
 The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges in the respective direction and the box size is used to calculated the center of the point. To enable to use the box positioning, the `radius` must be set to `0` or `NaN`.
 
-
 | Name | Description
 | ---- | ----
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
@@ -155,7 +154,7 @@ If this value is a number, it is applied to all corners of the rectangle (topLef
 
 A callout connects the label by a line to the selected point.
 
-Namespace: `options.annotations[annotationID].label.callout`, it defines options for the callout on the annotation label.
+Namespace: `options.annotations[annotationID].callout`, it defines options for the callout on the annotation label.
 
 ```js chart-editor
 /* <block:options:0> */
