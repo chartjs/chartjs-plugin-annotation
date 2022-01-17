@@ -5,45 +5,6 @@ describe('Common', function() {
       type: 'scatter',
       options: {
         animation: false,
-        plugins: {
-          legend: false,
-          annotation: {
-            annotations: [
-              {
-                type: 'line',
-                scaleID: 'y',
-                value: 3
-              },
-              {
-                type: 'line',
-                scaleID: 'y',
-                value: 3,
-                enter: () => true
-              },
-              {
-                type: 'line',
-                scaleID: 'y',
-                value: 3
-              }
-            ]
-          }
-        }
-      }
-    };
-    it('should check the annotation sequence having a move event hook only in the middle annotation', function() {
-      const chart = window.acquireChart(chartConfig);
-      const Annotation = window['chartjs-plugin-annotation'];
-      const state = Annotation._getState(chart);
-      expect(state.listened).toBe(true);
-      expect(state.moveListened).toBe(true);
-    });
-  });
-
-  describe('events', function() {
-    const chartConfig = {
-      type: 'scatter',
-      options: {
-        animation: false,
         scales: {
           x: {
             display: false,
