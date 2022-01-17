@@ -1,7 +1,6 @@
 describe('Label annotation', function() {
   describe('auto', jasmine.fixtures('label'));
 
-  // event point callbacks
   const eventIn = function(xScale, yScale, element) {
     const options = element.options;
     const adjust = options.borderWidth / 2 - 1;

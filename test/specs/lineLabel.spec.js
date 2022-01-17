@@ -1,6 +1,5 @@
 describe('Label of line annotation', function() {
 
-  // event point callbacks
   const eventIn = function(xScale, yScale, element) {
     const options = element.options.label;
     const adjust = options.borderWidth / 2 - 1;
