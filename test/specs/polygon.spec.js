@@ -44,7 +44,7 @@ describe('Polygon annotation', function() {
           legend: false,
           annotation: {
             annotations: {
-              point: {
+              polygon: {
                 type: 'polygon',
                 xScaleID: 'x',
                 yScaleID: 'y',
@@ -59,7 +59,7 @@ describe('Polygon annotation', function() {
       },
     };
 
-    const polygonOpts = chartConfig.options.plugins.annotation.annotations.point;
+    const polygonOpts = chartConfig.options.plugins.annotation.annotations.polygon;
 
     it('should detect click event', function(done) {
       const clickSpy = jasmine.createSpy('click');

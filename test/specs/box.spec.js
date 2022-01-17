@@ -43,7 +43,7 @@ describe('Box annotation', function() {
           legend: false,
           annotation: {
             annotations: {
-              point: {
+              box: {
                 type: 'box',
                 xMin: 2,
                 yMin: 2,
@@ -57,12 +57,12 @@ describe('Box annotation', function() {
       },
     };
 
-    const polygonOpts = chartConfig.options.plugins.annotation.annotations.point;
+    const boxOpts = chartConfig.options.plugins.annotation.annotations.box;
 
     it('should detect click event', function(done) {
       const clickSpy = jasmine.createSpy('click');
 
-      polygonOpts.click = function(ctx) {
+      boxOpts.click = function(ctx) {
         if (ctx.element.options.borderWidth) {
           delete ctx.element.options.borderWidth;
           ctx.chart.draw();
@@ -81,7 +81,7 @@ describe('Box annotation', function() {
 
         window.afterEvent(chart, 'click', function() {
           expect(clickSpy.calls.count()).toBe(1);
-          delete polygonOpts.click;
+          delete boxOpts.click;
           done();
         });
         window.triggerMouseEvent(chart, 'click', eventPoint);
