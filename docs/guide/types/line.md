@@ -51,6 +51,7 @@ The following options are available for line annotations. All of these options c
 | Name | Type | [Scriptable](../options#scriptable-options) | Default
 | ---- | ---- | :----: | ----
 | [`adjustScaleRange`](#general) | `boolean` | Yes | `true`
+| [`arrowHeads`](#arrow-heads) | `{start: object, end:object}` | Yes |
 | [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
 | [`borderDash`](#styling) | `number[]` | Yes | `[]`
 | [`borderDashOffset`](#styling) | `number` | Yes | `0`
@@ -160,3 +161,39 @@ All of these options can be [Scriptable](../options#scriptable-options)
 #### borderRadius
 
 If this value is a number, it is applied to all corners of the rectangle (topLeft, topRight, bottomLeft, bottomRight). If this value is an object, the `topLeft` property defines the top-left corners border radius. Similarly, the `topRight`, `bottomLeft`, and `bottomRight` properties can also be specified. Omitted corners have radius of 0.
+
+## Arrow heads
+
+Namespace: `options.annotations[annotationID].arrowHeads`, it defines options for the line annotation arrow heads.
+
+All of these options can be [Scriptable](../options#scriptable-options)
+
+| Name | Type | Notes
+| ---- | ---- | ----
+| [`end`](#arrow-head-configuration) | `object` | To configure the arrow head at the end of the line.
+| [`start`](#arrow-head-configuration) | `object` | To configure the arrow head at the start of the line.
+
+### Arrow head configuration
+
+Enabling it, you can add arrow heads at start and/or end of a line. It uses the `borderWidth` of the line options to configure the line width of the arrow head.
+
+The following options are available for can be specified per (`start` and/or `end`) arrow head, or at the top level (`arrowHeads`) which apply to all arrow heads.
+
+All of these options can be [Scriptable](../options#scriptable-options)
+
+| Name | Type | Default | Notes
+| ---- | ---- | :----: | ---- 
+| `backgroundColor` | [`Color`](../options#color) | `lineAnnotation.borderColor` | Background color of the arrow head.
+| `backgroundShadowColor` | [`Color`](../options#color) | `'transparent'` | The color of shadow of the arrow head. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
+| `borderColor` | [`Color`](../options#color) | `lineAnnotation.borderColor` | The border arrow head color.
+| `borderDash` | `number[]` | `lineAnnotation.borderDash` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
+| `borderDashOffset` | `number` | `lineAnnotation.borderDashOffset` | Offset for border arrow head dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
+| `borderShadowColor` | [`Color`](../options#color) | `lineAnnotation.borderShadowColor` | The color of border shadow of the arrow head. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
+| `borderWidth` | `number` | `lineAnnotation.borderWidth` | The border line width (in pixels).
+| `enabled` | `boolean` | `false` | Whether or not the arrow head is shown.
+| `fill` | `boolean` | `false` | Whether or not the arrow head is filled.
+| `length` | `number` | `12` | The length of the arrow head in pixels.
+| `shadowBlur` | `number` | `lineAnnotation.shadowBlur` | The amount of blur applied to shadow of the arrow head. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
+| `shadowOffsetX` | `number` | `lineAnnotation.shadowOffsetX` | The distance that shadow, of the arrow head, will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
+| `shadowOffsetY` | `number` | `lineAnnotation.shadowOffsetY` | The distance that shadow, of the arrow head, will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
+| `width` | `number` | `6` | The width of the arrow head in pixels.

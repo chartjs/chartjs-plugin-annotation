@@ -33,6 +33,13 @@ const annotation1 = {
     color: 'green',
     content: 'Project timeline'
   },
+  arrowHeads: {
+    end: {
+      enabled: true,
+      fill: true,
+      borderColor: 'green'
+    }
+  },
   xMax: 10.5,
   xMin: 2.5,
   xScaleID: 'x',
@@ -77,26 +84,12 @@ const annotation4 = {
   type: 'point',
   backgroundColor: 'green',
   borderWidth: 0,
-  pointStyle: 'triangle',
-  rotation: 90,
   xValue: 2.5,
   xScaleID: 'x',
   yValue: 110,
   yScaleID: 'y'
 };
 // </block:annotation4>
-
-// <block:annotation5:5>
-const annotation5 = {
-  type: 'point',
-  backgroundColor: 'green',
-  borderWidth: 0,
-  xValue: 10.5,
-  xScaleID: 'x',
-  yValue: 110,
-  yScaleID: 'y'
-};
-// </block:annotation5>
 
 /* <block:config:0> */
 const config = {
@@ -117,8 +110,7 @@ const config = {
           annotation1,
           annotation2,
           annotation3,
-          annotation4,
-          annotation5
+          annotation4
         }
       }
     }

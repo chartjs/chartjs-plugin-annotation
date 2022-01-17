@@ -108,15 +108,26 @@ export default class LineAnnotation extends Element {
 
   draw(ctx) {
     const {x, y, x2, y2, options} = this;
+
     ctx.save();
+    if (!setBorderStyle(ctx, options)) {
+      // no border width, then line is not drawn
+      return ctx.restore();
+    }
+    setShadowStyle(ctx, options);
+    const angle = Math.atan2(y2 - y, x2 - x);
+    const length = Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2));
+    const {startOpts, endOpts, startAdjust, endAdjust} = getArrowHeads(this);
 
-    setShadowStyle(ctx, this.options);
+    ctx.translate(x, y);
+    ctx.rotate(angle);
     ctx.beginPath();
-    setBorderStyle(ctx, options);
-    ctx.moveTo(x, y);
-    ctx.lineTo(x2, y2);
+    ctx.moveTo(0 + startAdjust, 0);
+    ctx.lineTo(length - endAdjust, 0);
+    ctx.shadowColor = options.borderShadowColor;
     ctx.stroke();
-
+    drawArrowHead(ctx, 0, startAdjust, startOpts);
+    drawArrowHead(ctx, length, -endAdjust, endOpts);
     ctx.restore();
   }
 
@@ -191,9 +202,34 @@ export default class LineAnnotation extends Element {
 }
 
 LineAnnotation.id = 'lineAnnotation';
+
+const arrowHeadsDefaults = {
+  backgroundColor: undefined,
+  backgroundShadowColor: undefined,
+  borderColor: undefined,
+  borderDash: undefined,
+  borderDashOffset: undefined,
+  borderShadowColor: undefined,
+  borderWidth: undefined,
+  enabled: undefined,
+  fill: undefined,
+  length: undefined,
+  shadowBlur: undefined,
+  shadowOffsetX: undefined,
+  shadowOffsetY: undefined,
+  width: undefined
+};
+
 LineAnnotation.defaults = {
   adjustScaleRange: true,
-  backgroundShadowColor: 'transparent',
+  arrowHeads: {
+    enabled: false,
+    end: Object.assign({}, arrowHeadsDefaults),
+    fill: false,
+    length: 12,
+    start: Object.assign({}, arrowHeadsDefaults),
+    width: 6
+  },
   borderDash: [],
   borderDashOffset: 0,
   borderShadowColor: 'transparent',
@@ -248,6 +284,18 @@ LineAnnotation.defaults = {
   yMax: undefined,
   yMin: undefined,
   yScaleID: 'y'
+};
+
+LineAnnotation.descriptors = {
+  arrowHeads: {
+    start: {
+      _fallback: true
+    },
+    end: {
+      _fallback: true
+    },
+    _fallback: true
+  }
 };
 
 LineAnnotation.defaultRoutes = {
@@ -368,4 +416,50 @@ function adjustLabelCoordinate(coordinate, labelSizes) {
     coordinate = max - padding - halfSize;
   }
   return coordinate;
+}
+
+function getArrowHeads(line) {
+  const options = line.options;
+  const arrowStartOpts = options.arrowHeads && options.arrowHeads.start;
+  const arrowEndOpts = options.arrowHeads && options.arrowHeads.end;
+  return {
+    startOpts: arrowStartOpts,
+    endOpts: arrowEndOpts,
+    startAdjust: getLineAdjust(line, arrowStartOpts),
+    endAdjust: getLineAdjust(line, arrowEndOpts)
+  };
+}
+
+function getLineAdjust(line, arrowOpts) {
+  if (!arrowOpts || !arrowOpts.enabled) {
+    return 0;
+  }
+  const {length, width} = arrowOpts;
+  const adjust = line.options.borderWidth / 2;
+  const p1 = {x: length, y: width + adjust};
+  const p2 = {x: 0, y: adjust};
+  return Math.abs(interpolateX(0, p1, p2));
+}
+
+function drawArrowHead(ctx, offset, adjust, arrowOpts) {
+  if (!arrowOpts || !arrowOpts.enabled) {
+    return;
+  }
+  const {length, width, fill, backgroundColor, borderColor} = arrowOpts;
+  const arrowOffsetX = Math.abs(offset - length) + adjust;
+  ctx.beginPath();
+  setShadowStyle(ctx, arrowOpts);
+  setBorderStyle(ctx, arrowOpts);
+  ctx.moveTo(arrowOffsetX, -width);
+  ctx.lineTo(offset + adjust, 0);
+  ctx.lineTo(arrowOffsetX, width);
+  if (fill === true) {
+    ctx.fillStyle = backgroundColor || borderColor;
+    ctx.closePath();
+    ctx.fill();
+    ctx.shadowColor = 'transparent';
+  } else {
+    ctx.shadowColor = arrowOpts.borderShadowColor;
+  }
+  ctx.stroke();
 }
