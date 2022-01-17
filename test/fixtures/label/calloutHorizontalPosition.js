@@ -127,6 +127,29 @@ module.exports = {
               type: 'point',
               xValue: 'January',
               yValue: 10
+            },
+            text6: {
+              type: 'label',
+              xValue: 'January',
+              yValue: 14,
+              backgroundColor: 'rgba(33, 101, 171, 0.5)',
+              borderColor: 'rgb(33, 101, 171)',
+              borderWidth: 1,
+              content: 'invalid position (auto)',
+              position: {
+                x: 'start',
+                y: 'center'
+              },
+              xAdjust: 50,
+              callout: {
+                enabled: true,
+                position: 'wrong'
+              },
+            },
+            point6: {
+              type: 'point',
+              xValue: 'January',
+              yValue: 14
             }
           }
         }
