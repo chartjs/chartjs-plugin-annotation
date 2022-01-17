@@ -1,5 +1,171 @@
-export function testEvents(options, innerElement, getInnerPoint) {
-  const descr = innerElement ? options.type + '.' + innerElement : options.type;
+const getCenterPoint = (xScale, yScale, element) => element.getCenterPoint();
+
+export function testEvents(options, eventIn, eventOut) {
+  testEnterEvent(options, 1, eventIn);
+  testLeaveEvent(options, 1, eventOut);
+  testClickEvent(options, 1, eventIn);
+  testEnterEvent(options, 0, eventOut);
+  testLeaveEvent(options, 0, eventIn);
+  testClickEvent(options, 0, eventOut);
+}
+
+function testEnterEvent(options, toBe, getEventPoint) {
+  const context = getTestCaseContext(toBe);
+
+  describe('events', function() {
+    const pluginOpts = context.chartConfig.options.plugins.annotation;
+
+    [pluginOpts, options].forEach(function(targetOptions) {
+
+      it(`${context.description} detect enter event`, function(done) {
+        const enterSpy = jasmine.createSpy('enter');
+
+        targetOptions.enter = enterSpy;
+        pluginOpts.annotations = [options];
+
+        const chart = window.acquireChart(context.chartConfig);
+        const eventPoint = retrieveEventPoint(chart, getEventPoint);
+
+        window.triggerMouseEvent(chart, 'mousemove', eventPoint);
+        window.afterEvent(chart, 'mousemove', function() {
+          expect(enterSpy.calls.count()).toBe(context.compare);
+          delete targetOptions.enter;
+          done();
+        });
+      });
+    });
+  });
+}
+
+function testLeaveEvent(options, toBe, getEventPoint) {
+  const context = getTestCaseContext(toBe);
+
+  describe('events', function() {
+    const pluginOpts = context.chartConfig.options.plugins.annotation;
+
+    [pluginOpts, options].forEach(function(targetOptions) {
+
+      it(`${context.description} detect leave event`, function(done) {
+        const enterSpy = jasmine.createSpy('enter');
+        const leaveSpy = jasmine.createSpy('leave');
+
+        targetOptions.enter = enterSpy;
+        targetOptions.leave = leaveSpy;
+        pluginOpts.annotations = [options];
+
+        const chart = window.acquireChart(context.chartConfig);
+        const eventPoint = retrieveEventPoint(chart, getCenterPoint);
+
+        window.triggerMouseEvent(chart, 'mousemove', eventPoint);
+        window.afterEvent(chart, 'mousemove', function() {
+          expect(enterSpy.calls.count()).toBe(1);
+
+          window.triggerMouseEvent(chart, 'mousemove', retrieveEventPoint(chart, getEventPoint));
+
+          window.afterEvent(chart, 'mousemove', function() {
+            expect(leaveSpy.calls.count()).toBe(context.compare);
+            delete targetOptions.enter;
+            delete targetOptions.leave;
+            done();
+          });
+        });
+      });
+
+      it(`${context.description} detect leave (by mouseout) events`, function(done) {
+        const enterSpy = jasmine.createSpy('enter');
+        const leaveSpy = jasmine.createSpy('leave');
+
+        targetOptions.enter = enterSpy;
+        targetOptions.leave = leaveSpy;
+        pluginOpts.annotations = [options];
+
+        const chart = window.acquireChart(context.chartConfig);
+        const eventPoint = retrieveEventPoint(chart, getCenterPoint);
+
+        window.triggerMouseEvent(chart, 'mousemove', eventPoint);
+        window.afterEvent(chart, 'mousemove', function() {
+          expect(enterSpy.calls.count()).toBe(1);
+
+          window.triggerMouseEvent(chart, 'mouseout', retrieveEventPoint(chart, getEventPoint));
+
+          window.afterEvent(chart, 'mouseout', function() {
+            expect(leaveSpy.calls.count()).toBe(1);
+            delete targetOptions.enter;
+            delete targetOptions.leave;
+            done();
+          });
+        });
+      });
+    });
+  });
+}
+
+function testClickEvent(options, toBe, getEventPoint) {
+  const context = getTestCaseContext(toBe);
+
+  describe('events', function() {
+    const pluginOpts = context.chartConfig.options.plugins.annotation;
+
+    [pluginOpts, options].forEach(function(targetOptions) {
+
+      it(`${context.description} detect click event`, function(done) {
+        const clickSpy = jasmine.createSpy('click');
+
+        targetOptions.click = clickSpy;
+        pluginOpts.annotations = [options];
+
+        const chart = window.acquireChart(context.chartConfig);
+        const eventPoint = retrieveEventPoint(chart, getEventPoint);
+
+        window.afterEvent(chart, 'click', function() {
+          expect(clickSpy.calls.count()).toBe(context.compare);
+          delete targetOptions.click;
+          done();
+        });
+        window.triggerMouseEvent(chart, 'click', eventPoint);
+      });
+
+      it(`${context.description} detect dbl click event`, function(done) {
+        const dblClickSpy = jasmine.createSpy('dblclick');
+
+        targetOptions.dblclick = dblClickSpy;
+        pluginOpts.dblClickSpeed = 1000;
+        pluginOpts.annotations = [options];
+
+        const chart = window.acquireChart(context.chartConfig);
+        const eventPoint = retrieveEventPoint(chart, getEventPoint);
+
+        let dblClick = false;
+        window.afterEvent(chart, 'click', function() {
+          if (!dblClick) {
+            dblClick = true;
+            window.triggerMouseEvent(chart, 'click', eventPoint);
+          } else {
+            expect(dblClickSpy.calls.count()).toBe(context.compare);
+            delete targetOptions.dblclick;
+            delete pluginOpts.dblClickSpeed;
+            done();
+          }
+        });
+        window.triggerMouseEvent(chart, 'click', eventPoint);
+      });
+    });
+  });
+}
+
+function getElement(chart) {
+  const Annotation = window['chartjs-plugin-annotation'];
+  const state = Annotation._getState(chart);
+  return state.elements[0];
+}
+
+function retrieveEventPoint(chart, getEventPoint) {
+  const xScale = chart.scales.x;
+  const yScale = chart.scales.y;
+  return getEventPoint(xScale, yScale, getElement(chart));
+}
+
+function getTestCaseContext(toBe) {
   const chartConfig = {
     type: 'scatter',
     options: {
@@ -23,296 +189,10 @@ export function testEvents(options, innerElement, getInnerPoint) {
       }
     },
   };
+  return {
+    description: toBe ? 'should' : 'should not',
+    compare: toBe,
+    chartConfig
+  };
 
-  describe('events', function() {
-    const pluginOpts = chartConfig.options.plugins.annotation;
-
-    it(`should not call removed hook on ${descr}`, function(done) {
-      const enterSpy = jasmine.createSpy('enter');
-      const leaveSpy = jasmine.createSpy('leave');
-
-      pluginOpts.enter = enterSpy;
-      pluginOpts.leave = leaveSpy;
-      pluginOpts.annotations = [options];
-
-      const chart = window.acquireChart(chartConfig);
-      pluginOpts.enter = undefined;
-      chart.update();
-      const eventPoint = getEventPoint(chart, getInnerPoint);
-
-      window.triggerMouseEvent(chart, 'mousemove', eventPoint);
-      window.afterEvent(chart, 'mousemove', function() {
-        expect(enterSpy.calls.count()).toBe(0);
-
-        window.triggerMouseEvent(chart, 'mousemove', {
-          x: 0,
-          y: 0
-        });
-
-        window.afterEvent(chart, 'mousemove', function() {
-          expect(leaveSpy.calls.count()).toBe(1);
-          delete pluginOpts.enter;
-          delete pluginOpts.leave;
-          done();
-        });
-      });
-    });
-
-    [pluginOpts, options].forEach(function(targetOptions) {
-
-      it(`should detect enter and leave events on ${descr}`, function(done) {
-        const enterSpy = jasmine.createSpy('enter');
-        const leaveSpy = jasmine.createSpy('leave');
-
-        targetOptions.enter = enterSpy;
-        targetOptions.leave = leaveSpy;
-        pluginOpts.annotations = [options];
-
-        const chart = window.acquireChart(chartConfig);
-        const eventPoint = getEventPoint(chart, getInnerPoint);
-
-        window.triggerMouseEvent(chart, 'mousemove', eventPoint);
-        window.afterEvent(chart, 'mousemove', function() {
-          expect(enterSpy.calls.count()).toBe(1);
-
-          window.triggerMouseEvent(chart, 'mousemove', {
-            x: 0,
-            y: 0
-          });
-
-          window.afterEvent(chart, 'mousemove', function() {
-            expect(leaveSpy.calls.count()).toBe(1);
-            delete targetOptions.enter;
-            delete targetOptions.leave;
-            done();
-          });
-        });
-      });
-
-      it(`should detect enter (by mousemove) and leave (by mouseout) events on ${descr}`, function(done) {
-        const enterSpy = jasmine.createSpy('enter');
-        const leaveSpy = jasmine.createSpy('leave');
-
-        targetOptions.enter = enterSpy;
-        targetOptions.leave = leaveSpy;
-        pluginOpts.annotations = [options];
-
-        const chart = window.acquireChart(chartConfig);
-        const eventPoint = getEventPoint(chart, getInnerPoint);
-
-        window.triggerMouseEvent(chart, 'mousemove', eventPoint);
-        window.afterEvent(chart, 'mousemove', function() {
-          expect(enterSpy.calls.count()).toBe(1);
-
-          window.triggerMouseEvent(chart, 'mouseout', {
-            x: 0,
-            y: 0
-          });
-
-          window.afterEvent(chart, 'mouseout', function() {
-            expect(leaveSpy.calls.count()).toBe(1);
-            delete targetOptions.enter;
-            delete targetOptions.leave;
-            done();
-          });
-        });
-      });
-
-      it(`should not detect any events (because no callback is set) on ${descr}`, function(done) {
-        const enterSpy = jasmine.createSpy('enter');
-        const leaveSpy = jasmine.createSpy('leave');
-
-        pluginOpts.annotations = [options];
-
-        const chart = window.acquireChart(chartConfig);
-        const eventPoint = getEventPoint(chart, getInnerPoint);
-
-        window.triggerMouseEvent(chart, 'mousemove', eventPoint);
-        window.afterEvent(chart, 'mousemove', function() {
-          expect(enterSpy.calls.count()).toBe(0);
-
-          window.triggerMouseEvent(chart, 'mousemove', {
-            x: 0,
-            y: 0
-          });
-
-          window.afterEvent(chart, 'mousemove', function() {
-            expect(leaveSpy.calls.count()).toBe(0);
-            done();
-          });
-        });
-      });
-
-      it(`should not detect any events on ${descr}`, function(done) {
-        const enterSpy = jasmine.createSpy('enter');
-        const leaveSpy = jasmine.createSpy('leave');
-        const clickSpy = jasmine.createSpy('click');
-
-        targetOptions.click = clickSpy;
-        pluginOpts.annotations = [options];
-
-        const chart = window.acquireChart(chartConfig);
-        const eventPoint = getEventPoint(chart, getInnerPoint);
-
-        window.triggerMouseEvent(chart, 'mousemove', eventPoint);
-        window.afterEvent(chart, 'mousemove', function() {
-          expect(enterSpy.calls.count()).toBe(0);
-
-          window.triggerMouseEvent(chart, 'mousemove', {
-            x: 0,
-            y: 0
-          });
-
-          window.afterEvent(chart, 'mousemove', function() {
-            expect(leaveSpy.calls.count()).toBe(0);
-            delete targetOptions.click;
-            done();
-          });
-        });
-      });
-
-      it(`should not detect any events (because unmanaged event) on ${descr}`, function(done) {
-        const clickSpy = jasmine.createSpy('click');
-
-        targetOptions.click = clickSpy;
-        pluginOpts.annotations = [options];
-
-        const chart = window.acquireChart(chartConfig);
-        const eventPoint = getEventPoint(chart, getInnerPoint);
-
-        window.afterEvent(chart, 'touchstart', function() {
-          expect(clickSpy.calls.count()).toBe(0);
-          delete targetOptions.click;
-          done();
-        });
-        window.triggerMouseEvent(chart, 'touchstart', eventPoint);
-      });
-
-      it(`should detect click event on ${descr}`, function(done) {
-        const clickSpy = jasmine.createSpy('click');
-
-        targetOptions.click = clickSpy;
-        pluginOpts.annotations = [options];
-
-        const chart = window.acquireChart(chartConfig);
-        const eventPoint = getEventPoint(chart, getInnerPoint);
-
-        window.afterEvent(chart, 'click', function() {
-          expect(clickSpy.calls.count()).toBe(1);
-          delete targetOptions.click;
-          done();
-        });
-        window.triggerMouseEvent(chart, 'click', eventPoint);
-      });
-
-      it(`should detect dbl click event on ${descr}`, function(done) {
-        const dblClickSpy = jasmine.createSpy('dblclick');
-
-        targetOptions.dblclick = dblClickSpy;
-        pluginOpts.dblClickSpeed = 1000;
-        pluginOpts.annotations = [options];
-
-        const chart = window.acquireChart(chartConfig);
-        const eventPoint = getEventPoint(chart, getInnerPoint);
-
-        let dblClick = false;
-        window.afterEvent(chart, 'click', function() {
-          if (!dblClick) {
-            dblClick = true;
-            window.triggerMouseEvent(chart, 'click', eventPoint);
-          } else {
-            expect(dblClickSpy.calls.count()).toBe(1);
-            delete targetOptions.dblclick;
-            delete pluginOpts.dblClickSpeed;
-            done();
-          }
-        });
-        window.triggerMouseEvent(chart, 'click', eventPoint);
-      });
-
-      it(`should detect a click event even if 2 clicks are fired on ${descr}`, function(done) {
-        const dblClickSpy = jasmine.createSpy('dblclick');
-
-        targetOptions.dblclick = dblClickSpy;
-        pluginOpts.dblClickSpeed = 1;
-        pluginOpts.annotations = [options];
-
-        const chart = window.acquireChart(chartConfig);
-        const eventPoint = getEventPoint(chart, getInnerPoint);
-
-        let dblClick = false;
-        window.afterEvent(chart, 'click', function() {
-          if (!dblClick) {
-            dblClick = true;
-            setTimeout(() => {
-              window.triggerMouseEvent(chart, 'click', eventPoint);
-            }, 50);
-          } else {
-            expect(dblClickSpy.calls.count()).toBe(0);
-            delete targetOptions.dblclick;
-            delete pluginOpts.dblClickSpeed;
-            done();
-          }
-        });
-        window.triggerMouseEvent(chart, 'click', eventPoint);
-      });
-
-      it(`should detect a property in the context, to check persistency, on ${descr}`, function(done) {
-        targetOptions.enter = function(ctx) {
-          ctx.persistency = true;
-        };
-        targetOptions.leave = function(ctx) {
-          expect(ctx.persistency).toBe(true);
-          done();
-        };
-        pluginOpts.annotations = [options];
-
-        const chart = window.acquireChart(chartConfig);
-        const eventPoint = getEventPoint(chart, getInnerPoint);
-
-        window.triggerMouseEvent(chart, 'mousemove', eventPoint);
-        window.afterEvent(chart, 'mousemove', function() {
-
-          window.triggerMouseEvent(chart, 'mousemove', {
-            x: 0,
-            y: 0
-          });
-
-          window.afterEvent(chart, 'mousemove', function() {
-            delete targetOptions.enter;
-            delete targetOptions.leave;
-          });
-        });
-      });
-
-      if (!innerElement) {
-        it(`should center point in range on ${descr}`, function() {
-          pluginOpts.annotations = [options];
-          const chart = window.acquireChart(chartConfig);
-          const element = getElement(chart);
-          const center = element.getCenterPoint();
-          expect(element.inRange(center.x, center.y)).toBe(true);
-        });
-
-        it(`shouldn't center point plus adjustment in range on ${descr}`, function() {
-          pluginOpts.annotations = [options];
-          const chart = window.acquireChart(chartConfig);
-          const element = getElement(chart);
-          const center = element.getCenterPoint();
-          expect(element.inRange(center.x + center.width, center.y)).toBe(false);
-        });
-      }
-    });
-  });
-}
-
-function getElement(chart) {
-  const Annotation = window['chartjs-plugin-annotation'];
-  const state = Annotation._getState(chart);
-  return state.elements[0];
-}
-
-function getEventPoint(chart, getInnerPoint) {
-  const annotation = getElement(chart);
-  return getInnerPoint ? getInnerPoint(annotation) : annotation.getCenterPoint();
 }

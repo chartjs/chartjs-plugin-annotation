@@ -5,7 +5,7 @@ import {getRectCenterPoint, getChartRect, setBorderStyle, setShadowStyle} from '
 export default class EllipseAnnotation extends Element {
 
   inRange(mouseX, mouseY, useFinalPosition) {
-    return pointInEllipse({x: mouseX, y: mouseY}, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), this.options.rotation);
+    return pointInEllipse({x: mouseX, y: mouseY}, this.getProps(['width', 'height'], useFinalPosition), this.options.rotation, this.options.borderWidth);
   }
 
   getCenterPoint(useFinalPosition) {
@@ -68,7 +68,7 @@ EllipseAnnotation.defaultRoutes = {
   backgroundColor: 'color'
 };
 
-function pointInEllipse(p, ellipse, rotation) {
+function pointInEllipse(p, ellipse, rotation, borderWidth) {
   const {width, height} = ellipse;
   const center = ellipse.getCenterPoint(true);
   const xRadius = width / 2;
@@ -79,9 +79,10 @@ function pointInEllipse(p, ellipse, rotation) {
   }
   // https://stackoverflow.com/questions/7946187/point-and-ellipse-rotated-position-test-algorithm
   const angle = toRadians(rotation || 0);
+  const hBorderWidth = borderWidth / 2 || 0;
   const cosAngle = Math.cos(angle);
   const sinAngle = Math.sin(angle);
   const a = Math.pow(cosAngle * (p.x - center.x) + sinAngle * (p.y - center.y), 2);
   const b = Math.pow(sinAngle * (p.x - center.x) - cosAngle * (p.y - center.y), 2);
-  return (a / Math.pow(xRadius, 2)) + (b / Math.pow(yRadius, 2)) <= 1;
+  return (a / Math.pow(xRadius + hBorderWidth, 2)) + (b / Math.pow(yRadius + hBorderWidth, 2)) <= 1;
 }
