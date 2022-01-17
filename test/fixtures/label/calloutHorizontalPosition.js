@@ -58,6 +58,52 @@ module.exports = {
               type: 'point',
               xValue: 'May',
               yValue: 10
+            },
+            text3: {
+              type: 'label',
+              xValue: 'June',
+              yValue: 16,
+              backgroundColor: 'rgba(33, 101, 171, 0.5)',
+              borderColor: 'rgb(33, 101, 171)',
+              borderWidth: 1,
+              content: 'position: auto (left)',
+              position: {
+                x: 'end',
+                y: 'center'
+              },
+              xAdjust: -50,
+              callout: {
+                enabled: true,
+                position: 'auto',
+              },
+            },
+            point3: {
+              type: 'point',
+              xValue: 'June',
+              yValue: 16
+            },
+            text4: {
+              type: 'label',
+              xValue: 'February',
+              yValue: 4,
+              backgroundColor: 'rgba(33, 101, 171, 0.5)',
+              borderColor: 'rgb(33, 101, 171)',
+              borderWidth: 1,
+              content: 'position: auto (right)',
+              position: {
+                x: 'start',
+                y: 'center'
+              },
+              xAdjust: 50,
+              callout: {
+                enabled: true,
+                position: 'auto',
+              },
+            },
+            point4: {
+              type: 'point',
+              xValue: 'February',
+              yValue: 4
             }
           }
         }
