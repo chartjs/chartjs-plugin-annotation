@@ -156,7 +156,8 @@ function getCalloutSeparatorCoord(element, position) {
   if (position === 'left' || position === 'right') {
     separatorStart = {x: x + adjust, y};
     separatorEnd = {x: separatorStart.x, y: separatorStart.y + height};
-  } else if (position === 'top' || position === 'bottom') {
+  } else {
+    //  position 'top' or 'bottom'
     separatorStart = {x, y: y + adjust};
     separatorEnd = {x: separatorStart.x + width, y: separatorStart.y};
   }
@@ -182,7 +183,8 @@ function getCalloutSideCoord(element, position, separatorStart) {
   if (position === 'left' || position === 'right') {
     sideStart = {x: separatorStart.x, y: y + getSize(height, start)};
     sideEnd = {x: sideStart.x + side, y: sideStart.y};
-  } else if (position === 'top' || position === 'bottom') {
+  } else {
+    //  position 'top' or 'bottom'
     sideStart = {x: separatorStart.x + getSize(width, start), y: separatorStart.y};
     sideEnd = {x: sideStart.x, y: sideStart.y + side};
   }
