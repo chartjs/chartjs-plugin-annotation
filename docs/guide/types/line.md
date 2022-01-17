@@ -183,17 +183,17 @@ All of these options can be [Scriptable](../options#scriptable-options)
 
 | Name | Type | Default | Notes
 | ---- | ---- | :----: | ---- 
-| `backgroundColor` | [`Color`](../options#color) | `arrowHead.borderColor` | Background color of the arrow head.
+| `backgroundColor` | [`Color`](../options#color) | `lineAnnotation.borderColor` | Background color of the arrow head.
 | `backgroundShadowColor` | [`Color`](../options#color) | `'transparent'` | The color of shadow of the arrow head. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
-| `borderColor` | [`Color`](../options#color) | `undefined` | The border arrow head color.
-| `borderDash` | `number[]` | `[]` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
-| `borderDashOffset` | `number` | `0` | Offset for border arrow head dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
-| `borderShadowColor` | [`Color`](../options#color) | `'transparent'` | The color of border shadow of the arrow head. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
+| `borderColor` | [`Color`](../options#color) | `lineAnnotation.borderColor` | The border arrow head color.
+| `borderDash` | `number[]` | `lineAnnotation.borderDash` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
+| `borderDashOffset` | `number` | `lineAnnotation.borderDashOffset` | Offset for border arrow head dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
+| `borderShadowColor` | [`Color`](../options#color) | `lineAnnotation.borderShadowColor` | The color of border shadow of the arrow head. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderWidth` | `number` | `lineAnnotation.borderWidth` | The border line width (in pixels).
 | `enabled` | `boolean` | `false` | Whether or not the arrow head is shown.
 | `fill` | `boolean` | `false` | Whether or not the arrow head is filled.
 | `length` | `number` | `12` | The length of the arrow head in pixels.
-| `shadowBlur` | `number` | `0` | The amount of blur applied to shadow of the arrow head. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
-| `shadowOffsetX` | `number` | `0` | The distance that shadow, of the arrow head, will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
-| `shadowOffsetY` | `number` | `0` | The distance that shadow, of the arrow head, will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
+| `shadowBlur` | `number` | `lineAnnotation.shadowBlur` | The amount of blur applied to shadow of the arrow head. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
+| `shadowOffsetX` | `number` | `lineAnnotation.shadowOffsetX` | The distance that shadow, of the arrow head, will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
+| `shadowOffsetY` | `number` | `lineAnnotation.shadowOffsetY` | The distance that shadow, of the arrow head, will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
 | `width` | `number` | `6` | The width of the arrow head in pixels.
