@@ -38,12 +38,12 @@ module.exports = {
               yMin: 11,
               yMax: 15,
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
-              borderColor: 'rgba(255, 99, 132)',
-              borderDash: [6, 6],
-              borderWidth: 5,
+              borderColor: 'black',
+              borderWidth: 15,
               label: {
                 enabled: true,
-                content: 'This is a label',
+                borderColor: 'green',
+                content: 'This label tests clipping',
                 position: 'start'
               }
             },

@@ -18,22 +18,25 @@ export default class BoxAnnotation extends Element {
   }
 
   drawLabel(ctx) {
-    const {x, y, width, height, options: {label: labelOpts}} = this;
-    const halfBorder = labelOpts.borderWidth / 2;
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(x + halfBorder, y + halfBorder, width - halfBorder, height - halfBorder);
-    ctx.clip();
-    const position = toPosition(labelOpts.position);
-    const padding = toPadding(labelOpts.padding);
-    const labelSize = measureLabelSize(ctx, labelOpts);
+    const {x, y, width, height, options} = this;
+    const {label, borderWidth} = options;
+    const halfBorder = borderWidth / 2;
+    const position = toPosition(label.position);
+    const padding = toPadding(label.padding);
+    const labelSize = measureLabelSize(ctx, label);
     const labelRect = {
       x: calculateX(this, labelSize, position, padding),
       y: calculateY(this, labelSize, position, padding),
       width: labelSize.width,
       height: labelSize.height
     };
-    drawLabel(ctx, labelRect, labelOpts);
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(x + halfBorder + padding.left, y + halfBorder + padding.top,
+      width - borderWidth - padding.width, height - borderWidth - padding.height);
+    ctx.clip();
+    drawLabel(ctx, labelRect, label);
     ctx.restore();
   }
 
