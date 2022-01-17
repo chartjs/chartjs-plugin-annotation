@@ -2,8 +2,15 @@ describe('Label annotation', function() {
   describe('auto', jasmine.fixtures('label'));
 
   // event point callbacks
-  const left = function(xScale, yScale, element, xAdjust, yAdjust) {
-    return {x: element.x + xAdjust, y: element.y + element.height / 2 + yAdjust};
+  const eventIn = function(xScale, yScale, element) {
+    const options = element.options;
+    const adjust = options.borderWidth / 2 - 1;
+    return {x: element.x, y: element.y - adjust};
+  };
+  const eventOut = function(xScale, yScale, element) {
+    const options = element.options;
+    const adjust = options.borderWidth / 2 + 1;
+    return {x: element.x, y: element.y - adjust};
   };
 
   window.testEvents({
@@ -21,6 +28,6 @@ describe('Label annotation', function() {
       enabled: false,
     },
     font: {}
-  }, null, null, left);
+  }, eventIn, eventOut);
 
 });

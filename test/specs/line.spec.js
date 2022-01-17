@@ -2,11 +2,15 @@ describe('Line annotation', function() {
   describe('auto', jasmine.fixtures('line'));
 
   // event point callbacks
-  const horizontal = function(xScale, yScale, element, xAdjust, yAdjust) {
-    return {x: element.x + element.width + xAdjust, y: element.y + yAdjust};
+  const eventIn = function(xScale, yScale, element) {
+    const options = element.options;
+    const adjust = options.borderWidth / 2 - 1;
+    return {x: element.x - adjust, y: element.y};
   };
-  const vertical = function(xScale, yScale, element, xAdjust, yAdjust) {
-    return {x: element.x + xAdjust, y: element.y + element.height + yAdjust};
+  const eventOut = function(xScale, yScale, element) {
+    const options = element.options;
+    const adjust = options.borderWidth / 2 + 1;
+    return {x: element.x - adjust, y: element.y};
   };
 
   window.testEvents({
@@ -15,14 +19,6 @@ describe('Line annotation', function() {
     scaleID: 'y',
     value: 5,
     borderWidth: 10
-  }, horizontal);
-
-  window.testEvents({
-    type: 'line',
-    id: 'test',
-    scaleID: 'x',
-    value: 5,
-    borderWidth: 10
-  }, null, null, vertical);
+  }, eventIn, eventOut);
 
 });

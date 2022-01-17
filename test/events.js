@@ -1,76 +1,15 @@
 const getCenterPoint = (xScale, yScale, element) => element.getCenterPoint();
-const getX0Y0Point = function() {
-  return {
-    x: 0,
-    y: 0
-  };
-};
-const isFunction = (obj) => typeof obj === 'function';
 
-export function testEvents(options, top, bottom, left, right, borderWidth) {
-  describe('(adjusting with border)', function() {
-    const hBorderWidth = (borderWidth || options.borderWidth) / 2;
-    const adjustStartIn = -hBorderWidth + 1;
-    const adjustEndIn = hBorderWidth - 1;
-    const adjustStartOut = -hBorderWidth - 1;
-    const adjustEndOut = hBorderWidth + 1;
-    if (isFunction(top)) {
-      testEventsByPosition(options, 'top',
-        (xScale, yScale, element) => top(xScale, yScale, element, 0, adjustStartIn),
-        (xScale, yScale, element) => top(xScale, yScale, element, 0, adjustStartOut));
-    }
-    if (isFunction(bottom)) {
-      testEventsByPosition(options, 'bottom',
-        (xScale, yScale, element) => bottom(xScale, yScale, element, 0, adjustEndIn),
-        (xScale, yScale, element) => bottom(xScale, yScale, element, 0, adjustEndOut));
-    }
-    if (isFunction(left)) {
-      testEventsByPosition(options, 'left',
-        (xScale, yScale, element) => left(xScale, yScale, element, adjustStartIn, 0),
-        (xScale, yScale, element) => left(xScale, yScale, element, adjustStartOut, 0));
-    }
-    if (isFunction(right)) {
-      testEventsByPosition(options, 'right',
-        (xScale, yScale, element) => right(xScale, yScale, element, adjustEndIn, 0),
-        (xScale, yScale, element) => right(xScale, yScale, element, adjustEndOut, 0));
-    }
-  });
+export function testEvents(options, eventIn, eventOut) {
+  testEnterEvent(options, 1, eventIn);
+  testLeaveEvent(options, 1, eventOut);
+  testClickEvent(options, 1, eventIn);
+  testEnterEvent(options, 0, eventOut);
+  testLeaveEvent(options, 0, eventIn);
+  testClickEvent(options, 0, eventOut);
 }
 
-export function catchEnterEvent(options, position, getEventPoint = getCenterPoint) {
-  testEnterEvent(options, 1, position, getEventPoint);
-}
-
-export function notCatchEnterEvent(options, position, getEventPoint = getX0Y0Point) {
-  testEnterEvent(options, 0, position, getEventPoint);
-}
-
-export function catchLeaveEvent(options, position, getEventPoint = getX0Y0Point) {
-  testLeaveEvent(options, 1, position, getEventPoint);
-}
-
-export function notCatchLeaveEvent(options, position, getEventPoint = getCenterPoint) {
-  testLeaveEvent(options, 0, position, getEventPoint);
-}
-
-export function catchClickEvent(options, position, getEventPoint = getCenterPoint) {
-  testClickEvent(options, 1, position, getEventPoint);
-}
-
-export function notCatchClickEvent(options, position, getEventPoint = getX0Y0Point) {
-  testClickEvent(options, 0, position, getEventPoint);
-}
-
-function testEventsByPosition(options, position, callbackIn, callbackOut) {
-  window.catchEnterEvent(options, position, callbackIn);
-  window.notCatchEnterEvent(options, position, callbackOut);
-  window.catchLeaveEvent(options, position, callbackOut);
-  window.notCatchLeaveEvent(options, position, callbackIn);
-  window.catchClickEvent(options, position, callbackIn);
-  window.notCatchClickEvent(options, position, callbackOut);
-}
-
-function testEnterEvent(options, toBe, position, getEventPoint) {
+function testEnterEvent(options, toBe, getEventPoint) {
   const context = getTestCaseContext(toBe);
 
   describe('events', function() {
@@ -78,7 +17,7 @@ function testEnterEvent(options, toBe, position, getEventPoint) {
 
     [pluginOpts, options].forEach(function(targetOptions) {
 
-      it(`${context.description} detect enter event on ${position}`, function(done) {
+      it(`${context.description} detect enter event`, function(done) {
         const enterSpy = jasmine.createSpy('enter');
 
         targetOptions.enter = enterSpy;
@@ -98,7 +37,7 @@ function testEnterEvent(options, toBe, position, getEventPoint) {
   });
 }
 
-function testLeaveEvent(options, toBe, position, getEventPoint) {
+function testLeaveEvent(options, toBe, getEventPoint) {
   const context = getTestCaseContext(toBe);
 
   describe('events', function() {
@@ -106,7 +45,7 @@ function testLeaveEvent(options, toBe, position, getEventPoint) {
 
     [pluginOpts, options].forEach(function(targetOptions) {
 
-      it(`${context.description} detect leave event on ${position}`, function(done) {
+      it(`${context.description} detect leave event`, function(done) {
         const enterSpy = jasmine.createSpy('enter');
         const leaveSpy = jasmine.createSpy('leave');
 
@@ -132,7 +71,7 @@ function testLeaveEvent(options, toBe, position, getEventPoint) {
         });
       });
 
-      it(`${context.description} detect leave (by mouseout) events on ${position}`, function(done) {
+      it(`${context.description} detect leave (by mouseout) events`, function(done) {
         const enterSpy = jasmine.createSpy('enter');
         const leaveSpy = jasmine.createSpy('leave');
 
@@ -161,7 +100,7 @@ function testLeaveEvent(options, toBe, position, getEventPoint) {
   });
 }
 
-function testClickEvent(options, toBe, position, getEventPoint) {
+function testClickEvent(options, toBe, getEventPoint) {
   const context = getTestCaseContext(toBe);
 
   describe('events', function() {
@@ -169,7 +108,7 @@ function testClickEvent(options, toBe, position, getEventPoint) {
 
     [pluginOpts, options].forEach(function(targetOptions) {
 
-      it(`${context.description} detect click event on ${position}`, function(done) {
+      it(`${context.description} detect click event`, function(done) {
         const clickSpy = jasmine.createSpy('click');
 
         targetOptions.click = clickSpy;
@@ -186,7 +125,7 @@ function testClickEvent(options, toBe, position, getEventPoint) {
         window.triggerMouseEvent(chart, 'click', eventPoint);
       });
 
-      it(`${context.description} detect dbl click event on ${position}`, function(done) {
+      it(`${context.description} detect dbl click event`, function(done) {
         const dblClickSpy = jasmine.createSpy('dblclick');
 
         targetOptions.dblclick = dblClickSpy;

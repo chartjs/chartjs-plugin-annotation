@@ -2,9 +2,15 @@ describe('Point annotation', function() {
   describe('auto', jasmine.fixtures('point'));
 
   // event point callbacks
-  const top = function(xScale, yScale, element, xAdjust, yAdjust) {
-    const opts = element.options;
-    return {x: xScale.getPixelForValue(opts.xValue) + xAdjust, y: yScale.getPixelForValue(opts.yValue) - opts.radius + yAdjust};
+  const eventIn = function(xScale, yScale, element) {
+    const options = element.options;
+    const adjust = options.borderWidth / 2 - 1;
+    return {x: element.x, y: element.y - element.height / 2 - adjust};
+  };
+  const eventOut = function(xScale, yScale, element) {
+    const options = element.options;
+    const adjust = options.borderWidth / 2 + 1;
+    return {x: element.x, y: element.y - element.height / 2 - adjust};
   };
 
   window.testEvents({
@@ -12,100 +18,11 @@ describe('Point annotation', function() {
     id: 'test',
     xScaleID: 'x',
     yScaleID: 'y',
-    xValue: 8,
-    yValue: 8,
+    xValue: 5,
+    yValue: 5,
     radius: 30,
     borderWidth: 12
-  }, top);
-
-  describe('(with radius 0)', function() {
-    const options = {
-      type: 'point',
-      id: 'test',
-      xScaleID: 'x',
-      yScaleID: 'y',
-      xValue: 5,
-      yValue: 5,
-      radius: 0,
-      borderWidth: 12
-    };
-    const center = function(xScale, yScale, element) {
-      const opts = element.options;
-      return {x: xScale.getPixelForValue(opts.xValue), y: yScale.getPixelForValue(opts.yValue)};
-    };
-    window.notCatchEnterEvent(options, 'center', center);
-  });
-
-  describe('events, removing borderWidth by callback, ', function() {
-    const chartConfig = {
-      type: 'scatter',
-      options: {
-        animation: false,
-        scales: {
-          x: {
-            display: false,
-            min: 0,
-            max: 10
-          },
-          y: {
-            display: false,
-            min: 0,
-            max: 10
-          }
-        },
-        plugins: {
-          legend: false,
-          annotation: {
-            annotations: {
-              point: {
-                type: 'point',
-                xScaleID: 'x',
-                yScaleID: 'y',
-                xValue: 5,
-                yValue: 5,
-                radius: 20,
-                borderWidth: 10
-              }
-            }
-          }
-        }
-      },
-    };
-
-    const pointOpts = chartConfig.options.plugins.annotation.annotations.point;
-
-    it('should detect click event', function(done) {
-      const clickSpy = jasmine.createSpy('click');
-
-      pointOpts.click = function(ctx) {
-        if (ctx.element.options.borderWidth) {
-          delete ctx.element.options.borderWidth;
-          ctx.element.debug = true;
-          ctx.chart.draw();
-        } else {
-          ctx.element.options.click = clickSpy;
-        }
-      };
-
-      const chart = window.acquireChart(chartConfig);
-      const xScale = chart.scales.x;
-      const yScale = chart.scales.y;
-      const eventPoint = {x: xScale.getPixelForValue(5), y: yScale.getPixelForValue(5)};
-
-      window.afterEvent(chart, 'click', function() {
-        expect(clickSpy.calls.count()).toBe(0);
-
-        window.afterEvent(chart, 'click', function() {
-          expect(clickSpy.calls.count()).toBe(1);
-          delete pointOpts.click;
-          done();
-        });
-        window.triggerMouseEvent(chart, 'click', eventPoint);
-      });
-      window.triggerMouseEvent(chart, 'click', eventPoint);
-    });
-
-  });
+  }, eventIn, eventOut);
 
   describe('applying defaults', function() {
 
