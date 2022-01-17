@@ -14,3 +14,30 @@ export function createCanvas() {
   ctx.stroke();
   return canvas;
 }
+
+export function scatter10x10(annotations) {
+  return window.acquireChart({
+    type: 'scatter',
+    options: {
+      animation: false,
+      scales: {
+        x: {
+          display: false,
+          min: 0,
+          max: 10
+        },
+        y: {
+          display: false,
+          min: 0,
+          max: 10
+        }
+      },
+      plugins: {
+        legend: false,
+        annotation: {
+          annotations
+        }
+      }
+    }
+  });
+}
