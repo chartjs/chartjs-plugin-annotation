@@ -1,257 +1,74 @@
 describe('Ellipse annotation', function() {
   describe('auto', jasmine.fixtures('ellipse'));
 
-  const eventIn = function(xScale, yScale, element) {
-    const options = element.options;
-    const adjust = options.borderWidth / 2 - 1;
-    return {x: element.x + element.width / 2, y: element.y - adjust};
-  };
-  const eventOut = function(xScale, yScale, element) {
-    const options = element.options;
-    const adjust = options.borderWidth / 2 + 1;
-    return {x: element.x + element.width / 2, y: element.y - adjust};
-  };
+  describe('inRange', function() {
+    const rotated = window.helpers.rotated;
 
-  window.testEvents({
-    type: 'ellipse',
-    id: 'test',
-    xMin: 2,
-    yMin: 2,
-    xMax: 4,
-    yMax: 4,
-    borderWidth: 10
-  }, eventIn, eventOut);
-
-  describe('events on rotated ellipse', function() {
-
-    const chartConfig = {
-      type: 'scatter',
-      options: {
-        animation: false,
-        scales: {
-          x: {
-            display: false,
-            min: 0,
-            max: 10
-          },
-          y: {
-            display: false,
-            min: 0,
-            max: 10
-          }
-        },
-        plugins: {
-          legend: false,
-          annotation: {
-            annotations: {
-              ellipse: {
-                type: 'ellipse',
-                xMin: 2,
-                yMin: 4,
-                xMax: 8,
-                yMax: 6,
-                rotation: 45
-              }
-            }
-          }
-        }
-      },
-    };
-
-    const ellipseOpts = chartConfig.options.plugins.annotation.annotations.ellipse;
-
-    it('should detect click event', function(done) {
-      const clickSpy = jasmine.createSpy('click');
-
-      ellipseOpts.click = clickSpy;
-
-      const chart = window.acquireChart(chartConfig);
-      const xScale = chart.scales.x;
-      const yScale = chart.scales.y;
-      const eventPoint = {x: xScale.getPixelForValue(4), y: yScale.getPixelForValue(6.9)};
-
-      window.afterEvent(chart, 'click', function() {
-        expect(clickSpy.calls.count()).toBe(1);
-        delete ellipseOpts.click;
-        done();
-      });
-      window.triggerMouseEvent(chart, 'click', eventPoint);
-    });
-
-    it('should not detect click event', function(done) {
-      const clickSpy = jasmine.createSpy('click');
-
-      ellipseOpts.click = clickSpy;
-
-      const chart = window.acquireChart(chartConfig);
-      const xScale = chart.scales.x;
-      const yScale = chart.scales.y;
-      const eventPoint = {x: xScale.getPixelForValue(3), y: yScale.getPixelForValue(5)};
-
-      window.afterEvent(chart, 'click', function() {
-        expect(clickSpy.calls.count()).toBe(0);
-        delete ellipseOpts.click;
-        done();
-      });
-      window.triggerMouseEvent(chart, 'click', eventPoint);
-    });
-
-    it('should detect click event, removing rotation by callback', function(done) {
-      const clickSpy = jasmine.createSpy('click');
-
-      ellipseOpts.click = function(ctx) {
-        if (ctx.element.options.rotation) {
-          delete ctx.element.options.rotation;
-        } else {
-          ctx.element.options.click = clickSpy;
-        }
+    for (const rotation of [0, 45, 90, 135, 180, 225, 270, 315]) {
+      const annotation = {
+        type: 'ellipse',
+        xMin: 3,
+        yMin: 4,
+        xMax: 7,
+        yMax: 5,
+        borderWidth: 0,
+        rotation
       };
 
-      const chart = window.acquireChart(chartConfig);
-      const xScale = chart.scales.x;
-      const yScale = chart.scales.y;
-      const eventPoint = {x: xScale.getPixelForValue(4), y: yScale.getPixelForValue(6.9)};
+      const chart = window.scatter10x10({test: annotation});
+      const element = window['chartjs-plugin-annotation']._getState(chart).elements[0];
+      const center = element.getCenterPoint();
+      const xRadius = element.width / 2;
+      const yRadius = element.height / 2;
 
-      window.afterEvent(chart, 'click', function() {
-        expect(clickSpy.calls.count()).toBe(0);
+      it(`should return true when point is inside element\n{x: ${center.x}, y: ${center.y}, xRadius: ${xRadius.toFixed(1)}, yRadius: ${yRadius.toFixed(1)}}`, function() {
+        for (const borderWidth of [0, 10]) {
+          const halfBorder = borderWidth / 2;
+          element.options.borderWidth = borderWidth;
 
-        const eventPoint2 = {x: xScale.getPixelForValue(5), y: yScale.getPixelForValue(5)};
-        window.afterEvent(chart, 'click', function() {
-          expect(clickSpy.calls.count()).toBe(1);
-          delete ellipseOpts.click;
-          done();
-        });
-        window.triggerMouseEvent(chart, 'click', eventPoint2);
-      });
-      window.triggerMouseEvent(chart, 'click', eventPoint);
-    });
+          for (const angle of [0, 45, 90, 135, 180, 225, 270, 315]) {
+            const rad = angle / 180 * Math.PI;
 
-  });
+            const {x, y} = rotated({
+              x: center.x + Math.cos(rad) * (xRadius + halfBorder),
+              y: center.y + Math.sin(rad) * (yRadius + halfBorder)
+            }, center, rotation / 180 * Math.PI);
 
-  describe('events, removing borderWidth by callback, ', function() {
-    const chartConfig = {
-      type: 'scatter',
-      options: {
-        animation: false,
-        scales: {
-          x: {
-            display: false,
-            min: 0,
-            max: 10
-          },
-          y: {
-            display: false,
-            min: 0,
-            max: 10
-          }
-        },
-        plugins: {
-          legend: false,
-          annotation: {
-            annotations: {
-              ellipse: {
-                type: 'ellipse',
-                xMin: 2,
-                yMin: 2,
-                xMax: 4,
-                yMax: 4,
-                borderWidth: 10
-              }
-            }
+            expect(element.inRange(x, y)).withContext(`in, rotation: ${rotation}, angle: ${angle}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
           }
         }
-      },
-    };
-
-    const ellipseOpts = chartConfig.options.plugins.annotation.annotations.ellipse;
-
-    it('should detect click event', function(done) {
-      const clickSpy = jasmine.createSpy('click');
-
-      ellipseOpts.click = function(ctx) {
-        if (ctx.element.options.borderWidth) {
-          delete ctx.element.options.borderWidth;
-          ctx.chart.draw();
-        } else {
-          ctx.element.options.click = clickSpy;
-        }
-      };
-
-      const chart = window.acquireChart(chartConfig);
-      const xScale = chart.scales.x;
-      const yScale = chart.scales.y;
-      const eventPoint = {x: xScale.getPixelForValue(3), y: yScale.getPixelForValue(3)};
-
-      window.afterEvent(chart, 'click', function() {
-        expect(clickSpy.calls.count()).toBe(0);
-
-        window.afterEvent(chart, 'click', function() {
-          expect(clickSpy.calls.count()).toBe(1);
-          delete ellipseOpts.click;
-          done();
-        });
-        window.triggerMouseEvent(chart, 'click', eventPoint);
       });
-      window.triggerMouseEvent(chart, 'click', eventPoint);
-    });
 
-  });
+      it(`should return false when point is outside element\n{x: ${center.x}, y: ${center.y}, xRadius: ${xRadius.toFixed(1)}, yRadius: ${yRadius.toFixed(1)}}`, function() {
+        for (const borderWidth of [0, 10]) {
+          const halfBorder = borderWidth / 2;
+          element.options.borderWidth = borderWidth;
 
-  describe('events on ellipse with radius 0', function() {
+          for (const angle of [0, 45, 90, 135, 180, 225, 270, 315]) {
+            const rad = angle / 180 * Math.PI;
 
-    const chartConfig = {
-      type: 'scatter',
-      options: {
-        animation: false,
-        scales: {
-          x: {
-            display: false,
-            min: 0,
-            max: 10
-          },
-          y: {
-            display: false,
-            min: 0,
-            max: 10
-          }
-        },
-        plugins: {
-          legend: false,
-          annotation: {
-            annotations: {
-              ellipse: {
-                type: 'ellipse',
-                xMin: 5,
-                yMin: 5,
-                xMax: 5,
-                yMax: 5,
-              }
-            }
+            const {x, y} = rotated({
+              x: center.x + Math.cos(rad) * (xRadius + halfBorder + 1),
+              y: center.y + Math.sin(rad) * (yRadius + halfBorder + 1)
+            }, center, rotation / 180 * Math.PI);
+
+            expect(element.inRange(x, y)).withContext(`in, rotation: ${rotation}, angle: ${angle}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
           }
         }
-      },
-    };
-
-    const ellipseOpts = chartConfig.options.plugins.annotation.annotations.ellipse;
-
-    it('should not detect click event', function(done) {
-      const clickSpy = jasmine.createSpy('click');
-
-      ellipseOpts.click = clickSpy;
-
-      const chart = window.acquireChart(chartConfig);
-      const xScale = chart.scales.x;
-      const yScale = chart.scales.y;
-      const eventPoint = {x: xScale.getPixelForValue(5), y: yScale.getPixelForValue(5)};
-
-      window.afterEvent(chart, 'click', function() {
-        expect(clickSpy.calls.count()).toBe(0);
-        delete ellipseOpts.click;
-        done();
       });
-      window.triggerMouseEvent(chart, 'click', eventPoint);
+    }
+
+    it('should refurn false for zero width/height ellipse', function() {
+      const chart = window.scatter10x10([
+        {type: 'ellipse', xMin: 1, xMax: 1, yMin: 1, yMax: 1},
+        {type: 'ellipse', xMin: 2, xMax: 3, yMin: 1, yMax: 1},
+        {type: 'ellipse', xMin: 1, xMax: 1, yMin: 2, yMax: 3}
+      ]);
+      const elements = window['chartjs-plugin-annotation']._getState(chart).elements;
+      for (const element of elements) {
+        const center = element.getCenterPoint();
+        expect(element.inRange(center.x, center.y)).toEqual(false);
+      }
     });
-
   });
-
 });
