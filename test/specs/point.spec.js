@@ -15,8 +15,6 @@ describe('Point annotation', function() {
   window.testEvents({
     type: 'point',
     id: 'test',
-    xScaleID: 'x',
-    yScaleID: 'y',
     xValue: 5,
     yValue: 5,
     radius: 30,
@@ -46,8 +44,6 @@ describe('Point annotation', function() {
             annotations: {
               point: {
                 type: 'point',
-                xScaleID: 'x',
-                yScaleID: 'y',
                 xValue: 5,
                 yValue: 5,
                 radius: 20,

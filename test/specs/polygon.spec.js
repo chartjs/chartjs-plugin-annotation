@@ -15,8 +15,6 @@ describe('Polygon annotation', function() {
   window.testEvents({
     type: 'polygon',
     id: 'test',
-    xScaleID: 'x',
-    yScaleID: 'y',
     xValue: 5,
     yValue: 5,
     rotation: 0,
@@ -46,8 +44,6 @@ describe('Polygon annotation', function() {
             annotations: {
               polygon: {
                 type: 'polygon',
-                xScaleID: 'x',
-                yScaleID: 'y',
                 xValue: 5,
                 yValue: 5,
                 radius: 20,
