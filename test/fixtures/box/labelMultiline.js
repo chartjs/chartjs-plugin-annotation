@@ -1,5 +1,4 @@
 module.exports = {
-  tolerance: 0.0075,
   config: {
     type: 'bar',
     options: {
@@ -23,8 +22,7 @@ module.exports = {
               yMin: 5,
               yMax: 10,
               backgroundColor: 'rgba(178, 255, 102, 0.5)',
-              borderColor: 'rgb(178, 255, 102)',
-              borderDash: [6, 6],
+              borderColor: 'red',
               borderWidth: 5,
               label: {
                 enabled: true,
@@ -38,8 +36,7 @@ module.exports = {
               yMin: 11,
               yMax: 15,
               backgroundColor: 'rgba(178, 255, 102, 0.5)',
-              borderColor: 'rgb(178, 255, 102)',
-              borderDash: [6, 6],
+              borderColor: 'red',
               borderWidth: 5,
               label: {
                 enabled: true,
@@ -54,8 +51,7 @@ module.exports = {
               yMin: 16,
               yMax: 20,
               backgroundColor: 'rgba(178, 255, 102, 0.5)',
-              borderColor: 'rgb(178, 255, 102)',
-              borderDash: [6, 6],
+              borderColor: 'red',
               borderWidth: 5,
               label: {
                 enabled: true,
@@ -70,8 +66,7 @@ module.exports = {
               yMin: 5,
               yMax: 9,
               backgroundColor: 'rgba(178, 255, 102, 0.5)',
-              borderColor: 'rgb(178, 255, 102)',
-              borderDash: [6, 6],
+              borderColor: 'red',
               borderWidth: 5,
               label: {
                 enabled: true,
