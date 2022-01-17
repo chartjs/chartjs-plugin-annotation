@@ -72,7 +72,7 @@ module.exports = {
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
               borderColor: 'rgb(33, 101, 171)',
               borderWidth: 1,
-              content: 'position: auto (bottom)',
+              content: 'position: auto (top)',
               position: 'center',
               yAdjust: 50,
               callout: {
@@ -93,7 +93,7 @@ module.exports = {
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
               borderColor: 'rgb(33, 101, 171)',
               borderWidth: 1,
-              content: 'position: auto (top)',
+              content: 'position: auto (bottom)',
               position: 'center',
               yAdjust: -50,
               callout: {

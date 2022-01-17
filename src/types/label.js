@@ -213,9 +213,9 @@ function resolveCalloutAutoPosition(element, options) {
     return 'left';
   } else if (pointX > (x + width + adjust)) {
     return 'right';
-  } else if (pointY < (y + height + adjust)) {
+  } else if (pointY < (y - adjust)) {
     return 'top';
-  } else if (pointY > (y - adjust)) {
+  } else if (pointY > (y + height + adjust)) {
     return 'bottom';
   }
 }
