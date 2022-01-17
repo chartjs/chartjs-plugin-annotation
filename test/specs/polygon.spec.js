@@ -17,11 +17,11 @@ describe('Polygon annotation', function() {
     id: 'test',
     xScaleID: 'x',
     yScaleID: 'y',
-    xValue: 8,
-    yValue: 8,
+    xValue: 5,
+    yValue: 5,
     rotation: 0,
     radius: 30,
-    borderWidth: 20
+    borderWidth: 10
   }, eventIn, eventOut);
 
 });
