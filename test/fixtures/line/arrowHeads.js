@@ -44,8 +44,6 @@ module.exports = {
             },
             arrow1: {
               type: 'line',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 90,
               yMin: 10,
               xMax: 80,
@@ -67,8 +65,6 @@ module.exports = {
             },
             arrow2: {
               type: 'line',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 30,
               yMin: 80,
               xMax: 60,
@@ -90,8 +86,6 @@ module.exports = {
             },
             arrow3: {
               type: 'line',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 65,
               yMin: 70,
               xMax: 70,
@@ -115,8 +109,6 @@ module.exports = {
             },
             arrow4: {
               type: 'line',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 10,
               yMin: 60,
               xMax: 30,
@@ -139,17 +131,15 @@ module.exports = {
             },
             arrow5: {
               type: 'line',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 10,
               yMin: 30,
               xMax: 40,
               yMax: 50,
-              borderWidth: 1,
+              borderWidth: 0,
               label: {
                 rotation: 'auto',
                 backgroundColor: 'red',
-                content: 'borderWidth 1',
+                content: 'borderWidth 0',
                 enabled: true
               },
               arrowHeads: {
@@ -167,8 +157,6 @@ module.exports = {
             },
             arrow6: {
               type: 'line',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 30,
               yMin: 8,
               xMax: 70,
@@ -195,8 +183,6 @@ module.exports = {
             },
             arrow7: {
               type: 'line',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 10,
               yMin: 70,
               xMax: 10,

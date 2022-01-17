@@ -295,6 +295,18 @@ LineAnnotation.defaults = {
   yScaleID: 'y'
 };
 
+LineAnnotation.descriptors = {
+  arrowHeads: {
+    start: {
+      _fallback: true
+    },
+    end: {
+      _fallback: true
+    },
+    _fallback: true
+  }
+};
+
 LineAnnotation.defaultRoutes = {
   borderColor: 'color'
 };

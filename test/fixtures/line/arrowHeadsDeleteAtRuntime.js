@@ -6,38 +6,91 @@ module.exports = {
         x: {
           display: true,
           min: 0,
-          max: 100
+          max: 10
         },
         y: {
           display: true,
           min: 0,
-          max: 100
+          max: 10
         }
       },
       plugins: {
         annotation: {
-          annotations: {
-            line: {
+          annotations: [
+            {
               type: 'line',
-              scaleID: 'y',
-              value: 0,
-              endValue: 80,
-              borderColor: 'black',
-              borderWidth: 5,
+              xMin: 1,
+              xMax: 8,
+              yMin: 8,
+              yMax: 8,
+              borderColor: 'blue',
+              borderWidth: 4,
               label: {
-                rotation: 'auto',
-                backgroundColor: 'red',
-                borderColor: 'black',
-                borderRadius: 10,
-                content: 'arrow heads removed',
-                enabled: true
+                enabled: true,
+                content: 'remove start'
               },
               arrowHeads: {
+                length: 30,
+                width: 15,
                 start: {
-                  enabled: true
+                  enabled: true,
                 },
                 end: {
-                  enabled: true
+                  enabled: true,
+                }
+              },
+              click({chart, element}) {
+                delete element.options.arrowHeads.start;
+                chart.draw();
+              }
+            },
+            {
+              type: 'line',
+              xMin: 1,
+              xMax: 8,
+              yMin: 5,
+              yMax: 5,
+              borderColor: 'purple',
+              borderWidth: 4,
+              label: {
+                enabled: true,
+                content: 'remove end'
+              },
+              arrowHeads: {
+                length: 30,
+                width: 15,
+                start: {
+                  enabled: true,
+                },
+                end: {
+                  enabled: true,
+                }
+              },
+              click({chart, element}) {
+                delete element.options.arrowHeads.end;
+                chart.draw();
+              }
+            },
+            {
+              type: 'line',
+              xMin: 1,
+              xMax: 8,
+              yMin: 2,
+              yMax: 2,
+              borderColor: 'red',
+              borderWidth: 4,
+              label: {
+                enabled: true,
+                content: 'remove start and end'
+              },
+              arrowHeads: {
+                length: 30,
+                width: 15,
+                start: {
+                  enabled: true,
+                },
+                end: {
+                  enabled: true,
                 }
               },
               click({chart, element}) {
@@ -45,8 +98,8 @@ module.exports = {
                 delete element.options.arrowHeads.end;
                 chart.draw();
               }
-            },
-          }
+            }
+          ]
         }
       }
     }
@@ -54,8 +107,12 @@ module.exports = {
   options: {
     spriteText: true,
     async run(chart) {
-      const el = window['chartjs-plugin-annotation']._getState(chart).elements[0];
-      await window.triggerMouseEvent(chart, 'click', el.getCenterPoint());
+      const el0 = window['chartjs-plugin-annotation']._getState(chart).elements[0];
+      await window.triggerMouseEvent(chart, 'click', el0.getCenterPoint());
+      const el1 = window['chartjs-plugin-annotation']._getState(chart).elements[1];
+      await window.triggerMouseEvent(chart, 'click', el1.getCenterPoint());
+      const el2 = window['chartjs-plugin-annotation']._getState(chart).elements[2];
+      await window.triggerMouseEvent(chart, 'click', el2.getCenterPoint());
     }
   }
 };

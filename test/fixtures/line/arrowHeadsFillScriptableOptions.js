@@ -46,8 +46,6 @@ module.exports = {
             },
             arrow1: {
               type: 'line',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 90,
               yMin: 10,
               xMax: 80,
@@ -73,8 +71,6 @@ module.exports = {
             },
             arrow2: {
               type: 'line',
-              xScaleID: 'x',
-              yScaleID: 'y',
               xMin: 30,
               yMin: 80,
               xMax: 60,
