@@ -1,13 +1,9 @@
-function print(obj) {
-  return JSON.stringify(obj).replaceAll('"', '').replace(':', ': ');
-}
-
 function singleLine(ctx, opts) {
-  return 'padding: ' + print(opts.padding);
+  return 'padding: ' + window.stringifyObject(opts.padding);
 }
 
 function multiLine(ctx, opts) {
-  return ['padding: ' + print(opts.padding), 'align: ' + opts.textAlign];
+  return ['padding: ' + window.stringifyObject(opts.padding), 'align: ' + opts.textAlign];
 }
 
 module.exports = {

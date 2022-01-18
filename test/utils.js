@@ -45,3 +45,11 @@ export function scatter10x10(annotations) {
     }
   });
 }
+
+function keepInf(key, value) {
+  return value === Infinity ? 'Infinity' : value;
+}
+
+export function stringifyObject(obj) {
+  return JSON.stringify(obj, keepInf).replaceAll('"', '').replaceAll(':', ': ').replaceAll(',', ', ');
+}
