@@ -153,16 +153,10 @@ function testClickEvent(options, toBe, getEventPoint) {
   });
 }
 
-function getElement(chart) {
-  const Annotation = window['chartjs-plugin-annotation'];
-  const state = Annotation._getState(chart);
-  return state.elements[0];
-}
-
 function retrieveEventPoint(chart, getEventPoint) {
   const xScale = chart.scales.x;
   const yScale = chart.scales.y;
-  return getEventPoint(xScale, yScale, getElement(chart));
+  return getEventPoint(xScale, yScale, window.getAnnotationElements(chart)[0]);
 }
 
 function getTestCaseContext(toBe) {

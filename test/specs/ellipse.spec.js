@@ -16,7 +16,7 @@ describe('Ellipse annotation', function() {
       };
 
       const chart = window.scatter10x10({test: annotation});
-      const element = window['chartjs-plugin-annotation']._getState(chart).elements[0];
+      const element = window.getAnnotationElements(chart)[0];
       const center = element.getCenterPoint();
       const xRadius = element.width / 2;
       const yRadius = element.height / 2;
@@ -64,7 +64,7 @@ describe('Ellipse annotation', function() {
         {type: 'ellipse', xMin: 2, xMax: 3, yMin: 1, yMax: 1},
         {type: 'ellipse', xMin: 1, xMax: 1, yMin: 2, yMax: 3}
       ]);
-      const elements = window['chartjs-plugin-annotation']._getState(chart).elements;
+      const elements = window.getAnnotationElements(chart);
       for (const element of elements) {
         const center = element.getCenterPoint();
         expect(element.inRange(center.x, center.y)).toEqual(false);
