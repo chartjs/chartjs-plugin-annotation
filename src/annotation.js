@@ -166,11 +166,10 @@ function updateElements(chart, state, options, mode) {
     const annotationOptions = annotations[i];
     const element = getOrCreateElement(elements, i, annotationOptions.type);
     const resolver = annotationOptions.setContext(getContext(chart, element, annotationOptions));
-    const resolvedOptions = resolveAnnotationOptions(resolver);
-    const properties = element.resolveElementProperties(chart, resolvedOptions);
+    const properties = element.resolveElementProperties(chart, resolver);
 
     properties.skip = isNaN(properties.x) || isNaN(properties.y);
-    properties.options = resolvedOptions;
+    properties.options = resolver;
 
     if ('elements' in properties) {
       updateSubElements(element, properties, resolver, animations);
@@ -190,8 +189,7 @@ function updateSubElements(mainElement, {elements, initProperties}, resolver, an
     const definition = elements[i];
     const properties = definition.properties;
     const subElement = getOrCreateElement(subElements, i, definition.type, initProperties);
-    const subResolver = resolver[definition.optionScope].override(definition);
-    properties.options = resolveAnnotationOptions(subResolver);
+    properties.options = resolver[definition.optionScope].override(definition);
     animations.update(subElement, properties);
   }
 }
@@ -206,31 +204,6 @@ function getOrCreateElement(elements, index, type, initProperties) {
     }
   }
   return element;
-}
-
-function resolveAnnotationOptions(resolver) {
-  const elementClass = annotationTypes[resolveType(resolver.type)];
-  const result = {};
-  result.id = resolver.id;
-  result.type = resolver.type;
-  result.drawTime = resolver.drawTime;
-  Object.assign(result,
-    resolveObj(resolver, elementClass.defaults),
-    resolveObj(resolver, elementClass.defaultRoutes));
-  for (const hook of hooks) {
-    result[hook] = resolver[hook];
-  }
-  return result;
-}
-
-function resolveObj(resolver, defs) {
-  const result = {};
-  for (const prop of Object.keys(defs)) {
-    const optDefs = defs[prop];
-    const value = resolver[prop];
-    result[prop] = isObject(optDefs) ? resolveObj(value, optDefs) : value;
-  }
-  return result;
 }
 
 function getContext(chart, element, annotation) {

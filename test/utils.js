@@ -19,7 +19,7 @@ export function getAnnotationElements(chart) {
   return window['chartjs-plugin-annotation']._getState(chart).elements;
 }
 
-export function scatter10x10(annotations) {
+export function scatterChart(x, y, annotations) {
   return window.acquireChart({
     type: 'scatter',
     options: {
@@ -28,12 +28,12 @@ export function scatter10x10(annotations) {
         x: {
           display: false,
           min: 0,
-          max: 10
+          max: x
         },
         y: {
           display: false,
           min: 0,
-          max: 10
+          max: y
         }
       },
       plugins: {

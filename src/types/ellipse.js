@@ -55,11 +55,7 @@ EllipseAnnotation.defaults = {
   shadowBlur: 0,
   shadowOffsetX: 0,
   shadowOffsetY: 0,
-  xMax: undefined,
-  xMin: undefined,
   xScaleID: 'x',
-  yMax: undefined,
-  yMin: undefined,
   yScaleID: 'y'
 };
 

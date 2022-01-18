@@ -57,37 +57,24 @@ BoxAnnotation.defaults = {
   borderRadius: 0,
   borderShadowColor: 'transparent',
   borderWidth: 1,
-  cornerRadius: undefined, // TODO: v2 remove support for cornerRadius
   display: true,
   label: {
-    borderWidth: undefined,
     color: 'black',
     content: null,
-    drawTime: undefined,
     enabled: false,
     font: {
-      family: undefined,
-      lineHeight: undefined,
-      size: undefined,
-      style: undefined,
       weight: 'bold'
     },
-    height: undefined,
     padding: 6,
     position: 'center',
     textAlign: 'start',
     xAdjust: 0,
     yAdjust: 0,
-    width: undefined
   },
   shadowBlur: 0,
   shadowOffsetX: 0,
   shadowOffsetY: 0,
-  xMax: undefined,
-  xMin: undefined,
   xScaleID: 'x',
-  yMax: undefined,
-  yMin: undefined,
   yScaleID: 'y'
 };
 

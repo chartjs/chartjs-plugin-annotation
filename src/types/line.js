@@ -203,31 +203,14 @@ export default class LineAnnotation extends Element {
 
 LineAnnotation.id = 'lineAnnotation';
 
-const arrowHeadsDefaults = {
-  backgroundColor: undefined,
-  backgroundShadowColor: undefined,
-  borderColor: undefined,
-  borderDash: undefined,
-  borderDashOffset: undefined,
-  borderShadowColor: undefined,
-  borderWidth: undefined,
-  enabled: undefined,
-  fill: undefined,
-  length: undefined,
-  shadowBlur: undefined,
-  shadowOffsetX: undefined,
-  shadowOffsetY: undefined,
-  width: undefined
-};
-
 LineAnnotation.defaults = {
   adjustScaleRange: true,
   arrowHeads: {
     enabled: false,
-    end: Object.assign({}, arrowHeadsDefaults),
+    end: {},
     fill: false,
     length: 12,
-    start: Object.assign({}, arrowHeadsDefaults),
+    start: {},
     width: 6
   },
   borderDash: [],
@@ -235,7 +218,6 @@ LineAnnotation.defaults = {
   borderShadowColor: 'transparent',
   borderWidth: 2,
   display: true,
-  endValue: undefined,
   label: {
     backgroundColor: 'rgba(0,0,0,0.8)',
     backgroundShadowColor: 'transparent',
@@ -248,18 +230,10 @@ LineAnnotation.defaults = {
     borderShadowColor: 'transparent',
     borderWidth: 0,
     color: '#fff',
-    content: null,
-    cornerRadius: undefined, // TODO: v2 remove support for cornerRadius
-    drawTime: undefined,
     enabled: false,
     font: {
-      family: undefined,
-      lineHeight: undefined,
-      size: undefined,
-      style: undefined,
       weight: 'bold'
     },
-    height: undefined,
     padding: 6,
     position: 'center',
     rotation: 0,
@@ -267,22 +241,13 @@ LineAnnotation.defaults = {
     shadowOffsetX: 0,
     shadowOffsetY: 0,
     textAlign: 'center',
-    width: undefined,
     xAdjust: 0,
-    xPadding: undefined, // TODO: v2 remove support for xPadding
     yAdjust: 0,
-    yPadding: undefined, // TODO: v2 remove support for yPadding
   },
-  scaleID: undefined,
   shadowBlur: 0,
   shadowOffsetX: 0,
   shadowOffsetY: 0,
-  value: undefined,
-  xMax: undefined,
-  xMin: undefined,
   xScaleID: 'x',
-  yMax: undefined,
-  yMin: undefined,
   yScaleID: 'y'
 };
 

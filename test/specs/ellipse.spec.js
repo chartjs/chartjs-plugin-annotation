@@ -15,7 +15,7 @@ describe('Ellipse annotation', function() {
         rotation
       };
 
-      const chart = window.scatter10x10({test: annotation});
+      const chart = window.scatterChart(10, 10, {test: annotation});
       const element = window.getAnnotationElements(chart)[0];
       const center = element.getCenterPoint();
       const xRadius = element.width / 2;
@@ -59,7 +59,7 @@ describe('Ellipse annotation', function() {
     }
 
     it('should refurn false for zero width/height ellipse', function() {
-      const chart = window.scatter10x10([
+      const chart = window.scatterChart(10, 10, [
         {type: 'ellipse', xMin: 1, xMax: 1, yMin: 1, yMax: 1},
         {type: 'ellipse', xMin: 2, xMax: 3, yMin: 1, yMax: 1},
         {type: 'ellipse', xMin: 1, xMax: 1, yMin: 2, yMax: 3}
