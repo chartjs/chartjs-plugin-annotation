@@ -34,6 +34,11 @@ module.exports = {
                 position: 'right'
               }
             },
+            point1: {
+              type: 'point',
+              xValue: 2.5,
+              yValue: 20
+            },
             text2: {
               type: 'label',
               xValue: 'May',
