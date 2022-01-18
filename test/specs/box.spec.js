@@ -13,7 +13,7 @@ describe('Box annotation', function() {
     };
 
     const chart = window.scatter10x10({test: annotation});
-    const element = window['chartjs-plugin-annotation']._getState(chart).elements[0];
+    const element = window.getAnnotationElements(chart)[0];
 
     it('should return true inside element', function() {
       for (const borderWidth of [0, 10]) {

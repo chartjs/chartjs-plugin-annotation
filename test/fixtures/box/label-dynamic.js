@@ -47,7 +47,7 @@ module.exports = {
     },
     spriteText: true,
     async run(chart) {
-      const el = window['chartjs-plugin-annotation']._getState(chart).elements[0];
+      const el = window.getAnnotationElements(chart)[0];
       await window.triggerMouseEvent(chart, 'mousemove', el.getCenterPoint());
     }
   }

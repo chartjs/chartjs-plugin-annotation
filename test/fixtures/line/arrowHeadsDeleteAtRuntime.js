@@ -110,12 +110,10 @@ module.exports = {
   options: {
     spriteText: true,
     async run(chart) {
-      const el0 = window['chartjs-plugin-annotation']._getState(chart).elements[0];
-      await window.triggerMouseEvent(chart, 'click', el0.getCenterPoint());
-      const el1 = window['chartjs-plugin-annotation']._getState(chart).elements[1];
-      await window.triggerMouseEvent(chart, 'click', el1.getCenterPoint());
-      const el2 = window['chartjs-plugin-annotation']._getState(chart).elements[2];
-      await window.triggerMouseEvent(chart, 'click', el2.getCenterPoint());
+      const elements = window.getAnnotationElements(chart);
+      await window.triggerMouseEvent(chart, 'click', elements[0].getCenterPoint());
+      await window.triggerMouseEvent(chart, 'click', elements[1].getCenterPoint());
+      await window.triggerMouseEvent(chart, 'click', elements[2].getCenterPoint());
     }
   }
 };

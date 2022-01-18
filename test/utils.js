@@ -15,6 +15,10 @@ export function createCanvas() {
   return canvas;
 }
 
+export function getAnnotationElements(chart) {
+  return window['chartjs-plugin-annotation']._getState(chart).elements;
+}
+
 export function scatter10x10(annotations) {
   return window.acquireChart({
     type: 'scatter',
