@@ -4,7 +4,7 @@ import {handleEvent, hooks, updateListeners} from './events';
 import {adjustScaleRange, verifyScaleOptions} from './scale';
 import {annotationTypes} from './types';
 import {requireVersion} from './helpers';
-import {version} from '../package.json';
+import {name, version} from '../package.json';
 
 const chartStates = new Map();
 
@@ -13,12 +13,26 @@ export default {
 
   version,
 
+  /* TODO: enable in v2
   beforeRegister() {
     requireVersion('chart.js', '3.7', Chart.version);
   },
+  */
 
   afterRegister() {
     Chart.register(annotationTypes);
+
+    // TODO: Remove this check, warning and workaround in v2
+    if (!requireVersion('chart.js', '3.7', Chart.version, false)) {
+      console.warn(`${name} has known issues with chart.js versions prior to 3.7, please consider upgrading.`);
+
+      // Workaround for https://github.com/chartjs/chartjs-plugin-annotation/issues/572
+      Chart.defaults.set('elements.lineAnnotation', {
+        callout: {},
+        font: {},
+        padding: 6
+      });
+    }
   },
 
   afterUnregister() {
@@ -211,10 +225,10 @@ function resolveAnnotationOptions(resolver) {
 
 function resolveObj(resolver, defs) {
   const result = {};
-  for (const name of Object.keys(defs)) {
-    const optDefs = defs[name];
-    const value = resolver[name];
-    result[name] = isObject(optDefs) ? resolveObj(value, optDefs) : value;
+  for (const prop of Object.keys(defs)) {
+    const optDefs = defs[prop];
+    const value = resolver[prop];
+    result[prop] = isObject(optDefs) ? resolveObj(value, optDefs) : value;
   }
   return result;
 }

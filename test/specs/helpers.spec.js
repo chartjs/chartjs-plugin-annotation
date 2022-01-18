@@ -15,6 +15,11 @@ describe('helpers', function() {
       expect(() => requireVersion('test', '3.7', '4.0.0')).not.toThrowError();
       expect(() => requireVersion('test', '16.13.2', '16.13.3-rc')).not.toThrowError();
     });
+
+    it('should return boolean when `strict` parameter is false', function() {
+      expect(requireVersion('test', '3.7', '2.9.3', false)).toBeFalse();
+      expect(requireVersion('test', '3.7', '3.8', false)).toBeTrue();
+    });
   });
 
 });
