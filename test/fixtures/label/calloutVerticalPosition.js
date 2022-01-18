@@ -1,5 +1,4 @@
 module.exports = {
-  tolerance: 0.0075,
   config: {
     type: 'bar',
     options: {
@@ -64,6 +63,91 @@ module.exports = {
               type: 'point',
               xValue: 'May',
               yValue: 10,
+              radius: 3
+            },
+            text3: {
+              type: 'label',
+              xValue: 'June',
+              yValue: 18,
+              backgroundColor: 'rgba(33, 101, 171, 0.5)',
+              borderColor: 'rgb(33, 101, 171)',
+              borderWidth: 1,
+              content: 'position: auto (top)',
+              position: 'center',
+              yAdjust: 50,
+              callout: {
+                enabled: true,
+                position: 'auto',
+              }
+            },
+            point3: {
+              type: 'point',
+              xValue: 'June',
+              yValue: 18,
+              radius: 3
+            },
+            text4: {
+              type: 'label',
+              xValue: 'February',
+              yValue: 7,
+              backgroundColor: 'rgba(33, 101, 171, 0.5)',
+              borderColor: 'rgb(33, 101, 171)',
+              borderWidth: 1,
+              content: 'position: auto (bottom)',
+              position: 'center',
+              yAdjust: -50,
+              callout: {
+                enabled: true,
+                position: 'auto',
+              }
+            },
+            point4: {
+              type: 'point',
+              xValue: 'February',
+              yValue: 7,
+              radius: 3
+            },
+            text5: {
+              type: 'label',
+              xValue: 'February',
+              yValue: 15,
+              backgroundColor: 'rgba(33, 101, 171, 0.5)',
+              borderColor: 'rgb(33, 101, 171)',
+              borderWidth: 1,
+              content: 'no callout',
+              position: 'center',
+              yAdjust: -50,
+              callout: {
+                enabled: true,
+                position: 'auto',
+                borderWidth: 0
+              }
+            },
+            point5: {
+              type: 'point',
+              xValue: 'February',
+              yValue: 15,
+              radius: 3
+            },
+            text6: {
+              type: 'label',
+              xValue: 'April',
+              yValue: 5,
+              backgroundColor: 'rgba(33, 101, 171, 0.5)',
+              borderColor: 'rgb(33, 101, 171)',
+              borderWidth: 1,
+              content: 'invalid position (auto)',
+              position: 'center',
+              yAdjust: 50,
+              callout: {
+                enabled: true,
+                position: 'wrong'
+              }
+            },
+            point6: {
+              type: 'point',
+              xValue: 'April',
+              yValue: 5,
               radius: 3
             }
           }

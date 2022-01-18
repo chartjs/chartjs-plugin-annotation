@@ -131,11 +131,15 @@ function drawCallout(ctx, element) {
     return;
   }
   const callout = options.callout;
-  const {separatorStart, separatorEnd} = getCalloutSeparatorCoord(element, calloutPosition);
-  const {sideStart, sideEnd} = getCalloutSideCoord(element, calloutPosition, separatorStart);
+
   ctx.save();
   ctx.beginPath();
   const stroke = setBorderStyle(ctx, callout);
+  if (!stroke) {
+    return ctx.restore();
+  }
+  const {separatorStart, separatorEnd} = getCalloutSeparatorCoord(element, calloutPosition);
+  const {sideStart, sideEnd} = getCalloutSideCoord(element, calloutPosition, separatorStart);
   if (callout.margin > 0 || options.borderWidth === 0) {
     ctx.moveTo(separatorStart.x, separatorStart.y);
     ctx.lineTo(separatorEnd.x, separatorEnd.y);
@@ -143,9 +147,7 @@ function drawCallout(ctx, element) {
   ctx.moveTo(sideStart.x, sideStart.y);
   ctx.lineTo(sideEnd.x, sideEnd.y);
   ctx.lineTo(pointX, pointY);
-  if (stroke) {
-    ctx.stroke();
-  }
+  ctx.stroke();
   ctx.restore();
 }
 
@@ -156,7 +158,8 @@ function getCalloutSeparatorCoord(element, position) {
   if (position === 'left' || position === 'right') {
     separatorStart = {x: x + adjust, y};
     separatorEnd = {x: separatorStart.x, y: separatorStart.y + height};
-  } else if (position === 'top' || position === 'bottom') {
+  } else {
+    //  position 'top' or 'bottom'
     separatorStart = {x, y: y + adjust};
     separatorEnd = {x: separatorStart.x + width, y: separatorStart.y};
   }
@@ -182,7 +185,8 @@ function getCalloutSideCoord(element, position, separatorStart) {
   if (position === 'left' || position === 'right') {
     sideStart = {x: separatorStart.x, y: y + getSize(height, start)};
     sideEnd = {x: sideStart.x + side, y: sideStart.y};
-  } else if (position === 'top' || position === 'bottom') {
+  } else {
+    //  position 'top' or 'bottom'
     sideStart = {x: separatorStart.x + getSize(width, start), y: separatorStart.y};
     sideEnd = {x: sideStart.x, y: sideStart.y + side};
   }
@@ -213,9 +217,9 @@ function resolveCalloutAutoPosition(element, options) {
     return 'left';
   } else if (pointX > (x + width + adjust)) {
     return 'right';
-  } else if (pointY < (y + height + adjust)) {
+  } else if (pointY < (y - adjust)) {
     return 'top';
-  } else if (pointY > (y - adjust)) {
+  } else if (pointY > (y + height + adjust)) {
     return 'bottom';
   }
 }
