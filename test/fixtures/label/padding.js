@@ -1,16 +1,30 @@
+function print(obj) {
+  return JSON.stringify(obj).replaceAll('"', '').replace(':', ': ');
+}
+
+function singleLine(ctx, opts) {
+  return 'padding: ' + print(opts.padding);
+}
+
+function multiLine(ctx, opts) {
+  return ['padding: ' + print(opts.padding), 'align: ' + opts.textAlign];
+}
+
 module.exports = {
   tolerance: 0.0055,
   config: {
-    type: 'bar',
+    type: 'scatter',
     options: {
       scales: {
         x: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+          display: false,
+          min: 0,
+          max: 10
         },
         y: {
           display: false,
           min: 0,
-          max: 25
+          max: 10
         }
       },
       plugins: {
@@ -19,51 +33,65 @@ module.exports = {
           annotations: {
             text1: {
               type: 'label',
-              xValue: 'January',
-              yValue: 20,
-              backgroundColor: 'transparent',
-              borderWidth: 1,
-              content: 'position: {x: start}, padding: 15',
-              position: {
-                x: 'start'
-              },
+              xValue: 5,
+              yValue: 9,
+              borderWidth: 3,
+              borderColor: 'red',
+              content: singleLine,
               padding: 15
             },
             text2: {
               type: 'label',
-              xValue: 'February',
-              yValue: 10,
-              backgroundColor: 'transparent',
-              borderWidth: 1,
-              content: 'position: {x: start}, padding: {x: 15}',
-              position: {
-                x: 'start'
-              },
+              xValue: 5,
+              yValue: 8,
+              borderWidth: 3,
+              borderColor: 'red',
+              content: singleLine,
               padding: {x: 15}
             },
             text3: {
               type: 'label',
-              xValue: 'May',
-              yValue: 15,
+              xValue: 5,
+              yValue: 6.5,
               backgroundColor: 'transparent',
-              borderWidth: 1,
-              content: 'position: {x: end}, padding: {y: 30}',
-              position: {
-                x: 'end'
-              },
+              borderWidth: 3,
+              borderColor: 'red',
+              content: singleLine,
               padding: {y: 30}
             },
             text4: {
               type: 'label',
-              xValue: 'February',
-              yValue: 5,
-              backgroundColor: 'transparent',
-              borderWidth: 1,
-              content: ['position: {x: end},', 'padding: {left: 40, top: 10, right: 5, bottom: 20}'],
+              xValue: 5,
+              yValue: 4.5,
+              borderWidth: 3,
+              borderColor: 'red',
+              content: multiLine,
               textAlign: 'right',
-              position: 'start',
               padding() {
                 return {left: 40, top: 10, right: 5, bottom: 20};
+              }
+            },
+            text5: {
+              type: 'label',
+              xValue: 5,
+              yValue: 3,
+              borderWidth: 3,
+              borderColor: 'red',
+              content: multiLine,
+              textAlign: 'left',
+              padding() {
+                return {left: 40, top: 10, right: 5, bottom: 20};
+              }
+            },
+            text6: {
+              type: 'label',
+              xValue: 5,
+              yValue: 1,
+              borderWidth: 3,
+              borderColor: 'red',
+              content: multiLine,
+              padding() {
+                return {left: 5, top: 10, right: 50, bottom: 30};
               }
             }
           }
