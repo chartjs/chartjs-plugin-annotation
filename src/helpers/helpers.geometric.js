@@ -22,10 +22,10 @@ export function getRectCenterPoint(rect) {
  * @returns {Point} rotated point
  */
 export function rotated(point, center, angle) {
-  var cos = Math.cos(angle);
-  var sin = Math.sin(angle);
-  var cx = center.x;
-  var cy = center.y;
+  const cos = Math.cos(angle);
+  const sin = Math.sin(angle);
+  const cx = center.x;
+  const cy = center.y;
 
   return {
     x: cx + cos * (point.x - cx) - sin * (point.y - cy),

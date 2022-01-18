@@ -84,5 +84,5 @@ function pointInEllipse(p, ellipse, rotation, borderWidth) {
   const sinAngle = Math.sin(angle);
   const a = Math.pow(cosAngle * (p.x - center.x) + sinAngle * (p.y - center.y), 2);
   const b = Math.pow(sinAngle * (p.x - center.x) - cosAngle * (p.y - center.y), 2);
-  return (a / Math.pow(xRadius + hBorderWidth, 2)) + (b / Math.pow(yRadius + hBorderWidth, 2)) <= 1;
+  return (a / Math.pow(xRadius + hBorderWidth, 2)) + (b / Math.pow(yRadius + hBorderWidth, 2)) <= 1.0001;
 }
