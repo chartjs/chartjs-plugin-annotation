@@ -30,7 +30,7 @@ export function getElementCenterPoint(element, useFinalPosition) {
 
 const isOlderPart = (act, req) => req > act || (act.length > req.length && act.substr(0, req.length) === req);
 
-export function requireVersion(pkg, min, ver) {
+export function requireVersion(pkg, min, ver, strict = true) {
   const parts = ver.split('.');
   let i = 0;
   for (const req of min.split('.')) {
@@ -39,7 +39,12 @@ export function requireVersion(pkg, min, ver) {
       break;
     }
     if (isOlderPart(act, req)) {
-      throw new Error(`${pkg} v${ver} is not supported. v${min} or newer is required.`);
+      if (strict) {
+        throw new Error(`${pkg} v${ver} is not supported. v${min} or newer is required.`);
+      } else {
+        return false;
+      }
     }
   }
+  return true;
 }
