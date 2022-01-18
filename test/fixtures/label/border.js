@@ -3,7 +3,6 @@ function content(ctx, opts) {
 }
 
 module.exports = {
-  tolerance: 0.01,
   config: {
     type: 'scatter',
     options: {
@@ -16,7 +15,7 @@ module.exports = {
         y: {
           display: false,
           min: 0,
-          max: 5
+          max: 6
         }
       },
       plugins: {
@@ -25,7 +24,16 @@ module.exports = {
             {
               type: 'label',
               xValue: 1,
+              yValue: 5,
+              borderColor: 'red',
+              borderWidth: 0,
+              content
+            },
+            {
+              type: 'label',
+              xValue: 1,
               yValue: 4,
+              backgroundColor: 'black',
               borderColor: 'red',
               borderDash: [6, 6],
               borderWidth: 5,
@@ -35,6 +43,7 @@ module.exports = {
               type: 'label',
               xValue: 1,
               yValue: 3,
+              backgroundColor: 'white',
               borderColor: 'red',
               borderRadius: {topLeft: 16, topRight: 8, bottomRight: 4},
               borderWidth: 3,
@@ -44,6 +53,7 @@ module.exports = {
               type: 'label',
               xValue: 1,
               yValue: 2,
+              backgroundColor: 'white',
               borderColor: 'red',
               borderDash: [2, 6, 16],
               borderWidth: 2,
@@ -54,7 +64,8 @@ module.exports = {
               type: 'label',
               xValue: 1,
               yValue: 1,
-              borderColor: 'red',
+              backgroundColor: 'white',
+              borderColor: 'rgba(255, 0, 0, 0.75)',
               borderWidth: 5,
               borderRadius: 4,
               content
