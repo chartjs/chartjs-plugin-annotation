@@ -20,6 +20,8 @@ module.exports = {
               type: 'label',
               xValue: 'January',
               yValue: 20,
+              backgroundColor: 'transparent',
+              borderWidth: 0,
               content: ['position: {x: start, y: center}, textAlign: start, xValue: January', 'This is my text, row 2, longer than other', 'This is my text, row 3'],
               position: {
                 x: 'start',
@@ -31,43 +33,19 @@ module.exports = {
               type: 'label',
               xValue: 'April',
               yValue: 10,
+              backgroundColor: 'transparent',
+              borderWidth: 0,
               content: ['position: center, textAlign: center, xValue: April', 'This is my text, row 2, longer than other', 'This is my text, row 3'],
             },
             text3: {
               type: 'label',
               xValue: 'May',
               yValue: 15,
+              backgroundColor: 'transparent',
+              borderWidth: 0,
               content: ['position: {x: end}, xValue: May', 'This is my text, row 2, longer than other', 'This is my text, row 3'],
               position: {
                 x: 'end'
-              }
-            },
-            noContent: {
-              type: 'label',
-              xValue: 'March',
-              yValue: 5,
-            },
-            noContentAndCallout: {
-              type: 'label',
-              xValue: 'March',
-              yValue: 5,
-              callout: {
-                enabled: true
-              }
-            },
-            emptyContent: {
-              type: 'label',
-              xValue: 'March',
-              yValue: 5,
-              content: ''
-            },
-            emptyContentAndCallout: {
-              type: 'label',
-              xValue: 'March',
-              yValue: 5,
-              content: '',
-              callout: {
-                enabled: true
               }
             }
           }
