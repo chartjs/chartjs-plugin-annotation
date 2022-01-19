@@ -34,7 +34,7 @@ module.exports = {
           annotations: {
             center: {
               type: 'label',
-              xValue: 1,
+              xValue: 0.5,
               yValue: 8,
               content: ['position', '{y: center}'],
               position: {
@@ -43,7 +43,7 @@ module.exports = {
             },
             start: {
               type: 'label',
-              xValue: 3,
+              xValue: 2,
               yValue: 8,
               content: ['position', '{y: start}'],
               position: {
@@ -52,16 +52,25 @@ module.exports = {
             },
             end: {
               type: 'label',
-              xValue: 5,
+              xValue: 3.5,
               yValue: 8,
               content: ['position', '{y: end}'],
               position: {
                 y: 'end'
               }
             },
+            invalid: {
+              type: 'label',
+              xValue: 5,
+              yValue: 8,
+              content: ['position', '{y: invalid}'],
+              position: {
+                y: 'invalid'
+              }
+            },
             perc0: {
               type: 'label',
-              xValue: 0.5,
+              xValue: 0.3,
               yValue: 16,
               content: ['position', '{y: 0%}'],
               position: {
@@ -70,7 +79,7 @@ module.exports = {
             },
             perc25: {
               type: 'label',
-              xValue: 1.5,
+              xValue: 1.3,
               yValue: 16,
               content: ['position', '{y: 25%}'],
               position: {
@@ -79,7 +88,7 @@ module.exports = {
             },
             perc50: {
               type: 'label',
-              xValue: 2.5,
+              xValue: 2.3,
               yValue: 16,
               content: ['position', '{y: 50%}'],
               position: {
@@ -88,16 +97,25 @@ module.exports = {
             },
             perc75: {
               type: 'label',
-              xValue: 3.5,
+              xValue: 3.3,
               yValue: 16,
               content: ['position', '{y: 75%}'],
               position: {
                 y: '75%'
               },
             },
+            perc100: {
+              type: 'label',
+              xValue: 4.3,
+              yValue: 16,
+              content: ['position', '{y: 100%}'],
+              position: {
+                y: '100%'
+              },
+            },
             percMoreThan100: {
               type: 'label',
-              xValue: 4.5,
+              xValue: 5.5,
               yValue: 16,
               content: ['position', '{y: > 100%}'],
               position: {
@@ -106,7 +124,7 @@ module.exports = {
             },
             percLessThan100: {
               type: 'label',
-              xValue: 5.5,
+              xValue: 5,
               yValue: 16,
               content: ['position', '{y: < 0%}'],
               position: {
