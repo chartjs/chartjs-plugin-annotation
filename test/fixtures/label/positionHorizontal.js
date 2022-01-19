@@ -1,51 +1,106 @@
 module.exports = {
   tolerance: 0.0055,
   config: {
-    type: 'bar',
-    options: {
-      scales: {
-        x: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    type: 'line',
+    data: {
+      datasets: [
+        {
+          borderWidth: 1,
+          borderColor: 'red',
+          data: [7, 7, 7, 7, 7, 7, 7]
         },
+        {
+          borderWidth: 1,
+          borderColor: 'red',
+          data: [16, 16, 16, 16, 16, 16, 16]
+        }
+      ]
+    },
+    options: {
+      indexAxis: 'y',
+      scales: {
         y: {
           display: false,
+          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        },
+        x: {
+          display: false,
           min: 0,
-          max: 25
+          max: 24
         }
       },
       plugins: {
         legend: false,
         annotation: {
           annotations: {
-            text1: {
+            start: {
               type: 'label',
-              xValue: 'January',
-              yValue: 20,
-              backgroundColor: 'transparent',
-              borderWidth: 0,
+              yValue: 1,
+              xValue: 7,
               content: 'position: {x: start}',
               position: {
                 x: 'start'
               }
             },
-            text2: {
+            center: {
               type: 'label',
-              xValue: 'February',
-              yValue: 10,
-              backgroundColor: 'transparent',
-              borderWidth: 0,
-              content: 'position: center'
+              yValue: 3,
+              xValue: 7,
+              content: 'position: {x: center}',
             },
-            text3: {
+            end: {
               type: 'label',
-              xValue: 'May',
-              yValue: 20,
-              backgroundColor: 'transparent',
-              borderWidth: 0,
+              yValue: 5,
+              xValue: 7,
               content: 'position: {x: end}',
               position: {
                 x: 'end'
               }
+            },
+            perc25: {
+              type: 'label',
+              yValue: 1,
+              xValue: 16,
+              content: 'position: {x: 25%}',
+              position: {
+                x: '25%'
+              }
+            },
+            perc50: {
+              type: 'label',
+              yValue: 2.25,
+              xValue: 16,
+              content: 'position: {x: 50%}',
+              position: {
+                x: '50%'
+              },
+            },
+            perc75: {
+              type: 'label',
+              yValue: 3.5,
+              xValue: 16,
+              content: 'position: {x: 75%}',
+              position: {
+                x: '75%'
+              },
+            },
+            percMoreThan100: {
+              type: 'label',
+              yValue: 4.75,
+              xValue: 16,
+              content: 'position: {x: > 100%}',
+              position: {
+                x: '850%'
+              },
+            },
+            percLessThan100: {
+              type: 'label',
+              yValue: 5.5,
+              xValue: 16,
+              content: 'position: {x: < 0%}',
+              position: {
+                x: '-850%'
+              },
             }
           }
         }

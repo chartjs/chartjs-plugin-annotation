@@ -7,13 +7,19 @@ module.exports = {
         {
           borderWidth: 1,
           borderColor: 'red',
-          data: [20, 20, 20, 20, 20, 20, 20]
-        }
+          data: [8, 8, 8, 8, 8, 8, 8]
+        },
+        {
+          borderWidth: 1,
+          borderColor: 'red',
+          data: [16, 16, 16, 16, 16, 16, 16]
+        },
       ]
     },
     options: {
       scales: {
         x: {
+          display: false,
           labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
         },
         y: {
@@ -26,31 +32,86 @@ module.exports = {
         legend: false,
         annotation: {
           annotations: {
-            text1: {
+            center: {
               type: 'label',
-              xValue: 'February',
-              yValue: 20,
-              backgroundColor: 'transparent',
-              borderWidth: 0,
-              content: 'position: undefined'
+              xValue: 1,
+              yValue: 8,
+              content: ['position', '{y: center}'],
+              position: {
+                y: 'center'
+              }
             },
-            text2: {
+            start: {
               type: 'label',
-              xValue: 'April',
-              yValue: 20,
-              backgroundColor: 'transparent',
-              borderWidth: 0,
-              content: 'position: start',
-              position: 'start'
+              xValue: 3,
+              yValue: 8,
+              content: ['position', '{y: start}'],
+              position: {
+                y: 'start'
+              }
             },
-            text3: {
+            end: {
               type: 'label',
-              xValue: 'June',
-              yValue: 20,
-              backgroundColor: 'transparent',
-              borderWidth: 0,
-              content: 'position: end',
-              position: 'end'
+              xValue: 5,
+              yValue: 8,
+              content: ['position', '{y: end}'],
+              position: {
+                y: 'end'
+              }
+            },
+            perc0: {
+              type: 'label',
+              xValue: 0.5,
+              yValue: 16,
+              content: ['position', '{y: 0%}'],
+              position: {
+                y: '0%'
+              }
+            },
+            perc25: {
+              type: 'label',
+              xValue: 1.5,
+              yValue: 16,
+              content: ['position', '{y: 25%}'],
+              position: {
+                y: '25%'
+              }
+            },
+            perc50: {
+              type: 'label',
+              xValue: 2.5,
+              yValue: 16,
+              content: ['position', '{y: 50%}'],
+              position: {
+                y: '50%'
+              },
+            },
+            perc75: {
+              type: 'label',
+              xValue: 3.5,
+              yValue: 16,
+              content: ['position', '{y: 75%}'],
+              position: {
+                y: '75%'
+              },
+            },
+            percMoreThan100: {
+              type: 'label',
+              xValue: 4.5,
+              yValue: 16,
+              content: ['position', '{y: > 100%}'],
+              position: {
+                y: '850%'
+              },
+            },
+            percLessThan100: {
+              type: 'label',
+              xValue: 5.5,
+              yValue: 16,
+              content: ['position', '{y: < 0%}'],
+              position: {
+                y: '-850%'
+              },
             }
           }
         }
