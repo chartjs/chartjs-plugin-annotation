@@ -25,7 +25,7 @@ module.exports = {
         y: {
           display: false,
           min: 0,
-          max: 25
+          max: 24
         }
       },
       plugins: {
