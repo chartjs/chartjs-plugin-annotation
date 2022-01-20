@@ -1,16 +1,16 @@
+const canvas = window.createCanvas();
 module.exports = {
-  tolerance: 0.0055,
   config: {
     type: 'scatter',
     options: {
       scales: {
         x: {
-          display: true,
+          display: false,
           min: -10,
           max: 10
         },
         y: {
-          display: true,
+          display: false,
           min: -10,
           max: 10
         }
@@ -23,7 +23,23 @@ module.exports = {
               type: 'label',
               xValue: 0,
               yValue: 0,
-              content: window.createCanvas
+              content: canvas
+            },
+            canvasSmall: {
+              type: 'label',
+              xValue: -6,
+              yValue: 6,
+              content: canvas,
+              width: 100,
+              height: () => 100 * canvas.height / canvas.width,
+            },
+            canvasPerc: {
+              type: 'label',
+              xValue: 6,
+              yValue: -6,
+              content: canvas,
+              width: '50%',
+              height: '50%',
             }
           }
         }
