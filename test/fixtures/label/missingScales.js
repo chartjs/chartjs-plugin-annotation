@@ -25,41 +25,27 @@ module.exports = {
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
               borderColor: 'rgb(33, 101, 171)',
               borderWidth: 1,
-              content: ['Missing x and y scales', 'located to', 'the center'],
-              position: {
-                x: 'center',
-                y: 'center'
-              }
+              content: ['Missing x and y scales', 'located to', 'the center']
             },
             missingX: {
               type: 'label',
               xScaleID: 'missing',
-              yScaleID: 'y',
               xValue: 'February',
               yValue: 2,
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
               borderColor: 'rgb(33, 101, 171)',
               borderWidth: 1,
-              content: ['Missing x scale', 'located to', 'horizontal center'],
-              position: {
-                x: 'center',
-                y: 'center'
-              }
+              content: ['Missing x scale', 'located to', 'horizontal center']
             },
             missingY: {
               type: 'label',
-              xScaleID: 'x',
               yScaleID: 'missing',
               xValue: 0.5,
               yValue: 10,
               backgroundColor: 'rgba(33, 101, 171, 0.5)',
               borderColor: 'rgb(33, 101, 171)',
               borderWidth: 1,
-              content: ['Missing y scale', 'located to', 'vertical center'],
-              position: {
-                x: 'center',
-                y: 'center'
-              }
+              content: ['Missing y scale', 'located to', 'vertical center']
             }
           }
         }
