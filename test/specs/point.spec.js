@@ -16,8 +16,8 @@ describe('Point annotation', function() {
     };
     const annotation3 = {
       type: 'point',
-      xValue: 3,
-      yValue: 3,
+      xValue: 5,
+      yValue: 5,
       radius: 0
     };
 
