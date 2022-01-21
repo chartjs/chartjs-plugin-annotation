@@ -1,5 +1,5 @@
-const getCenterPoint = (chart) => window.getAnnotationElements(chart)[0].getCenterPoint();
-const eventPoint0 = {
+export const getCenterPoint = (chart) => window.getAnnotationElements(chart)[0].getCenterPoint();
+export const eventPoint0 = {
   x: 0,
   y: 0
 };
