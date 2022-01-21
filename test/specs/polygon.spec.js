@@ -14,7 +14,7 @@ describe('Polygon annotation', function() {
       type: 'polygon',
       xValue: 2,
       yValue: 2,
-      borderWidth: 0,
+      borderWidth: 10,
       sides: 4,
       radius: 5
     };
@@ -31,6 +31,7 @@ describe('Polygon annotation', function() {
       xValue: 4,
       yValue: 4,
       sides: 3,
+      borderWidth: 10,
       rotation: 21,
       radius: 20
     };
@@ -39,6 +40,7 @@ describe('Polygon annotation', function() {
       xValue: 5,
       yValue: 5,
       sides: 4,
+      borderWidth: 0,
       rotation: 131,
       radius: 33
     };
@@ -47,6 +49,7 @@ describe('Polygon annotation', function() {
       xValue: 6,
       yValue: 6,
       sides: 5,
+      borderWidth: 10,
       rotation: 241,
       radius: 24
     };
@@ -57,69 +60,71 @@ describe('Polygon annotation', function() {
       sides: 5,
       radius: 0
     };
+    const annotation8 = {
+      type: 'polygon',
+      xValue: 8,
+      yValue: 8,
+      borderWidth: 10,
+      sides: 5,
+      radius: 0
+    };
 
-    const chart = window.scatter10x10({annotation1, annotation2, annotation3, annotation4, annotation5, annotation6, annotation7});
+    const chart = window.scatter10x10({annotation1, annotation2, annotation3, annotation4, annotation5, annotation6, annotation7, annotation8});
     const elems = window.getAnnotationElements(chart).filter(el => el.options.radius > 0);
     const elemsNoRad = window.getAnnotationElements(chart).filter(el => el.options.radius === 0);
 
     elems.forEach(function(element) {
       const rotation = element.options.rotation;
       const sides = element.options.sides;
+      const borderWidth = element.options.borderWidth;
       const radius = element.height / 2;
       const angle = (2 * Math.PI) / sides;
 
       it(`should return true inside element '${element.options.id}'`, function() {
-        for (const borderWidth of [0]) {
-          const halfBorder = borderWidth / 2;
-          element.options.borderWidth = borderWidth;
-          const vertices = [];
-          let rad = rotation * (Math.PI / 180);
-          for (let i = 0; i < sides; i++, rad += angle) {
-            const sin = Math.sin(rad);
-            const cos = Math.cos(rad);
-            vertices.push({
-              x: element.x + sin * (radius + halfBorder - 1),
-              y: element.y - cos * (radius + halfBorder - 1)
-            });
-          }
-          for (let vertex of vertices) {
-            expect(element.inRange(vertex.x, vertex.y)).withContext(`sides: ${sides}, rotation: ${rotation}, radius: ${radius}, borderWidth: ${borderWidth}, {x: ${vertex.x.toFixed(1)}, y: ${vertex.y.toFixed(1)}}`).toEqual(true);
-          }
+        const halfBorder = borderWidth / 2;
+        const vertices = [];
+        let rad = rotation * (Math.PI / 180);
+        for (let i = 0; i < sides; i++, rad += angle) {
+          const sin = Math.sin(rad);
+          const cos = Math.cos(rad);
+          vertices.push({
+            x: element.x + sin * (radius + halfBorder - 1),
+            y: element.y - cos * (radius + halfBorder - 1)
+          });
+        }
+        for (let vertex of vertices) {
+          expect(element.inRange(vertex.x, vertex.y)).withContext(`sides: ${sides}, rotation: ${rotation}, radius: ${radius}, borderWidth: ${borderWidth}, {x: ${vertex.x.toFixed(1)}, y: ${vertex.y.toFixed(1)}}`).toEqual(true);
         }
       });
 
       it(`should return false outside element '${element.options.id}'`, function() {
-        for (const borderWidth of [0]) {
-          const halfBorder = borderWidth / 2;
-          element.options.borderWidth = borderWidth;
-          const vertices = [];
-          let rad = rotation * (Math.PI / 180);
-          for (let i = 0; i < sides; i++, rad += angle) {
-            const sin = Math.sin(rad);
-            const cos = Math.cos(rad);
-            vertices.push({
-              x: element.x + sin * (radius + halfBorder + 1),
-              y: element.y - cos * (radius + halfBorder + 1)
-            });
-          }
-          for (let vertex of vertices) {
-            expect(element.inRange(vertex.x, vertex.y)).withContext(`sides: ${sides}, rotation: ${rotation}, radius: ${radius}, borderWidth: ${borderWidth}, {x: ${vertex.x.toFixed(1)}, y: ${vertex.y.toFixed(1)}}`).toEqual(false);
-          }
+        const halfBorder = borderWidth / 2;
+        const vertices = [];
+        let rad = rotation * (Math.PI / 180);
+        for (let i = 0; i < sides; i++, rad += angle) {
+          const sin = Math.sin(rad);
+          const cos = Math.cos(rad);
+          vertices.push({
+            x: element.x + sin * (radius + halfBorder + 1),
+            y: element.y - cos * (radius + halfBorder + 1)
+          });
+        }
+        for (let vertex of vertices) {
+          expect(element.inRange(vertex.x, vertex.y)).withContext(`sides: ${sides}, rotation: ${rotation}, radius: ${radius}, borderWidth: ${borderWidth}, {x: ${vertex.x.toFixed(1)}, y: ${vertex.y.toFixed(1)}}`).toEqual(false);
         }
       });
     });
 
     elemsNoRad.forEach(function(element) {
       it(`should return false radius is 0 element '${element.options.id}'`, function() {
-        for (const borderWidth of [0, 10]) {
-          const halfBorder = borderWidth / 2;
-          element.options.borderWidth = borderWidth;
-          for (const x of [element.x - halfBorder, element.x + halfBorder]) {
-            expect(element.inRange(x, element.y)).toEqual(false);
-          }
-          for (const y of [element.y - halfBorder, element.y + halfBorder]) {
-            expect(element.inRange(element.x, y)).toEqual(false);
-          }
+        const borderWidth = element.options.borderWidth;
+        const halfBorder = borderWidth / 2;
+        element.options.borderWidth = borderWidth;
+        for (const x of [element.x - halfBorder, element.x + halfBorder]) {
+          expect(element.inRange(x, element.y)).toEqual(false);
+        }
+        for (const y of [element.y - halfBorder, element.y + halfBorder]) {
+          expect(element.inRange(element.x, y)).toEqual(false);
         }
       });
     });
