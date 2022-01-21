@@ -34,7 +34,7 @@ describe('Ellipse annotation', function() {
               y: center.y + Math.sin(rad) * (yRadius + halfBorder)
             }, center, rotation / 180 * Math.PI);
 
-            expect(element.inRange(x, y)).withContext(`in, rotation: ${rotation}, angle: ${angle}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
+            expect(element.inRange(x, y)).withContext(`rotation: ${rotation}, angle: ${angle}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
           }
         }
       });
@@ -52,7 +52,7 @@ describe('Ellipse annotation', function() {
               y: center.y + Math.sin(rad) * (yRadius + halfBorder + 1)
             }, center, rotation / 180 * Math.PI);
 
-            expect(element.inRange(x, y)).withContext(`in, rotation: ${rotation}, angle: ${angle}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
+            expect(element.inRange(x, y)).withContext(`rotation: ${rotation}, angle: ${angle}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
           }
         }
       });
