@@ -1,5 +1,17 @@
 describe('Common', function() {
 
+  ['box', 'ellipse', 'label', 'line', 'point', 'polygon'].forEach(function(type){
+    const annotation = {
+      type,
+      id: 'test',
+      xMin: 2,
+      yMin: 2,
+      xMax: 8,
+      yMax: 8
+    };
+    window.testEvents(annotation);
+  }); 
+
   describe('events', function() {
     const chartConfig = {
       type: 'scatter',
