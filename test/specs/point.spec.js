@@ -1,92 +1,77 @@
 describe('Point annotation', function() {
   describe('auto', jasmine.fixtures('point'));
 
-  const eventIn = function(xScale, yScale, element) {
-    const options = element.options;
-    const adjust = options.borderWidth / 2 - 1;
-    return {x: element.x, y: element.y - element.height / 2 - adjust};
-  };
-  const eventOut = function(xScale, yScale, element) {
-    const options = element.options;
-    const adjust = options.borderWidth / 2 + 1;
-    return {x: element.x, y: element.y - element.height / 2 - adjust};
-  };
-
-  window.testEvents({
-    type: 'point',
-    id: 'test',
-    xValue: 5,
-    yValue: 5,
-    radius: 30,
-    borderWidth: 12
-  }, eventIn, eventOut);
-
-  describe('events, removing borderWidth by callback, ', function() {
-    const chartConfig = {
-      type: 'scatter',
-      options: {
-        animation: false,
-        scales: {
-          x: {
-            display: false,
-            min: 0,
-            max: 10
-          },
-          y: {
-            display: false,
-            min: 0,
-            max: 10
-          }
-        },
-        plugins: {
-          legend: false,
-          annotation: {
-            annotations: {
-              point: {
-                type: 'point',
-                xValue: 5,
-                yValue: 5,
-                radius: 20,
-                borderWidth: 10
-              }
-            }
-          }
-        }
-      },
+  describe('inRange', function() {
+    const annotation1 = {
+      type: 'point',
+      xValue: 7,
+      yValue: 7,
+      radius: 30
+    };
+    const annotation2 = {
+      type: 'point',
+      xValue: 3,
+      yValue: 3,
+      radius: 5
+    };
+    const annotation3 = {
+      type: 'point',
+      xValue: 5,
+      yValue: 5,
+      radius: 0
     };
 
-    const pointOpts = chartConfig.options.plugins.annotation.annotations.point;
+    const chart = window.scatter10x10({annotation1, annotation2, annotation3});
+    const elems = window.getAnnotationElements(chart).filter(el => el.options.radius > 0);
+    const elemsNoRad = window.getAnnotationElements(chart).filter(el => el.options.radius === 0);
 
-    it('should detect click event', function(done) {
-      const clickSpy = jasmine.createSpy('click');
-
-      pointOpts.click = function(ctx) {
-        if (ctx.element.options.borderWidth) {
-          delete ctx.element.options.borderWidth;
-          ctx.chart.draw();
-        } else {
-          ctx.element.options.click = clickSpy;
+    elems.forEach(function(element) {
+      it(`should return true inside element '${element.options.id}'`, function() {
+        for (const borderWidth of [0, 10]) {
+          const halfBorder = borderWidth / 2;
+          element.options.borderWidth = borderWidth;
+          const radius = element.height / 2;
+          for (const angle of [0, 45, 90, 135, 180, 225, 270, 315]) {
+            const rad = angle * (Math.PI / 180);
+            const {x, y} = {
+              x: element.x + Math.cos(rad) * (radius + halfBorder - 1),
+              y: element.y + Math.sin(rad) * (radius + halfBorder - 1)
+            };
+            expect(element.inRange(x, y)).withContext(`angle: ${angle}, radius: ${radius}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
+          }
         }
-      };
-
-      const chart = window.acquireChart(chartConfig);
-      const xScale = chart.scales.x;
-      const yScale = chart.scales.y;
-      const eventPoint = {x: xScale.getPixelForValue(5), y: yScale.getPixelForValue(5)};
-
-      window.afterEvent(chart, 'click', function() {
-        expect(clickSpy.calls.count()).toBe(0);
-
-        window.afterEvent(chart, 'click', function() {
-          expect(clickSpy.calls.count()).toBe(1);
-          delete pointOpts.click;
-          done();
-        });
-        window.triggerMouseEvent(chart, 'click', eventPoint);
       });
-      window.triggerMouseEvent(chart, 'click', eventPoint);
+
+      it(`should return false outside element '${element.options.id}'`, function() {
+        for (const borderWidth of [0, 10]) {
+          const halfBorder = borderWidth / 2;
+          element.options.borderWidth = borderWidth;
+          const radius = element.height / 2;
+          for (const angle of [0, 45, 90, 135, 180, 225, 270, 315]) {
+            const rad = angle * (Math.PI / 180);
+            const {x, y} = {
+              x: element.x + Math.cos(rad) * (radius + halfBorder + 1),
+              y: element.y + Math.sin(rad) * (radius + halfBorder + 1)
+            };
+            expect(element.inRange(x, y)).withContext(`angle: ${angle}, radius: ${radius}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
+          }
+        }
+      });
     });
 
+    elemsNoRad.forEach(function(element) {
+      it(`should return false radius is 0 element '${element.options.id}'`, function() {
+        for (const borderWidth of [0, 10]) {
+          const halfBorder = borderWidth / 2;
+          element.options.borderWidth = borderWidth;
+          for (const x of [element.x - halfBorder, element.x + halfBorder]) {
+            expect(element.inRange(x, element.y)).toEqual(false);
+          }
+          for (const y of [element.y - halfBorder, element.y + halfBorder]) {
+            expect(element.inRange(element.x, y)).toEqual(false);
+          }
+        }
+      });
+    });
   });
-
 });
