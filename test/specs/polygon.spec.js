@@ -74,6 +74,7 @@ describe('Polygon annotation', function() {
     const elemsNoRad = window.getAnnotationElements(chart).filter(el => el.options.radius === 0);
 
     elems.forEach(function(element) {
+      const center = element.getCenterPoint();
       const rotation = element.options.rotation;
       const sides = element.options.sides;
       const borderWidth = element.options.borderWidth;
@@ -88,8 +89,8 @@ describe('Polygon annotation', function() {
           const sin = Math.sin(rad);
           const cos = Math.cos(rad);
           vertices.push({
-            x: element.x + sin * (radius + halfBorder - 1),
-            y: element.y - cos * (radius + halfBorder - 1)
+            x: center.x + sin * (radius + halfBorder - 1),
+            y: center.y - cos * (radius + halfBorder - 1)
           });
         }
         for (let vertex of vertices) {
@@ -105,8 +106,8 @@ describe('Polygon annotation', function() {
           const sin = Math.sin(rad);
           const cos = Math.cos(rad);
           vertices.push({
-            x: element.x + sin * (radius + halfBorder + 1),
-            y: element.y - cos * (radius + halfBorder + 1)
+            x: center.x + sin * (radius + halfBorder + 1),
+            y: center.y - cos * (radius + halfBorder + 1)
           });
         }
         for (let vertex of vertices) {
@@ -117,15 +118,7 @@ describe('Polygon annotation', function() {
 
     elemsNoRad.forEach(function(element) {
       it(`should return false radius is 0 element '${element.options.id}'`, function() {
-        const borderWidth = element.options.borderWidth;
-        const halfBorder = borderWidth / 2;
-        element.options.borderWidth = borderWidth;
-        for (const x of [element.x - halfBorder, element.x + halfBorder]) {
-          expect(element.inRange(x, element.y)).toEqual(false);
-        }
-        for (const y of [element.y - halfBorder, element.y + halfBorder]) {
-          expect(element.inRange(element.x, y)).toEqual(false);
-        }
+        expect(element.inRange(element.x, element.y)).toEqual(false);
       });
     });
   });
