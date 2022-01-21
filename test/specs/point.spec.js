@@ -21,7 +21,7 @@ describe('Point annotation', function() {
       radius: 0
     };
 
-    const chart = window.scatter10x10({test1: annotation1, test2: annotation2, test3: annotation3});
+    const chart = window.scatter10x10({annotation1, annotation2, annotation3});
     const elems = window.getAnnotationElements(chart).filter(el => el.options.radius > 0);
     const elemsNoRad = window.getAnnotationElements(chart).filter(el => el.options.radius === 0);
 
@@ -37,7 +37,7 @@ describe('Point annotation', function() {
               x: element.x + Math.cos(rad) * (radius + halfBorder - 1),
               y: element.y + Math.sin(rad) * (radius + halfBorder - 1)
             };
-            expect(element.inRange(x, y)).withContext(`in, angle: ${angle}, radius: ${radius}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
+            expect(element.inRange(x, y)).toEqual(true);
           }
         }
       });
@@ -53,7 +53,7 @@ describe('Point annotation', function() {
               x: element.x + Math.cos(rad) * (radius + halfBorder + 1),
               y: element.y + Math.sin(rad) * (radius + halfBorder + 1)
             };
-            expect(element.inRange(x, y)).withContext(`in, angle: ${angle}, radius: ${radius}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
+            expect(element.inRange(x, y)).toEqual(false);
           }
         }
       });
@@ -61,7 +61,6 @@ describe('Point annotation', function() {
 
     elemsNoRad.forEach(function(element) {
       it(`should return false radius is 0 element '${element.options.id}'`, function() {
-        element.width = 0;
         for (const borderWidth of [0, 10]) {
           const halfBorder = borderWidth / 2;
           element.options.borderWidth = borderWidth;
