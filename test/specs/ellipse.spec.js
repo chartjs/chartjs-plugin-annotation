@@ -21,7 +21,7 @@ describe('Ellipse annotation', function() {
       const xRadius = element.width / 2;
       const yRadius = element.height / 2;
 
-      it('should return true when point is inside element', function() {
+      it(`should return true when point is inside element\n{x: ${center.x}, y: ${center.y}, xRadius: ${xRadius.toFixed(1)}, yRadius: ${yRadius.toFixed(1)}}`, function() {
         for (const borderWidth of [0, 10]) {
           const halfBorder = borderWidth / 2;
           element.options.borderWidth = borderWidth;
@@ -34,12 +34,12 @@ describe('Ellipse annotation', function() {
               y: center.y + Math.sin(rad) * (yRadius + halfBorder)
             }, center, rotation / 180 * Math.PI);
 
-            expect(element.inRange(x, y)).toEqual(true);
+            expect(element.inRange(x, y)).withContext(`rotation: ${rotation}, angle: ${angle}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
           }
         }
       });
 
-      it('should return false when point is outside element', function() {
+      it(`should return false when point is outside element\n{x: ${center.x}, y: ${center.y}, xRadius: ${xRadius.toFixed(1)}, yRadius: ${yRadius.toFixed(1)}}`, function() {
         for (const borderWidth of [0, 10]) {
           const halfBorder = borderWidth / 2;
           element.options.borderWidth = borderWidth;
@@ -52,7 +52,7 @@ describe('Ellipse annotation', function() {
               y: center.y + Math.sin(rad) * (yRadius + halfBorder + 1)
             }, center, rotation / 180 * Math.PI);
 
-            expect(element.inRange(x, y)).toEqual(false);
+            expect(element.inRange(x, y)).withContext(`rotation: ${rotation}, angle: ${angle}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
           }
         }
       });

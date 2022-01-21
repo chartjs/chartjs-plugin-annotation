@@ -37,7 +37,7 @@ describe('Point annotation', function() {
               x: element.x + Math.cos(rad) * (radius + halfBorder - 1),
               y: element.y + Math.sin(rad) * (radius + halfBorder - 1)
             };
-            expect(element.inRange(x, y)).toEqual(true);
+            expect(element.inRange(x, y)).withContext(`angle: ${angle}, radius: ${radius}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
           }
         }
       });
@@ -53,7 +53,7 @@ describe('Point annotation', function() {
               x: element.x + Math.cos(rad) * (radius + halfBorder + 1),
               y: element.y + Math.sin(rad) * (radius + halfBorder + 1)
             };
-            expect(element.inRange(x, y)).toEqual(false);
+            expect(element.inRange(x, y)).withContext(`angle: ${angle}, radius: ${radius}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
           }
         }
       });
@@ -68,7 +68,7 @@ describe('Point annotation', function() {
             expect(element.inRange(x, element.y)).withContext(`in, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${element.y.toFixed(1)}}`).toEqual(false);
           }
           for (const y of [element.y - halfBorder, element.y + halfBorder]) {
-            expect(element.inRange(element.x, y)).withContext(`in, borderWidth: ${borderWidth}, {x: ${element.x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
+            expect(element.inRange(element.x, y)).toEqual(false);
           }
         }
       });
