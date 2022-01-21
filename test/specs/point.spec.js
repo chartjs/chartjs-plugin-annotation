@@ -65,7 +65,7 @@ describe('Point annotation', function() {
           const halfBorder = borderWidth / 2;
           element.options.borderWidth = borderWidth;
           for (const x of [element.x - halfBorder, element.x + halfBorder]) {
-            expect(element.inRange(x, element.y)).withContext(`in, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${element.y.toFixed(1)}}`).toEqual(false);
+            expect(element.inRange(x, element.y)).toEqual(false);
           }
           for (const y of [element.y - halfBorder, element.y + halfBorder]) {
             expect(element.inRange(element.x, y)).toEqual(false);
