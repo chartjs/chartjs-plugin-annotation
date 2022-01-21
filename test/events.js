@@ -5,7 +5,7 @@ export const eventPoint0 = {
 };
 
 export function testEvents(options) {
-  describe('events', function() {
+  describe(`events on ${options.type}`, function() {
     const chartConfig = {
       type: 'scatter',
       options: {
@@ -34,7 +34,7 @@ export function testEvents(options) {
 
     [pluginOpts, options].forEach(function(targetOptions) {
 
-      it(`should detect enter and leave events on ${options.type}`, function(done) {
+      it('should detect enter and leave events', function(done) {
         const enterSpy = jasmine.createSpy('enter');
         const leaveSpy = jasmine.createSpy('leave');
 
@@ -59,7 +59,7 @@ export function testEvents(options) {
         });
       });
 
-      it(`should detect enter and leave (by mouseout) events on ${options.type}`, function(done) {
+      it('should detect enter and leave (by mouseout) events', function(done) {
         const enterSpy = jasmine.createSpy('enter');
         const leaveSpy = jasmine.createSpy('leave');
 
@@ -84,7 +84,7 @@ export function testEvents(options) {
         });
       });
 
-      it(`shuold detect click event on ${options.type}`, function(done) {
+      it('shuold detect click event', function(done) {
         const clickSpy = jasmine.createSpy('click');
 
         targetOptions.click = clickSpy;
@@ -100,7 +100,7 @@ export function testEvents(options) {
         window.triggerMouseEvent(chart, 'click', getCenterPoint(chart));
       });
 
-      it(`should detect dbl click event on ${options.type}`, function(done) {
+      it('should detect dbl click event', function(done) {
         const dblClickSpy = jasmine.createSpy('dblclick');
 
         targetOptions.dblclick = dblClickSpy;
