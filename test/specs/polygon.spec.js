@@ -6,6 +6,7 @@ describe('Polygon annotation', function() {
       type: 'polygon',
       xValue: 1,
       yValue: 1,
+      borderWidth: 0,
       sides: 3,
       radius: 30
     };
@@ -13,6 +14,7 @@ describe('Polygon annotation', function() {
       type: 'polygon',
       xValue: 2,
       yValue: 2,
+      borderWidth: 0,
       sides: 4,
       radius: 5
     };
@@ -20,6 +22,7 @@ describe('Polygon annotation', function() {
       type: 'polygon',
       xValue: 3,
       yValue: 3,
+      borderWidth: 0,
       sides: 5,
       radius: 27
     };
