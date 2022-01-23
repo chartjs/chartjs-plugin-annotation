@@ -4,7 +4,7 @@ import {setBorderStyle, resolvePointPosition, getElementCenterPoint, setShadowSt
 
 export default class PolygonAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
-    return this.elements.length > 1 && pointIsInPolygon(this.elements, mouseX, mouseY, useFinalPosition);
+    return this.options.radius >= 0.1 && this.elements.length > 1 && pointIsInPolygon(this.elements, mouseX, mouseY, useFinalPosition);
   }
 
   getCenterPoint(useFinalPosition) {
