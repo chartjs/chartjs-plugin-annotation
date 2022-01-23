@@ -84,12 +84,24 @@ LabelAnnotation.defaults = {
     style: undefined,
     weight: undefined
   },
+  height: undefined,
   padding: 6,
   position: 'center',
   shadowBlur: 0,
   shadowOffsetX: 0,
   shadowOffsetY: 0,
   textAlign: 'center',
+  width: undefined,
+  xAdjust: 0,
+  xMax: undefined,
+  xMin: undefined,
+  xScaleID: 'x',
+  xValue: undefined,
+  yAdjust: 0,
+  yMax: undefined,
+  yMin: undefined,
+  yScaleID: 'y',
+  yValue: undefined
 };
 
 LabelAnnotation.defaultRoutes = {

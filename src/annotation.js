@@ -122,9 +122,7 @@ export default {
     drawTime: 'afterDatasetsDraw',
     label: {
       drawTime: null
-    },
-    xScaleID: 'x',
-    yScaleID: 'y'
+    }
   },
 
   descriptors: {
