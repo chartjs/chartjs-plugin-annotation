@@ -12,7 +12,7 @@ describe('Box annotation', function() {
       rotation: 0
     };
 
-    const chart = window.scatter10x10({test: annotation});
+    const chart = window.scatterChart(10, 10, {test: annotation});
     const element = window.getAnnotationElements(chart)[0];
 
     it('should return true inside element', function() {
@@ -43,6 +43,29 @@ describe('Box annotation', function() {
           }
         }
       }
+    });
+  });
+
+  describe('scriptable options', function() {
+    it('element should have dimensions when backgroundColor is resolved', function(done) {
+      window.scatterChart(8, 8, {
+        test: {
+          type: 'box',
+          xMin: 1,
+          yMin: 1,
+          xMax: 7,
+          yMax: 4,
+          backgroundColor(ctx) {
+            expect(ctx.element.x).toBe(64);
+            expect(ctx.element.y).toBe(256);
+            expect(ctx.element.x2).toBe(448);
+            expect(ctx.element.y2).toBe(448);
+            expect(ctx.element.width).toBe(384);
+            expect(ctx.element.height).toBe(192);
+            done();
+          }
+        }
+      });
     });
   });
 });
