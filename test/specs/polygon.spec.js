@@ -83,35 +83,25 @@ describe('Polygon annotation', function() {
 
       it(`should return true inside element '${element.options.id}'`, function() {
         const halfBorder = borderWidth / 2;
-        const vertices = [];
         let rad = rotation * (Math.PI / 180);
         for (let i = 0; i < sides; i++, rad += angle) {
           const sin = Math.sin(rad);
           const cos = Math.cos(rad);
-          vertices.push({
-            x: center.x + sin * (radius + halfBorder - 1),
-            y: center.y - cos * (radius + halfBorder - 1)
-          });
-        }
-        for (let vertex of vertices) {
-          expect(element.inRange(vertex.x, vertex.y)).withContext(`sides: ${sides}, rotation: ${rotation}, radius: ${radius}, borderWidth: ${borderWidth}, {x: ${vertex.x.toFixed(1)}, y: ${vertex.y.toFixed(1)}}`).toEqual(true);
+          const x = center.x + sin * (radius + halfBorder - 1);
+          const y = center.y - cos * (radius + halfBorder - 1);
+          expect(element.inRange(x, y)).withContext(`sides: ${sides}, rotation: ${rotation}, radius: ${radius}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
         }
       });
 
       it(`should return false outside element '${element.options.id}'`, function() {
         const halfBorder = borderWidth / 2;
-        const vertices = [];
         let rad = rotation * (Math.PI / 180);
         for (let i = 0; i < sides; i++, rad += angle) {
           const sin = Math.sin(rad);
           const cos = Math.cos(rad);
-          vertices.push({
-            x: center.x + sin * (radius + halfBorder + 1),
-            y: center.y - cos * (radius + halfBorder + 1)
-          });
-        }
-        for (let vertex of vertices) {
-          expect(element.inRange(vertex.x, vertex.y)).withContext(`sides: ${sides}, rotation: ${rotation}, radius: ${radius}, borderWidth: ${borderWidth}, {x: ${vertex.x.toFixed(1)}, y: ${vertex.y.toFixed(1)}}`).toEqual(false);
+          const x = center.x + sin * (radius + halfBorder + 1);
+          const y = center.y - cos * (radius + halfBorder + 1);
+          expect(element.inRange(x, y)).withContext(`sides: ${sides}, rotation: ${rotation}, radius: ${radius}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
         }
       });
     });
