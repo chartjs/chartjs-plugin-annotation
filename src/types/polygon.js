@@ -84,15 +84,7 @@ PolygonAnnotation.defaults = {
   shadowOffsetY: 0,
   sides: 3,
   xAdjust: 0,
-  xMax: undefined,
-  xMin: undefined,
-  xScaleID: 'x',
-  xValue: undefined,
   yAdjust: 0,
-  yMax: undefined,
-  yMin: undefined,
-  yScaleID: 'y',
-  yValue: undefined
 };
 
 PolygonAnnotation.defaultRoutes = {

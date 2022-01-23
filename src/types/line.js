@@ -273,17 +273,9 @@ LineAnnotation.defaults = {
     yAdjust: 0,
     yPadding: undefined, // TODO: v2 remove support for yPadding
   },
-  scaleID: undefined,
   shadowBlur: 0,
   shadowOffsetX: 0,
   shadowOffsetY: 0,
-  value: undefined,
-  xMax: undefined,
-  xMin: undefined,
-  xScaleID: 'x',
-  yMax: undefined,
-  yMin: undefined,
-  yScaleID: 'y'
 };
 
 LineAnnotation.descriptors = {

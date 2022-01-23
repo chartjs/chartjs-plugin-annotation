@@ -55,15 +55,7 @@ PointAnnotation.defaults = {
   shadowOffsetX: 0,
   shadowOffsetY: 0,
   xAdjust: 0,
-  xMax: undefined,
-  xMin: undefined,
-  xScaleID: 'x',
-  xValue: undefined,
   yAdjust: 0,
-  yMax: undefined,
-  yMin: undefined,
-  yScaleID: 'y',
-  yValue: undefined
 };
 
 PointAnnotation.defaultRoutes = {
