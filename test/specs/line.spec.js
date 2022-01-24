@@ -66,17 +66,32 @@ describe('Line annotation', function() {
       };
       const chart = window.scatter10x10({annotation});
       const element = window.getAnnotationElements(chart)[0];
-
       it('should return true inside label of element', function() {
         for (const borderWidth of [0, 10]) {
           const halfBorder = borderWidth / 2;
           element.options.label.borderWidth = borderWidth;
           const rad = rotation / 180 * Math.PI;
-          const {x, y} = rotated({
-            x: element.labelX + Math.cos(rad) * (element.labelWidth / 2 + halfBorder),
-            y: element.labelY + Math.sin(rad) * (element.labelHeight / 2 + halfBorder)
-          }, {x: element.labelX, y: element.labelY}, rad);
-          expect(element.inRange(x, y)).withContext(`rotation: ${rotation}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
+          for (const ax of [element.labelX - element.labelWidth / 2 - halfBorder + 1, element.labelX + element.labelWidth / 2 + halfBorder - 1]) {
+            for (const ay of [element.labelY - element.labelHeight / 2 - halfBorder + 1, element.labelY + element.labelHeight / 2 + halfBorder - 1]) {
+              const {x, y} = rotated({x: ax, y: ay},
+                {x: element.labelX, y: element.labelY}, rad);
+              expect(element.inRange(x, y)).withContext(`rotation: ${rotation}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
+            }
+          }
+        }
+      });
+      it('should return false inside label of element', function() {
+        for (const borderWidth of [0, 10]) {
+          const halfBorder = borderWidth / 2;
+          element.options.label.borderWidth = borderWidth;
+          const rad = rotation / 180 * Math.PI;
+          for (const ax of [element.labelX - element.labelWidth / 2 - halfBorder - 1, element.labelX + element.labelWidth / 2 + halfBorder + 1]) {
+            for (const ay of [element.labelY - element.labelHeight / 2 - halfBorder - 1, element.labelY + element.labelHeight / 2 + halfBorder + 1]) {
+              const {x, y} = rotated({x: ax, y: ay},
+                {x: element.labelX, y: element.labelY}, rad);
+              expect(element.inRange(x, y)).withContext(`rotation: ${rotation}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
+            }
+          }
         }
       });
     }
