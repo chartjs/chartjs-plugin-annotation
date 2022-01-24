@@ -1,4 +1,4 @@
-# Annotating dataset bars 
+# Annotating dataset bars
 
 ```js chart-editor
 // <block:setup:6>
@@ -49,7 +49,7 @@ const annotation2 = {
     backgroundColor: 'green',
     borderRadius: 0,
     color: 'white',
-    content: (ctx) => middleValue(ctx, 2, 0.75).toFixed(0)
+    content: (ctx) => middleValue(ctx, 1, 0.75).toFixed(0)
   },
   xMax: indexToMax(1) + 0.05,
   xMin: indexToMin(1) - 0.05,
