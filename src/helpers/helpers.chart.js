@@ -36,8 +36,8 @@ function getChartDimensionByScale(scale, options) {
     };
   }
   return {
-    start: options.start,
-    end: options.end
+    start: Math.min(options.start, options.end),
+    end: Math.max(options.start, options.end)
   };
 }
 
@@ -80,7 +80,7 @@ export function getChartRect(chart, options) {
   const xDim = getChartDimensionByScale(xScale, {min: options.xMin, max: options.xMax, start: x, end: x2});
   x = xDim.start;
   x2 = xDim.end;
-  const yDim = getChartDimensionByScale(yScale, {min: options.yMin, max: options.yMax, start: y, end: y2});
+  const yDim = getChartDimensionByScale(yScale, {min: options.yMin, max: options.yMax, start: y2, end: y});
   y = yDim.start;
   y2 = yDim.end;
 
