@@ -66,7 +66,6 @@ function handleMoveEvents(state, event) {
   let elements = [];
 
   if (event.type === 'mousemove') {
-    // elements = getNearestItem(state.elements, event);
     elements = state.visibleElements.filter((element) => element.inRange(event.x, event.y));
   }
 
