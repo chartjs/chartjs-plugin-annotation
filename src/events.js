@@ -78,11 +78,9 @@ function handleMoveEvents(state, event) {
 }
 
 function dispatchMoveEvents({state, event}, hook, elements, checkElements) {
-  if (elements.length > 0) {
-    for (const element of elements) {
-      if (checkElements.indexOf(element) < 0) {
-        dispatchEvent(element.options[hook] || state.listeners[hook], element, event);
-      }
+  for (const element of elements) {
+    if (checkElements.indexOf(element) < 0) {
+      dispatchEvent(element.options[hook] || state.listeners[hook], element, event);
     }
   }
 }
