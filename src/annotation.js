@@ -46,7 +46,8 @@ export default {
       visibleElements: [],
       listeners: {},
       listened: false,
-      moveListened: false
+      moveListened: false,
+      hovered: []
     });
   },
 

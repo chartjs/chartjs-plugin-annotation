@@ -1,4 +1,4 @@
-import {distanceBetweenPoints, defined, callback} from 'chart.js/helpers';
+import {defined, callback} from 'chart.js/helpers';
 
 const clickHooks = ['click', 'dblclick'];
 const moveHooks = ['enter', 'leave'];
@@ -63,32 +63,35 @@ function handleMoveEvents(state, event) {
     return;
   }
 
-  let element;
+  let elements = [];
 
   if (event.type === 'mousemove') {
-    element = getNearestItem(state.elements, event);
+    // elements = getNearestItem(state.elements, event);
+    elements = state.visibleElements.filter((element) => element.inRange(event.x, event.y));
   }
 
   const previous = state.hovered;
-  state.hovered = element;
+  state.hovered = elements;
 
-  dispatchMoveEvents(state, {previous, element}, event);
+  const context = {state, event};
+  dispatchMoveEvents(context, 'leave', previous, elements);
+  dispatchMoveEvents(context, 'enter', elements, previous);
 }
 
-function dispatchMoveEvents(state, elements, event) {
-  const {previous, element} = elements;
-  if (previous && previous !== element) {
-    dispatchEvent(previous.options.leave || state.listeners.leave, previous, event);
-  }
-  if (element && element !== previous) {
-    dispatchEvent(element.options.enter || state.listeners.enter, element, event);
+function dispatchMoveEvents({state, event}, hook, elements, checkElements) {
+  if (elements.length > 0) {
+    for (const element of elements) {
+      if (checkElements.indexOf(element) < 0) {
+        dispatchEvent(element.options[hook] || state.listeners[hook], element, event);
+      }
+    }
   }
 }
 
 function handleClickEvents(state, event, options) {
   const listeners = state.listeners;
-  const element = getNearestItem(state.elements, event);
-  if (element) {
+  const elements = state.visibleElements.filter((element) => element.inRange(event.x, event.y));
+  for (const element of elements) {
     const elOpts = element.options;
     const dblclick = elOpts.dblclick || listeners.dblclick;
     const click = elOpts.click || listeners.click;
@@ -112,27 +115,4 @@ function handleClickEvents(state, event, options) {
 
 function dispatchEvent(handler, element, event) {
   callback(handler, [element.$context, event]);
-}
-
-function getNearestItem(elements, position) {
-  let minDistance = Number.POSITIVE_INFINITY;
-
-  return elements
-    .filter((element) => element.options.display && element.inRange(position.x, position.y))
-    .reduce((nearestItems, element) => {
-      const center = element.getCenterPoint();
-      const distance = distanceBetweenPoints(position, center);
-
-      if (distance < minDistance) {
-        nearestItems = [element];
-        minDistance = distance;
-      } else if (distance === minDistance) {
-        // Can have multiple items at the same distance in which case we sort by size
-        nearestItems.push(element);
-      }
-
-      return nearestItems;
-    }, [])
-    .sort((a, b) => a._index - b._index)
-    .slice(0, 1)[0]; // return only the top item
 }

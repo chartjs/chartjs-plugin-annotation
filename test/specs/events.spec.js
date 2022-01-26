@@ -157,4 +157,94 @@ describe('Common', function() {
       });
     });
   });
+
+  describe('events on overlapped annotations', function() {
+    const enterSpy = jasmine.createSpy('enter');
+    const clickSpy = jasmine.createSpy('click');
+    const leaveSpy = jasmine.createSpy('leave');
+
+    const chartConfig = {
+      type: 'scatter',
+      options: {
+        animation: false,
+        scales: {
+          x: {
+            display: false,
+            min: 0,
+            max: 10
+          },
+          y: {
+            display: false,
+            min: 0,
+            max: 10
+          }
+        },
+        plugins: {
+          legend: false,
+          annotation: {
+            enter: enterSpy,
+            click: clickSpy,
+            leave: leaveSpy,
+            annotations: {
+              large: {
+                type: 'box',
+                xMin: 2,
+                xMax: 8,
+                yMin: 2,
+                yMax: 8,
+                borderWidth: 0,
+              },
+              small: {
+                type: 'box',
+                xMin: 4,
+                xMax: 6,
+                yMin: 4,
+                yMax: 6,
+                borderWidth: 0,
+              }
+            }
+          }
+        }
+      }
+    };
+
+    it('should detect all events on all annotations', function(done) {
+
+      const chart = window.acquireChart(chartConfig);
+      const large = window.getAnnotationElements(chart)[0];
+      const small = window.getAnnotationElements(chart)[1];
+
+      const event1 = {x: large.x + 1, y: large.y + large.height / 2};
+      const event2 = {x: small.x + 1, y: small.y + small.height / 2};
+      const click = {x: small.x + small.width / 2, y: small.y + small.height / 2};
+      const event3 = {x: small.x2 + 1, y: small.y2 - small.height / 2};
+      const event4 = {x: large.x2 + 1, y: large.y2 - large.height / 2};
+
+      window.triggerMouseEvent(chart, 'mousemove', event1);
+      window.afterEvent(chart, 'mousemove', function() {
+        expect(enterSpy.calls.count()).toBe(1);
+
+        window.triggerMouseEvent(chart, 'mousemove', event2);
+        window.afterEvent(chart, 'mousemove', function() {
+          expect(enterSpy.calls.count()).toBe(2);
+
+          window.triggerMouseEvent(chart, 'click', click);
+          window.afterEvent(chart, 'click', function() {
+            expect(clickSpy.calls.count()).toBe(2);
+
+            window.triggerMouseEvent(chart, 'mousemove', event3);
+            window.afterEvent(chart, 'mousemove', function() {
+              expect(leaveSpy.calls.count()).toBe(1);
+
+              window.triggerMouseEvent(chart, 'mousemove', event4);
+              window.afterEvent(chart, 'mousemove', function() {
+                expect(leaveSpy.calls.count()).toBe(2);
+                done();
+              });
+            });
+          });
+        });
+      });
+    });
+  });
 });
