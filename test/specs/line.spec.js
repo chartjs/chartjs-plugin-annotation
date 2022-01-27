@@ -84,7 +84,7 @@ describe('Line annotation', function() {
         }
       });
 
-      it('should return false inside label of element', function() {
+      it('should return false outside label of element', function() {
         for (const borderWidth of [0, 10]) {
           const halfBorder = borderWidth / 2;
           element.options.label.borderWidth = borderWidth;
