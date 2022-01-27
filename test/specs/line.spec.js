@@ -27,7 +27,7 @@ describe('Line annotation', function() {
       borderWidth: 0.5
     };
 
-    const chart = window.scatter10x10({annotation1, annotation2, annotation3, annotation4});
+    const chart = window.scatterChart(10, 10, {annotation1, annotation2, annotation3, annotation4});
     const elems = window.getAnnotationElements(chart);
 
     elems.forEach(function(element) {
@@ -66,7 +66,7 @@ describe('Line annotation', function() {
           rotation
         }
       };
-      const chart = window.scatter10x10({annotation});
+      const chart = window.scatterChart(10, 10, {annotation});
       const element = window.getAnnotationElements(chart)[0];
       it('should return true inside label of element', function() {
         for (const borderWidth of [0, 10]) {
