@@ -6,34 +6,36 @@ describe('Line annotation', function() {
       type: 'line',
       scaleID: 'y',
       value: 2,
-      borderWidth: 10,
-      label: {
-        enabled: true,
-        content: 'Label of the element',
-        position: 'start'
-      }
+      borderWidth: 10
     };
     const annotation2 = {
       type: 'line',
       scaleID: 'x',
       value: 8,
-      borderWidth: 10,
-      label: {
-        enabled: true,
-        content: 'Label of the element',
-        position: 'start'
-      }
+      borderWidth: 5
+    };
+    const annotation3 = {
+      type: 'line',
+      scaleID: 'x',
+      value: 8,
+      borderWidth: 1
+    };
+    const annotation4 = {
+      type: 'line',
+      scaleID: 'x',
+      value: 8,
+      borderWidth: 0.5
     };
 
-    const chart = window.scatter10x10({annotation1, annotation2});
+    const chart = window.scatter10x10({annotation1, annotation2, annotation3, annotation4});
     const elems = window.getAnnotationElements(chart);
 
     elems.forEach(function(element) {
       const center = element.getCenterPoint();
       it('should return true inside element', function() {
         const halfBorder = element.options.borderWidth / 2;
-        for (const x of [center.x - halfBorder + 1, center.x, center.x + halfBorder - 1]) {
-          for (const y of [center.y - halfBorder + 1, center.y, center.y + halfBorder - 1]) {
+        for (const x of [center.x - halfBorder, center.x, center.x + halfBorder]) {
+          for (const y of [center.y - halfBorder, center.y, center.y + halfBorder]) {
             expect(element.inRange(x, y)).withContext(`scaleID: ${element.options.scaleID}, value: ${element.options.value}, center: {x: ${center.x.toFixed(1)}, y: ${center.y.toFixed(1)}}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
           }
         }

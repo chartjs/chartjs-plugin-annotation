@@ -63,7 +63,7 @@ export default class LineAnnotation extends Element {
       xx = x1 + t * dx;
       yy = y1 + t * dy;
     }
-    return (sqr(x - xx) + sqr(y - yy)) < epsilon;
+    return (sqr(x - xx) + sqr(y - yy)) <= epsilon;
   }
 
   /**
