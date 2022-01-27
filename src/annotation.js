@@ -137,7 +137,7 @@ export default {
       _fallback: (prop, opts) => `elements.${annotationTypes[resolveType(opts.type)].id}`,
     },
     interaction: {
-      _fallback: () => true,
+      _fallback: true,
     }
   },
 
