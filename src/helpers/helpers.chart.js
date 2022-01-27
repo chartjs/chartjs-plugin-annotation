@@ -27,17 +27,20 @@ export function scaleValue(scale, value, fallback) {
  * @returns {{start: number, end: number}}
  */
 function getChartDimensionByScale(scale, options) {
+  const reverse = scale && scale.options && scale.options.reverse;
+  const start = reverse ? options.end : options.start;
+  const end = reverse ? options.start : options.end;
   if (scale) {
-    const min = scaleValue(scale, options.min, options.start);
-    const max = scaleValue(scale, options.max, options.end);
+    const min = scaleValue(scale, options.min, start);
+    const max = scaleValue(scale, options.max, end);
     return {
       start: Math.min(min, max),
       end: Math.max(min, max)
     };
   }
   return {
-    start: Math.min(options.start, options.end),
-    end: Math.max(options.start, options.end)
+    start: Math.min(start, end),
+    end: Math.max(start, end)
   };
 }
 
