@@ -18,6 +18,7 @@ module.exports = {
         }
       },
       plugins: {
+        legend: false,
         annotation: {
           annotations: {
             first: {

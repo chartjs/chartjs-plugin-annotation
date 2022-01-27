@@ -4,42 +4,48 @@ module.exports = {
     type: 'bar',
     data: {
       datasets: [{
-        data: [10, 20, 10, 20, 10, 20, 10]
-      },
-      {
-        data: [10, 20, 10, 20, 10, 20, 10]
+        data: [0, 0, 0, 0, 0, 0]
       }]
     },
     options: {
       scales: {
         x: {
+          display: false,
           labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-          stacked: true
         },
         y: {
-          display: false,
-          stacked: true
+          display: true,
+          stack: 'demo',
+          stackWeight: 2,
+          min: -10,
+          max: 50
+        },
+        y2: {
+          type: 'category',
+          display: true,
+          labels: ['ON', 'OFF'],
+          offset: true,
+          position: 'left',
+          stack: 'demo',
+          stackWeight: 1,
         }
       },
       plugins: {
+        legend: false,
         annotation: {
           annotations: {
             first: {
               type: 'box',
-              xMax: 'February',
+              yScaleID: 'y2',
+              yMax: 'OFF',
               backgroundColor: 'rgba(159, 226, 191, 0.5)',
             },
             second: {
               type: 'box',
-              xMax: 'April',
-              xMin: 'February',
+              yScaleID: 'y2',
+              yMin: 'OFF',
               backgroundColor: 'rgba(255, 191, 0, 0.5)',
             },
-            third: {
-              type: 'box',
-              xMin: 'April',
-              backgroundColor: 'rgba(222, 49, 99, 0.5)',
-            }
           }
         }
       }

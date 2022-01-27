@@ -5,13 +5,12 @@ module.exports = {
     options: {
       scales: {
         x: {
-          display: true,
-          reverse: true,
-          min: -10,
-          max: 50
+          display: false,
+          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
         },
         y: {
-          display: false,
+          display: true,
+          reverse: true,
           min: -10,
           max: 50
         }
@@ -21,18 +20,18 @@ module.exports = {
           annotations: {
             first: {
               type: 'box',
-              xMax: 1,
+              yMax: 1,
               backgroundColor: 'rgba(159, 226, 191, 0.5)',
             },
             second: {
               type: 'box',
-              xMax: 30,
-              xMin: 1,
+              yMax: 30,
+              yMin: 1,
               backgroundColor: 'rgba(255, 191, 0, 0.5)',
             },
             third: {
               type: 'box',
-              xMin: 30,
+              yMin: 30,
               backgroundColor: 'rgba(222, 49, 99, 0.5)',
             }
           }
