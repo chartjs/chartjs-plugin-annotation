@@ -203,7 +203,7 @@ describe('Common', function() {
       }
     };
     const modes = ['nearest', 'point'];
-    const hookCallsCount = [[1, 1, 2, 0, 1], [1, 2, 2, 1, 2]];
+    const hookCallsCount = [[1, 1, 1, 0, 1], [1, 2, 2, 1, 2]];
 
     for (let i = 0; i < modes.length; i++) {
       const mode = modes[i];

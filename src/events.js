@@ -66,14 +66,7 @@ function handleMoveEvents(state, event, options) {
   let elements = [];
 
   if (event.type === 'mousemove') {
-    if (options.interaction.mode === 'point') {
-      elements = state.visibleElements.filter((element) => element.inRange(event.x, event.y));
-    } else {
-      const element = getNearestItem(state.visibleElements, event);
-      if (element) {
-        elements.push(element);
-      }
-    }
+    elements = getItems(state, event, options);
   }
 
   const previous = state.hovered;
@@ -94,7 +87,7 @@ function dispatchMoveEvents({state, event}, hook, elements, checkElements) {
 
 function handleClickEvents(state, event, options) {
   const listeners = state.listeners;
-  const elements = state.visibleElements.filter((element) => element.inRange(event.x, event.y));
+  const elements = getItems(state, event, options);
   for (const element of elements) {
     const elOpts = element.options;
     const dblclick = elOpts.dblclick || listeners.dblclick;
@@ -119,6 +112,17 @@ function handleClickEvents(state, event, options) {
 
 function dispatchEvent(handler, element, event) {
   callback(handler, [element.$context, event]);
+}
+
+function getItems(state, event, options) {
+  if (options.interaction.mode === 'point') {
+    return state.visibleElements.filter((element) => element.inRange(event.x, event.y));
+  }
+  const element = getNearestItem(state.visibleElements, event);
+  if (element) {
+    return [element];
+  }
+  return [];
 }
 
 function getNearestItem(elements, position) {
