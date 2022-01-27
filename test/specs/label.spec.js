@@ -11,7 +11,7 @@ describe('Label annotation', function() {
       position: 'center',
     };
 
-    const chart = window.scatter10x10({test: annotation});
+    const chart = window.scatterChart(10, 10, {test: annotation});
     const element = window.getAnnotationElements(chart)[0];
 
     it('should return true inside element', function() {
