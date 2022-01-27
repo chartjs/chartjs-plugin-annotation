@@ -21,7 +21,7 @@ describe('Point annotation', function() {
       radius: 0
     };
 
-    const chart = window.scatter10x10({annotation1, annotation2, annotation3});
+    const chart = window.scatterChart(10, 10, {annotation1, annotation2, annotation3});
     const elems = window.getAnnotationElements(chart).filter(el => el.options.radius > 0);
     const elemsNoRad = window.getAnnotationElements(chart).filter(el => el.options.radius === 0);
 

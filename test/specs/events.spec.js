@@ -24,7 +24,7 @@ describe('Common', function() {
       const enterSpy = jasmine.createSpy('enter');
       const leaveSpy = jasmine.createSpy('leave');
 
-      const chart = window.scatter10x10({annotation});
+      const chart = window.scatterChart(10, 10, {annotation});
 
       window.triggerMouseEvent(chart, 'mousemove', window.getCenterPoint(chart));
       window.afterEvent(chart, 'mousemove', function() {
@@ -41,7 +41,7 @@ describe('Common', function() {
       const clickSpy = jasmine.createSpy('click');
       annotation.click = clickSpy;
 
-      const chart = window.scatter10x10({annotation});
+      const chart = window.scatterChart(10, 10, {annotation});
 
       window.afterEvent(chart, 'touchstart', function() {
         expect(clickSpy.calls.count()).toBe(0);
@@ -57,7 +57,7 @@ describe('Common', function() {
       annotation.enter = enterSpy;
       annotation.leave = leaveSpy;
 
-      const chart = window.scatter10x10({annotation});
+      const chart = window.scatterChart(10, 10, {annotation});
       chart.options.plugins.annotation.annotations.annotation.enter = undefined;
       chart.update();
 
@@ -83,7 +83,7 @@ describe('Common', function() {
         done();
       };
 
-      const chart = window.scatter10x10({annotation});
+      const chart = window.scatterChart(10, 10, {annotation});
       window.triggerMouseEvent(chart, 'mousemove', window.getCenterPoint(chart));
       window.afterEvent(chart, 'mousemove', function() {
         window.triggerMouseEvent(chart, 'mousemove', window.eventPoint0);
@@ -98,7 +98,7 @@ describe('Common', function() {
       const dblClickSpy = jasmine.createSpy('dblclick');
       annotation.dblclick = dblClickSpy;
 
-      const chart = window.scatter10x10({annotation});
+      const chart = window.scatterChart(10, 10, {annotation});
       const eventPoint = window.getCenterPoint(chart);
 
       let dblClick = false;
