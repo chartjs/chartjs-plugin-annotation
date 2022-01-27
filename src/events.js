@@ -63,10 +63,12 @@ function handleMoveEvents(state, event, options) {
     return;
   }
 
-  let elements = [];
+  let elements;
 
   if (event.type === 'mousemove') {
     elements = getElements(state, event, options);
+  } else {
+    elements = [];
   }
 
   const previous = state.hovered;
