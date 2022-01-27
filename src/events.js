@@ -66,7 +66,7 @@ function handleMoveEvents(state, event, options) {
   let elements = [];
 
   if (event.type === 'mousemove') {
-    elements = getItems(state, event, options);
+    elements = getElements(state, event, options);
   }
 
   const previous = state.hovered;
@@ -87,7 +87,7 @@ function dispatchMoveEvents({state, event}, hook, elements, checkElements) {
 
 function handleClickEvents(state, event, options) {
   const listeners = state.listeners;
-  const elements = getItems(state, event, options);
+  const elements = getElements(state, event, options);
   for (const element of elements) {
     const elOpts = element.options;
     const dblclick = elOpts.dblclick || listeners.dblclick;
@@ -114,15 +114,11 @@ function dispatchEvent(handler, element, event) {
   callback(handler, [element.$context, event]);
 }
 
-function getItems(state, event, options) {
+function getElements(state, event, options) {
   if (options.interaction.mode === 'point') {
     return state.visibleElements.filter((element) => element.inRange(event.x, event.y));
   }
-  const element = getNearestItem(state.visibleElements, event);
-  if (element) {
-    return [element];
-  }
-  return [];
+  return getNearestItem(state.visibleElements, event);
 }
 
 function getNearestItem(elements, position) {
@@ -145,5 +141,5 @@ function getNearestItem(elements, position) {
       return nearestItems;
     }, [])
     .sort((a, b) => a._index - b._index)
-    .slice(0, 1)[0]; // return only the top item
+    .slice(0, 1);
 }
