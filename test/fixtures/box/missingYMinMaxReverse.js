@@ -20,7 +20,7 @@ module.exports = {
           annotations: {
             first: {
               type: 'box',
-              yMax: 1,
+              yMin: 30,
               backgroundColor: 'rgba(159, 226, 191, 0.5)',
             },
             second: {
@@ -31,7 +31,7 @@ module.exports = {
             },
             third: {
               type: 'box',
-              yMin: 30,
+              yMax: 1,
               backgroundColor: 'rgba(222, 49, 99, 0.5)',
             }
           }
