@@ -1,4 +1,4 @@
-import {defined, callback} from 'chart.js/helpers';
+import {distanceBetweenPoints, defined, callback} from 'chart.js/helpers';
 
 const clickHooks = ['click', 'dblclick'];
 const moveHooks = ['enter', 'leave'];
@@ -48,7 +48,7 @@ export function handleEvent(state, event, options) {
     switch (event.type) {
     case 'mousemove':
     case 'mouseout':
-      handleMoveEvents(state, event);
+      handleMoveEvents(state, event, options);
       break;
     case 'click':
       handleClickEvents(state, event, options);
@@ -58,7 +58,7 @@ export function handleEvent(state, event, options) {
   }
 }
 
-function handleMoveEvents(state, event) {
+function handleMoveEvents(state, event, options) {
   if (!state.moveListened) {
     return;
   }
@@ -66,7 +66,14 @@ function handleMoveEvents(state, event) {
   let elements = [];
 
   if (event.type === 'mousemove') {
-    elements = state.visibleElements.filter((element) => element.inRange(event.x, event.y));
+    if (options.interaction.mode === 'point') {
+      elements = state.visibleElements.filter((element) => element.inRange(event.x, event.y));
+    } else {
+      const element = getNearestItem(state.visibleElements, event);
+      if (element) {
+        elements.push(element);
+      }
+    }
   }
 
   const previous = state.hovered;
@@ -112,4 +119,27 @@ function handleClickEvents(state, event, options) {
 
 function dispatchEvent(handler, element, event) {
   callback(handler, [element.$context, event]);
+}
+
+function getNearestItem(elements, position) {
+  let minDistance = Number.POSITIVE_INFINITY;
+
+  return elements
+    .filter((element) => element.inRange(position.x, position.y))
+    .reduce((nearestItems, element) => {
+      const center = element.getCenterPoint();
+      const distance = distanceBetweenPoints(position, center);
+
+      if (distance < minDistance) {
+        nearestItems = [element];
+        minDistance = distance;
+      } else if (distance === minDistance) {
+        // Can have multiple items at the same distance in which case we sort by size
+        nearestItems.push(element);
+      }
+
+      return nearestItems;
+    }, [])
+    .sort((a, b) => a._index - b._index)
+    .slice(0, 1)[0]; // return only the top item
 }

@@ -159,10 +159,6 @@ describe('Common', function() {
   });
 
   describe('events on overlapped annotations', function() {
-    const enterSpy = jasmine.createSpy('enter');
-    const clickSpy = jasmine.createSpy('click');
-    const leaveSpy = jasmine.createSpy('leave');
-
     const chartConfig = {
       type: 'scatter',
       options: {
@@ -182,9 +178,8 @@ describe('Common', function() {
         plugins: {
           legend: false,
           annotation: {
-            enter: enterSpy,
-            click: clickSpy,
-            leave: leaveSpy,
+            interaction: {
+            },
             annotations: {
               large: {
                 type: 'box',
@@ -207,44 +202,59 @@ describe('Common', function() {
         }
       }
     };
+    const modes = ['nearest', 'point'];
+    const hookCallsCount = [[1, 1, 2, 0, 1], [1, 2, 2, 1, 2]];
 
-    it('should detect all events on all annotations', function(done) {
+    for (let i = 0; i < modes.length; i++) {
+      const mode = modes[i];
+      const callsCount = hookCallsCount[i];
 
-      const chart = window.acquireChart(chartConfig);
-      const large = window.getAnnotationElements(chart)[0];
-      const small = window.getAnnotationElements(chart)[1];
+      it(`should detect events on annotations with interaction mode ${mode}`, function(done) {
+        const enterSpy = jasmine.createSpy('enter');
+        const clickSpy = jasmine.createSpy('click');
+        const leaveSpy = jasmine.createSpy('leave');
 
-      const event1 = {x: large.x + 1, y: large.y + large.height / 2};
-      const event2 = {x: small.x + 1, y: small.y + small.height / 2};
-      const click = {x: small.x + small.width / 2, y: small.y + small.height / 2};
-      const event3 = {x: small.x2 + 1, y: small.y2 - small.height / 2};
-      const event4 = {x: large.x2 + 1, y: large.y2 - large.height / 2};
+        chartConfig.options.plugins.annotation.enter = enterSpy;
+        chartConfig.options.plugins.annotation.click = clickSpy;
+        chartConfig.options.plugins.annotation.leave = leaveSpy;
+        chartConfig.options.plugins.annotation.interaction.mode = mode;
 
-      window.triggerMouseEvent(chart, 'mousemove', event1);
-      window.afterEvent(chart, 'mousemove', function() {
-        expect(enterSpy.calls.count()).toBe(1);
+        const chart = window.acquireChart(chartConfig);
+        const large = window.getAnnotationElements(chart)[0];
+        const small = window.getAnnotationElements(chart)[1];
 
-        window.triggerMouseEvent(chart, 'mousemove', event2);
+        const event1 = {x: large.x + 1, y: large.y + large.height / 2};
+        const event2 = {x: small.x + 1, y: small.y + small.height / 2};
+        const click = {x: small.x + small.width / 2, y: small.y + small.height / 2};
+        const event3 = {x: small.x2 + 1, y: small.y2 - small.height / 2};
+        const event4 = {x: large.x2 + 1, y: large.y2 - large.height / 2};
+
+        window.triggerMouseEvent(chart, 'mousemove', event1);
         window.afterEvent(chart, 'mousemove', function() {
-          expect(enterSpy.calls.count()).toBe(2);
+          expect(enterSpy.calls.count()).toBe(callsCount[0]);
 
-          window.triggerMouseEvent(chart, 'click', click);
-          window.afterEvent(chart, 'click', function() {
-            expect(clickSpy.calls.count()).toBe(2);
+          window.triggerMouseEvent(chart, 'mousemove', event2);
+          window.afterEvent(chart, 'mousemove', function() {
+            expect(enterSpy.calls.count()).toBe(callsCount[1]);
 
-            window.triggerMouseEvent(chart, 'mousemove', event3);
-            window.afterEvent(chart, 'mousemove', function() {
-              expect(leaveSpy.calls.count()).toBe(1);
+            window.triggerMouseEvent(chart, 'click', click);
+            window.afterEvent(chart, 'click', function() {
+              expect(clickSpy.calls.count()).toBe(callsCount[2]);
 
-              window.triggerMouseEvent(chart, 'mousemove', event4);
+              window.triggerMouseEvent(chart, 'mousemove', event3);
               window.afterEvent(chart, 'mousemove', function() {
-                expect(leaveSpy.calls.count()).toBe(2);
-                done();
+                expect(leaveSpy.calls.count()).toBe(callsCount[3]);
+
+                window.triggerMouseEvent(chart, 'mousemove', event4);
+                window.afterEvent(chart, 'mousemove', function() {
+                  expect(leaveSpy.calls.count()).toBe(callsCount[4]);
+                  done();
+                });
               });
             });
           });
         });
       });
-    });
+    }
   });
 });

@@ -121,6 +121,9 @@ export default {
     clip: true,
     dblClickSpeed: 350, // ms
     drawTime: 'afterDatasetsDraw',
+    interaction: {
+      mode: undefined
+    },
     label: {
       drawTime: null
     }
@@ -133,6 +136,9 @@ export default {
       _allKeys: false,
       _fallback: (prop, opts) => `elements.${annotationTypes[resolveType(opts.type)].id}`,
     },
+    interaction: {
+      _fallback: () => true,
+    }
   },
 
   additionalOptionScopes: ['']
