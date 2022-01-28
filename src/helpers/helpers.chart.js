@@ -55,11 +55,11 @@ export function getChartPoint(chart, options) {
   let y = chartArea.height / 2;
 
   if (xScale) {
-    x = scaleValue(xScale, options.xValue, x);
+    x = scaleValue(xScale, options.xValue, xScale.left + xScale.width / 2);
   }
 
   if (yScale) {
-    y = scaleValue(yScale, options.yValue, y);
+    y = scaleValue(yScale, options.yValue, yScale.top + yScale.height / 2);
   }
   return {x, y};
 }
