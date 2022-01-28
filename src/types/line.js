@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
-import {PI, toRadians, toPadding} from 'chart.js/helpers';
-import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle} from '../helpers';
+import {PI, toRadians, toPadding, valueOrDefault} from 'chart.js/helpers';
+import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, getDimensionByScale} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
@@ -162,36 +162,32 @@ export default class LineAnnotation extends Element {
 
   resolveElementProperties(chart, options) {
     const scale = chart.scales[options.scaleID];
-    let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
+    const area = translate(chart.chartArea, {y: 'top', x: 'left', y2: 'bottom', x2: 'right'});
     let min, max;
 
     if (scale) {
       min = scaleValue(scale, options.value, NaN);
       max = scaleValue(scale, options.endValue, min);
       if (scale.isHorizontal()) {
-        x = min;
-        x2 = max;
+        area.x = min;
+        area.x2 = max;
       } else {
-        y = min;
-        y2 = max;
+        area.y = min;
+        area.y2 = max;
       }
     } else {
       const xScale = chart.scales[options.xScaleID];
       const yScale = chart.scales[options.yScaleID];
-
       if (xScale) {
-        const dim = getDimensionByScale(xScale, {min: options.xMin, max: options.xMax, start: xScale.left, end: xScale.right});
-        x = dim.start;
-        x2 = dim.end;
+        applyScaleValueToDimension(area, xScale, {min: options.xMin, max: options.xMax, start: xScale.left, end: xScale.right, startProp: 'x', endProp: 'x2'});
       }
 
       if (yScale) {
-        const dim = getDimensionByScale(yScale, {min: options.yMin, max: options.yMax, start: yScale.bottom, end: yScale.top});
-        y = dim.start;
-        y2 = dim.end;
+        applyScaleValueToDimension(area, yScale, {min: options.yMin, max: options.yMax, start: yScale.bottom, end: yScale.top, startProp: 'y', endProp: 'y2'});
       }
     }
-    const inside = isLineInArea({x, y, x2, y2}, chart.chartArea);
+    const {x, y, x2, y2} = area;
+    const inside = isLineInArea(area, chart.chartArea);
     const properties = inside
       ? limitLineToArea({x, y}, {x: x2, y: y2}, chart.chartArea)
       : {x, y, x2, y2, width: Math.abs(x2 - x), height: Math.abs(y2 - y)};
@@ -305,14 +301,20 @@ LineAnnotation.defaultRoutes = {
   borderColor: 'color'
 };
 
-function getDimensionByScale(scale, options) {
-  const reverse = scale.options.reverse;
-  const start = scaleValue(scale, options.min, reverse ? options.end : options.start);
-  const end = scaleValue(scale, options.max, reverse ? options.start : options.end);
-  return {
-    start,
-    end
-  };
+function translate(source, mapping) {
+  const ret = {};
+  const keys = Object.keys(mapping);
+  const read = prop => valueOrDefault(source[prop], source[mapping[prop]]);
+  for (const prop of keys) {
+    ret[prop] = read(prop);
+  }
+  return ret;
+}
+
+function applyScaleValueToDimension(area, scale, options) {
+  const dim = getDimensionByScale(scale, options);
+  area[options.startProp] = dim.start;
+  area[options.endProp] = dim.end;
 }
 
 function loadLabelRect(line, chart, options) {

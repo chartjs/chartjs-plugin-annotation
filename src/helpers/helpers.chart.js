@@ -24,16 +24,31 @@ export function scaleValue(scale, value, fallback) {
 /**
  * @param {Scale} scale
  * @param {{min: number, max: number, start: number, end: number}} options
+ * @returns {{start: number, end: number}|undefined}
+ */
+export function getDimensionByScale(scale, options) {
+  if (scale) {
+    const reverse = scale.options.reverse;
+    const start = scaleValue(scale, options.min, reverse ? options.end : options.start);
+    const end = scaleValue(scale, options.max, reverse ? options.start : options.end);
+    return {
+      start,
+      end
+    };
+  }
+}
+
+/**
+ * @param {Scale} scale
+ * @param {{min: number, max: number, start: number, end: number}} options
  * @returns {{start: number, end: number}}
  */
 function getChartDimensionByScale(scale, options) {
-  if (scale) {
-    const reverse = scale.options.reverse;
-    const min = scaleValue(scale, options.min, reverse ? options.end : options.start);
-    const max = scaleValue(scale, options.max, reverse ? options.start : options.end);
+  const dim = getDimensionByScale(scale, options);
+  if (dim) {
     return {
-      start: Math.min(min, max),
-      end: Math.max(min, max)
+      start: Math.min(dim.start, dim.end),
+      end: Math.max(dim.start, dim.end)
     };
   }
   return {
