@@ -23,7 +23,7 @@ export function scaleValue(scale, value, fallback) {
 
 /**
  * @param {Scale} scale
- * @param {{start: number, end: number}} options
+ * @param {{min: number, max: number, start: number, end: number}} options
  * @returns {{start: number, end: number}}
  */
 function getChartDimensionByScale(scale, options) {

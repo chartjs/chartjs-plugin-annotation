@@ -180,13 +180,15 @@ export default class LineAnnotation extends Element {
       const yScale = chart.scales[options.yScaleID];
 
       if (xScale) {
-        x = scaleValue(xScale, options.xMin, x);
-        x2 = scaleValue(xScale, options.xMax, x2);
+        const dim = getDimensionByScale(xScale, {min: options.xMin, max: options.xMax, start: xScale.left, end: xScale.right});
+        x = dim.start;
+        x2 = dim.end;
       }
 
       if (yScale) {
-        y = scaleValue(yScale, options.yMin, y);
-        y2 = scaleValue(yScale, options.yMax, y2);
+        const dim = getDimensionByScale(yScale, {min: options.yMin, max: options.yMax, start: yScale.bottom, end: yScale.top});
+        y = dim.start;
+        y2 = dim.end;
       }
     }
     const inside = isLineInArea({x, y, x2, y2}, chart.chartArea);
@@ -302,6 +304,16 @@ LineAnnotation.descriptors = {
 LineAnnotation.defaultRoutes = {
   borderColor: 'color'
 };
+
+function getDimensionByScale(scale, options) {
+  const reverse = scale.options.reverse;
+  const start = scaleValue(scale, options.min, reverse ? options.end : options.start);
+  const end = scaleValue(scale, options.max, reverse ? options.start : options.end);
+  return {
+    start,
+    end
+  };
+}
 
 function loadLabelRect(line, chart, options) {
   // TODO: v2 remove support for xPadding and yPadding
