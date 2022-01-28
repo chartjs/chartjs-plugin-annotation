@@ -44,16 +44,10 @@ export function getDimensionByScale(scale, options) {
  * @returns {{start: number, end: number}}
  */
 function getChartDimensionByScale(scale, options) {
-  const dim = getDimensionByScale(scale, options);
-  if (dim) {
-    return {
-      start: Math.min(dim.start, dim.end),
-      end: Math.max(dim.start, dim.end)
-    };
-  }
+  const result = getDimensionByScale(scale, options) || options; 
   return {
-    start: Math.min(options.start, options.end),
-    end: Math.max(options.start, options.end)
+    start: Math.min(result.start, result.end),
+    end: Math.max(result.start, result.end)
   };
 }
 
