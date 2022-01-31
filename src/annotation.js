@@ -1,5 +1,5 @@
 import {Animations, Chart} from 'chart.js';
-import {clipArea, unclipArea, isObject, isArray} from 'chart.js/helpers';
+import {clipArea, unclipArea, isObject, isArray, defined} from 'chart.js/helpers';
 import {handleEvent, hooks, updateListeners} from './events';
 import {adjustScaleRange, verifyScaleOptions} from './scale';
 import {annotationTypes} from './types';
@@ -175,11 +175,9 @@ function updateElements(chart, state, options, mode) {
     const annotationOptions = annotations[i];
     const element = getOrCreateElement(elements, i, annotationOptions.type);
     const resolver = annotationOptions.setContext(getContext(chart, element, annotationOptions));
-    const resolvedOptions = resolveAnnotationOptions(resolver);
-    const properties = element.resolveElementProperties(chart, resolvedOptions);
+    const properties = element.resolveElementProperties(chart, resolver);
 
     properties.skip = isNaN(properties.x) || isNaN(properties.y);
-    properties.options = resolvedOptions;
 
     if ('elements' in properties) {
       updateSubElements(element, properties, resolver, animations);
@@ -187,6 +185,16 @@ function updateElements(chart, state, options, mode) {
       // are not overwritten by their definitions
       delete properties.elements;
     }
+
+    if (!defined(element.x)) {
+      // If the element is newly created, assing the properties directly - to
+      // make them readily awailable to any scriptable options. If we do not do this,
+      // the properties retruned by `resolveElementProperties` are available only
+      // after options resolution.
+      Object.assign(element, properties);
+    }
+
+    properties.options = resolveAnnotationOptions(resolver);
 
     animations.update(element, properties);
   }
