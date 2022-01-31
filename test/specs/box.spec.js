@@ -68,4 +68,130 @@ describe('Box annotation', function() {
       });
     });
   });
+
+  describe('interaction', function() {
+    const chartConfig = {
+      type: 'scatter',
+      options: {
+        animation: false,
+        scales: {
+          x: {
+            display: false,
+            min: 0,
+            max: 10
+          },
+          y: {
+            display: false,
+            min: 0,
+            max: 10
+          }
+        },
+        plugins: {
+          legend: false,
+          annotation: {
+            interaction: {
+              intersect: true,
+            },
+            annotations: {
+              large: {
+                type: 'box',
+                xMin: 2,
+                xMax: 8,
+                yMin: 2,
+                yMax: 8,
+                borderWidth: 0,
+              },
+              small: {
+                type: 'box',
+                xMin: 4.5,
+                xMax: 6,
+                yMin: 4.5,
+                yMax: 6,
+                borderWidth: 0,
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const chart = window.acquireChart(chartConfig);
+    const state = window['chartjs-plugin-annotation']._getState(chart);
+    const interactionOpts = chartConfig.options.plugins.annotation.interaction;
+    const large = window.getAnnotationElements(chart)[0];
+    const small = window.getAnnotationElements(chart)[1];
+
+    const interactions = [{
+      mode: 'point',
+      axes: {
+        xy: {
+          intersect: {
+            true: [1, 2, 2, 1, 0, 0],
+            false: [1, 2, 2, 1, 0, 0]
+          }
+        },
+        x: {
+          intersect: {
+            true: [1, 2, 2, 1, 0, 0],
+            false: [1, 2, 2, 1, 0, 0]
+          }
+        },
+        y: {
+          intersect: {
+            true: [1, 2, 2, 1, 0, 0],
+            false: [1, 2, 2, 1, 0, 0]
+          }
+        }
+      },
+    }, {
+      mode: 'nearest',
+      axes: {
+        xy: {
+          intersect: {
+            true: [1, 1, 1, 1, 0, 0],
+            false: [1, 1, 1, 1, 1, 1]
+          }
+        },
+        x: {
+          intersect: {
+            true: [1, 1, 1, 1, 0, 0],
+            false: [1, 1, 1, 1, 0, 1]
+          }
+        },
+        y: {
+          intersect: {
+            true: [1, 1, 1, 1, 0, 0],
+            false: [1, 1, 1, 1, 1, 0]
+          }
+        }
+      }
+    }];
+
+    it('should return the right amount of annotation elements', function() {
+      for (const interaction of interactions) {
+        const mode = interaction.mode;
+        interactionOpts.mode = mode;
+        for (const axis of Object.keys(interaction.axes)) {
+          interactionOpts.axis = axis;
+          [true, false].forEach(function(intersect) {
+            interactionOpts.intersect = intersect;
+            const elementsCounts = interaction.axes[axis].intersect[intersect];
+            const points = [{x: large.x + 1, y: large.y + large.height / 2, what: 'enter large'},
+              {x: small.x + 1, y: small.y + small.height / 2, what: 'enter small'},
+              {x: small.x + small.width / 2, y: small.y + small.height / 2, what: 'click center of small'},
+              {x: small.x2 + 1, y: small.y2 - small.height / 2, what: 'leave small'},
+              {x: large.x2 + 1, y: large.y2 - large.height / 2, what: 'leave large'},
+              {x: large.x + 1, y: large.y - 1, what: 'outside of elements'}];
+
+            for (let i = 0; i < points.length; i++) {
+              const point = points[i];
+              const elementsCount = elementsCounts[i];
+              const elements = state._getElements(state, point, interactionOpts);
+              expect(elements.length).withContext(`with interaction mode: ${mode}, axis ${axis}, intersect ${intersect}, ${point.what}`).toEqual(elementsCount);
+            }
+          });
+        }
+      }
+    });
+  });
 });
