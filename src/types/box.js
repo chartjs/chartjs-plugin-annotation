@@ -7,6 +7,16 @@ export default class BoxAnnotation extends Element {
     return inBoxRange(mouseX, mouseY, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), this.options.borderWidth);
   }
 
+  inXRange(value, useFinalPosition) {
+    const {x, width} = this.getProps(['x', 'width'], useFinalPosition);
+    return value >= x && value <= x + width;
+  }
+
+  inYRange(value, useFinalPosition) {
+    const {y, height} = this.getProps(['y', 'height'], useFinalPosition);
+    return value >= y && value <= y + height;
+  }
+
   getCenterPoint(useFinalPosition) {
     return getRectCenterPoint(this.getProps(['x', 'y', 'width', 'height'], useFinalPosition));
   }

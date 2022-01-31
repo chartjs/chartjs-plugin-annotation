@@ -1,4 +1,5 @@
-import {distanceBetweenPoints, defined, callback} from 'chart.js/helpers';
+import {defined, callback} from 'chart.js/helpers';
+import {getElements} from './interaction';
 
 const clickHooks = ['click', 'dblclick'];
 const moveHooks = ['enter', 'leave'];
@@ -66,7 +67,7 @@ function handleMoveEvents(state, event, options) {
   let elements;
 
   if (event.type === 'mousemove') {
-    elements = getElements(state, event, options);
+    elements = getElements(state, event, options.interaction);
   } else {
     elements = [];
   }
@@ -89,7 +90,7 @@ function dispatchMoveEvents({state, event}, hook, elements, checkElements) {
 
 function handleClickEvents(state, event, options) {
   const listeners = state.listeners;
-  const elements = getElements(state, event, options);
+  const elements = getElements(state, event, options.interaction);
   for (const element of elements) {
     const elOpts = element.options;
     const dblclick = elOpts.dblclick || listeners.dblclick;
@@ -114,34 +115,4 @@ function handleClickEvents(state, event, options) {
 
 function dispatchEvent(handler, element, event) {
   callback(handler, [element.$context, event]);
-}
-
-function getElements(state, event, options) {
-  if (options.interaction.mode === 'point') {
-    return state.visibleElements.filter((element) => element.inRange(event.x, event.y));
-  }
-  return getNearestItem(state.visibleElements, event);
-}
-
-function getNearestItem(elements, position) {
-  let minDistance = Number.POSITIVE_INFINITY;
-
-  return elements
-    .filter((element) => element.inRange(position.x, position.y))
-    .reduce((nearestItems, element) => {
-      const center = element.getCenterPoint();
-      const distance = distanceBetweenPoints(position, center);
-
-      if (distance < minDistance) {
-        nearestItems = [element];
-        minDistance = distance;
-      } else if (distance === minDistance) {
-        // Can have multiple items at the same distance in which case we sort by size
-        nearestItems.push(element);
-      }
-
-      return nearestItems;
-    }, [])
-    .sort((a, b) => a._index - b._index)
-    .slice(0, 1);
 }

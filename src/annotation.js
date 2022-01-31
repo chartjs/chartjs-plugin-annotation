@@ -122,7 +122,9 @@ export default {
     dblClickSpeed: 350, // ms
     drawTime: 'afterDatasetsDraw',
     interaction: {
-      mode: undefined
+      mode: undefined,
+      axis: undefined,
+      intersect: true
     },
     label: {
       drawTime: null
