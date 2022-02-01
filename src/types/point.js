@@ -9,6 +9,18 @@ export default class PointAnnotation extends Element {
     return inPointRange({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), width / 2, this.options.borderWidth);
   }
 
+  inXRange(mouseX, mouseY, useFinalPosition) {
+    const {x, width} = this.getProps(['x', 'width'], useFinalPosition);
+    const hBorderWidth = this.options.borderWidth / 2;
+    return mouseX >= x - width / 2 - hBorderWidth && mouseX <= x + width / 2 + hBorderWidth;
+  }
+
+  inYRange(mouseX, mouseY, useFinalPosition) {
+    const {y, height} = this.getProps(['y', 'height'], useFinalPosition);
+    const hBorderWidth = this.options.borderWidth / 2;
+    return mouseY >= y - height / 2 - hBorderWidth && mouseY <= y + height / 2 + hBorderWidth;
+  }
+
   getCenterPoint(useFinalPosition) {
     return getElementCenterPoint(this, useFinalPosition);
   }

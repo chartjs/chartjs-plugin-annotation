@@ -74,4 +74,54 @@ describe('Point annotation', function() {
       });
     });
   });
+
+  describe('interaction', function() {
+    const outer = {
+      type: 'point',
+      xValue: 5,
+      yValue: 5,
+      radius: 40,
+      borderWidth: 0
+    };
+    const inner = {
+      type: 'point',
+      xValue: 5,
+      yValue: 5,
+      radius: 20,
+      borderWidth: 0
+    };
+
+    const chart = window.scatterChart(10, 10, {outer, inner});
+    const state = window['chartjs-plugin-annotation']._getState(chart);
+    const interactionOpts = {};
+    const outerEl = window.getAnnotationElements(chart)[0];
+    const innerEl = window.getAnnotationElements(chart)[1];
+
+    it('should return the right amount of annotation elements', function() {
+      for (const interaction of window.interactionData) {
+        const mode = interaction.mode;
+        interactionOpts.mode = mode;
+        for (const axis of Object.keys(interaction.axes)) {
+          interactionOpts.axis = axis;
+          [true, false].forEach(function(intersect) {
+            interactionOpts.intersect = intersect;
+            const elementsCounts = interaction.axes[axis].intersect[intersect];
+            const points = [{x: outerEl.x - outerEl.width / 2, y: outerEl.y, what: 'enter outer'},
+              {x: innerEl.x - innerEl.width / 2, y: innerEl.y, what: 'enter inner'},
+              {x: innerEl.x, y: innerEl.y, what: 'click center of inner'},
+              {x: innerEl.x + innerEl.width / 2 + 1, y: innerEl.y, what: 'leave inner'},
+              {x: outerEl.x + outerEl.width / 2 + 1, y: outerEl.y, what: 'leave outer'},
+              {x: outerEl.x + 1, y: outerEl.y - outerEl.height / 2 - 1, what: 'outside of elements'}];
+
+            for (let i = 0; i < points.length; i++) {
+              const point = points[i];
+              const elementsCount = elementsCounts[i];
+              const elements = state._getElements(state, point, interactionOpts);
+              expect(elements.length).withContext(`with interaction mode: ${mode}, axis ${axis}, intersect ${intersect}, ${point.what}`).toEqual(elementsCount);
+            }
+          });
+        }
+      }
+    });
+  });
 });

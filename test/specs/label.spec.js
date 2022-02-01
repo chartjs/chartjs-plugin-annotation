@@ -48,10 +48,10 @@ describe('Label annotation', function() {
   describe('interaction', function() {
     const outer = {
       type: 'label',
-      xMin: 3,
-      xMax: 7,
-      yMin: 3,
-      yMax: 7,
+      xMin: 2,
+      xMax: 8,
+      yMin: 2,
+      yMax: 8,
       content: ['outer label row 1', 'outer label row 2', 'outer label row 3'],
       backgroundColor: 'transparent',
       borderWidth: 0
@@ -62,6 +62,8 @@ describe('Label annotation', function() {
       xMax: 6,
       yMin: 4,
       yMax: 6,
+      content: ['inner label 1', 'inner label 2'],
+      backgroundColor: 'transparent',
       borderWidth: 0
     };
 
@@ -77,7 +79,7 @@ describe('Label annotation', function() {
         interactionOpts.mode = mode;
         for (const axis of Object.keys(interaction.axes)) {
           interactionOpts.axis = axis;
-          [true].forEach(function(intersect) {
+          [true, false].forEach(function(intersect) {
             interactionOpts.intersect = intersect;
             const elementsCounts = interaction.axes[axis].intersect[intersect];
             const points = [{x: outerEl.x, y: outerEl.y + outerEl.height / 2, what: 'enter outer'},
