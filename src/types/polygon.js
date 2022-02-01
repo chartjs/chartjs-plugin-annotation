@@ -1,10 +1,26 @@
 import {Element} from 'chart.js';
-import {PI, RAD_PER_DEG} from 'chart.js/helpers';
-import {setBorderStyle, resolvePointPosition, getElementCenterPoint, setShadowStyle} from '../helpers';
+import {PI, RAD_PER_DEG, toRadians} from 'chart.js/helpers';
+import {setBorderStyle, resolvePointPosition, getElementCenterPoint, setShadowStyle, rotated} from '../helpers';
 
 export default class PolygonAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
     return this.options.radius >= 0.1 && this.elements.length > 1 && pointIsInPolygon(this.elements, mouseX, mouseY, useFinalPosition);
+  }
+
+  inXRange(mouseX, mouseY, useFinalPosition) {
+    const rotValue = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.options.rotation));
+    const allX = this.elements.map((point) => point.bX);
+    const x = Math.min(...allX);
+    const x2 = Math.max(...allX);
+    return rotValue.x >= x && rotValue.x <= x2;
+  }
+
+  inYRange(mouseX, mouseY, useFinalPosition) {
+    const rotValue = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.options.rotation));
+    const allY = this.elements.map((point) => point.bY);
+    const y = Math.min(...allY);
+    const y2 = Math.max(...allY);
+    return rotValue.y >= y && rotValue.y <= y2;
   }
 
   getCenterPoint(useFinalPosition) {
@@ -99,7 +115,6 @@ PolygonAnnotation.defaultRoutes = {
   borderColor: 'color',
   backgroundColor: 'color'
 };
-
 
 function pointIsInPolygon(points, x, y, useFinalPosition) {
   let isInside = false;

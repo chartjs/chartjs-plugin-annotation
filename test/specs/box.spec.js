@@ -76,7 +76,7 @@ describe('Box annotation', function() {
       xMax: 8,
       yMin: 2,
       yMax: 8,
-      borderWidth: 0,
+      borderWidth: 0
     };
     const inner = {
       type: 'box',
@@ -84,7 +84,7 @@ describe('Box annotation', function() {
       xMax: 6,
       yMin: 4.5,
       yMax: 6,
-      borderWidth: 0,
+      borderWidth: 0
     };
 
     const chart = window.scatterChart(10, 10, {outer, inner});
