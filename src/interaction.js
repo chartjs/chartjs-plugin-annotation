@@ -17,7 +17,7 @@ const interaction = {
      * @param {Object} state - the state of the plugin
      * @param {ChartEvent} event - the event we are find things at
      * @param {options} options - interaction options to use
-     * @return {Element[]} - elements that are found
+     * @return {Element[]} - elements that are found (only 1 element)
      */
     nearest(state, event, options) {
       return getNearestItem(state, event, options);
@@ -25,6 +25,13 @@ const interaction = {
   }
 };
 
+/**
+ * Returns all elements that hit test based on the event position
+ * @param {Object} state - the state of the plugin
+ * @param {ChartEvent} event - the event we are find things at
+ * @param {options} options - interaction options to use
+ * @return {Element[]} - elements that are found
+ */
 export function getElements(state, event, options) {
   const mode = interaction.modes[options.mode] || interaction.modes.nearest;
   return mode(state, event, options);
@@ -36,11 +43,11 @@ function getIntersectItems(state, event) {
 
 function inRangeByAxis(element, event, axis) {
   if (axis === 'x') {
-    return element.inXRange(event.x);
+    return element.inXRange(event.x, event.y);
   } else if (axis === 'y') {
-    return element.inYRange(event.y);
+    return element.inYRange(event.x, event.y);
   }
-  return element.inXRange(event.x) || element.inYRange(event.y);
+  return element.inXRange(event.x, event.y) || element.inYRange(event.x, event.y);
 }
 
 function getPointByAxis(event, center, axis) {

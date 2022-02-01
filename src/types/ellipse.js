@@ -1,11 +1,25 @@
 import {Element} from 'chart.js';
 import {PI, toRadians} from 'chart.js/helpers';
-import {getRectCenterPoint, getChartRect, setBorderStyle, setShadowStyle} from '../helpers';
+import {getRectCenterPoint, getChartRect, setBorderStyle, setShadowStyle, rotated} from '../helpers';
 
 export default class EllipseAnnotation extends Element {
 
   inRange(mouseX, mouseY, useFinalPosition) {
     return pointInEllipse({x: mouseX, y: mouseY}, this.getProps(['width', 'height'], useFinalPosition), this.options.rotation, this.options.borderWidth);
+  }
+
+  inXRange(mouseX, mouseY, useFinalPosition) {
+    const {x, x2} = this.getProps(['x', 'x2'], useFinalPosition);
+    const rotValue = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(), toRadians(-this.options.rotation));
+    const hBorderWidth = this.options.borderWidth / 2;
+    return rotValue.x >= x - hBorderWidth && rotValue.x <= x2 + hBorderWidth;
+  }
+
+  inYRange(mouseX, mouseY, useFinalPosition) {
+    const {y, y2} = this.getProps(['y', 'y2'], useFinalPosition);
+    const rotValue = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.options.rotation));
+    const hBorderWidth = this.options.borderWidth / 2;
+    return rotValue.y >= y - hBorderWidth && rotValue.y <= y2 + hBorderWidth;
   }
 
   getCenterPoint(useFinalPosition) {
