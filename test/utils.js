@@ -53,3 +53,49 @@ function keepInf(key, value) {
 export function stringifyObject(obj) {
   return JSON.stringify(obj, keepInf).replaceAll('"', '').replaceAll(':', ': ').replaceAll(',', ', ');
 }
+
+export const interactionData = [{
+  mode: 'point',
+  axes: {
+    xy: {
+      intersect: {
+        true: [1, 2, 2, 1, 0, 0],
+        false: [1, 2, 2, 1, 0, 0]
+      }
+    },
+    x: {
+      intersect: {
+        true: [1, 2, 2, 1, 0, 0],
+        false: [1, 2, 2, 1, 0, 0]
+      }
+    },
+    y: {
+      intersect: {
+        true: [1, 2, 2, 1, 0, 0],
+        false: [1, 2, 2, 1, 0, 0]
+      }
+    }
+  },
+}, {
+  mode: 'nearest',
+  axes: {
+    xy: {
+      intersect: {
+        true: [1, 1, 1, 1, 0, 0],
+        false: [1, 1, 1, 1, 1, 1]
+      }
+    },
+    x: {
+      intersect: {
+        true: [1, 1, 1, 1, 0, 0],
+        false: [1, 1, 1, 1, 0, 1]
+      }
+    },
+    y: {
+      intersect: {
+        true: [1, 1, 1, 1, 0, 0],
+        false: [1, 1, 1, 1, 1, 0]
+      }
+    }
+  }
+}];

@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, toRadians} from 'chart.js/helpers';
-import {getRectCenterPoint, getChartRect, setBorderStyle, setShadowStyle, rotated} from '../helpers';
+import {EPSILON, getRectCenterPoint, getChartRect, setBorderStyle, setShadowStyle, rotated} from '../helpers';
 
 export default class EllipseAnnotation extends Element {
 
@@ -10,9 +10,9 @@ export default class EllipseAnnotation extends Element {
 
   inXRange(mouseX, mouseY, useFinalPosition) {
     const {x, x2} = this.getProps(['x', 'x2'], useFinalPosition);
-    const rotValue = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(), toRadians(-this.options.rotation));
+    const rotValue = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.options.rotation));
     const hBorderWidth = this.options.borderWidth / 2;
-    return rotValue.x >= x - hBorderWidth && rotValue.x <= x2 + hBorderWidth;
+    return rotValue.x >= x - hBorderWidth - EPSILON && rotValue.x <= x2 + hBorderWidth + EPSILON;
   }
 
   inYRange(mouseX, mouseY, useFinalPosition) {

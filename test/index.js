@@ -1,6 +1,6 @@
 import {acquireChart, addMatchers, releaseCharts, specsFromFixtures, triggerMouseEvent, afterEvent} from 'chartjs-test-utils';
 import {testEvents, eventPoint0, getCenterPoint} from './events';
-import {createCanvas, getAnnotationElements, scatterChart, stringifyObject} from './utils';
+import {createCanvas, getAnnotationElements, scatterChart, stringifyObject, interactionData} from './utils';
 import * as helpers from '../src/helpers';
 
 window.helpers = helpers;
@@ -15,6 +15,7 @@ window.createCanvas = createCanvas;
 window.getAnnotationElements = getAnnotationElements;
 window.scatterChart = scatterChart;
 window.stringifyObject = stringifyObject;
+window.interactionData = interactionData;
 
 jasmine.fixtures = specsFromFixtures;
 

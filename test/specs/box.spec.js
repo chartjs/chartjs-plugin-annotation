@@ -93,54 +93,8 @@ describe('Box annotation', function() {
     const outerEl = window.getAnnotationElements(chart)[0];
     const innerEl = window.getAnnotationElements(chart)[1];
 
-    const interactions = [{
-      mode: 'point',
-      axes: {
-        xy: {
-          intersect: {
-            true: [1, 2, 2, 1, 0, 0],
-            false: [1, 2, 2, 1, 0, 0]
-          }
-        },
-        x: {
-          intersect: {
-            true: [1, 2, 2, 1, 0, 0],
-            false: [1, 2, 2, 1, 0, 0]
-          }
-        },
-        y: {
-          intersect: {
-            true: [1, 2, 2, 1, 0, 0],
-            false: [1, 2, 2, 1, 0, 0]
-          }
-        }
-      },
-    }, {
-      mode: 'nearest',
-      axes: {
-        xy: {
-          intersect: {
-            true: [1, 1, 1, 1, 0, 0],
-            false: [1, 1, 1, 1, 1, 1]
-          }
-        },
-        x: {
-          intersect: {
-            true: [1, 1, 1, 1, 0, 0],
-            false: [1, 1, 1, 1, 0, 1]
-          }
-        },
-        y: {
-          intersect: {
-            true: [1, 1, 1, 1, 0, 0],
-            false: [1, 1, 1, 1, 1, 0]
-          }
-        }
-      }
-    }];
-
     it('should return the right amount of annotation elements', function() {
-      for (const interaction of interactions) {
+      for (const interaction of window.interactionData) {
         const mode = interaction.mode;
         interactionOpts.mode = mode;
         for (const axis of Object.keys(interaction.axes)) {
@@ -148,8 +102,8 @@ describe('Box annotation', function() {
           [true, false].forEach(function(intersect) {
             interactionOpts.intersect = intersect;
             const elementsCounts = interaction.axes[axis].intersect[intersect];
-            const points = [{x: outerEl.x + 1, y: outerEl.y + outerEl.height / 2, what: 'enter outer'},
-              {x: innerEl.x + 1, y: innerEl.y + innerEl.height / 2, what: 'enter inner'},
+            const points = [{x: outerEl.x, y: outerEl.y + outerEl.height / 2, what: 'enter outer'},
+              {x: innerEl.x, y: innerEl.y + innerEl.height / 2, what: 'enter inner'},
               {x: innerEl.x + innerEl.width / 2, y: innerEl.y + innerEl.height / 2, what: 'click center of inner'},
               {x: innerEl.x2 + 1, y: innerEl.y2 - innerEl.height / 2, what: 'leave inner'},
               {x: outerEl.x2 + 1, y: outerEl.y2 - outerEl.height / 2, what: 'leave outer'},

@@ -1,3 +1,5 @@
+export const EPSILON = 0.001;
+
 export const clamp = (x, from, to) => Math.min(to, Math.max(from, x));
 
 export function clampAll(obj, from, to) {
