@@ -38,16 +38,14 @@ export function getElements(state, event, options) {
 }
 
 function getIntersectItems(state, event) {
-  return state.visibleElements.filter((element) => element.inRange(event.x, event.y, true));
+  return state.visibleElements.filter((element) => element.inRange(event.x, event.y));
 }
 
 function inRangeByAxis(element, event, axis) {
-  if (axis === 'x') {
-    return element.inXRange(event.x, event.y, true);
-  } else if (axis === 'y') {
-    return element.inYRange(event.x, event.y, true);
+  if (axis !== 'x' && axis !== 'y') {
+    return element.inRange(event.x, event.y, 'x', true) || element.inRange(event.x, event.y, 'y', true);
   }
-  return element.inXRange(event.x, event.y, true) || element.inYRange(event.x, event.y, true);
+  return element.inRange(event.x, event.y, axis, true);
 }
 
 function getPointByAxis(event, center, axis) {
@@ -64,7 +62,7 @@ function getNearestItem(state, event, options) {
   let minDistance = Number.POSITIVE_INFINITY;
 
   return state.visibleElements
-    .filter((element) => options.intersect ? element.inRange(event.x, event.y, true) : inRangeByAxis(element, event, axis))
+    .filter((element) => options.intersect ? element.inRange(event.x, event.y) : inRangeByAxis(element, event, axis))
     .reduce((nearestItems, element) => {
       const center = element.getCenterPoint();
       const evenPoint = getPointByAxis(event, center, axis);

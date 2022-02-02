@@ -17,12 +17,16 @@ export function inPointRange(point, center, radius, borderWidth) {
   return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius + hBorderWidth, 2);
 }
 
-export function inBoxRange(mouseX, mouseY, {x, y, width, height}, borderWidth) {
-  const hBorderWidth = borderWidth / 2 || 0;
-  return mouseX >= x - hBorderWidth &&
-         mouseX <= x + width + hBorderWidth &&
-         mouseY >= y - hBorderWidth &&
-         mouseY <= y + height + hBorderWidth;
+export function inBoxRange({mouseX, mouseY}, {x, y, width, height}, axis, borderWidth) {
+  const hBorderWidth = borderWidth / 2;
+  const inRangeX = mouseX >= x - hBorderWidth && mouseX <= x + width + hBorderWidth;
+  const inRangeY = mouseY >= y - hBorderWidth && mouseY <= y + height + hBorderWidth;
+  if (axis === 'x') {
+    return inRangeX;
+  } else if (axis === 'y') {
+    return inRangeY;
+  }
+  return inRangeX && inRangeY;
 }
 
 export function getElementCenterPoint(element, useFinalPosition) {

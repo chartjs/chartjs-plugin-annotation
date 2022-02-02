@@ -3,18 +3,9 @@ import {toPadding} from 'chart.js/helpers';
 import {drawBox, drawLabel, getRelativePosition, measureLabelSize, getRectCenterPoint, getChartRect, toPosition, inBoxRange} from '../helpers';
 
 export default class BoxAnnotation extends Element {
-  inRange(mouseX, mouseY, useFinalPosition) {
-    return inBoxRange(mouseX, mouseY, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), this.options.borderWidth);
-  }
 
-  inXRange(mouseX, mouseY, useFinalPosition) {
-    const {x: start, width: size} = this.getProps(['x', 'width'], useFinalPosition);
-    return inRangeByCoord(mouseX, start, size, this.options.borderWidth);
-  }
-
-  inYRange(mouseX, mouseY, useFinalPosition) {
-    const {y: start, height: size} = this.getProps(['y', 'height'], useFinalPosition);
-    return inRangeByCoord(mouseY, start, size, this.options.borderWidth);
+  inRange(mouseX, mouseY, axis, useFinalPosition) {
+    return inBoxRange({mouseX, mouseY}, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), axis, this.options.borderWidth);
   }
 
   getCenterPoint(useFinalPosition) {
@@ -111,11 +102,6 @@ BoxAnnotation.descriptors = {
     _fallback: true
   }
 };
-
-function inRangeByCoord(value, start, size, borderWidth) {
-  const hBorderWidth = borderWidth / 2;
-  return value >= start - hBorderWidth && value <= start + size + hBorderWidth;
-}
 
 function calculateX(box, labelSize, position, padding) {
   const {x: start, x2: end, width: size, options} = box;

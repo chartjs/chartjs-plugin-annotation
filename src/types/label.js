@@ -4,20 +4,8 @@ import {Element} from 'chart.js';
 
 export default class LabelAnnotation extends Element {
 
-  inRange(mouseX, mouseY, useFinalPosition) {
-    return inBoxRange(mouseX, mouseY, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), this.options.borderWidth);
-  }
-
-  inXRange(mouseX, mouseY, useFinalPosition) {
-    const {x, width} = this.getProps(['x', 'width'], useFinalPosition);
-    const hBorderWidth = this.options.borderWidth / 2;
-    return mouseX >= x - hBorderWidth && mouseX <= x + width + hBorderWidth;
-  }
-
-  inYRange(mouseX, mouseY, useFinalPosition) {
-    const {y, height} = this.getProps(['y', 'height'], useFinalPosition);
-    const hBorderWidth = this.options.borderWidth / 2;
-    return mouseY >= y - hBorderWidth && mouseY <= y + height + hBorderWidth;
+  inRange(mouseX, mouseY, axis, useFinalPosition) {
+    return inBoxRange({mouseX, mouseY}, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), axis, this.options.borderWidth);
   }
 
   getCenterPoint(useFinalPosition) {
