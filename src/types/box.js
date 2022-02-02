@@ -8,15 +8,13 @@ export default class BoxAnnotation extends Element {
   }
 
   inXRange(mouseX, mouseY, useFinalPosition) {
-    const {x, width} = this.getProps(['x', 'width'], useFinalPosition);
-    const hBorderWidth = this.options.borderWidth / 2;
-    return mouseX >= x - hBorderWidth && mouseX <= x + width + hBorderWidth;
+    const {x: start, width: size} = this.getProps(['x', 'width'], useFinalPosition);
+    return inRangeByCoord(mouseX, start, size, this.options.borderWidth);
   }
 
   inYRange(mouseX, mouseY, useFinalPosition) {
-    const {y, height} = this.getProps(['y', 'height'], useFinalPosition);
-    const hBorderWidth = this.options.borderWidth / 2;
-    return mouseY >= y - hBorderWidth && mouseY <= y + height + hBorderWidth;
+    const {y: start, height: size} = this.getProps(['y', 'height'], useFinalPosition);
+    return inRangeByCoord(mouseY, start, size, this.options.borderWidth);
   }
 
   getCenterPoint(useFinalPosition) {
@@ -113,6 +111,11 @@ BoxAnnotation.descriptors = {
     _fallback: true
   }
 };
+
+function inRangeByCoord(value, start, size, borderWidth) {
+  const hBorderWidth = borderWidth / 2;
+  return value >= start - hBorderWidth && value <= start + size + hBorderWidth;
+}
 
 function calculateX(box, labelSize, position, padding) {
   const {x: start, x2: end, width: size, options} = box;
