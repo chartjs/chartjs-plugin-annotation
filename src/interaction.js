@@ -16,7 +16,7 @@ const interaction = {
      * Nearest mode returns the element closest to the event position
      * @param {Object} state - the state of the plugin
      * @param {ChartEvent} event - the event we are find things at
-     * @param {options} options - interaction options to use
+     * @param {Object} options - interaction options to use
      * @return {Element[]} - elements that are found (only 1 element)
      */
     nearest(state, event, options) {
@@ -29,7 +29,7 @@ const interaction = {
  * Returns all elements that hit test based on the event position
  * @param {Object} state - the state of the plugin
  * @param {ChartEvent} event - the event we are find things at
- * @param {options} options - interaction options to use
+ * @param {Object} options - interaction options to use
  * @return {Element[]} - elements that are found
  */
 export function getElements(state, event, options) {
@@ -58,14 +58,13 @@ function getPointByAxis(event, center, axis) {
 }
 
 function getNearestItem(state, event, options) {
-  const axis = options.axis || 'xy';
   let minDistance = Number.POSITIVE_INFINITY;
 
   return state.visibleElements
-    .filter((element) => options.intersect ? element.inRange(event.x, event.y) : inRangeByAxis(element, event, axis))
+    .filter((element) => options.intersect ? element.inRange(event.x, event.y) : inRangeByAxis(element, event, options.axis))
     .reduce((nearestItems, element) => {
       const center = element.getCenterPoint();
-      const evenPoint = getPointByAxis(event, center, axis);
+      const evenPoint = getPointByAxis(event, center, options.axis);
       const distance = distanceBetweenPoints(event, evenPoint);
       if (distance < minDistance) {
         nearestItems = [element];

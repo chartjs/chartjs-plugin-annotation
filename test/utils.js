@@ -74,6 +74,12 @@ export const interactionData = [{
         true: [1, 2, 2, 1, 0, 0],
         false: [1, 2, 2, 1, 0, 0]
       }
+    },
+    r: { // not supported, use xy
+      intersect: {
+        true: [1, 2, 2, 1, 0, 0],
+        false: [1, 2, 2, 1, 0, 0]
+      }
     }
   },
 }, {
@@ -95,6 +101,40 @@ export const interactionData = [{
       intersect: {
         true: [1, 1, 1, 1, 0, 0],
         false: [1, 1, 1, 1, 1, 0]
+      }
+    },
+    r: {
+      intersect: {
+        true: [1, 1, 1, 1, 0, 0],
+        false: [1, 1, 1, 1, 1, 1]
+      }
+    }
+  }
+}, {
+  mode: 'dataset', // not supported, use nearest
+  axes: {
+    xy: {
+      intersect: {
+        true: [1, 1, 1, 1, 0, 0],
+        false: [1, 1, 1, 1, 1, 1]
+      }
+    },
+    x: {
+      intersect: {
+        true: [1, 1, 1, 1, 0, 0],
+        false: [1, 1, 1, 1, 0, 1]
+      }
+    },
+    y: {
+      intersect: {
+        true: [1, 1, 1, 1, 0, 0],
+        false: [1, 1, 1, 1, 1, 0]
+      }
+    },
+    r: {
+      intersect: {
+        true: [1, 1, 1, 1, 0, 0],
+        false: [1, 1, 1, 1, 1, 1]
       }
     }
   }

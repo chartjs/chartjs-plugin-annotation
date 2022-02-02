@@ -13,7 +13,7 @@ export function inPointRange(point, center, radius, borderWidth) {
   if (!point || !center || radius <= 0) {
     return false;
   }
-  const hBorderWidth = borderWidth / 2 || 0;
+  const hBorderWidth = borderWidth / 2;
   return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius + hBorderWidth, 2);
 }
 

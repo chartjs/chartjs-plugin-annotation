@@ -81,7 +81,7 @@ export default class LineAnnotation extends Element {
   }
 
   // TODO: make private in v2
-  isOnLabel(mouseX, mouseY, useFinalPosition) {
+  isOnLabel(mouseX, mouseY, useFinalPosition, axis) {
     if (!this.labelIsVisible(useFinalPosition)) {
       return false;
     }
@@ -90,13 +90,25 @@ export default class LineAnnotation extends Element {
     const hBorderWidth = this.options.label.borderWidth / 2 || 0;
     const w2 = labelWidth / 2 + hBorderWidth;
     const h2 = labelHeight / 2 + hBorderWidth;
-    return x >= labelX - w2 - EPSILON && x <= labelX + w2 + EPSILON &&
-      y >= labelY - h2 - EPSILON && y <= labelY + h2 + EPSILON;
+    const inRangeX = x >= labelX - w2 - EPSILON && x <= labelX + w2 + EPSILON;
+    const inRangeY = y >= labelY - h2 - EPSILON && y <= labelY + h2 + EPSILON;
+    if (axis === 'x') {
+      return inRangeX;
+    } else if (axis === 'y') {
+      return inRangeY;
+    }
+    return inRangeX && inRangeY;
   }
 
-  inRange(mouseX, mouseY, useFinalPosition) {
-    const epsilon = sqr(this.options.borderWidth / 2);
-    return this.intersects(mouseX, mouseY, epsilon, useFinalPosition) || this.isOnLabel(mouseX, mouseY, useFinalPosition);
+  inRange(mouseX, mouseY, axis, useFinalPosition) {
+    const hBorderWidth = this.options.borderWidth / 2;
+    if (axis !== 'x' && axis !== 'y') {
+      const epsilon = sqr(hBorderWidth);
+      return this.intersects(mouseX, mouseY, epsilon, useFinalPosition) || this.isOnLabel(mouseX, mouseY, useFinalPosition);
+    }
+    const {x, y, x2, y2} = this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition);
+    const limit = axis === 'y' ? {start: Math.min(y, y2), end: Math.max(y, y2), value: mouseY} : {start: Math.min(x, x2), end: Math.max(x, x2), value: mouseX};
+    return (limit.value >= limit.start - hBorderWidth && limit.value <= limit.end + hBorderWidth) || this.isOnLabel(mouseX, mouseY, useFinalPosition, axis);
   }
 
   getCenterPoint() {

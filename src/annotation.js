@@ -124,7 +124,7 @@ export default {
     interaction: {
       mode: undefined,
       axis: undefined,
-      intersect: true
+      intersect: undefined
     },
     label: {
       drawTime: null
