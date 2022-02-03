@@ -39,7 +39,7 @@ export function updateElements(chart, state, options, mode) {
     const resolver = annotationOptions.setContext(getContext(chart, element, annotationOptions));
     const properties = element.resolveElementProperties(chart, resolver);
 
-    properties.skip = isNaN(properties.x) || isNaN(properties.y);
+    properties.skip = toSkip(properties);
 
     if ('elements' in properties) {
       updateSubElements(element, properties, resolver, animations);
@@ -60,6 +60,10 @@ export function updateElements(chart, state, options, mode) {
 
     animations.update(element, properties);
   }
+}
+
+function toSkip(properties) {
+  return isNaN(properties.x) || isNaN(properties.y);
 }
 
 function resolveAnimations(chart, animOpts, mode) {
