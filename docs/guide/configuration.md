@@ -12,7 +12,7 @@ The following options are available at the top level. They apply to all annotati
 | `clip` | `boolean` | No | `true` | Are the annotations clipped to the chartArea.
 | `dblClickSpeed` | `number` | Yes | `350` | Time to detect a double click in ms.
 | `drawTime` | `string` | Yes | `'afterDatasetsDraw'` | See [drawTime](options#draw-time).
-| [`interaction`](options#interaction) | `Object` | No | `options.interaction` | To configure which events trigger chart interactions
+| [`interaction`](options#interaction) | `Object` | No | `options.interaction` | To configure which events trigger plugin interactions
 
 :::warning
 
