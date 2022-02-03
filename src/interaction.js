@@ -23,23 +23,23 @@ const interaction = {
       return getNearestItem(state, event, options);
     },
     /**
-	 * x mode returns the elements that hit-test at the current x coordinate
+     * x mode returns the elements that hit-test at the current x coordinate
      * @param {Object} state - the state of the plugin
      * @param {ChartEvent} event - the event we are find things at
      * @param {Object} options - interaction options to use
      * @return {Element[]} - elements that are found
-	 */
+     */
     x(state, event, options) {
       return state.visibleElements.filter((element) => options.intersect ? element.inRange(event.x, event.y) : inRangeByAxis(element, event, 'x'));
     },
 
     /**
-	 * y mode returns the elements that hit-test at the current y coordinate
+     * y mode returns the elements that hit-test at the current y coordinate
      * @param {Object} state - the state of the plugin
      * @param {ChartEvent} event - the event we are find things at
      * @param {Object} options - interaction options to use
      * @return {Element[]} - elements that are found
-	 */
+     */
     y(state, event, options) {
       return state.visibleElements.filter((element) => options.intersect ? element.inRange(event.x, event.y) : inRangeByAxis(element, event, 'y'));
     }
