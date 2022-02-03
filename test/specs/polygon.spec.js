@@ -156,7 +156,7 @@ describe('Polygon annotation', function() {
                 {x: innerEl.x, y: innerEl.y, what: 'click center of inner', el: innerEl},
                 {x: innerEl.x + innerEl.width / 2 + 1, y: innerEl.y, what: 'leave inner', el: innerEl},
                 {x: outerEl.x + outerEl.width / 2 + 1, y: outerEl.y, what: 'leave outer', el: outerEl},
-                {x: outerEl.x + 1, y: outerEl.y - outerEl.height / 2 - 1, what: 'outside of elements', el: outerEl}];
+                {x: outerEl.x - outerEl.width / 2 + 1, y: outerEl.y - outerEl.height / 2 - 1, what: 'outside of elements', el: outerEl}];
 
               for (let i = 0; i < points.length; i++) {
                 const point = points[i];

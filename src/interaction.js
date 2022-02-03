@@ -9,7 +9,7 @@ const interaction = {
      * @return {Element[]} - elements that are found
      */
     point(state, event) {
-      return getIntersectItems(state, event);
+      return state.visibleElements.filter((element) => element.inRange(event.x, event.y));
     },
 
     /**
@@ -22,6 +22,27 @@ const interaction = {
     nearest(state, event, options) {
       return getNearestItem(state, event, options);
     },
+    /**
+	 * x mode returns the elements that hit-test at the current x coordinate
+     * @param {Object} state - the state of the plugin
+     * @param {ChartEvent} event - the event we are find things at
+     * @param {Object} options - interaction options to use
+     * @return {Element[]} - elements that are found
+	 */
+    x(state, event, options) {
+      return state.visibleElements.filter((element) => options.intersect ? element.inRange(event.x, event.y) : inRangeByAxis(element, event, 'x'));
+    },
+
+    /**
+	 * y mode returns the elements that hit-test at the current y coordinate
+     * @param {Object} state - the state of the plugin
+     * @param {ChartEvent} event - the event we are find things at
+     * @param {Object} options - interaction options to use
+     * @return {Element[]} - elements that are found
+	 */
+    y(state, event, options) {
+      return state.visibleElements.filter((element) => options.intersect ? element.inRange(event.x, event.y) : inRangeByAxis(element, event, 'y'));
+    }
   }
 };
 
@@ -35,10 +56,6 @@ const interaction = {
 export function getElements(state, event, options) {
   const mode = interaction.modes[options.mode] || interaction.modes.nearest;
   return mode(state, event, options);
-}
-
-function getIntersectItems(state, event) {
-  return state.visibleElements.filter((element) => element.inRange(event.x, event.y));
 }
 
 function inRangeByAxis(element, event, axis) {

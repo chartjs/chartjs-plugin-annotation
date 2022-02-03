@@ -8,7 +8,7 @@ export const hooks = clickHooks.concat(moveHooks);
 export function updateListeners(chart, state, options) {
   state.listened = false;
   state.moveListened = false;
-  state._getElements = getElements;
+  state._getElements = getElements; // for testing
 
   hooks.forEach(hook => {
     if (typeof options[hook] === 'function') {

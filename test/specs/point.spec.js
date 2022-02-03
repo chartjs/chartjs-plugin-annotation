@@ -111,7 +111,7 @@ describe('Point annotation', function() {
               {x: innerEl.x, y: innerEl.y, what: 'click center of inner'},
               {x: innerEl.x + innerEl.width / 2 + 1, y: innerEl.y, what: 'leave inner'},
               {x: outerEl.x + outerEl.width / 2 + 1, y: outerEl.y, what: 'leave outer'},
-              {x: outerEl.x + 1, y: outerEl.y - outerEl.height / 2 - 1, what: 'outside of elements'}];
+              {x: outerEl.x - outerEl.width / 2 + 1, y: outerEl.y - outerEl.height / 2 - 1, what: 'outside of elements'}];
 
             for (let i = 0; i < points.length; i++) {
               const point = points[i];

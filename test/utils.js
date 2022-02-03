@@ -103,10 +103,30 @@ export const interactionData = [{
         false: [1, 1, 1, 1, 1, 0]
       }
     },
-    r: {
+    r: { // not supported, use xy
       intersect: {
         true: [1, 1, 1, 1, 0, 0],
         false: [1, 1, 1, 1, 1, 1]
+      }
+    }
+  }
+}, {
+  mode: 'x',
+  axes: {
+    x: {
+      intersect: {
+        true: [1, 2, 2, 1, 0, 0],
+        false: [1, 2, 2, 1, 0, 1]
+      }
+    }
+  }
+}, {
+  mode: 'y',
+  axes: {
+    y: {
+      intersect: {
+        true: [1, 2, 2, 1, 0, 0],
+        false: [2, 2, 2, 2, 2, 0]
       }
     }
   }
@@ -131,7 +151,7 @@ export const interactionData = [{
         false: [1, 1, 1, 1, 1, 0]
       }
     },
-    r: {
+    r: { // not supported, use xy
       intersect: {
         true: [1, 1, 1, 1, 0, 0],
         false: [1, 1, 1, 1, 1, 1]
