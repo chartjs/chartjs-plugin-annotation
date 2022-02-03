@@ -156,8 +156,8 @@ interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationPoin
 }
 
 export interface AnnotationPluginOptions extends AnnotationEvents {
-  annotations: AnnotationOptions[] | Record<string, AnnotationOptions>,
   animations?: Record<string, unknown>,
+  annotations: AnnotationOptions[] | Record<string, AnnotationOptions>,
   clip?: boolean,
   dblClickSpeed?: Scriptable<number, PartialEventContext>,
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
