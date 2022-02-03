@@ -110,19 +110,19 @@ describe('Ellipse annotation', function() {
             [true, false].forEach(function(intersect) {
               interactionOpts.intersect = intersect;
               const elementsCounts = interaction.axes[axis].intersect[intersect];
-              const points = [{x: outerEl.x, y: outerEl.y + outerEl.height / 2, what: 'enter outer', el: outerEl},
-                {x: innerEl.x, y: innerEl.y + innerEl.height / 2, what: 'enter inner', el: innerEl},
-                {x: innerEl.x + innerEl.width / 2, y: innerEl.y + innerEl.height / 2, what: 'click center of inner', el: innerEl},
-                {x: innerEl.x2 + 1, y: innerEl.y2 - innerEl.height / 2, what: 'leave inner', el: innerEl},
-                {x: outerEl.x2 + 1, y: outerEl.y2 - outerEl.height / 2, what: 'leave outer', el: outerEl},
-                {x: outerEl.x + 1, y: outerEl.y - 1, what: 'outside of elements', el: outerEl}];
+              const points = [{x: outerEl.x, y: outerEl.y + outerEl.height / 2, el: outerEl},
+                {x: innerEl.x, y: innerEl.y + innerEl.height / 2, el: innerEl},
+                {x: innerEl.x + innerEl.width / 2, y: innerEl.y + innerEl.height / 2, el: innerEl},
+                {x: innerEl.x2 + 1, y: innerEl.y2 - innerEl.height / 2, el: innerEl},
+                {x: outerEl.x2 + 1, y: outerEl.y2 - outerEl.height / 2, el: outerEl},
+                {x: outerEl.x + 1, y: outerEl.y - 1, el: outerEl}];
 
               for (let i = 0; i < points.length; i++) {
                 const point = points[i];
                 const elementsCount = elementsCounts[i];
                 const {x, y} = rotated(point, point.el.getCenterPoint(), rotation / 180 * Math.PI);
                 const elements = state._getElements(state, {x, y}, interactionOpts);
-                expect(elements.length).withContext(`with rotation: ${rotation}, interaction mode: ${mode}, axis ${axis}, intersect ${intersect}, ${point.what}`).toEqual(elementsCount);
+                expect(elements.length).withContext(`with rotation ${rotation}, interaction mode ${mode}, axis ${axis}, intersect ${intersect}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}`).toEqual(elementsCount);
               }
             });
           }

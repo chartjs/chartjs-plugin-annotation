@@ -9,7 +9,7 @@ const interaction = {
      * @return {Element[]} - elements that are found
      */
     point(state, event) {
-      return state.visibleElements.filter((element) => element.inRange(event.x, event.y));
+      return filterElements(state, event, {intersect: true});
     },
 
     /**
@@ -30,7 +30,7 @@ const interaction = {
      * @return {Element[]} - elements that are found
      */
     x(state, event, options) {
-      return state.visibleElements.filter((element) => options.intersect ? element.inRange(event.x, event.y) : inRangeByAxis(element, event, 'x'));
+      return filterElements(state, event, {intersect: options.intersect, axis: 'x'});
     },
 
     /**
@@ -41,7 +41,7 @@ const interaction = {
      * @return {Element[]} - elements that are found
      */
     y(state, event, options) {
-      return state.visibleElements.filter((element) => options.intersect ? element.inRange(event.x, event.y) : inRangeByAxis(element, event, 'y'));
+      return filterElements(state, event, {intersect: options.intersect, axis: 'y'});
     }
   }
 };
@@ -74,11 +74,14 @@ function getPointByAxis(event, center, axis) {
   return center;
 }
 
+function filterElements(state, event, options) {
+  return state.visibleElements.filter((element) => options.intersect ? element.inRange(event.x, event.y) : inRangeByAxis(element, event, options.axis));
+}
+
 function getNearestItem(state, event, options) {
   let minDistance = Number.POSITIVE_INFINITY;
 
-  return state.visibleElements
-    .filter((element) => options.intersect ? element.inRange(event.x, event.y) : inRangeByAxis(element, event, options.axis))
+  return filterElements(state, event, options)
     .reduce((nearestItems, element) => {
       const center = element.getCenterPoint();
       const evenPoint = getPointByAxis(event, center, options.axis);

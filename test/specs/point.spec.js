@@ -106,18 +106,18 @@ describe('Point annotation', function() {
           [true, false].forEach(function(intersect) {
             interactionOpts.intersect = intersect;
             const elementsCounts = interaction.axes[axis].intersect[intersect];
-            const points = [{x: outerEl.x - outerEl.width / 2, y: outerEl.y, what: 'enter outer'},
-              {x: innerEl.x - innerEl.width / 2, y: innerEl.y, what: 'enter inner'},
-              {x: innerEl.x, y: innerEl.y, what: 'click center of inner'},
-              {x: innerEl.x + innerEl.width / 2 + 1, y: innerEl.y, what: 'leave inner'},
-              {x: outerEl.x + outerEl.width / 2 + 1, y: outerEl.y, what: 'leave outer'},
-              {x: outerEl.x - outerEl.width / 2 + 1, y: outerEl.y - outerEl.height / 2 - 1, what: 'outside of elements'}];
+            const points = [{x: outerEl.x - outerEl.width / 2, y: outerEl.y},
+              {x: innerEl.x - innerEl.width / 2, y: innerEl.y},
+              {x: innerEl.x, y: innerEl.y},
+              {x: innerEl.x + innerEl.width / 2 + 1, y: innerEl.y},
+              {x: outerEl.x + outerEl.width / 2 + 1, y: outerEl.y},
+              {x: outerEl.x - outerEl.width / 2 + 1, y: outerEl.y - outerEl.height / 2 - 1}];
 
             for (let i = 0; i < points.length; i++) {
               const point = points[i];
               const elementsCount = elementsCounts[i];
               const elements = state._getElements(state, point, interactionOpts);
-              expect(elements.length).withContext(`with interaction mode: ${mode}, axis ${axis}, intersect ${intersect}, ${point.what}`).toEqual(elementsCount);
+              expect(elements.length).withContext(`with interaction mode ${mode}, axis ${axis}, intersect ${intersect}, {x: ${point.x.toFixed(1)}, y: ${point.y.toFixed(1)}`).toEqual(elementsCount);
             }
           });
         }
