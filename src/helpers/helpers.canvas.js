@@ -23,7 +23,6 @@ export function translate(ctx, element, rotation) {
   }
 }
 
-
 /**
  * Apply border options to the canvas context before drawing a shape
  * @param {CanvasRenderingContext2D} ctx - chart canvas context
