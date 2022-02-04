@@ -14,40 +14,41 @@ export default class BoxAnnotation extends Element {
 
   draw(ctx) {
     const center = this.getCenterPoint();
-    const {x, y, width, height} = translateBox(this);
     const rotation = this.options.rotation;
     ctx.save();
-    ctx.translate(center.x, center.y);
     if (rotation) {
+      ctx.translate(center.x, center.y);
       ctx.rotate(toRadians(rotation));
+      ctx.translate(-center.x, -center.y);
     }
-    drawBox(ctx, {x, y, width, height}, this.options);
+    drawBox(ctx, this, this.options);
     ctx.restore();
   }
 
   drawLabel(ctx) {
+    const {x, y, width, height, options} = this;
     const center = this.getCenterPoint();
-    const box = translateBox(this);
-    const {label, borderWidth, rotation} = this.options;
+    const {label, borderWidth, rotation} = options;
     const halfBorder = borderWidth / 2;
     const position = toPosition(label.position);
     const padding = toPadding(label.padding);
     const labelSize = measureLabelSize(ctx, label);
     const labelRect = {
-      x: calculateX(box, labelSize, position, padding),
-      y: calculateY(box, labelSize, position, padding),
+      x: calculateX(this, labelSize, position, padding),
+      y: calculateY(this, labelSize, position, padding),
       width: labelSize.width,
       height: labelSize.height
     };
 
     ctx.save();
-    ctx.translate(center.x, center.y);
     if (rotation) {
+      ctx.translate(center.x, center.y);
       ctx.rotate(toRadians(rotation));
+      ctx.translate(-center.x, -center.y);
     }
     ctx.beginPath();
-    ctx.rect(box.x + halfBorder + padding.left, box.y + halfBorder + padding.top,
-      box.width - borderWidth - padding.width, box.height - borderWidth - padding.height);
+    ctx.rect(x + halfBorder + padding.left, y + halfBorder + padding.top,
+      width - borderWidth - padding.width, height - borderWidth - padding.height);
     ctx.clip();
     drawLabel(ctx, labelRect, label);
     ctx.restore();
@@ -115,19 +116,6 @@ BoxAnnotation.descriptors = {
     _fallback: true
   }
 };
-
-function translateBox(box) {
-  const {width, height, options} = box;
-  return {
-    x: -width / 2,
-    y: -height / 2,
-    x2: width / 2,
-    y2: height / 2,
-    width,
-    height,
-    options
-  };
-}
 
 function calculateX(box, labelSize, position, padding) {
   const {x: start, x2: end, width: size, options} = box;

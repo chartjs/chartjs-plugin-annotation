@@ -1,19 +1,5 @@
-function translateBox(box) {
-  const {width, height} = box;
-  return {
-    x: -width / 2,
-    y: -height / 2,
-    x2: width / 2,
-    y2: height / 2,
-    width,
-    height
-  };
-}
-
 function gradient({chart: {ctx}, element}) {
-  // due to rotation
-  const {x, x2, y, y2} = translateBox(element);
-  const g = ctx.createLinearGradient(x, y, x2, y2);
+  const g = ctx.createLinearGradient(element.x, element.y, element.x2, element.y2);
   g.addColorStop(0, 'red');
   g.addColorStop(1, 'black');
   return g;
