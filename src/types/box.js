@@ -1,10 +1,11 @@
 import {Element} from 'chart.js';
-import {toPadding} from 'chart.js/helpers';
-import {drawBox, drawLabel, getRelativePosition, measureLabelSize, getRectCenterPoint, getChartRect, toPosition, inBoxRange} from '../helpers';
+import {toPadding, toRadians} from 'chart.js/helpers';
+import {drawBox, drawLabel, getRelativePosition, measureLabelSize, getRectCenterPoint, getChartRect, toPosition, inBoxRange, rotated} from '../helpers';
 
 export default class BoxAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
-    return inBoxRange(mouseX, mouseY, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), this.options.borderWidth);
+    const {x, y} = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.options.rotation));
+    return inBoxRange(x, y, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), this.options.borderWidth);
   }
 
   getCenterPoint(useFinalPosition) {
@@ -12,29 +13,41 @@ export default class BoxAnnotation extends Element {
   }
 
   draw(ctx) {
+    const center = this.getCenterPoint();
+    const {x, y, width, height} = translateBox(this);
+    const rotation = this.options.rotation;
     ctx.save();
-    drawBox(ctx, this, this.options);
+    ctx.translate(center.x, center.y);
+    if (rotation) {
+      ctx.rotate(toRadians(rotation));
+    }
+    drawBox(ctx, {x, y, width, height}, this.options);
     ctx.restore();
   }
 
   drawLabel(ctx) {
-    const {x, y, width, height, options} = this;
-    const {label, borderWidth} = options;
+    const center = this.getCenterPoint();
+    const box = translateBox(this);
+    const {label, borderWidth, rotation} = this.options;
     const halfBorder = borderWidth / 2;
     const position = toPosition(label.position);
     const padding = toPadding(label.padding);
     const labelSize = measureLabelSize(ctx, label);
     const labelRect = {
-      x: calculateX(this, labelSize, position, padding),
-      y: calculateY(this, labelSize, position, padding),
+      x: calculateX(box, labelSize, position, padding),
+      y: calculateY(box, labelSize, position, padding),
       width: labelSize.width,
       height: labelSize.height
     };
 
     ctx.save();
+    ctx.translate(center.x, center.y);
+    if (rotation) {
+      ctx.rotate(toRadians(rotation));
+    }
     ctx.beginPath();
-    ctx.rect(x + halfBorder + padding.left, y + halfBorder + padding.top,
-      width - borderWidth - padding.width, height - borderWidth - padding.height);
+    ctx.rect(box.x + halfBorder + padding.left, box.y + halfBorder + padding.top,
+      box.width - borderWidth - padding.width, box.height - borderWidth - padding.height);
     ctx.clip();
     drawLabel(ctx, labelRect, label);
     ctx.restore();
@@ -80,6 +93,7 @@ BoxAnnotation.defaults = {
     yAdjust: 0,
     width: undefined
   },
+  rotation: 0,
   shadowBlur: 0,
   shadowOffsetX: 0,
   shadowOffsetY: 0,
@@ -101,6 +115,19 @@ BoxAnnotation.descriptors = {
     _fallback: true
   }
 };
+
+function translateBox(box) {
+  const {width, height, options} = box;
+  return {
+    x: -width / 2,
+    y: -height / 2,
+    x2: width / 2,
+    y2: height / 2,
+    width,
+    height,
+    options
+  };
+}
 
 function calculateX(box, labelSize, position, padding) {
   const {x: start, x2: end, width: size, options} = box;

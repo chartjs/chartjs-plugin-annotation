@@ -65,6 +65,7 @@ The following options are available for box annotations.
 | [`display`](#general) | `boolean` | Yes | `true`
 | [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
 | [`label`](#label) | `object` | Yes |
+| [`rotation`](#general) | `number`| Yes | `0`
 | [`shadowBlur`](#styling) | `number` | Yes | `0`
 | [`shadowOffsetX`](#styling) | `number` | Yes | `0`
 | [`shadowOffsetY`](#styling) | `number` | Yes | `0`
@@ -84,6 +85,7 @@ If one of the axes does not match an axis in the chart, the box will take the en
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
 | `display` | Whether or not this annotation is visible.
 | `drawTime` | See [drawTime](../options#draw-time).
+| `rotation` | Rotatation of the ellipse in degrees, default is 0.
 | `xMax` | Right edge of the box in units along the x axis.
 | `xMin` | Left edge of the box in units along the x axis.
 | `xScaleID` | ID of the X scale to bind onto, default is 'x'.
