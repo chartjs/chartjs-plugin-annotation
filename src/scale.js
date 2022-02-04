@@ -29,10 +29,23 @@ function scaleLimitDefined(scaleOptions, limit, suggestedLimit) {
 
 function verifyScaleIDs(annotation, scales) {
   for (const key of ['scaleID', 'xScaleID', 'yScaleID']) {
-    if (annotation[key] && !scales[annotation[key]]) {
+    if (annotation[key] && !scales[annotation[key]] && verifyProperties(annotation, key)) {
       console.warn(`No scale found with id '${annotation[key]}' for annotation '${annotation.id}'`);
     }
   }
+}
+
+function verifyProperties(annotation, key) {
+  if (key === 'scaleID') {
+    return true;
+  }
+  const axis = key.charAt(0);
+  for (const prop of ['Min', 'Max', 'Value']) {
+    if (defined(annotation[axis + prop])) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function getScaleLimits(scale, annotations) {

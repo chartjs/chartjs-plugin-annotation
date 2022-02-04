@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, toRadians} from 'chart.js/helpers';
-import {EPSILON, getRectCenterPoint, getChartRect, setBorderStyle, setShadowStyle, rotated} from '../helpers';
+import {EPSILON, getRectCenterPoint, getChartRect, setBorderStyle, setShadowStyle, rotated, translate} from '../helpers';
 
 export default class EllipseAnnotation extends Element {
 
@@ -26,16 +26,12 @@ export default class EllipseAnnotation extends Element {
     const center = this.getCenterPoint();
 
     ctx.save();
-
-    ctx.translate(center.x, center.y);
-    if (options.rotation) {
-      ctx.rotate(toRadians(options.rotation));
-    }
+    translate(ctx, this, options.rotation);
     setShadowStyle(ctx, this.options);
     ctx.beginPath();
     ctx.fillStyle = options.backgroundColor;
     const stroke = setBorderStyle(ctx, options);
-    ctx.ellipse(0, 0, height / 2, width / 2, PI / 2, 0, 2 * PI);
+    ctx.ellipse(center.x, center.y, height / 2, width / 2, PI / 2, 0, 2 * PI);
     ctx.fill();
     if (stroke) {
       ctx.shadowColor = options.borderShadowColor;
