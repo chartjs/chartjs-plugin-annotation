@@ -1,4 +1,4 @@
-const defaultEpsilon = 0.001;
+export const EPSILON = 0.001;
 
 export const clamp = (x, from, to) => Math.min(to, Math.max(from, x));
 
@@ -19,10 +19,10 @@ export function inPointRange(point, center, radius, borderWidth) {
 
 export function inBoxRange(mouseX, mouseY, {x, y, width, height}, borderWidth) {
   const hBorderWidth = borderWidth / 2 || 0;
-  return mouseX >= x - hBorderWidth - defaultEpsilon &&
-         mouseX <= x + width + hBorderWidth + defaultEpsilon &&
-         mouseY >= y - hBorderWidth - defaultEpsilon &&
-         mouseY <= y + height + hBorderWidth + defaultEpsilon;
+  return mouseX >= x - hBorderWidth - EPSILON &&
+         mouseX <= x + width + hBorderWidth + EPSILON &&
+         mouseY >= y - hBorderWidth - EPSILON &&
+         mouseY <= y + height + hBorderWidth + EPSILON;
 }
 
 export function getElementCenterPoint(element, useFinalPosition) {
