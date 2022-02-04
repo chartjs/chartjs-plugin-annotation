@@ -1,4 +1,4 @@
-import {addRoundedRectPath, isArray, toFont, toTRBLCorners, valueOrDefault} from 'chart.js/helpers';
+import {addRoundedRectPath, isArray, toFont, toTRBLCorners, valueOrDefault, toRadians} from 'chart.js/helpers';
 import {clampAll} from './helpers.core';
 import {calculateTextAlignment, getSize} from './helpers.options';
 
@@ -7,6 +7,22 @@ const widthCache = new Map();
 export function isImageOrCanvas(content) {
   return content instanceof Image || content instanceof HTMLCanvasElement;
 }
+
+/**
+ * Set the translation on the canvas if the rotation must be applied.
+ * @param {CanvasRenderingContext2D} ctx - chart canvas context
+ * @param {Element} element - annotation element to use for applying the translation
+ * @param {number} rotation - rotation (in degrees) to apply
+ */
+export function translate(ctx, element, rotation) {
+  if (rotation) {
+    const center = element.getCenterPoint();
+    ctx.translate(center.x, center.y);
+    ctx.rotate(toRadians(rotation));
+    ctx.translate(-center.x, -center.y);
+  }
+}
+
 
 /**
  * Apply border options to the canvas context before drawing a shape

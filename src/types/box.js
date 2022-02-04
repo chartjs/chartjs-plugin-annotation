@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {toPadding, toRadians} from 'chart.js/helpers';
-import {drawBox, drawLabel, getRelativePosition, measureLabelSize, getRectCenterPoint, getChartRect, toPosition, inBoxRange, rotated} from '../helpers';
+import {drawBox, drawLabel, getRelativePosition, measureLabelSize, getRectCenterPoint, getChartRect, toPosition, inBoxRange, rotated, translate} from '../helpers';
 
 export default class BoxAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
@@ -106,15 +106,6 @@ BoxAnnotation.descriptors = {
     _fallback: true
   }
 };
-
-function translate(ctx, box, rotation) {
-  if (rotation) {
-    const center = box.getCenterPoint();
-    ctx.translate(center.x, center.y);
-    ctx.rotate(toRadians(rotation));
-    ctx.translate(-center.x, -center.y);
-  }
-}
 
 function calculateX(box, labelSize, position, padding) {
   const {x: start, x2: end, width: size, options} = box;
