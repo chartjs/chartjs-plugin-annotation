@@ -13,21 +13,15 @@ export default class BoxAnnotation extends Element {
   }
 
   draw(ctx) {
-    const center = this.getCenterPoint();
     const rotation = this.options.rotation;
     ctx.save();
-    if (rotation) {
-      ctx.translate(center.x, center.y);
-      ctx.rotate(toRadians(rotation));
-      ctx.translate(-center.x, -center.y);
-    }
+    translate(ctx, this, rotation);
     drawBox(ctx, this, this.options);
     ctx.restore();
   }
 
   drawLabel(ctx) {
     const {x, y, width, height, options} = this;
-    const center = this.getCenterPoint();
     const {label, borderWidth, rotation} = options;
     const halfBorder = borderWidth / 2;
     const position = toPosition(label.position);
@@ -41,11 +35,7 @@ export default class BoxAnnotation extends Element {
     };
 
     ctx.save();
-    if (rotation) {
-      ctx.translate(center.x, center.y);
-      ctx.rotate(toRadians(rotation));
-      ctx.translate(-center.x, -center.y);
-    }
+    translate(ctx, this, rotation);
     ctx.beginPath();
     ctx.rect(x + halfBorder + padding.left, y + halfBorder + padding.top,
       width - borderWidth - padding.width, height - borderWidth - padding.height);
@@ -116,6 +106,15 @@ BoxAnnotation.descriptors = {
     _fallback: true
   }
 };
+
+function translate(ctx, box, rotation) {
+  if (rotation) {
+    const center = box.getCenterPoint();
+    ctx.translate(center.x, center.y);
+    ctx.rotate(toRadians(rotation));
+    ctx.translate(-center.x, -center.y);
+  }
+}
 
 function calculateX(box, labelSize, position, padding) {
   const {x: start, x2: end, width: size, options} = box;
