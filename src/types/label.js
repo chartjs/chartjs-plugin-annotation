@@ -1,5 +1,5 @@
 import {drawBox, drawLabel, measureLabelSize, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, getChartRect, getRelativePosition} from '../helpers';
-import {color, toPadding} from 'chart.js/helpers';
+import {toPadding} from 'chart.js/helpers';
 import {Element} from 'chart.js';
 
 export default class LabelAnnotation extends Element {
@@ -18,9 +18,7 @@ export default class LabelAnnotation extends Element {
     }
     const {labelX, labelY, labelWidth, labelHeight, options} = this;
     drawCallout(ctx, this);
-    if (this.boxVisible) {
-      drawBox(ctx, this, options);
-    }
+    drawBox(ctx, this, options);
     drawLabel(ctx, {x: labelX, y: labelY, width: labelWidth, height: labelHeight}, options);
   }
 
@@ -30,16 +28,13 @@ export default class LabelAnnotation extends Element {
     const padding = toPadding(options.padding);
     const labelSize = measureLabelSize(chart.ctx, options);
     const boxSize = measureRect(point, labelSize, options, padding);
-    const bgColor = color(options.backgroundColor);
-    const boxVisible = options.borderWidth > 0 || (bgColor && bgColor.valid && bgColor.rgb.a > 0);
-
+    const hBorderWidth = options.borderWidth / 2;
     const properties = {
-      boxVisible,
       pointX: point.x,
       pointY: point.y,
       ...boxSize,
-      labelX: boxSize.x + padding.left + (options.borderWidth / 2),
-      labelY: boxSize.y + padding.top + (options.borderWidth / 2),
+      labelX: boxSize.x + padding.left + hBorderWidth,
+      labelY: boxSize.y + padding.top + hBorderWidth,
       labelWidth: labelSize.width,
       labelHeight: labelSize.height
     };
