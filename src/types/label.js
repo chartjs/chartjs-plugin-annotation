@@ -5,7 +5,8 @@ import {Element} from 'chart.js';
 export default class LabelAnnotation extends Element {
 
   inRange(mouseX, mouseY, useFinalPosition) {
-    return inBoxRange(mouseX, mouseY, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), this.options.borderWidth);
+    const {x, y} = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.options.rotation));
+    return inBoxRange(x, y, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), this.options.borderWidth);
   }
 
   getCenterPoint(useFinalPosition) {
