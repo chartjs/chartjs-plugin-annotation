@@ -202,21 +202,24 @@ function getCalloutSideAdjust(position, options) {
   return side;
 }
 
-function resolveCalloutPosition(element, options, rotation) {
+function resolveCalloutPosition(properties, options, rotation) {
   const position = options.position;
   if (position === 'left' || position === 'right' || position === 'top' || position === 'bottom') {
     return position;
   }
-  return resolveCalloutAutoPosition(element, options, rotation);
+  return resolveCalloutAutoPosition(properties, options, rotation);
 }
 
 const positions = ['left', 'bottom', 'top', 'right'];
 
-function resolveCalloutAutoPosition(element, options, rotation) {
-  const {x, y, width, height, pointX, pointY} = element;
+function resolveCalloutAutoPosition(properties, options, rotation) {
+  const {x, y, width, height, pointX, pointY} = properties;
   const center = {x: x + width / 2, y: y + height / 2};
-  const xPoints = [x, x + width / 2, x + width / 2, x + width];
-  const yPoints = [y + height / 2, y + height, y, y + height / 2];
+  const start = options.start;
+  const xAdjust = getSize(width, start);
+  const yAdjust = getSize(height, start);
+  const xPoints = [x, x + xAdjust, x + xAdjust, x + width];
+  const yPoints = [y + yAdjust, y + height, y, y + yAdjust];
   const result = [];
   for (let index = 0; index < 4; index++) {
     const rotatedPoint = rotated({x: xPoints[index], y: yPoints[index]}, center, toRadians(rotation));
@@ -225,5 +228,5 @@ function resolveCalloutAutoPosition(element, options, rotation) {
       distance: distanceBetweenPoints(rotatedPoint, {x: pointX, y: pointY})
     });
   }
-  return result.sort((a, b) => a.distance - b.distance).slice(0, 1)[0].position;
+  return result.sort((a, b) => a.distance - b.distance)[0].position;
 }
