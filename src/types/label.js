@@ -1,5 +1,5 @@
-import {drawBox, drawLabel, measureLabelSize, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, getChartRect, getRelativePosition} from '../helpers';
-import {toPadding} from 'chart.js/helpers';
+import {drawBox, drawLabel, measureLabelSize, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, getChartRect, getRelativePosition, translate, rotated} from '../helpers';
+import {toPadding, toRadians, distanceBetweenPoints} from 'chart.js/helpers';
 import {Element} from 'chart.js';
 
 export default class LabelAnnotation extends Element {
@@ -17,9 +17,12 @@ export default class LabelAnnotation extends Element {
       return;
     }
     const {labelX, labelY, labelWidth, labelHeight, options} = this;
+    ctx.save();
+    translate(ctx, this, options.rotation);
     drawCallout(ctx, this);
     drawBox(ctx, this, options);
     drawLabel(ctx, {x: labelX, y: labelY, width: labelWidth, height: labelHeight}, options);
+    ctx.restore();
   }
 
   // TODO: make private in v2
@@ -38,7 +41,7 @@ export default class LabelAnnotation extends Element {
       labelWidth: labelSize.width,
       labelHeight: labelSize.height
     };
-    properties.calloutPosition = options.callout.enabled && resolveCalloutPosition(properties, options.callout);
+    properties.calloutPosition = options.callout.enabled && resolveCalloutPosition(properties, options.callout, options.rotation);
     return properties;
   }
 }
@@ -82,6 +85,7 @@ LabelAnnotation.defaults = {
   height: undefined,
   padding: 6,
   position: 'center',
+  rotation: 0,
   shadowBlur: 0,
   shadowOffsetX: 0,
   shadowOffsetY: 0,
@@ -122,7 +126,7 @@ function calculatePosition(start, size, adjust = 0, position) {
 
 function drawCallout(ctx, element) {
   const {pointX, pointY, calloutPosition, options} = element;
-  if (!calloutPosition) {
+  if (element.inRange(pointX, pointY)) {
     return;
   }
   const callout = options.callout;
@@ -141,7 +145,8 @@ function drawCallout(ctx, element) {
   }
   ctx.moveTo(sideStart.x, sideStart.y);
   ctx.lineTo(sideEnd.x, sideEnd.y);
-  ctx.lineTo(pointX, pointY);
+  const rotatedPoint = rotated({x: pointX, y: pointY}, element.getCenterPoint(), toRadians(-options.rotation));
+  ctx.lineTo(rotatedPoint.x, rotatedPoint.y);
   ctx.stroke();
   ctx.restore();
 }
@@ -196,25 +201,28 @@ function getCalloutSideAdjust(position, options) {
   return side;
 }
 
-function resolveCalloutPosition(element, options) {
+function resolveCalloutPosition(element, options, rotation) {
   const position = options.position;
   if (position === 'left' || position === 'right' || position === 'top' || position === 'bottom') {
     return position;
   }
-  return resolveCalloutAutoPosition(element, options);
+  return resolveCalloutAutoPosition(element, options, rotation);
 }
 
-function resolveCalloutAutoPosition(element, options) {
+function resolveCalloutAutoPosition(element, options, rotation) {
   const {x, y, width, height, pointX, pointY} = element;
-  const {margin, side} = options;
-  const adjust = margin + side;
-  if (pointX < (x - adjust)) {
-    return 'left';
-  } else if (pointX > (x + width + adjust)) {
-    return 'right';
-  } else if (pointY < (y - adjust)) {
-    return 'top';
-  } else if (pointY > (y + height + adjust)) {
-    return 'bottom';
+  const center = {x: x + width / 2, y: y + height / 2};
+  const positions = ['left', 'bottom', 'top', 'right'];
+  const xPoints = [x, x + width / 2, x + width / 2, x + width];
+  const yPoints = [y + height / 2, y + height, y, y + height / 2];
+  const result = [];
+  for (let index = 0; index < 4; index++) {
+    const rotatedPoint = rotated({x: xPoints[index], y: yPoints[index]}, center, toRadians(rotation));
+    result.push({
+      position: positions[index],
+      distance: distanceBetweenPoints(rotatedPoint, {x: pointX, y: pointY})
+    });
   }
+  const point = result.sort((a, b) => a.distance - b.distance).slice(0, 1)[0];
+  return point.position;
 }
