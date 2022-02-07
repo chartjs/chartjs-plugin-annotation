@@ -141,7 +141,8 @@ export interface CalloutOptions {
 }
 
 export interface LabelAnnotationOptions extends CoreAnnotationOptions, LabelTypeOptions, AnnotationPointCoordinates {
-  callout?: CalloutOptions;
+  callout?: CalloutOptions,
+  rotation?: Scriptable<number, PartialEventContext>
 }
 
 interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationPointCoordinates {

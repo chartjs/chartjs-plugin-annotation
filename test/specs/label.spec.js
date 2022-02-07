@@ -2,7 +2,7 @@ describe('Label annotation', function() {
   describe('auto', jasmine.fixtures('label'));
 
   const rotated = window.helpers.rotated;
-  
+
   describe('inRange', function() {
     for (const rotation of [0, 45, 90, 135, 180, 225, 270, 315]) {
       const annotation = {
