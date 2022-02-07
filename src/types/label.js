@@ -210,10 +210,11 @@ function resolveCalloutPosition(element, options, rotation) {
   return resolveCalloutAutoPosition(element, options, rotation);
 }
 
+const positions = ['left', 'bottom', 'top', 'right'];
+
 function resolveCalloutAutoPosition(element, options, rotation) {
   const {x, y, width, height, pointX, pointY} = element;
   const center = {x: x + width / 2, y: y + height / 2};
-  const positions = ['left', 'bottom', 'top', 'right'];
   const xPoints = [x, x + width / 2, x + width / 2, x + width];
   const yPoints = [y + height / 2, y + height, y, y + height / 2];
   const result = [];
@@ -224,6 +225,5 @@ function resolveCalloutAutoPosition(element, options, rotation) {
       distance: distanceBetweenPoints(rotatedPoint, {x: pointX, y: pointY})
     });
   }
-  const point = result.sort((a, b) => a.distance - b.distance).slice(0, 1)[0];
-  return point.position;
+  return result.sort((a, b) => a.distance - b.distance).slice(0, 1)[0].position;
 }
