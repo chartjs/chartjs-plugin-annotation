@@ -73,9 +73,7 @@ export function measureLabelSize(ctx, options) {
   if (!widthCache.has(mapKey)) {
     ctx.save();
     ctx.font = font.string;
-    if (options.textStrokeWidth > 0) {
-      ctx.lineWidth = options.textStrokeWidth;
-    }
+    setTextStrokeStyle(ctx, options);
     const count = lines.length;
     let width = 0;
     for (let i = 0; i < count; i++) {
@@ -117,6 +115,13 @@ export function drawBox(ctx, rect, options) {
   ctx.restore();
 }
 
+/**
+ * Draw a label with the size and the styling options.
+ * @param {CanvasRenderingContext2D} ctx - chart canvas context
+ * @param {{x: number, y: number, width: number, height: number}} rect - rect to map teh label
+ * @param {Object} options - options to style the label
+ * @returns {undefined}
+ */
 export function drawLabel(ctx, rect, options) {
   const content = options.content;
   if (isImageOrCanvas(content)) {
@@ -132,12 +137,18 @@ export function drawLabel(ctx, rect, options) {
   ctx.font = font.string;
   ctx.textBaseline = 'middle';
   ctx.textAlign = options.textAlign;
-  if (options.textStrokeWidth > 0) {
-    ctx.lineWidth = options.textStrokeWidth;
-    ctx.strokeStyle = options.textStrokeColor;
+  if (setTextStrokeStyle(ctx, options)) {
     labels.forEach((l, i) => ctx.strokeText(l, x, y + (i * lh)));
   }
   ctx.fillStyle = options.color;
   labels.forEach((l, i) => ctx.fillText(l, x, y + (i * lh)));
   ctx.restore();
+}
+
+function setTextStrokeStyle(ctx, options) {
+  if (options.textStrokeWidth > 0) {
+    ctx.lineWidth = options.textStrokeWidth;
+    ctx.strokeStyle = options.textStrokeColor;
+    return true;
+  }
 }
