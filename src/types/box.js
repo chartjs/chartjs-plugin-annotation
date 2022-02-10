@@ -1,10 +1,11 @@
 import {Element} from 'chart.js';
-import {toPadding} from 'chart.js/helpers';
-import {drawBox, drawLabel, getRelativePosition, measureLabelSize, getRectCenterPoint, getChartRect, toPosition, inBoxRange} from '../helpers';
+import {toPadding, toRadians} from 'chart.js/helpers';
+import {drawBox, drawLabel, getRelativePosition, measureLabelSize, getRectCenterPoint, getChartRect, toPosition, inBoxRange, rotated, translate} from '../helpers';
 
 export default class BoxAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
-    return inBoxRange(mouseX, mouseY, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), this.options.borderWidth);
+    const {x, y} = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.options.rotation));
+    return inBoxRange(x, y, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), this.options.borderWidth);
   }
 
   getCenterPoint(useFinalPosition) {
@@ -12,14 +13,16 @@ export default class BoxAnnotation extends Element {
   }
 
   draw(ctx) {
+    const rotation = this.options.rotation;
     ctx.save();
+    translate(ctx, this, rotation);
     drawBox(ctx, this, this.options);
     ctx.restore();
   }
 
   drawLabel(ctx) {
     const {x, y, width, height, options} = this;
-    const {label, borderWidth} = options;
+    const {label, borderWidth, rotation} = options;
     const halfBorder = borderWidth / 2;
     const position = toPosition(label.position);
     const padding = toPadding(label.padding);
@@ -32,6 +35,7 @@ export default class BoxAnnotation extends Element {
     };
 
     ctx.save();
+    translate(ctx, this, rotation);
     ctx.beginPath();
     ctx.rect(x + halfBorder + padding.left, y + halfBorder + padding.top,
       width - borderWidth - padding.width, height - borderWidth - padding.height);
@@ -80,6 +84,7 @@ BoxAnnotation.defaults = {
     yAdjust: 0,
     width: undefined
   },
+  rotation: 0,
   shadowBlur: 0,
   shadowOffsetX: 0,
   shadowOffsetY: 0,
