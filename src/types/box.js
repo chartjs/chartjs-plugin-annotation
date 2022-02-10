@@ -6,7 +6,7 @@ export default class BoxAnnotation extends Element {
 
   inRange(mouseX, mouseY, axis, useFinalPosition) {
     const {x, y} = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.options.rotation));
-    return inBoxRange(x, y, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), axis, this.options.borderWidth);
+    return inBoxRange({x, y}, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), axis, this.options.borderWidth);
   }
 
   getCenterPoint(useFinalPosition) {
