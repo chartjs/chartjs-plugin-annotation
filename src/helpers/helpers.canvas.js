@@ -68,20 +68,20 @@ export function measureLabelSize(ctx, options) {
     };
   }
   const font = toFont(options.font);
+  const strokeWidth = options.textStrokeWidth;
   const lines = isArray(content) ? content : [content];
-  const mapKey = lines.join() + font.string + options.textStrokeWidth + (ctx._measureText ? '-spriting' : '');
+  const mapKey = lines.join() + font.string + strokeWidth + (ctx._measureText ? '-spriting' : '');
   if (!widthCache.has(mapKey)) {
     ctx.save();
     ctx.font = font.string;
-    setTextStrokeStyle(ctx, options);
     const count = lines.length;
     let width = 0;
     for (let i = 0; i < count; i++) {
       const text = lines[i];
-      width = Math.max(width, ctx.measureText(text).width);
+      width = Math.max(width, ctx.measureText(text).width + strokeWidth);
     }
     ctx.restore();
-    const height = count * font.lineHeight;
+    const height = count * font.lineHeight + strokeWidth;
     widthCache.set(mapKey, {width, height});
   }
   return widthCache.get(mapKey);
@@ -130,9 +130,10 @@ export function drawLabel(ctx, rect, options) {
   }
   const labels = isArray(content) ? content : [content];
   const font = toFont(options.font);
+  const hStrokeWidth = options.textStrokeWidth / 2;
   const lh = font.lineHeight;
   const x = calculateTextAlignment(rect, options);
-  const y = rect.y + (lh / 2);
+  const y = rect.y + (lh / 2) + hStrokeWidth;
   ctx.save();
   ctx.font = font.string;
   ctx.textBaseline = 'middle';
@@ -147,6 +148,9 @@ export function drawLabel(ctx, rect, options) {
 
 function setTextStrokeStyle(ctx, options) {
   if (options.textStrokeWidth > 0) {
+    // https://stackoverflow.com/questions/13627111/drawing-text-with-an-outer-stroke-with-html5s-canvas
+    ctx.lineJoin = 'round';
+    ctx.miterLimit = 2;
     ctx.lineWidth = options.textStrokeWidth;
     ctx.strokeStyle = options.textStrokeColor;
     return true;

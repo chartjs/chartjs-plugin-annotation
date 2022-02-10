@@ -1,5 +1,5 @@
 module.exports = {
-  tolerance: 0.0210,
+  tolerance: 0.0350,
   config: {
     type: 'scatter',
     options: {
@@ -23,8 +23,8 @@ module.exports = {
               xValue: 5,
               yValue: 8,
               borderWidth: 0,
-              content: ['text stroke width 1', 'text stroke color red'],
-              textStrokeWidth: 1,
+              content: ['text stroke width 5', 'text stroke color red'],
+              textStrokeWidth: 5,
               textStrokeColor: 'red',
               font: {
                 size: 40
@@ -35,11 +35,11 @@ module.exports = {
               xValue: 5,
               yValue: 4.5,
               borderWidth: 0,
-              textStrokeWidth: 2,
+              textStrokeWidth: 3,
               color: 'white',
-              content: ['text stroke width 2'],
+              content: 'text stroke width 3',
               font: {
-                size: 40
+                size: 30
               }
             },
             {
@@ -47,7 +47,10 @@ module.exports = {
               xValue: 5,
               yValue: 2,
               borderWidth: 0,
-              content: 'normal',
+              color: '#40E0D0',
+              content: ['text stroke width 10', 'text stroke color turq'],
+              textStrokeWidth: 10,
+              textStrokeColor: 'black',
               font: {
                 size: 40
               }

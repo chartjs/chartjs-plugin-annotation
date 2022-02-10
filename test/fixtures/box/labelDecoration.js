@@ -1,5 +1,5 @@
 module.exports = {
-  tolerance: 0.0210,
+  tolerance: 0.0315,
   config: {
     type: 'scatter',
     options: {
@@ -29,8 +29,8 @@ module.exports = {
               borderWidth: 1,
               label: {
                 enabled: true,
-                content: ['text stroke width 1', 'text stroke color red'],
-                textStrokeWidth: 1,
+                content: ['text stroke width 5', 'text stroke color red'],
+                textStrokeWidth: 5,
                 textStrokeColor: 'red',
                 font: {
                   size: 40
@@ -41,22 +41,18 @@ module.exports = {
               type: 'box',
               xMin: 0.5,
               xMax: 9.5,
-              yMin: 2.5,
+              yMin: 4,
               yMax: 6,
               backgroundColor: '#f5f5f5',
               borderColor: 'black',
               borderWidth: 1,
               label: {
                 enabled: true,
-                textStrokeWidth: 2,
+                textStrokeWidth: 3,
                 color: 'white',
-                content: 'text stroke width 2',
+                content: 'text stroke width 3',
                 font: {
-                  size: 40
-                },
-                position: {
-                  x: 'start',
-                  y: 'start'
+                  size: 30
                 }
               }
             },
@@ -65,19 +61,18 @@ module.exports = {
               xMin: 0.5,
               xMax: 9.5,
               yMin: 0.5,
-              yMax: 1.5,
+              yMax: 3.5,
               backgroundColor: '#f5f5f5',
               borderColor: 'black',
               borderWidth: 1,
               label: {
                 enabled: true,
-                content: 'normal',
+                color: '#40E0D0',
+                content: ['text stroke width 10', 'text stroke color turq'],
+                textStrokeWidth: 10,
+                textStrokeColor: 'black',
                 font: {
                   size: 40
-                },
-                position: {
-                  x: 'end',
-                  y: 'start'
                 }
               }
             }
