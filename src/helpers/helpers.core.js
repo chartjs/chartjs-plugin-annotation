@@ -18,7 +18,7 @@ export function inPointRange(point, center, radius, borderWidth) {
 }
 
 export function inBoxRange(mouseX, mouseY, {x, y, width, height}, borderWidth) {
-  const hBorderWidth = borderWidth / 2 || 0;
+  const hBorderWidth = borderWidth / 2;
   return mouseX >= x - hBorderWidth - EPSILON &&
          mouseX <= x + width + hBorderWidth + EPSILON &&
          mouseY >= y - hBorderWidth - EPSILON &&
