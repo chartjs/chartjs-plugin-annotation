@@ -27,7 +27,6 @@ export function scaleValue(scale, value, fallback) {
  * @param {string} key - annotation plugin scale id option key
  * @returns {string} the unique scale defined in chartjs or the key passed as argument
  */
-
 export function retrieveScaleID(scales, options, key) {
   const scaleID = options[key];
   if (scaleID) {
