@@ -73,6 +73,7 @@ The following options are available for label annotations.
 | [`height`](#general) | `number`\|`string` | Yes | `undefined`
 | [`padding`](#general) | [`Padding`](../options#padding) | Yes | `6`
 | [`position`](#position) | `string`\|`{x: string, y: string}` | Yes | `'center'`
+| [`rotation`](#general) | `number`| Yes | `0`
 | [`shadowBlur`](#styling) | `number` | Yes | `0`
 | [`shadowOffsetX`](#styling) | `number` | Yes | `0`
 | [`shadowOffsetY`](#styling) | `number` | Yes | `0`
@@ -103,6 +104,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | `drawTime` | See [drawTime](../options#draw-time).
 | `height` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
 | `padding` | The padding to add around the text label.
+| `rotation` | Rotation of the label in degrees.
 | `textAlign` | Text alignment of label content when there's more than one line. Possible options are: `'left'`, `'start'`, `'center'`, `'end'`, `'right'`.
 | `width` | Overrides the width of the image or canvas element. Could be set in pixel by a number, or in percentage of current width of image or canvas element by a string. If undefined, uses the width of the image or canvas element. It is used only when the content is an image or canvas element.
 | `xAdjust` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.

@@ -17,10 +17,10 @@ export function inPointRange(point, center, radius, borderWidth) {
   return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius + hBorderWidth, 2);
 }
 
-export function inBoxRange({mouseX, mouseY}, {x, y, width, height}, axis, borderWidth) {
+export function inBoxRange(mouseX, mouseY, {x, y, width, height}, axis, borderWidth) {
   const hBorderWidth = borderWidth / 2;
-  const inRangeX = mouseX >= x - hBorderWidth && mouseX <= x + width + hBorderWidth;
-  const inRangeY = mouseY >= y - hBorderWidth && mouseY <= y + height + hBorderWidth;
+  const inRangeX = mouseX >= x - hBorderWidth - EPSILON && mouseX <= x + width + hBorderWidth + EPSILON;
+  const inRangeY = mouseY >= y - hBorderWidth - EPSILON && mouseY <= y + height + hBorderWidth + EPSILON;
   if (axis === 'x') {
     return inRangeX;
   } else if (axis === 'y') {
