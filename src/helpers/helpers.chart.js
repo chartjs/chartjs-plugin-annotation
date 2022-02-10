@@ -29,7 +29,7 @@ export function scaleValue(scale, value, fallback) {
  */
 export function retrieveScaleID(scales, options, key) {
   const scaleID = options[key];
-  if (scaleID) {
+  if (scaleID || key === 'scaleID') {
     return scaleID;
   }
   const axis = key.charAt(0);

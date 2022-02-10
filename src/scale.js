@@ -30,7 +30,7 @@ function scaleLimitDefined(scaleOptions, limit, suggestedLimit) {
 
 function verifyScaleIDs(annotation, scales) {
   for (const key of ['scaleID', 'xScaleID', 'yScaleID']) {
-    const scaleID = key === 'scaleID' ? annotation[key] : retrieveScaleID(scales, annotation, key);
+    const scaleID = retrieveScaleID(scales, annotation, key);
     if (scaleID && !scales[scaleID] && verifyProperties(annotation, key)) {
       console.warn(`No scale found with id '${scaleID}' for annotation '${annotation.id}'`);
     }
