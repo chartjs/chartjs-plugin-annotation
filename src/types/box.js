@@ -76,6 +76,8 @@ BoxAnnotation.defaults = {
     padding: 6,
     position: 'center',
     textAlign: 'start',
+    textStrokeColor: undefined,
+    textStrokeWidth: 0,
     xAdjust: 0,
     yAdjust: 0,
     width: undefined

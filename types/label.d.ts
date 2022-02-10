@@ -16,6 +16,8 @@ export interface CoreLabelOptions {
    * @default 'center'
    */
   textAlign?: Scriptable<LabelTextAlign, PartialEventContext>,
+  textStrokeColor?: Scriptable<Color, PartialEventContext>,
+  textStrokeWidth?: Scriptable<number, PartialEventContext>,
   /**
    * Adjustment along x-axis (left-right) of label relative to above number (can be negative)
    * For horizontal lines positioned left or right, negative values move

@@ -86,6 +86,8 @@ LabelAnnotation.defaults = {
   shadowOffsetX: 0,
   shadowOffsetY: 0,
   textAlign: 'center',
+  textStrokeColor: undefined,
+  textStrokeWidth: 0,
   width: undefined,
   xAdjust: 0,
   xMax: undefined,

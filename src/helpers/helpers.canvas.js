@@ -69,10 +69,13 @@ export function measureLabelSize(ctx, options) {
   }
   const font = toFont(options.font);
   const lines = isArray(content) ? content : [content];
-  const mapKey = lines.join() + font.string + (ctx._measureText ? '-spriting' : '');
+  const mapKey = lines.join() + font.string + options.textStrokeWidth + (ctx._measureText ? '-spriting' : '');
   if (!widthCache.has(mapKey)) {
     ctx.save();
     ctx.font = font.string;
+    if (options.textStrokeWidth > 0) {
+      ctx.lineWidth = options.textStrokeWidth;
+    }
     const count = lines.length;
     let width = 0;
     for (let i = 0; i < count; i++) {
@@ -125,9 +128,16 @@ export function drawLabel(ctx, rect, options) {
   const lh = font.lineHeight;
   const x = calculateTextAlignment(rect, options);
   const y = rect.y + (lh / 2);
+  ctx.save();
   ctx.font = font.string;
   ctx.textBaseline = 'middle';
   ctx.textAlign = options.textAlign;
+  if (options.textStrokeWidth > 0) {
+    ctx.lineWidth = options.textStrokeWidth;
+    ctx.strokeStyle = options.textStrokeColor;
+    labels.forEach((l, i) => ctx.strokeText(l, x, y + (i * lh)));
+  }
   ctx.fillStyle = options.color;
   labels.forEach((l, i) => ctx.fillText(l, x, y + (i * lh)));
+  ctx.restore();
 }

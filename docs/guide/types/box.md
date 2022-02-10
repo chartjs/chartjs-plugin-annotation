@@ -130,6 +130,8 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `padding` | [`Padding`](../options#padding) | `6` | The padding to add around the text label.
 | [`position`](#position) | `string`\|`{x: string, y: string}` | `'center'` | Anchor position of label in the box.
 | `textAlign` | `string` | `'start'` | Text alignment of label content when there's more than one line. Possible options are: `'left'`, `'start'`, `'center'`, `'end'`, `'right'`.
+| `textStrokeColor` | [`Color`](../options#color) | `undefined` | The color of the stroke around the text.
+| `textStrokeWidth` | `number` | `0` | Stroke width around the text.
 | `width` | `number`\|`string` | `undefined` | Overrides the width of the image or canvas element. Could be set in pixel by a number, or in percentage of current width of image or canvas element by a string. If undefined, uses the width of the image or canvas element. It is used only when the content is an image or canvas element.
 | `xAdjust` | `number` | `0` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
 | `yAdjust` | `number` | `0` | Adjustment along y-axis (top-bottom) of label relative to computed position. Negative values move the label up, positive down.
