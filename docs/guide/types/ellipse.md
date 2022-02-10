@@ -81,7 +81,7 @@ If one of the axes does not match an axis in the chart, the ellipse will take th
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
 | `display` | Whether or not this annotation is visible.
 | `drawTime` | See [drawTime](../options#draw-time).
-| `rotation` | Rotatation of the ellipse in degrees, default is 0.
+| `rotation` | Rotation of the ellipse in degrees, default is 0.
 | `xMax` | Right edge of the ellipse in units along the x axis.
 | `xMin` | Left edge of the ellipse in units along the x axis.
 | `xScaleID` | ID of the X scale to bind onto, default is 'x'.
