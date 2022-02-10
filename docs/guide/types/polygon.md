@@ -98,12 +98,12 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | `xAdjust` | Adjustment along x-axis (left-right) of polygon relative to computed position. Negative values move the polygon left, positive right.
 | `xMax` | Right edge of the box in units along the x axis.
 | `xMin` | Left edge of the box in units along the x axis.
-| `xScaleID` | ID of the X scale to bind onto, default is 'x'.
+| `xScaleID` | ID of the X scale to bind onto. If missing, the plugin will try to use the scale of the chart, configured as `'x'` axis. If more than one scale has been defined in the chart as `'x'` axis, the option is mandatory to select the right scale.
 | `xValue` | X coordinate of the polygon in units along the x axis.
 | `yAdjust` | Adjustment along y-axis (top-bottom) of polygon relative to computed position. Negative values move the polygon up, positive down.
 | `yMax` | Bottom edge of the box in units along the y axis.
 | `yMin` | Top edge of the box in units along the y axis.
-| `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
+| `yScaleID` | ID of the Y scale to bind onto. If missing, the plugin will try to use the scale of the chart, configured as `'y'` axis. If more than one scale has been defined in the chart as `'y'` axis, the option is mandatory to select the right scale.
 | `yValue` | Y coordinate of the polygon in units along the y axis.
 
 ### Styling
