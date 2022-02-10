@@ -53,10 +53,10 @@ EllipseAnnotation.defaults = {
   shadowOffsetY: 0,
   xMax: undefined,
   xMin: undefined,
-  xScaleID: 'x',
+  xScaleID: undefined,
   yMax: undefined,
   yMin: undefined,
-  yScaleID: 'y'
+  yScaleID: undefined
 };
 
 EllipseAnnotation.defaultRoutes = {

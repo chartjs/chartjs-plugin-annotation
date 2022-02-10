@@ -90,12 +90,12 @@ LabelAnnotation.defaults = {
   xAdjust: 0,
   xMax: undefined,
   xMin: undefined,
-  xScaleID: 'x',
+  xScaleID: undefined,
   xValue: undefined,
   yAdjust: 0,
   yMax: undefined,
   yMin: undefined,
-  yScaleID: 'y',
+  yScaleID: undefined,
   yValue: undefined
 };
 
