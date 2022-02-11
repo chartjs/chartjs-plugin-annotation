@@ -149,7 +149,7 @@ export function drawLabel(ctx, rect, options) {
 function setTextStrokeStyle(ctx, options) {
   if (options.textStrokeWidth > 0) {
     // https://stackoverflow.com/questions/13627111/drawing-text-with-an-outer-stroke-with-html5s-canvas
-    ctx.lineJoin = 'round';
+    ctx.lineJoin = options.textStrokeJoinStyle;
     ctx.miterLimit = 2;
     ctx.lineWidth = options.textStrokeWidth;
     ctx.strokeStyle = options.textStrokeColor;

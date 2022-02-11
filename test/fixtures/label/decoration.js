@@ -1,5 +1,5 @@
 module.exports = {
-  tolerance: 0.0350,
+  tolerance: 0.0510,
   config: {
     type: 'scatter',
     options: {
@@ -26,6 +26,7 @@ module.exports = {
               content: ['text stroke width 5', 'text stroke color red'],
               textStrokeWidth: 5,
               textStrokeColor: 'red',
+              textStrokeJoinStyle: 'miter',
               font: {
                 size: 40
               }
@@ -36,8 +37,9 @@ module.exports = {
               yValue: 4.5,
               borderWidth: 0,
               textStrokeWidth: 3,
+              textStrokejoinStyle: 'round',
               color: 'white',
-              content: 'text stroke width 3',
+              content: ['text stroke width 3', 'text stroke join style round'],
               font: {
                 size: 30
               }
