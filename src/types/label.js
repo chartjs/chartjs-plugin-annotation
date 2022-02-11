@@ -127,7 +127,7 @@ function calculatePosition(start, size, adjust = 0, position) {
 
 function drawCallout(ctx, element) {
   const {pointX, pointY, calloutPosition, options} = element;
-  if (element.inRange(pointX, pointY) || !calloutPosition) {
+  if (!calloutPosition || element.inRange(pointX, pointY)) {
     return;
   }
   const callout = options.callout;
