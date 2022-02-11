@@ -44,7 +44,7 @@ export function points(config) {
   return xs.map((x, i) => ({x, y: ys[i]}));
 }
 
-const img = new Image();
+const img = document.createElement('img');
 img.src = 'https://www.chartjs.org/chartjs-plugin-annotation/latest/favicon.png';
 
 export function getImage() {
