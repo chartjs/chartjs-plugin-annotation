@@ -44,13 +44,6 @@ export function points(config) {
   return xs.map((x, i) => ({x, y: ys[i]}));
 }
 
-const img = document.createElement('img');
-img.src = 'https://www.chartjs.org/chartjs-plugin-annotation/latest/favicon.png';
-
-export function getImage() {
-  return img;
-}
-
 export function getSpiral() {
   const canvas = document.createElement('canvas');
   canvas.width = 150;
