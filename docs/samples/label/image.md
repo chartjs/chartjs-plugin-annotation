@@ -1,4 +1,4 @@
-# Using canvas as content
+# Using images as content
 
 ```js chart-editor
 // <block:setup:3>
@@ -19,18 +19,30 @@ const data = {
 // <block:annotation1:1>
 const annotation1 = {
   type: 'label',
-  content: Utils.getHouse,
-  xValue: 9,
-  yValue: 30
+  drawTime: 'afterDraw',
+  content: Utils.getImage,
+  width: 100,
+  height: 100,
+  xValue: 4,
+  yValue: 30,
+  xAdjust: 150,
+  yAdjust: -150,
+  borderWidth: 1,
+  borderDash: [6, 6],
+  callout: {
+    enabled: true,
+    position: 'left'
+  }
 };
 // </block:annotation1>
 
 // <block:annotation2:2>
 const annotation2 = {
-  type: 'label',
-  content: Utils.getSpiral,
-  xValue: 2,
-  yValue: 50
+  type: 'point',
+  drawTime: 'afterDraw',
+  xValue: 4,
+  yValue: 30,
+  radius: 10
 };
 // </block:annotation2>
 
