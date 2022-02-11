@@ -122,6 +122,7 @@ module.exports = {
             'label/basic',
             'label/point',
             'label/callout',
+            'label/canvas',
             'label/lowerUpper',
           ]
         },
