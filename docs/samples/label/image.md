@@ -6,9 +6,6 @@ const DATA_COUNT = 12;
 const MIN = 0;
 const MAX = 100;
 
-const img = new Image();
-img.src = 'https://www.chartjs.org/chartjs-plugin-annotation/latest/favicon.png';
-
 const numberCfg = {count: DATA_COUNT, min: MIN, max: MAX};
 
 const data = {
@@ -23,7 +20,7 @@ const data = {
 const annotation1 = {
   type: 'label',
   drawTime: 'afterDraw',
-  content: img,
+  content: Utils.getImage,
   width: 100,
   height: 100,
   xValue: 4,

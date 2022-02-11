@@ -6,9 +6,6 @@ const DATA_COUNT = 8;
 const MIN = 10;
 const MAX = 100;
 
-const img = new Image();
-img.src = 'https://www.chartjs.org/chartjs-plugin-annotation/latest/favicon.png';
-
 Utils.srand(8);
 
 const labels = [];
@@ -35,7 +32,7 @@ const annotation = {
   value: 50,
   label: {
     enabled: true,
-    content: img,
+    content: Utils.getImage,
     backgroundColor: 'white',
     borderWidth: 3,
     width: '20%',

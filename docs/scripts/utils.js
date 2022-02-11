@@ -44,6 +44,12 @@ export function points(config) {
   return xs.map((x, i) => ({x, y: ys[i]}));
 }
 
+export function getImage() {
+  const img = new Image();
+  img.src = 'https://www.chartjs.org/chartjs-plugin-annotation/latest/favicon.png';
+  return img;
+}
+
 export function getSpiral() {
   const canvas = document.createElement('canvas');
   canvas.width = 150;
@@ -51,8 +57,6 @@ export function getSpiral() {
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
   const ctx = canvas.getContext('2d');
-  ctx.fillStyle = 'transparent';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.moveTo(centerX, centerY);
   ctx.beginPath();
   for (let i = 0; i < 720; i++) {
