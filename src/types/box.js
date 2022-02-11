@@ -77,7 +77,6 @@ BoxAnnotation.defaults = {
     position: 'center',
     textAlign: 'start',
     textStrokeColor: undefined,
-    textStrokeJoinStyle: 'miter',
     textStrokeWidth: 0,
     xAdjust: 0,
     yAdjust: 0,

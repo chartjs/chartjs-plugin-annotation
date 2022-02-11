@@ -78,7 +78,6 @@ The following options are available for label annotations.
 | [`shadowOffsetY`](#styling) | `number` | Yes | `0`
 | [`textAlign`](#general) | `string` | Yes | `'center'`
 | [`textStrokeColor`](#styling) | [`Color`](../options#color) | Yes | `undefined`
-| [`textStrokeJoinStyle`](#styling) | `string` | Yes | `'miter'`
 | [`textStrokeWidth`](#styling) | `number` | Yes | `0`
 | [`width`](#general) | `number`\|`string` | Yes | `undefined`
 | [`xAdjust`](#general) | `number` | Yes | `0`
@@ -138,7 +137,6 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | `shadowOffsetX` | The distance that shadow, of the box where the label is located, will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
 | `shadowOffsetY` | The distance that shadow, of the box where the label is located, will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
 | `textStrokeColor` | The color of the stroke around the text.
-| `textStrokeJoinStyle` | Stroke join style around the text. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
 | `textStrokeWidth` | Stroke width around the text.
 
 ### Position

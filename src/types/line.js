@@ -269,7 +269,6 @@ LineAnnotation.defaults = {
     shadowOffsetY: 0,
     textAlign: 'center',
     textStrokeColor: undefined,
-    textStrokeJoinStyle: 'miter',
     textStrokeWidth: 0,
     width: undefined,
     xAdjust: 0,

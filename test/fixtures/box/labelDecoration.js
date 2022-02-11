@@ -1,5 +1,5 @@
 module.exports = {
-  tolerance: 0.0450,
+  tolerance: 0.0315,
   config: {
     type: 'scatter',
     options: {
@@ -49,9 +49,8 @@ module.exports = {
               label: {
                 enabled: true,
                 textStrokeWidth: 3,
-                textStrokeJoinStyle: 'round',
                 color: 'white',
-                content: ['text stroke width 3', 'text stroke join style round'],
+                content: 'text stroke width 3',
                 font: {
                   size: 30
                 }

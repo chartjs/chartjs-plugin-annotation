@@ -17,7 +17,6 @@ export interface CoreLabelOptions {
    */
   textAlign?: Scriptable<LabelTextAlign, PartialEventContext>,
   textStrokeColor?: Scriptable<Color, PartialEventContext>,
-  textStrokeJoinStyle?: Scriptable<CanvasLineJoin, PartialEventContext>,
   textStrokeWidth?: Scriptable<number, PartialEventContext>,
   /**
    * Adjustment along x-axis (left-right) of label relative to above number (can be negative)
