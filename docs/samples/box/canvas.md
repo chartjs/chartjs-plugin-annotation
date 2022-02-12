@@ -25,7 +25,7 @@ const annotation1 = {
   xMin: 5,
   label: {
     enabled: true,
-    content: Utils.getSpiral,
+    content: Utils.getSpiral(),
     position: {
       x: 'center',
       y: 'start'
