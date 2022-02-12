@@ -43,3 +43,48 @@ export function points(config) {
   const ys = this.numbers(config);
   return xs.map((x, i) => ({x, y: ys[i]}));
 }
+
+export function getImage() {
+  const img = new Image();
+  img.src = 'https://www.chartjs.org/chartjs-plugin-annotation/latest/favicon.png';
+  return img;
+}
+
+export function getSpiral() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 150;
+  canvas.height = 150;
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+  const ctx = canvas.getContext('2d');
+  ctx.moveTo(centerX, centerY);
+  ctx.beginPath();
+  for (let i = 0; i < 720; i++) {
+    const angle = 0.1 * i;
+    const x = centerX + angle * Math.cos(angle);
+    const y = centerX + angle * Math.sin(angle);
+    ctx.lineTo(x, y);
+  }
+  ctx.strokeStyle = "#666";
+  ctx.stroke();
+  return canvas;
+}
+
+export function getHouse() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 230;
+  canvas.height = 210;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#666';
+  ctx.strokeStyle = '#666';
+  ctx.lineWidth = 10;
+  ctx.strokeRect(40, 90, 150, 110);
+  ctx.fillRect(95, 140, 40, 60);
+  ctx.beginPath();
+  ctx.moveTo(15, 90);
+  ctx.lineTo(115, 10);
+  ctx.lineTo(215, 90);
+  ctx.closePath();
+  ctx.stroke();
+  return canvas;
+}
