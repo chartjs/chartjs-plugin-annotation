@@ -43,7 +43,7 @@ const annotation2 = {
   xMin: 10,
   label: {
     enabled: true,
-    content: Utils.getHouse,
+    content: Utils.getHouse(),
     position: {
       x: 'center',
       y: 'end'

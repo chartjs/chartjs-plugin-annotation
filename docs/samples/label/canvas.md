@@ -19,7 +19,7 @@ const data = {
 // <block:annotation1:1>
 const annotation1 = {
   type: 'label',
-  content: Utils.getHouse,
+  content: Utils.getHouse(),
   xValue: 9,
   yValue: 30
 };
@@ -28,7 +28,7 @@ const annotation1 = {
 // <block:annotation2:2>
 const annotation2 = {
   type: 'label',
-  content: Utils.getSpiral,
+  content: Utils.getSpiral(),
   xValue: 2,
   yValue: 50
 };

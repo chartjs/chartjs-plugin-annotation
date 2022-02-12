@@ -32,7 +32,7 @@ const annotation = {
   value: 50,
   label: {
     enabled: true,
-    content: Utils.getImage,
+    content: Utils.getImage(),
     backgroundColor: 'white',
     borderWidth: 3,
     width: '20%',

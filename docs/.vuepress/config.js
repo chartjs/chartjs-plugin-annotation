@@ -170,6 +170,7 @@ module.exports = {
             'charts/line',
           ],
         },
+        'utils',
       ]
     }
   }

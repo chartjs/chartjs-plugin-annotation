@@ -20,7 +20,7 @@ const data = {
 const annotation1 = {
   type: 'label',
   drawTime: 'afterDraw',
-  content: Utils.getImage,
+  content: Utils.getImage(),
   width: 100,
   height: 100,
   xValue: 4,
