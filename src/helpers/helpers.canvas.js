@@ -5,7 +5,7 @@ import {calculateTextAlignment, getSize} from './helpers.options';
 const widthCache = new Map();
 
 export function isImageOrCanvas(content) {
-  return content instanceof Image || content instanceof HTMLCanvasElement;
+  return content && (content.toString() === '[object HTMLCanvasElement]' || content.toString() === '[object HTMLImageElement]');
 }
 
 /**
