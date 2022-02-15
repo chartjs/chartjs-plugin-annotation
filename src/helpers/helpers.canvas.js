@@ -3,11 +3,19 @@ import {clampAll} from './helpers.core';
 import {calculateTextAlignment, getSize} from './helpers.options';
 
 const widthCache = new Map();
-const isDOMSupported = typeof window !== 'undefined' && typeof document !== 'undefined';
 
-export const isImageOrCanvas = isDOMSupported
-  ? (content) => content instanceof Image || content instanceof HTMLCanvasElement
-  : (content) => content instanceof Image;
+/**
+ * Determine if content is an image or a canvas.
+ * @param {*} content
+ * @returns boolean|undefined
+ * @todo move this function to chart.js helpers
+ */
+export function isImageOrCanvas(content) {
+  if (content && typeof content === 'object') {
+    const type = content.toString();
+    return (type === '[object HTMLImageElement]' || type === '[object HTMLCanvasElement]');
+  }
+}
 
 /**
  * Set the translation on the canvas if the rotation must be applied.
