@@ -132,7 +132,7 @@ export function drawLabel(ctx, rect, options) {
   const font = toFont(options.font);
   const lh = font.lineHeight;
   const x = calculateTextAlignment(rect, options);
-  const y = rect.y + (lh / 2) + hStrokeWidth;
+  const y = rect.y + (lh / 2) + options.textStrokeWidth / 2;
   ctx.save();
   ctx.font = font.string;
   ctx.textBaseline = 'middle';
