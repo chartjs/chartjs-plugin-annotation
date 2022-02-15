@@ -4,8 +4,17 @@ import {calculateTextAlignment, getSize} from './helpers.options';
 
 const widthCache = new Map();
 
+/**
+ * Determine if content is an image or a canvas.
+ * @param {*} content
+ * @returns boolean|undefined
+ * @todo move this function to chart.js helpers
+ */
 export function isImageOrCanvas(content) {
-  return content instanceof Image || content instanceof HTMLCanvasElement;
+  if (content && typeof content === 'object') {
+    const type = content.toString();
+    return (type === '[object HTMLImageElement]' || type === '[object HTMLCanvasElement]');
+  }
 }
 
 /**
