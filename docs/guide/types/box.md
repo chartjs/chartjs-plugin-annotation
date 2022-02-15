@@ -131,6 +131,7 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `height` | `number`\|`string` | `undefined` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
 | `padding` | [`Padding`](../options#padding) | `6` | The padding to add around the text label.
 | [`position`](#position) | `string`\|`{x: string, y: string}` | `'center'` | Anchor position of label in the box.
+| `rotation` | `number` | `undefined` | Rotation of label, in degrees. If `undefined`, the box rotation is used.
 | `textAlign` | `string` | `'start'` | Text alignment of label content when there's more than one line. Possible options are: `'left'`, `'start'`, `'center'`, `'end'`, `'right'`.
 | `textStrokeColor` | [`Color`](../options#color) | `undefined` | The color of the stroke around the text.
 | `textStrokeWidth` | `number` | `0` | Stroke width around the text.
