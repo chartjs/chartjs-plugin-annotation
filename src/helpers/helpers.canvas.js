@@ -130,7 +130,6 @@ export function drawLabel(ctx, rect, options) {
   }
   const labels = isArray(content) ? content : [content];
   const font = toFont(options.font);
-  const hStrokeWidth = options.textStrokeWidth / 2;
   const lh = font.lineHeight;
   const x = calculateTextAlignment(rect, options);
   const y = rect.y + (lh / 2) + hStrokeWidth;
