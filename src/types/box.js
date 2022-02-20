@@ -22,7 +22,7 @@ export default class BoxAnnotation extends Element {
 
   drawLabel(ctx) {
     const {x, y, width, height, options} = this;
-    const {label, borderWidth, rotation} = options;
+    const {label, borderWidth} = options;
     const halfBorder = borderWidth / 2;
     const position = toPosition(label.position);
     const padding = toPadding(label.padding);
@@ -35,7 +35,7 @@ export default class BoxAnnotation extends Element {
     };
 
     ctx.save();
-    translate(ctx, this, rotation);
+    translate(ctx, this, label.rotation);
     ctx.beginPath();
     ctx.rect(x + halfBorder + padding.left, y + halfBorder + padding.top,
       width - borderWidth - padding.width, height - borderWidth - padding.height);
@@ -79,6 +79,7 @@ BoxAnnotation.defaults = {
     height: undefined,
     padding: 6,
     position: 'center',
+    rotation: undefined,
     textAlign: 'start',
     textStrokeColor: undefined,
     textStrokeWidth: 0,

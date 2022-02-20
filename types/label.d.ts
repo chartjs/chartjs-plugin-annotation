@@ -117,6 +117,7 @@ export interface BoxLabelOptions extends CoreLabelOptions {
    * @default true
    */
   enabled?: Scriptable<boolean, PartialEventContext>,
+  rotation?: Scriptable<number, PartialEventContext>
 }
 
 export interface LabelTypeOptions extends ContainedLabelOptions {
