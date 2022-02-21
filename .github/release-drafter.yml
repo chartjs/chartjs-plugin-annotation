@@ -20,6 +20,7 @@ categories:
     labels:
       - 'chore'
       - 'performance'
+      - 'dependencies'
 exclude-labels:
   - 'infrastructure'
 change-template: '- #$NUMBER $TITLE'
