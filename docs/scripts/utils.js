@@ -1,3 +1,4 @@
+import {Chart} from 'chart.js';
 import {valueOrDefault} from 'chart.js/helpers';
 
 // Adapted from http://indiegamr.com/generate-repeatable-random-numbers-in-js/
@@ -48,6 +49,42 @@ export function getImage() {
   const img = new Image();
   img.src = 'https://www.chartjs.org/chartjs-plugin-annotation/latest/favicon.png';
   return img;
+}
+
+var pieChart = null;
+
+export function getChart() {
+  if (pieChart) {
+    pieChart.update();
+    return pieChart;
+  }
+  const canvas = document.createElement('canvas');
+  canvas.width = 100;
+  canvas.height = 100;
+  canvas.style.visibility = 'hidden';
+  document.body.appendChild(canvas);
+  pieChart = new Chart(canvas, {
+    type: 'pie',
+    data: {
+      labels: ['Bought', 'Sold', 'Rented'],
+      datasets: [{
+        data: [42, 33, 25],
+        backgroundColor: ['#3366cc', '#dc3912', '#ff9900']
+      }]
+    },
+    options: {
+      responsive: false,
+      animation: false,
+      plugins: {
+        autocolors: false,
+        version: false,
+        legend: false,
+        title: false,
+        subtitle: false
+      }
+    }
+  });
+  return pieChart;
 }
 
 export function getSpiral() {

@@ -126,6 +126,7 @@ module.exports = {
             'label/callout',
             'label/canvas',
             'label/image',
+            'label/innerChart',
             'label/lowerUpper',
           ]
         },
