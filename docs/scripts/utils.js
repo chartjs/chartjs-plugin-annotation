@@ -1,7 +1,8 @@
+import {Chart} from 'chart.js';
 import {valueOrDefault} from 'chart.js/helpers';
 
 // Adapted from http://indiegamr.com/generate-repeatable-random-numbers-in-js/
-var _seed = Date.now();
+let _seed = Date.now();
 
 export function srand(seed) {
   _seed = seed;
@@ -50,6 +51,21 @@ export function getImage() {
   return img;
 }
 
+let pieChart = null;
+
+export function getChart() {
+  if (pieChart) {
+    return pieChart;
+  }
+  const canvas = document.createElement('canvas');
+  canvas.width = 100;
+  canvas.height = 100;
+  canvas.style.visibility = 'hidden';
+  document.body.appendChild(canvas);
+  pieChart = createChart(canvas);
+  return pieChart;
+}
+
 export function getSpiral() {
   const canvas = document.createElement('canvas');
   canvas.width = 150;
@@ -87,4 +103,28 @@ export function getHouse() {
   ctx.closePath();
   ctx.stroke();
   return canvas;
+}
+
+function createChart(canvas) {
+  return new Chart(canvas, {
+    type: 'pie',
+    data: {
+      labels: ['Bought', 'Sold', 'Rented'],
+      datasets: [{
+        data: [42, 33, 25],
+        backgroundColor: ['#3366cc', '#dc3912', '#ff9900']
+      }]
+    },
+    options: {
+      responsive: false,
+      animation: false,
+      plugins: {
+        autocolors: false,
+        version: false,
+        legend: false,
+        title: false,
+        subtitle: false
+      }
+    }
+  });
 }
