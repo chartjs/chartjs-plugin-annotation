@@ -63,27 +63,7 @@ export function getChart() {
   canvas.height = 100;
   canvas.style.visibility = 'hidden';
   document.body.appendChild(canvas);
-  pieChart = new Chart(canvas, {
-    type: 'pie',
-    data: {
-      labels: ['Bought', 'Sold', 'Rented'],
-      datasets: [{
-        data: [42, 33, 25],
-        backgroundColor: ['#3366cc', '#dc3912', '#ff9900']
-      }]
-    },
-    options: {
-      responsive: false,
-      animation: false,
-      plugins: {
-        autocolors: false,
-        version: false,
-        legend: false,
-        title: false,
-        subtitle: false
-      }
-    }
-  });
+  pieChart = createChart(canvas);
   return pieChart;
 }
 
@@ -124,4 +104,28 @@ export function getHouse() {
   ctx.closePath();
   ctx.stroke();
   return canvas;
+}
+
+function createChart(canvas) {
+  return new Chart(canvas, {
+    type: 'pie',
+    data: {
+      labels: ['Bought', 'Sold', 'Rented'],
+      datasets: [{
+        data: [42, 33, 25],
+        backgroundColor: ['#3366cc', '#dc3912', '#ff9900']
+      }]
+    },
+    options: {
+      responsive: false,
+      animation: false,
+      plugins: {
+        autocolors: false,
+        version: false,
+        legend: false,
+        title: false,
+        subtitle: false
+      }
+    }
+  });
 }
