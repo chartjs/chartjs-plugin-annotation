@@ -65,7 +65,7 @@ const annotation2 = {
 // <block:annotation3:3>
 const annotation3 = {
   type: 'label',
-  content: ['Select the data to see', 'clicking the inner chart data'],
+  content: ['Click on a slice of the pie chart', 'to see the data in the main chart'],
   color: 'rgba(0, 0, 0, 0.5)',
   xValue: 3,
   yValue: 150,
