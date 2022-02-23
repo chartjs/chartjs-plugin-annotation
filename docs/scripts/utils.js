@@ -55,7 +55,6 @@ let pieChart = null;
 
 export function getChart() {
   if (pieChart) {
-    pieChart.update();
     return pieChart;
   }
   const canvas = document.createElement('canvas');

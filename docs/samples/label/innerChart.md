@@ -15,14 +15,17 @@ const data = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
   datasets: [{
     data: Utils.numbers(numberCfg),
-    borderColor: innerDataset.backgroundColor[0]
+    borderColor: innerDataset.backgroundColor[0],
+    backgroundColor: 'transparent'
   }, {
     data: Utils.numbers(numberCfg),
     borderColor: innerDataset.backgroundColor[1],
+    backgroundColor: 'transparent',
     hidden: true
   }, {
     data: Utils.numbers(numberCfg),
     borderColor: innerDataset.backgroundColor[2],
+    backgroundColor: 'transparent',
     hidden: true
   }]
 };
@@ -67,7 +70,7 @@ const annotation3 = {
   type: 'label',
   content: ['Click on a slice of the pie chart', 'to see the data in the main chart'],
   color: 'rgba(0, 0, 0, 0.5)',
-  xValue: 3,
+  xValue: 3.2,
   yValue: 150,
 };
 // </block:annotation3>
@@ -85,7 +88,6 @@ const config = {
       }
     },
     plugins: {
-      autocolors: false,
       annotation: {
         annotations: {
           annotation1,
@@ -141,6 +143,10 @@ const actions = [
         dataset.data = dataset.data.map(() => Utils.rand(MIN, MAX));
       });
       chart.update();
+      innerChart.data.datasets.forEach(function(dataset, i) {
+        dataset.data = dataset.data.map(() => Utils.rand(MIN, MAX));
+      });
+      innerChart.update();
     }
   }
 ];
