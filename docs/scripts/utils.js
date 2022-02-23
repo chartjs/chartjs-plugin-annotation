@@ -2,7 +2,7 @@ import {Chart} from 'chart.js';
 import {valueOrDefault} from 'chart.js/helpers';
 
 // Adapted from http://indiegamr.com/generate-repeatable-random-numbers-in-js/
-var _seed = Date.now();
+let _seed = Date.now();
 
 export function srand(seed) {
   _seed = seed;
@@ -51,7 +51,7 @@ export function getImage() {
   return img;
 }
 
-var pieChart = null;
+let pieChart = null;
 
 export function getChart() {
   if (pieChart) {
