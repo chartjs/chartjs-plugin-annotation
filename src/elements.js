@@ -102,7 +102,8 @@ function getOrCreateElement({elements, index}, type, typesMap, initProperties) {
 }
 
 function resolveAnnotationOptions(resolver, typesMap) {
-  const elementClass = typesMap[resolveType(resolver.type, typesMap)];
+  const type = resolveType(resolver.type, typesMap);
+  const elementClass = typesMap[type];
   const result = {};
   result.id = resolver.id;
   result.type = resolver.type;
@@ -110,8 +111,10 @@ function resolveAnnotationOptions(resolver, typesMap) {
   Object.assign(result,
     resolveObj(resolver, elementClass.defaults),
     resolveObj(resolver, elementClass.defaultRoutes || {}));
-  for (const hook of hooks) {
-    result[hook] = resolver[hook];
+  if (annotationTypes[type]) {
+    for (const hook of hooks) {
+      result[hook] = resolver[hook];
+    }
   }
   return result;
 }
