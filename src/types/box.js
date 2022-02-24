@@ -1,7 +1,7 @@
 import {Element} from 'chart.js';
 import {toRadians} from 'chart.js/helpers';
 import {drawBox, getRectCenterPoint, getChartRect, inBoxRange, rotated, translate} from '../helpers';
-import BoxAnnotationLabel from './boxLabel';
+import BoxAnnotationLabel, {resolveElementProperties} from './boxLabel';
 
 export default class BoxAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
@@ -24,11 +24,10 @@ export default class BoxAnnotation extends Element {
   resolveElementProperties(chart, options) {
     const properties = getChartRect(chart, options);
     const {x, y} = properties;
-    const label = new BoxAnnotationLabel();
     properties.elements = [{
       type: 'boxLabel',
       optionScope: 'label',
-      properties: label.resolveElementProperties(chart, properties, options)
+      properties: resolveElementProperties(chart, properties, options)
     }];
     properties.initProperties = {x, y};
     return properties;

@@ -24,19 +24,6 @@ export default class BoxAnnotationLabel extends Element {
     ctx.restore();
   }
 
-  resolveElementProperties(chart, properties, options) {
-    const label = options.label;
-    const position = toPosition(label.position);
-    const padding = toPadding(label.padding);
-    const labelSize = measureLabelSize(chart.ctx, label);
-    return {
-      x: calculateX({properties, options}, labelSize, position, padding),
-      y: calculateY({properties, options}, labelSize, position, padding),
-      width: labelSize.width,
-      height: labelSize.height,
-      options: label
-    };
-  }
 }
 
 BoxAnnotationLabel.defaults = {
@@ -63,6 +50,20 @@ BoxAnnotationLabel.defaults = {
   yAdjust: 0,
   width: undefined
 };
+
+export function resolveElementProperties(chart, properties, options) {
+  const label = options.label;
+  const position = toPosition(label.position);
+  const padding = toPadding(label.padding);
+  const labelSize = measureLabelSize(chart.ctx, label);
+  return {
+    x: calculateX({properties, options}, labelSize, position, padding),
+    y: calculateY({properties, options}, labelSize, position, padding),
+    width: labelSize.width,
+    height: labelSize.height,
+    options: label
+  };
+}
 
 function labelIsVisible(options) {
   return options && options.enabled && options.content;
