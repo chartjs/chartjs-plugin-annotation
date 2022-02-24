@@ -80,6 +80,7 @@ function updateSubElements(mainElement, {elements, initProperties}, resolver, an
     const definition = elements[i];
     const properties = definition.properties;
     const subElement = getOrCreateElement(subElements, i, definition.type, initProperties);
+    subElement.parent = mainElement;
     const subResolver = resolver[definition.optionScope].override(definition);
     properties.options = resolveAnnotationOptions(subResolver);
     animations.update(subElement, properties);

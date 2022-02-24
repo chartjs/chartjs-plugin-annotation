@@ -1,5 +1,6 @@
 import {defaults} from 'chart.js';
 import BoxAnnotation from './box';
+import BoxAnnotationLabel from './boxLabel';
 import LineAnnotation from './line';
 import EllipseAnnotation from './ellipse';
 import LabelAnnotation from './label';
@@ -8,6 +9,7 @@ import PolygonAnnotation from './polygon';
 
 export const annotationTypes = {
   box: BoxAnnotation,
+  boxLabel: BoxAnnotationLabel,
   ellipse: EllipseAnnotation,
   label: LabelAnnotation,
   line: LineAnnotation,

@@ -1,6 +1,7 @@
 import {Element} from 'chart.js';
 import {toPadding, toRadians} from 'chart.js/helpers';
 import {drawBox, drawLabel, getRelativePosition, measureLabelSize, getRectCenterPoint, getChartRect, toPosition, inBoxRange, rotated, translate} from '../helpers';
+import BoxAnnotationLabel from './boxLabel';
 
 export default class BoxAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
@@ -21,6 +22,7 @@ export default class BoxAnnotation extends Element {
   }
 
   drawLabel(ctx) {
+/*
     const {x, y, width, height, options} = this;
     const {label, borderWidth} = options;
     const halfBorder = borderWidth / 2;
@@ -42,10 +44,18 @@ export default class BoxAnnotation extends Element {
     ctx.clip();
     drawLabel(ctx, labelRect, label);
     ctx.restore();
+*/
   }
 
   resolveElementProperties(chart, options) {
-    return getChartRect(chart, options);
+    const properties = getChartRect(chart, options);
+    const label = new BoxAnnotationLabel();
+    properties.elements = [{
+        type: 'boxLabel',
+        optionScope: 'label',
+        properties: label.resolveElementProperties(chart, properties, options)
+      }];
+    return properties;
   }
 }
 
@@ -109,32 +119,3 @@ BoxAnnotation.descriptors = {
     _fallback: true
   }
 };
-
-function calculateX(box, labelSize, position, padding) {
-  const {x: start, x2: end, width: size, options} = box;
-  const {xAdjust: adjust, borderWidth} = options.label;
-  return calculatePosition({start, end, size}, {
-    position: position.x,
-    padding: {start: padding.left, end: padding.right},
-    adjust, borderWidth,
-    size: labelSize.width
-  });
-}
-
-function calculateY(box, labelSize, position, padding) {
-  const {y: start, y2: end, height: size, options} = box;
-  const {yAdjust: adjust, borderWidth} = options.label;
-  return calculatePosition({start, end, size}, {
-    position: position.y,
-    padding: {start: padding.top, end: padding.bottom},
-    adjust, borderWidth,
-    size: labelSize.height
-  });
-}
-
-function calculatePosition(boxOpts, labelOpts) {
-  const {start, end} = boxOpts;
-  const {position, padding: {start: padStart, end: padEnd}, adjust, borderWidth} = labelOpts;
-  const availableSize = end - borderWidth - start - padStart - padEnd - labelOpts.size;
-  return start + borderWidth / 2 + adjust + padStart + getRelativePosition(availableSize, position);
-}
