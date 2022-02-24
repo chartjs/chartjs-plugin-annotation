@@ -19,6 +19,7 @@ export const annotationTypes = {
 
 export {
   BoxAnnotation,
+  BoxAnnotationLabel,
   LineAnnotation,
   EllipseAnnotation,
   LabelAnnotation,

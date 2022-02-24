@@ -1,29 +1,31 @@
 import {Element} from 'chart.js';
-import {toPadding, toRadians} from 'chart.js/helpers';
-import {drawBox, drawLabel, getRelativePosition, measureLabelSize, getRectCenterPoint, getChartRect, toPosition, inBoxRange, rotated, translate} from '../helpers';
+import {toPadding} from 'chart.js/helpers';
+import {drawLabel, getRelativePosition, measureLabelSize, toPosition, translate} from '../helpers';
 
 export default class BoxAnnotationLabel extends Element {
 
   draw(ctx) {
-    const {x, y, width, height, parent, options} = this;
-    const borderWidth = parent.options.borderWidth;
+    const {x, y, width, height, options} = this.mainElement;
+    const label = options.label;
+    if (!labelIsVisible(label)) {
+      return;
+    }
+    const borderWidth = options.borderWidth;
     const halfBorder = borderWidth / 2;
-    const padding = toPadding(options.padding);
-    
+    const padding = toPadding(label.padding);
+
     ctx.save();
-    translate(ctx, parent, options.rotation);
+    translate(ctx, this.mainElement, label.rotation);
     ctx.beginPath();
     ctx.rect(x + halfBorder + padding.left, y + halfBorder + padding.top,
       width - borderWidth - padding.width, height - borderWidth - padding.height);
     ctx.clip();
-    drawLabel(ctx, this, options);
+    drawLabel(ctx, this, label);
     ctx.restore();
   }
 
   resolveElementProperties(chart, properties, options) {
-    const {x, y, width, height} = properties;
-    const {label, borderWidth} = options;
-    const halfBorder = borderWidth / 2;
+    const label = options.label;
     const position = toPosition(label.position);
     const padding = toPadding(label.padding);
     const labelSize = measureLabelSize(chart.ctx, label);
@@ -64,8 +66,9 @@ BoxAnnotationLabel.defaults = {
   width: undefined
 };
 
-BoxAnnotationLabel.defaultRoutes = {
-};
+function labelIsVisible(options) {
+  return options && options.enabled && options.content;
+}
 
 function calculateX({properties, options}, labelSize, position, padding) {
   const {x: start, x2: end, width: size} = properties;

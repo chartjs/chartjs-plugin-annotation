@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
-import {toPadding, toRadians} from 'chart.js/helpers';
-import {drawBox, drawLabel, getRelativePosition, measureLabelSize, getRectCenterPoint, getChartRect, toPosition, inBoxRange, rotated, translate} from '../helpers';
+import {toRadians} from 'chart.js/helpers';
+import {drawBox, getRectCenterPoint, getChartRect, inBoxRange, rotated, translate} from '../helpers';
 import BoxAnnotationLabel from './boxLabel';
 
 export default class BoxAnnotation extends Element {
@@ -21,40 +21,16 @@ export default class BoxAnnotation extends Element {
     ctx.restore();
   }
 
-  drawLabel(ctx) {
-/*
-    const {x, y, width, height, options} = this;
-    const {label, borderWidth} = options;
-    const halfBorder = borderWidth / 2;
-    const position = toPosition(label.position);
-    const padding = toPadding(label.padding);
-    const labelSize = measureLabelSize(ctx, label);
-    const labelRect = {
-      x: calculateX(this, labelSize, position, padding),
-      y: calculateY(this, labelSize, position, padding),
-      width: labelSize.width,
-      height: labelSize.height
-    };
-
-    ctx.save();
-    translate(ctx, this, label.rotation);
-    ctx.beginPath();
-    ctx.rect(x + halfBorder + padding.left, y + halfBorder + padding.top,
-      width - borderWidth - padding.width, height - borderWidth - padding.height);
-    ctx.clip();
-    drawLabel(ctx, labelRect, label);
-    ctx.restore();
-*/
-  }
-
   resolveElementProperties(chart, options) {
     const properties = getChartRect(chart, options);
+    const {x, y} = properties;
     const label = new BoxAnnotationLabel();
     properties.elements = [{
-        type: 'boxLabel',
-        optionScope: 'label',
-        properties: label.resolveElementProperties(chart, properties, options)
-      }];
+      type: 'boxLabel',
+      optionScope: 'label',
+      properties: label.resolveElementProperties(chart, properties, options)
+    }];
+    properties.initProperties = {x, y};
     return properties;
   }
 }
@@ -73,30 +49,7 @@ BoxAnnotation.defaults = {
   borderWidth: 1,
   cornerRadius: undefined, // TODO: v2 remove support for cornerRadius
   display: true,
-  label: {
-    borderWidth: undefined,
-    color: 'black',
-    content: null,
-    drawTime: undefined,
-    enabled: false,
-    font: {
-      family: undefined,
-      lineHeight: undefined,
-      size: undefined,
-      style: undefined,
-      weight: 'bold'
-    },
-    height: undefined,
-    padding: 6,
-    position: 'center',
-    rotation: undefined,
-    textAlign: 'start',
-    textStrokeColor: undefined,
-    textStrokeWidth: 0,
-    xAdjust: 0,
-    yAdjust: 0,
-    width: undefined
-  },
+  label: BoxAnnotationLabel.defaults,
   rotation: 0,
   shadowBlur: 0,
   shadowOffsetX: 0,

@@ -80,9 +80,9 @@ function updateSubElements(mainElement, {elements, initProperties}, resolver, an
     const definition = elements[i];
     const properties = definition.properties;
     const subElement = getOrCreateElement(subElements, i, definition.type, initProperties);
-    subElement.parent = mainElement;
     const subResolver = resolver[definition.optionScope].override(definition);
     properties.options = resolveAnnotationOptions(subResolver);
+    properties.mainElement = mainElement;
     animations.update(subElement, properties);
   }
 }
@@ -107,7 +107,7 @@ function resolveAnnotationOptions(resolver) {
   result.drawTime = resolver.drawTime;
   Object.assign(result,
     resolveObj(resolver, elementClass.defaults),
-    resolveObj(resolver, elementClass.defaultRoutes));
+    resolveObj(resolver, elementClass.defaultRoutes || {}));
   for (const hook of hooks) {
     result[hook] = resolver[hook];
   }
