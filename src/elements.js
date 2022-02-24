@@ -1,19 +1,21 @@
 import {Animations} from 'chart.js';
 import {isObject, defined} from 'chart.js/helpers';
 import {hooks} from './events';
-import {annotationTypes} from './types';
+import {annotationTypes, subElementTypes} from './types';
 
 const directUpdater = {
   update: Object.assign
 };
+const allTypes = Object.assign({}, annotationTypes, subElementTypes);
 
 /**
  * Resolve the annotation type, checking if is supported.
  * @param {string} [type=line] - annotation type
+ * @param {Object} [typesMap=annotationTypes] - map of annotation types to be checked
  * @returns {string} resolved annotation type
  */
-export function resolveType(type = 'line') {
-  if (annotationTypes[type]) {
+export function resolveType(type = 'line', typesMap = annotationTypes) {
+  if (typesMap[type]) {
     return type;
   }
   console.warn(`Unknown annotation type: '${type}', defaulting to 'line'`);
@@ -35,7 +37,7 @@ export function updateElements(chart, state, options, mode) {
 
   for (let i = 0; i < annotations.length; i++) {
     const annotationOptions = annotations[i];
-    const element = getOrCreateElement(elements, i, annotationOptions.type);
+    const element = getOrCreateElement({elements, index: i}, annotationOptions.type, annotationTypes);
     const resolver = annotationOptions.setContext(getContext(chart, element, annotationOptions));
     const properties = element.resolveElementProperties(chart, resolver);
 
@@ -56,7 +58,7 @@ export function updateElements(chart, state, options, mode) {
       Object.assign(element, properties);
     }
 
-    properties.options = resolveAnnotationOptions(resolver);
+    properties.options = resolveAnnotationOptions(resolver, annotationTypes);
 
     animations.update(element, properties);
   }
@@ -79,16 +81,16 @@ function updateSubElements(mainElement, {elements, initProperties}, resolver, an
   for (let i = 0; i < elements.length; i++) {
     const definition = elements[i];
     const properties = definition.properties;
-    const subElement = getOrCreateElement(subElements, i, definition.type, initProperties);
+    const subElement = getOrCreateElement({elements: subElements, index: i}, definition.type, allTypes, initProperties);
     const subResolver = resolver[definition.optionScope].override(definition);
-    properties.options = resolveAnnotationOptions(subResolver);
+    properties.options = resolveAnnotationOptions(subResolver, allTypes);
     properties.mainElement = mainElement;
     animations.update(subElement, properties);
   }
 }
 
-function getOrCreateElement(elements, index, type, initProperties) {
-  const elementClass = annotationTypes[resolveType(type)];
+function getOrCreateElement({elements, index}, type, typesMap, initProperties) {
+  const elementClass = typesMap[resolveType(type, typesMap)];
   let element = elements[index];
   if (!element || !(element instanceof elementClass)) {
     element = elements[index] = new elementClass();
@@ -99,8 +101,8 @@ function getOrCreateElement(elements, index, type, initProperties) {
   return element;
 }
 
-function resolveAnnotationOptions(resolver) {
-  const elementClass = annotationTypes[resolveType(resolver.type)];
+function resolveAnnotationOptions(resolver, typesMap) {
+  const elementClass = typesMap[resolveType(resolver.type, typesMap)];
   const result = {};
   result.id = resolver.id;
   result.type = resolver.type;

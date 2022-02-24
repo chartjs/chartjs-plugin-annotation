@@ -9,7 +9,6 @@ import PolygonAnnotation from './polygon';
 
 export const annotationTypes = {
   box: BoxAnnotation,
-  boxLabel: BoxAnnotationLabel,
   ellipse: EllipseAnnotation,
   label: LabelAnnotation,
   line: LineAnnotation,
@@ -17,9 +16,12 @@ export const annotationTypes = {
   polygon: PolygonAnnotation
 };
 
+export const subElementTypes = {
+  boxLabel: BoxAnnotationLabel
+};
+
 export {
   BoxAnnotation,
-  BoxAnnotationLabel,
   LineAnnotation,
   EllipseAnnotation,
   LabelAnnotation,
