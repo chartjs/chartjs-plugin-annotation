@@ -39,8 +39,6 @@ export default class BoxAnnotationLabel extends Element {
   }
 }
 
-BoxAnnotationLabel.id = 'boxAnnotationLabel';
-
 BoxAnnotationLabel.defaults = {
   borderWidth: undefined,
   color: 'black',
