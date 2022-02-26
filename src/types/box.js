@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {toRadians, toPadding} from 'chart.js/helpers';
+import {toPadding, toRadians} from 'chart.js/helpers';
 import {drawBox, getRectCenterPoint, getChartRect, getRelativePosition, inBoxRange, rotated, measureLabelSize, toPosition, translate} from '../helpers';
 
 export default class BoxAnnotation extends Element {
@@ -98,26 +98,6 @@ BoxAnnotation.descriptors = {
   }
 };
 
-export function resolveLabelElementProperties(chart, properties, options) {
-  const label = options.label;
-  const position = toPosition(label.position);
-  const padding = toPadding(label.padding);
-  const labelSize = measureLabelSize(chart.ctx, label);
-  const borderWidth = options.borderWidth;
-  const halfBorder = borderWidth / 2;
-  return {
-    x: properties.x + halfBorder + padding.left,
-    y: properties.y + halfBorder + padding.top,
-    width: properties.width - borderWidth - padding.width,
-    height: properties.height - borderWidth - padding.height,
-    labelX: calculateX({properties, options}, labelSize, position, padding),
-    labelY: calculateY({properties, options}, labelSize, position, padding),
-    labelWidth: labelSize.width,
-    labelHeight: labelSize.height,
-    options: label
-  };
-}
-
 function calculateX({properties, options}, labelSize, position, padding) {
   const {x: start, x2: end, width: size} = properties;
   const {xAdjust: adjust, borderWidth} = options.label;
@@ -147,4 +127,24 @@ function calculatePosition(boxOpts, labelOpts) {
   const {position, padding: {start: padStart, end: padEnd}, adjust, borderWidth} = labelOpts;
   const availableSize = end - borderWidth - start - padStart - padEnd - labelOpts.size;
   return start + borderWidth / 2 + adjust + padStart + getRelativePosition(availableSize, position);
+}
+
+function resolveLabelElementProperties(chart, properties, options) {
+  const label = options.label;
+  const position = toPosition(label.position);
+  const padding = toPadding(label.padding);
+  const labelSize = measureLabelSize(chart.ctx, label);
+  const borderWidth = options.borderWidth;
+  const halfBorder = borderWidth / 2;
+  return {
+    x: properties.x + halfBorder + padding.left,
+    y: properties.y + halfBorder + padding.top,
+    width: properties.width - borderWidth - padding.width,
+    height: properties.height - borderWidth - padding.height,
+    labelX: calculateX({properties, options}, labelSize, position, padding),
+    labelY: calculateY({properties, options}, labelSize, position, padding),
+    labelWidth: labelSize.width,
+    labelHeight: labelSize.height,
+    options: label
+  };
 }
