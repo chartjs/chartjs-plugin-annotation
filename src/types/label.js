@@ -17,11 +17,15 @@ export default class LabelAnnotation extends Element {
     if (!this.options.content) {
       return;
     }
-    const {labelX, labelY, labelWidth, labelHeight, options} = this;
+    const {x, y, width, height, labelX, labelY, labelWidth, labelHeight, options} = this;
     ctx.save();
     translate(ctx, this, options.rotation);
     drawCallout(ctx, this);
     drawBox(ctx, this, options);
+    // clip
+    ctx.beginPath();
+    ctx.rect(x, y, width, height);
+    ctx.clip();
     drawLabel(ctx, {x: labelX, y: labelY, width: labelWidth, height: labelHeight}, options);
     ctx.restore();
   }
