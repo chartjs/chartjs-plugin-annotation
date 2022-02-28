@@ -39,8 +39,7 @@ export interface CoreAnnotationOptions extends AnnotationEvents, ShadowOptions {
   scaleID?: Scriptable<string, PartialEventContext>,
   value?: Scriptable<number|string, PartialEventContext>,
   xScaleID?: Scriptable<string, PartialEventContext>,
-  yScaleID?: Scriptable<string, PartialEventContext>,
-  yPadding?: Scriptable<number, PartialEventContext>
+  yScaleID?: Scriptable<string, PartialEventContext>
 }
 
 export type Scriptable<T, TContext> = T | ((ctx: TContext, options: AnnotationOptions) => T);

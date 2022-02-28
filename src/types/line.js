@@ -272,9 +272,7 @@ LineAnnotation.defaults = {
     textStrokeWidth: 0,
     width: undefined,
     xAdjust: 0,
-    xPadding: undefined, // TODO: v2 remove support for xPadding
-    yAdjust: 0,
-    yPadding: undefined, // TODO: v2 remove support for yPadding
+    yAdjust: 0
   },
   scaleID: undefined,
   shadowBlur: 0,
@@ -306,9 +304,8 @@ LineAnnotation.defaultRoutes = {
 };
 
 function loadLabelRect(line, chart, options) {
-  // TODO: v2 remove support for xPadding and yPadding
-  const {padding: lblPadding, xPadding, yPadding, borderWidth} = options;
-  const padding = getPadding(lblPadding, xPadding, yPadding);
+  const {padding: lblPadding, borderWidth} = options;
+  const padding = toPadding(lblPadding);
   const textSize = measureLabelSize(chart.ctx, options);
   const width = textSize.width + padding.width + borderWidth;
   const height = textSize.height + padding.height + borderWidth;
@@ -328,15 +325,6 @@ function calculateAutoRotation(line) {
   const rotation = Math.atan2(y2 - y, x2 - x);
   // Flip the rotation if it goes > PI/2 or < -PI/2, so label stays upright
   return rotation > PI / 2 ? rotation - PI : rotation < PI / -2 ? rotation + PI : rotation;
-}
-
-// TODO: v2 remove support for xPadding and yPadding
-function getPadding(padding, xPadding, yPadding) {
-  let tempPadding = padding;
-  if (xPadding || yPadding) {
-    tempPadding = {x: xPadding || 6, y: yPadding || 6};
-  }
-  return toPadding(tempPadding);
 }
 
 function calculateLabelPosition(line, label, sizes, chartArea) {
