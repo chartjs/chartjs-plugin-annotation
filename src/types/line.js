@@ -304,8 +304,8 @@ LineAnnotation.defaultRoutes = {
 };
 
 function loadLabelRect(line, chart, options) {
-  const {padding: lblPadding, borderWidth} = options;
-  const padding = toPadding(lblPadding);
+  const borderWidth = options.borderWidth;
+  const padding = toPadding(options.padding);
   const textSize = measureLabelSize(chart.ctx, options);
   const width = textSize.width + padding.width + borderWidth;
   const height = textSize.height + padding.height + borderWidth;
