@@ -87,10 +87,10 @@ export interface ContainedLabelOptions extends CoreLabelOptions {
 export interface LabelOptions extends ContainedLabelOptions, ShadowOptions {
   position?: Scriptable<LabelPosition, PartialEventContext>,
   /**
-   * Whether the label is enabled and should be displayed
+   * Whether the label should be displayed
    * @default true
    */
-  enabled?: Scriptable<boolean, PartialEventContext>,
+  display?: Scriptable<boolean, PartialEventContext>,
   /**
    * Rotation of label, in degrees, or 'auto' to use the degrees of the line, default is 0
    * @default 90
@@ -113,10 +113,10 @@ export interface LabelOptions extends ContainedLabelOptions, ShadowOptions {
 export interface BoxLabelOptions extends CoreLabelOptions {
   position?: Scriptable<LabelPosition | LabelPositionObject, PartialEventContext>,
   /**
-   * Whether the label is enabled and should be displayed
+   * Whether the label should be displayed
    * @default true
    */
-  enabled?: Scriptable<boolean, PartialEventContext>,
+  display?: Scriptable<boolean, PartialEventContext>,
   rotation?: Scriptable<number, PartialEventContext>
 }
 

@@ -31,7 +31,7 @@ const annotation = {
   scaleID: 'y',
   value: 50,
   label: {
-    enabled: true,
+    display: true,
     content: Utils.getImage(),
     backgroundColor: 'white',
     borderWidth: 3,

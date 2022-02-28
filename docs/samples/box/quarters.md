@@ -25,7 +25,7 @@ const annotation1 = {
   xMin: -0.5,
   label: {
     drawTime: 'afterDraw',
-    enabled: true,
+    display: true,
     content: 'First quarter',
     position: {
       x: 'center',
@@ -44,7 +44,7 @@ const annotation2 = {
   xMin: 2.5,
   label: {
     drawTime: 'afterDraw',
-    enabled: true,
+    display: true,
     content: 'Second quarter',
     position: {
       x: 'center',
@@ -63,7 +63,7 @@ const annotation3 = {
   xMin: 5.5,
   label: {
     drawTime: 'afterDraw',
-    enabled: true,
+    display: true,
     content: 'Third quarter',
     position: {
       x: 'center',
@@ -81,7 +81,7 @@ const annotation4 = {
   xMin: 8.5,
   label: {
     drawTime: 'afterDraw',
-    enabled: true,
+    display: true,
     content: 'Fourth quarter',
     position: {
       x: 'center',

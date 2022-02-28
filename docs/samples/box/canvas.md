@@ -24,7 +24,7 @@ const annotation1 = {
   xMax: 2,
   xMin: 5,
   label: {
-    enabled: true,
+    display: true,
     content: Utils.getSpiral(),
     position: {
       x: 'center',
@@ -42,7 +42,7 @@ const annotation2 = {
   xMax: 6,
   xMin: 10,
   label: {
-    enabled: true,
+    display: true,
     content: Utils.getHouse(),
     position: {
       x: 'center',

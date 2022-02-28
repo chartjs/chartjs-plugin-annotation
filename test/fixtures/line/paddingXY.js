@@ -29,7 +29,7 @@ module.exports = {
                 position: 'start',
                 backgroundColor: 'red',
                 content: 'xPadding: 20',
-                enabled: true,
+                display: true,
                 xPadding: 20
               },
             },
@@ -45,7 +45,7 @@ module.exports = {
                 rotation: 'auto',
                 backgroundColor: 'red',
                 content: 'xPadding: 20, yPadding: 15',
-                enabled: true,
+                display: true,
                 xPadding: 20,
                 yPadding: 15
               },
@@ -62,7 +62,7 @@ module.exports = {
                 rotation: 'auto',
                 backgroundColor: 'red',
                 content: 'yPadding: 15',
-                enabled: true,
+                display: true,
                 yPadding() {
                   return 15;
                 },

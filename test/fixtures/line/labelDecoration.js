@@ -25,7 +25,7 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 5,
               label: {
-                enabled: true,
+                display: true,
                 backgroundColor: '#f5f5f5',
                 borderColor: 'black',
                 borderWidth: 1,
@@ -45,7 +45,7 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 5,
               label: {
-                enabled: true,
+                display: true,
                 backgroundColor: '#f5f5f5',
                 borderColor: 'black',
                 borderWidth: 1,
@@ -64,7 +64,7 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 5,
               label: {
-                enabled: true,
+                display: true,
                 backgroundColor: '#f5f5f5',
                 borderColor: 'black',
                 borderWidth: 1,

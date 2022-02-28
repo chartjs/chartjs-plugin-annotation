@@ -67,8 +67,8 @@ BoxAnnotation.defaults = {
     borderWidth: undefined,
     color: 'black',
     content: null,
+    display: false,
     drawTime: undefined,
-    enabled: false,
     font: {
       family: undefined,
       lineHeight: undefined,

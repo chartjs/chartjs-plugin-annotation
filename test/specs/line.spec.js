@@ -61,7 +61,7 @@ describe('Line annotation', function() {
         scaleID: 'y',
         value: 5,
         label: {
-          enabled: true,
+          display: true,
           content: 'Label of the element',
           rotation
         }

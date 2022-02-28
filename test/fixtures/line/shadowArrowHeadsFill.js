@@ -22,7 +22,7 @@ module.exports = {
               shadowBlur: 12,
               arrowHeads: {
                 start: {
-                  enabled: true,
+                  display: true,
                   fill: true,
                   borderColor: 'blue',
                   backgroundShadowColor: 'black',
@@ -31,7 +31,7 @@ module.exports = {
                   width: 15
                 },
                 end: {
-                  enabled: true,
+                  display: true,
                   fill: true,
                   borderColor: 'blue',
                   backgroundShadowColor: 'black',
@@ -54,7 +54,7 @@ module.exports = {
               shadowOffsetX: 10,
               arrowHeads: {
                 start: {
-                  enabled: true,
+                  display: true,
                   fill: true,
                   borderColor: 'purple',
                   backgroundShadowColor: 'black',
@@ -64,7 +64,7 @@ module.exports = {
                   width: 15
                 },
                 end: {
-                  enabled: true,
+                  display: true,
                   fill: true,
                   borderColor: 'purple',
                   backgroundShadowColor: 'black',
@@ -89,7 +89,7 @@ module.exports = {
               shadowOffsetY: 10,
               arrowHeads: {
                 start: {
-                  enabled: true,
+                  display: true,
                   fill: true,
                   borderColor: 'red',
                   backgroundShadowColor: 'black',
@@ -100,7 +100,7 @@ module.exports = {
                   width: 15
                 },
                 end: {
-                  enabled: true,
+                  display: true,
                   fill: true,
                   borderColor: 'red',
                   backgroundShadowColor: 'black',

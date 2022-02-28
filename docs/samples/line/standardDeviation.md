@@ -31,7 +31,7 @@ const annotation1 = {
   borderDashOffset: 0,
   borderWidth: 3,
   label: {
-    enabled: true,
+    display: true,
     backgroundColor: 'rgb(100, 149, 237)',
     content: (ctx) => 'Average: ' + average(ctx).toFixed(2)
   },
@@ -48,7 +48,7 @@ const annotation2 = {
   borderDashOffset: 0,
   borderWidth: 3,
   label: {
-    enabled: true,
+    display: true,
     backgroundColor: 'rgba(102, 102, 102, 0.5)',
     color: 'black',
     content: (ctx) => (average(ctx) + standardDeviation(ctx)).toFixed(2),
@@ -69,7 +69,7 @@ const annotation3 = {
   borderDashOffset: 0,
   borderWidth: 3,
   label: {
-    enabled: true,
+    display: true,
     backgroundColor: 'rgba(102, 102, 102, 0.5)',
     color: 'black',
     content: (ctx) => (average(ctx) - standardDeviation(ctx)).toFixed(2),

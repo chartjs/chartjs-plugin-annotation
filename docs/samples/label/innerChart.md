@@ -49,7 +49,7 @@ const annotation2 = {
   content: (ctx) => [innerChart.data.labels[getVisibleDatasetIndex(ctx)],
     'items trend'],
   callout: {
-    enabled: true,
+    display: true,
     position: 'bottom',
     margin: 0
   },

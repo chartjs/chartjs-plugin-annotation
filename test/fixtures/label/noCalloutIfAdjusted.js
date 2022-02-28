@@ -27,7 +27,7 @@ module.exports = {
               xAdjust: 50,
               yAdjust: -100
             },
-            enabled: {
+            display: {
               type: 'label',
               xValue: 'May',
               yValue: 12.5,
@@ -38,7 +38,7 @@ module.exports = {
               xAdjust: 50,
               yAdjust: -100,
               callout: {
-                enabled: true
+                display: true
               }
             }
           }

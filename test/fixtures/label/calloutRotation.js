@@ -28,7 +28,7 @@ module.exports = {
               yAdjust: -70,
               rotation: 101,
               callout: {
-                enabled: true,
+                display: true,
               }
             },
             overlap: {
@@ -43,7 +43,7 @@ module.exports = {
               yAdjust: 1,
               rotation: 199,
               callout: {
-                enabled: true,
+                display: true,
               }
             },
             crossLabel: {
@@ -58,7 +58,7 @@ module.exports = {
               yAdjust: -50,
               rotation: 32,
               callout: {
-                enabled: true,
+                display: true,
                 position: 'right',
                 side: 10
               }
@@ -75,7 +75,7 @@ module.exports = {
               yAdjust: -100,
               rotation: 310,
               callout: {
-                enabled: true,
+                display: true,
                 side: 10,
                 borderColor: 'red',
                 borderWidth: 2,

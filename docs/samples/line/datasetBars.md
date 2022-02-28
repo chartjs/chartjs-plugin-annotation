@@ -24,7 +24,7 @@ const annotation1 = {
   borderColor: 'green',
   borderWidth: 3,
   label: {
-    enabled: true,
+    display: true,
     backgroundColor: 'green',
     borderRadius: 0,
     color: 'white',
@@ -45,7 +45,7 @@ const annotation2 = {
   borderColor: 'green',
   borderWidth: 3,
   label: {
-    enabled: true,
+    display: true,
     backgroundColor: 'green',
     borderRadius: 0,
     color: 'white',
@@ -66,7 +66,7 @@ const annotation3 = {
   borderColor: 'green',
   borderWidth: 3,
   label: {
-    enabled: true,
+    display: true,
     backgroundColor: 'green',
     borderRadius: 0,
     color: 'white',
@@ -87,7 +87,7 @@ const annotation4 = {
   borderColor: 'green',
   borderWidth: 3,
   label: {
-    enabled: true,
+    display: true,
     backgroundColor: 'green',
     borderRadius: 0,
     color: 'white',

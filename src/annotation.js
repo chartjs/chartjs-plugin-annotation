@@ -158,7 +158,7 @@ function draw(chart, caller, clip) {
       return;
     }
     const label = el.options.label;
-    if (label && label.enabled && label.content && (label.drawTime || el.options.drawTime) === caller) {
+    if (label && label.display && label.content && (label.drawTime || el.options.drawTime) === caller) {
       el.drawLabel(ctx, chartArea);
     }
   });

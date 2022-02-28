@@ -31,7 +31,7 @@ module.exports = {
               xAdjust: -150,
               yAdjust: -230,
               callout: {
-                enabled: true,
+                display: true,
                 position: 'bottom'
               }
             }

@@ -27,17 +27,17 @@ module.exports = {
                 rotation: 'auto',
                 backgroundColor: 'red',
                 content: 'start: true, end: true',
-                enabled: true
+                display: true
               },
               arrowHeads: {
                 start: {
-                  enabled: () => true,
+                  display: () => true,
                   fill: () => true,
                   length: () => 30,
                   width: () => 15
                 },
                 end: {
-                  enabled: () => true,
+                  display: () => true,
                   fill: () => true,
                   length: () => 30,
                   width: () => 15
@@ -55,12 +55,12 @@ module.exports = {
                 rotation: 'auto',
                 backgroundColor: 'red',
                 content: 'start: true',
-                enabled: true
+                display: true
               },
               arrowHeads: {
                 start() {
                   return {
-                    enabled: true,
+                    display: true,
                     fill: true,
                     backgroundColor: 'orange',
                     length: 30,
@@ -81,12 +81,12 @@ module.exports = {
                 rotation: 'auto',
                 backgroundColor: 'red',
                 content: 'end: true',
-                enabled: true
+                display: true
               },
               arrowHeads: {
                 end() {
                   return {
-                    enabled: true,
+                    display: true,
                     fill: true,
                     backgroundColor: 'orange',
                     borderColor: 'orange',

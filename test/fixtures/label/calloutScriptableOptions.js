@@ -31,7 +31,7 @@ module.exports = {
               xAdjust: 150,
               yAdjust: -100,
               callout: {
-                enabled: true,
+                display: true,
                 margin: () => 10,
                 side: () => 10,
                 start: () => '80%',

@@ -27,17 +27,17 @@ module.exports = {
                 rotation: 'auto',
                 backgroundColor: 'red',
                 content: 'start: true, end: true',
-                enabled: true
+                display: true
               },
               arrowHeads: {
                 start: {
-                  enabled: true,
+                  display: true,
                   fill: true,
                   length: 30,
                   width: 15
                 },
                 end: {
-                  enabled: true,
+                  display: true,
                   fill: true,
                   length: 30,
                   width: 15
@@ -55,11 +55,11 @@ module.exports = {
                 rotation: 'auto',
                 backgroundColor: 'red',
                 content: 'start: true',
-                enabled: true
+                display: true
               },
               arrowHeads: {
                 start: {
-                  enabled: true,
+                  display: true,
                   fill: true,
                   backgroundColor: 'orange',
                   length: 30,
@@ -78,11 +78,11 @@ module.exports = {
                 rotation: 'auto',
                 backgroundColor: 'red',
                 content: 'end: true',
-                enabled: true
+                display: true
               },
               arrowHeads: {
                 end: {
-                  enabled: true,
+                  display: true,
                   fill: true,
                   backgroundColor: 'orange',
                   borderColor: 'orange',
@@ -103,11 +103,11 @@ module.exports = {
                 rotation: 'auto',
                 backgroundColor: 'red',
                 content: 'start: dash',
-                enabled: true
+                display: true
               },
               arrowHeads: {
                 start: {
-                  enabled: true,
+                  display: true,
                   borderDash: [3, 6],
                   borderDashOffset: 0,
                   fill: true,
@@ -129,11 +129,11 @@ module.exports = {
                 rotation: 'auto',
                 backgroundColor: 'red',
                 content: 'end: width 30',
-                enabled: true
+                display: true
               },
               arrowHeads: {
                 end: {
-                  enabled: true,
+                  display: true,
                   fill: true,
                   backgroundColor: 'transparent',
                   length: 40,
@@ -152,17 +152,17 @@ module.exports = {
                 rotation: 'auto',
                 backgroundColor: 'red',
                 content: 'borderWidth 0',
-                enabled: true
+                display: true
               },
               arrowHeads: {
                 start: {
-                  enabled: true,
+                  display: true,
                   length: 15,
                   width: 5,
                   fill: true,
                 },
                 end: {
-                  enabled: true,
+                  display: true,
                   length: 15,
                   width: 5,
                   fill: true,
@@ -181,18 +181,18 @@ module.exports = {
                 rotation: 'auto',
                 backgroundColor: 'red',
                 content: 'horizontal',
-                enabled: true
+                display: true
               },
               arrowHeads: {
                 start: {
-                  enabled: true,
+                  display: true,
                   length: 15,
                   width: 5,
                   fill: true,
                   backgroundColor: 'lightGreen',
                 },
                 end: {
-                  enabled: true,
+                  display: true,
                   length: 15,
                   width: 5,
                   fill: true,
@@ -211,18 +211,18 @@ module.exports = {
                 rotation: 'auto',
                 backgroundColor: 'red',
                 content: 'vertical',
-                enabled: true
+                display: true
               },
               arrowHeads: {
                 start: {
-                  enabled: true,
+                  display: true,
                   length: 15,
                   width: 5,
                   fill: true,
                   backgroundColor: 'lightGreen',
                 },
                 end: {
-                  enabled: true,
+                  display: true,
                   length: 15,
                   width: 5,
                   fill: true,
