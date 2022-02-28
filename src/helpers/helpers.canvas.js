@@ -112,8 +112,7 @@ export function drawBox(ctx, rect, options) {
   ctx.beginPath();
   addRoundedRectPath(ctx, {
     x, y, w: width, h: height,
-    // TODO: v2 remove support for cornerRadius
-    radius: clampAll(toTRBLCorners(valueOrDefault(options.cornerRadius, options.borderRadius)), 0, Math.min(width, height) / 2)
+    radius: clampAll(toTRBLCorners(options.borderRadius), 0, Math.min(width, height) / 2)
   });
   ctx.closePath();
   ctx.fill();

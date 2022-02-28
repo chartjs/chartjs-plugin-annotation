@@ -61,7 +61,6 @@ BoxAnnotation.defaults = {
   borderRadius: 0,
   borderShadowColor: 'transparent',
   borderWidth: 1,
-  cornerRadius: undefined, // TODO: v2 remove support for cornerRadius
   display: true,
   label: {
     borderWidth: undefined,

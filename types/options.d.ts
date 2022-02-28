@@ -102,11 +102,6 @@ export interface BoxAnnotationOptions extends CoreAnnotationOptions, AnnotationC
    */
   borderJoinStyle?: Scriptable<CanvasLineJoin, PartialEventContext>,
   borderRadius?: Scriptable<number | BorderRadius, PartialEventContext>,
-  /**
-   * @deprecated replaced by borderRadius
-   * @todo remove at v2
-   */
-  cornerRadius?: Scriptable<number, PartialEventContext>,
   label?: BoxLabelOptions,
   rotation?: Scriptable<number, PartialEventContext>
 }

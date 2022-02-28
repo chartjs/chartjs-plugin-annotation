@@ -250,7 +250,6 @@ LineAnnotation.defaults = {
     borderWidth: 0,
     color: '#fff',
     content: null,
-    cornerRadius: undefined, // TODO: v2 remove support for cornerRadius
     drawTime: undefined,
     enabled: false,
     font: {

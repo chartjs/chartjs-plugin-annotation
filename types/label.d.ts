@@ -77,11 +77,6 @@ export interface ContainedLabelOptions extends CoreLabelOptions {
    * @default 6
    */
   borderRadius?: Scriptable<number | BorderRadius, PartialEventContext>,
-  /**
-   * @deprecated replaced by borderRadius
-   * @todo remove at v2
-   */
-  cornerRadius?: Scriptable<number | BorderRadius, PartialEventContext>,
 }
 
 export interface LabelOptions extends ContainedLabelOptions, ShadowOptions {
