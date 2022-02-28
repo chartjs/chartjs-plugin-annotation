@@ -1,4 +1,4 @@
-import {addRoundedRectPath, isArray, toFont, toTRBLCorners, valueOrDefault, toRadians} from 'chart.js/helpers';
+import {addRoundedRectPath, isArray, toFont, toTRBLCorners, toRadians} from 'chart.js/helpers';
 import {clampAll} from './helpers.core';
 import {calculateTextAlignment, getSize} from './helpers.options';
 
