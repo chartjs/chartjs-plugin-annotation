@@ -11,7 +11,7 @@ export default class LabelAnnotation extends BaseAnnotation {
 
   draw(ctx) {
     const options = this.options;
-    if (!this.options.content) {
+    if (!options.content) {
       return;
     }
     ctx.save();
