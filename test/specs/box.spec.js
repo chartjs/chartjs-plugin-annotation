@@ -23,8 +23,8 @@ describe('Box annotation', function() {
         for (const borderWidth of [0, 10]) {
           const halfBorder = borderWidth / 2;
           element.options.borderWidth = borderWidth;
-          for (const x of [element.x - halfBorder, element.x + element.width / 2, element.x + element.width + halfBorder]) {
-            for (const y of [element.y - halfBorder, element.y + element.height / 2, element.y + element.height + halfBorder]) {
+          for (const x of [element.x - halfBorder, element.x + element.width / 2, element.x2 + halfBorder]) {
+            for (const y of [element.y - halfBorder, element.y + element.height / 2, element.y2 + halfBorder]) {
               const point = rotated({x, y}, center, rotation / 180 * Math.PI);
               expect(element.inRange(point.x, point.y)).toEqual(true);
             }
@@ -37,14 +37,14 @@ describe('Box annotation', function() {
           const halfBorder = borderWidth / 2;
           element.options.borderWidth = borderWidth;
 
-          for (const x of [element.x - halfBorder - 1, element.x + element.width + halfBorder + 1]) {
-            for (const y of [element.y, element.y + element.height / 2, element.y + element.height]) {
+          for (const x of [element.x - halfBorder - 1, element.x2 + halfBorder + 1]) {
+            for (const y of [element.y, element.y + element.height / 2, element.y2]) {
               const point = rotated({x, y}, center, rotation / 180 * Math.PI);
               expect(element.inRange(point.x, point.y)).toEqual(false);
             }
           }
-          for (const x of [element.x, element.x + element.width / 2, element.x + element.width]) {
-            for (const y of [element.y - halfBorder - 1, element.y + element.height + halfBorder + 1]) {
+          for (const x of [element.x, element.x + element.width / 2, element.x2]) {
+            for (const y of [element.y - halfBorder - 1, element.y2 + halfBorder + 1]) {
               const point = rotated({x, y}, center, rotation / 180 * Math.PI);
               expect(element.inRange(point.x, point.y)).toEqual(false);
             }

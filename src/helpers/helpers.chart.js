@@ -84,18 +84,16 @@ export function getChartRect(chart, options) {
   y = yDim.start;
   y2 = yDim.end;
 
-  const properties = {
+  return {
     x,
     y,
     x2,
     y2,
     width: x2 - x,
-    height: y2 - y
+    height: y2 - y,
+    centerX: x + (x2 - x) / 2,
+    centerY: y + (y2 - y) / 2
   };
-  const center = getRectCenterPoint(properties);
-  properties.centerX = center.x;
-  properties.centerY = center.y;
-  return properties;
 }
 
 /**

@@ -1,6 +1,6 @@
-import BaseAnnotation from './base';
 import {toPadding, toRadians} from 'chart.js/helpers';
 import {drawBox, drawLabel, getRelativePosition, measureLabelSize, getChartRect, toPosition, inBoxRange, rotated, translate} from '../helpers';
+import BaseAnnotation from './base';
 
 export default class BoxAnnotation extends BaseAnnotation {
   inRange(mouseX, mouseY, useFinalPosition) {

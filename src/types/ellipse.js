@@ -1,20 +1,15 @@
-import {Element} from 'chart.js';
 import {PI, toRadians} from 'chart.js/helpers';
-import {getRectCenterPoint, getChartRect, setBorderStyle, setShadowStyle, translate} from '../helpers';
+import {getChartRect, setBorderStyle, setShadowStyle, translate} from '../helpers';
+import BaseAnnotation from './base';
 
-export default class EllipseAnnotation extends Element {
+export default class EllipseAnnotation extends BaseAnnotation {
 
   inRange(mouseX, mouseY, useFinalPosition) {
-    return pointInEllipse({x: mouseX, y: mouseY}, this.getProps(['width', 'height'], useFinalPosition), this.options.rotation, this.options.borderWidth);
-  }
-
-  getCenterPoint(useFinalPosition) {
-    return getRectCenterPoint(this.getProps(['x', 'y', 'width', 'height'], useFinalPosition));
+    return pointInEllipse({x: mouseX, y: mouseY}, this.getProps(['width', 'height', 'centerX', 'centerY'], useFinalPosition), this.options.rotation, this.options.borderWidth);
   }
 
   draw(ctx) {
-    const {width, height, options} = this;
-    const center = this.getCenterPoint();
+    const {width, height, centerX, centerY, options} = this;
 
     ctx.save();
     translate(ctx, this, options.rotation);
@@ -22,7 +17,7 @@ export default class EllipseAnnotation extends Element {
     ctx.beginPath();
     ctx.fillStyle = options.backgroundColor;
     const stroke = setBorderStyle(ctx, options);
-    ctx.ellipse(center.x, center.y, height / 2, width / 2, PI / 2, 0, 2 * PI);
+    ctx.ellipse(centerX, centerY, height / 2, width / 2, PI / 2, 0, 2 * PI);
     ctx.fill();
     if (stroke) {
       ctx.shadowColor = options.borderShadowColor;
@@ -65,8 +60,7 @@ EllipseAnnotation.defaultRoutes = {
 };
 
 function pointInEllipse(p, ellipse, rotation, borderWidth) {
-  const {width, height} = ellipse;
-  const center = ellipse.getCenterPoint(true);
+  const {width, height, centerX, centerY} = ellipse;
   const xRadius = width / 2;
   const yRadius = height / 2;
 
@@ -78,7 +72,7 @@ function pointInEllipse(p, ellipse, rotation, borderWidth) {
   const hBorderWidth = borderWidth / 2 || 0;
   const cosAngle = Math.cos(angle);
   const sinAngle = Math.sin(angle);
-  const a = Math.pow(cosAngle * (p.x - center.x) + sinAngle * (p.y - center.y), 2);
-  const b = Math.pow(sinAngle * (p.x - center.x) - cosAngle * (p.y - center.y), 2);
+  const a = Math.pow(cosAngle * (p.x - centerX) + sinAngle * (p.y - centerY), 2);
+  const b = Math.pow(sinAngle * (p.x - centerX) - cosAngle * (p.y - centerY), 2);
   return (a / Math.pow(xRadius + hBorderWidth, 2)) + (b / Math.pow(yRadius + hBorderWidth, 2)) <= 1.0001;
 }

@@ -25,6 +25,7 @@ export function isImageOrCanvas(content) {
  */
 export function translate(ctx, element, rotation) {
   if (rotation) {
+    // TODO: remove and use centerY and centerX of the element
     const center = element.getCenterPoint();
     ctx.translate(center.x, center.y);
     ctx.rotate(toRadians(rotation));

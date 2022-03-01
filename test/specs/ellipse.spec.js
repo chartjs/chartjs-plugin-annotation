@@ -66,8 +66,7 @@ describe('Ellipse annotation', function() {
       ]);
       const elements = window.getAnnotationElements(chart);
       for (const element of elements) {
-        const center = element.getCenterPoint();
-        expect(element.inRange(center.x, center.y)).toEqual(false);
+        expect(element.inRange(element.clientX, element.clientY)).toEqual(false);
       }
     });
   });
