@@ -1,15 +1,11 @@
-import {Element} from 'chart.js';
+import BaseAnnotation from './base';
 import {toPadding, toRadians} from 'chart.js/helpers';
-import {drawBox, drawLabel, getRelativePosition, measureLabelSize, getRectCenterPoint, getChartRect, toPosition, inBoxRange, rotated, translate} from '../helpers';
+import {drawBox, drawLabel, getRelativePosition, measureLabelSize, getChartRect, toPosition, inBoxRange, rotated, translate} from '../helpers';
 
-export default class BoxAnnotation extends Element {
+export default class BoxAnnotation extends BaseAnnotation {
   inRange(mouseX, mouseY, useFinalPosition) {
     const {x, y} = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.options.rotation));
     return inBoxRange(x, y, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), this.options.borderWidth);
-  }
-
-  getCenterPoint(useFinalPosition) {
-    return getRectCenterPoint(this.getProps(['x', 'y', 'width', 'height'], useFinalPosition));
   }
 
   draw(ctx) {
