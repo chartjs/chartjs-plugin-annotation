@@ -24,3 +24,5 @@ For Chart.js 2.4.0 to 2.9.x support, use [version 0.5.7 of this plugin](https://
 Documentation for v0.5.7 can be found on [GitHub](https://github.com/chartjs/chartjs-plugin-annotation/blob/1ab782afce943456f958cac33f67edc5d6eab278/README.md).
 
 :::
+
+## 2.x Migration guide
