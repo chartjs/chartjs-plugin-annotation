@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, toRadians} from 'chart.js/helpers';
-import {getChartRect, setBorderStyle, setShadowStyle, translate, getElementCenterPoint} from '../helpers';
+import {resolveBoxPosition, setBorderStyle, setShadowStyle, translate, getElementCenterPoint} from '../helpers';
 
 export default class EllipseAnnotation extends Element {
 
@@ -31,7 +31,7 @@ export default class EllipseAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    return getChartRect(chart, options);
+    return resolveBoxPosition(chart, options);
   }
 
 }

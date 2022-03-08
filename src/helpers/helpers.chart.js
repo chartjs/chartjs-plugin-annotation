@@ -7,6 +7,7 @@ import {isBoundToPoint} from './helpers.options';
  * @typedef { import("chart.js").Point } Point
  * @typedef { import('../../types/options').CoreAnnotationOptions } CoreAnnotationOptions
  * @typedef { import('../../types/options').PointAnnotationOptions } PointAnnotationOptions
+ * @typedef { import('../../types/options').PointAnnotationOptions } PolygonAnnotationOptions
  */
 
 /**
@@ -22,7 +23,7 @@ export function scaleValue(scale, value, fallback) {
 
 /**
  * @param {Scale} scale
- * @param {{start: number, end: number}} options
+ * @param {{start: number, end: number, min: number, max: number}} options
  * @returns {{start: number, end: number}}
  */
 function getChartDimensionByScale(scale, options) {
@@ -65,9 +66,9 @@ export function getChartPoint(chart, options) {
 /**
  * @param {Chart} chart
  * @param {CoreAnnotationOptions} options
- * @returns {{x?:number, y?: number, x2?: number, y2?: number, width?: number, height?: number}}
+ * @returns {{x:number, y: number, x2: number, y2: number, centerX: number, centerY: number, width: number, height: number}}
  */
-export function getChartRect(chart, options) {
+export function resolveBoxPosition(chart, options) {
   const xScale = chart.scales[options.xScaleID];
   const yScale = chart.scales[options.yScaleID];
   let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
@@ -97,12 +98,12 @@ export function getChartRect(chart, options) {
 
 /**
  * @param {Chart} chart
- * @param {PointAnnotationOptions} options
- * @returns
+ * @param {PointAnnotationOptions|PolygonAnnotationOptions} options
+ * @returns {{x:number, y: number, x2: number, y2: number, centerX: number, centerY: number, width: number, height: number}}
  */
 export function resolvePointPosition(chart, options) {
   if (!isBoundToPoint(options)) {
-    const box = getChartRect(chart, options);
+    const box = resolveBoxPosition(chart, options);
     let radius = options.radius;
     if (!radius || isNaN(radius)) {
       radius = Math.min(box.width, box.height) / 2;
@@ -123,6 +124,11 @@ export function resolvePointPosition(chart, options) {
   return getChartCircle(chart, options);
 }
 
+/**
+ * @param {Chart} chart
+ * @param {PointAnnotationOptions|PolygonAnnotationOptions} options
+ * @returns {{x:number, y: number, x2: number, y2: number, centerX: number, centerY: number, width: number, height: number}}
+ */
 function getChartCircle(chart, options) {
   const point = getChartPoint(chart, options);
   const size = options.radius * 2;
