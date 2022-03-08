@@ -82,6 +82,7 @@ module.exports = {
     sidebar: {
       '/guide/': [
         '',
+        'migrationV2',
         'integration',
         'usage',
         'options',
