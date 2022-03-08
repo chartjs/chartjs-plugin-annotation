@@ -34,8 +34,8 @@ describe('Point annotation', function() {
           for (const angle of [0, 45, 90, 135, 180, 225, 270, 315]) {
             const rad = angle * (Math.PI / 180);
             const {x, y} = {
-              x: element.x + Math.cos(rad) * (radius + halfBorder - 1),
-              y: element.y + Math.sin(rad) * (radius + halfBorder - 1)
+              x: element.centerX + Math.cos(rad) * (radius + halfBorder - 1),
+              y: element.centerY + Math.sin(rad) * (radius + halfBorder - 1)
             };
             expect(element.inRange(x, y)).withContext(`angle: ${angle}, radius: ${radius}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
           }
@@ -50,8 +50,8 @@ describe('Point annotation', function() {
           for (const angle of [0, 45, 90, 135, 180, 225, 270, 315]) {
             const rad = angle * (Math.PI / 180);
             const {x, y} = {
-              x: element.x + Math.cos(rad) * (radius + halfBorder + 1),
-              y: element.y + Math.sin(rad) * (radius + halfBorder + 1)
+              x: element.centerX + Math.cos(rad) * (radius + halfBorder + 1),
+              y: element.centerY + Math.sin(rad) * (radius + halfBorder + 1)
             };
             expect(element.inRange(x, y)).withContext(`angle: ${angle}, radius: ${radius}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
           }
@@ -64,11 +64,11 @@ describe('Point annotation', function() {
         for (const borderWidth of [0, 10]) {
           const halfBorder = borderWidth / 2;
           element.options.borderWidth = borderWidth;
-          for (const x of [element.x - halfBorder, element.x + halfBorder]) {
-            expect(element.inRange(x, element.y)).toEqual(false);
+          for (const x of [element.centerX - halfBorder, element.centerX + halfBorder]) {
+            expect(element.inRange(x, element.centerY)).toEqual(false);
           }
-          for (const y of [element.y - halfBorder, element.y + halfBorder]) {
-            expect(element.inRange(element.x, y)).toEqual(false);
+          for (const y of [element.centerY - halfBorder, element.centerY + halfBorder]) {
+            expect(element.inRange(element.centerY, y)).toEqual(false);
           }
         }
       });

@@ -26,8 +26,8 @@ export function inBoxRange(mouseX, mouseY, {x, y, width, height}, borderWidth) {
 }
 
 export function getElementCenterPoint(element, useFinalPosition) {
-  const {x, y} = element.getProps(['x', 'y'], useFinalPosition);
-  return {x, y};
+  const {centerX, centerY} = element.getProps(['centerX', 'centerY'], useFinalPosition);
+  return {x: centerX, y: centerY};
 }
 
 const isOlderPart = (act, req) => req > act || (act.length > req.length && act.substr(0, req.length) === req);

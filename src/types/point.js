@@ -24,7 +24,7 @@ export default class PointAnnotation extends Element {
     setShadowStyle(ctx, options);
     const stroke = setBorderStyle(ctx, options);
     options.borderWidth = 0;
-    drawPoint(ctx, options, this.x, this.y);
+    drawPoint(ctx, options, this.centerX, this.centerY);
     if (stroke && !isImageOrCanvas(options.pointStyle)) {
       ctx.shadowColor = options.borderShadowColor;
       ctx.stroke();

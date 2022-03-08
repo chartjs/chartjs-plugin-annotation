@@ -108,7 +108,7 @@ describe('Polygon annotation', function() {
 
     elemsNoRad.forEach(function(element) {
       it(`should return false radius is 0 element '${element.options.id}'`, function() {
-        expect(element.inRange(element.x, element.y)).toEqual(false);
+        expect(element.inRange(element.centerX, element.centerY)).toEqual(false);
       });
     });
   });

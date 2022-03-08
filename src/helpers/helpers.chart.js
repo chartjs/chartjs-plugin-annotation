@@ -1,5 +1,4 @@
 import {isFinite} from 'chart.js/helpers';
-import {getRectCenterPoint} from './helpers.geometric';
 import {isBoundToPoint} from './helpers.options';
 
 /**
@@ -99,37 +98,42 @@ export function getChartRect(chart, options) {
 /**
  * @param {Chart} chart
  * @param {PointAnnotationOptions} options
- */
-export function getChartCircle(chart, options) {
-  const point = getChartPoint(chart, options);
-  return {
-    x: point.x + options.xAdjust,
-    y: point.y + options.yAdjust,
-    width: options.radius * 2,
-    height: options.radius * 2
-  };
-}
-
-/**
- * @param {Chart} chart
- * @param {PointAnnotationOptions} options
  * @returns
  */
 export function resolvePointPosition(chart, options) {
   if (!isBoundToPoint(options)) {
     const box = getChartRect(chart, options);
-    const point = getRectCenterPoint(box);
     let radius = options.radius;
     if (!radius || isNaN(radius)) {
       radius = Math.min(box.width, box.height) / 2;
       options.radius = radius;
     }
+    const size = radius * 2;
     return {
-      x: point.x + options.xAdjust,
-      y: point.y + options.yAdjust,
-      width: radius * 2,
-      height: radius * 2
+      x: box.x + options.xAdjust,
+      y: box.y + options.yAdjust,
+      x2: box.x + size + options.xAdjust,
+      y2: box.y + size + options.yAdjust,
+      centerX: box.centerX + options.xAdjust,
+      centerY: box.centerY + options.yAdjust,
+      width: size,
+      height: size
     };
   }
   return getChartCircle(chart, options);
+}
+
+function getChartCircle(chart, options) {
+  const point = getChartPoint(chart, options);
+  const size = options.radius * 2;
+  return {
+    x: point.x - options.radius + options.xAdjust,
+    y: point.y - options.radius + options.yAdjust,
+    x2: point.x + size + options.xAdjust,
+    y2: point.y + size + options.yAdjust,
+    centerX: point.x + options.xAdjust,
+    centerY: point.y + options.yAdjust,
+    width: size,
+    height: size
+  };
 }

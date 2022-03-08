@@ -38,7 +38,8 @@ export default class PolygonAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    const {x, y, width, height} = resolvePointPosition(chart, options);
+    const properties = resolvePointPosition(chart, options);
+    const {x, y, centerX, centerY} = properties;
     const {sides, radius, rotation, borderWidth} = options;
     const halfBorder = borderWidth / 2;
     const elements = [];
@@ -47,18 +48,23 @@ export default class PolygonAnnotation extends Element {
     for (let i = 0; i < sides; i++, rad += angle) {
       const sin = Math.sin(rad);
       const cos = Math.cos(rad);
+      const point = {x: centerX + sin * radius, y: centerY - cos * radius};
       elements.push({
         type: 'point',
         optionScope: 'point',
         properties: {
-          x: x + sin * radius,
-          y: y - cos * radius,
-          bX: x + sin * (radius + halfBorder),
-          bY: y - cos * (radius + halfBorder)
+          x: point.x,
+          y: point.y,
+          centerX: point.x,
+          centerY: point.y,
+          bX: centerX + sin * (radius + halfBorder),
+          bY: centerY - cos * (radius + halfBorder)
         }
       });
     }
-    return {x, y, width, height, elements, initProperties: {x, y}};
+    properties.elements = elements;
+    properties.initProperties = {x, y};
+    return properties;
   }
 }
 

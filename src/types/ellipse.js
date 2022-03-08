@@ -1,11 +1,15 @@
+import {Element} from 'chart.js';
 import {PI, toRadians} from 'chart.js/helpers';
-import {getChartRect, setBorderStyle, setShadowStyle, translate} from '../helpers';
-import BaseAnnotation from './base';
+import {getChartRect, setBorderStyle, setShadowStyle, translate, getElementCenterPoint} from '../helpers';
 
-export default class EllipseAnnotation extends BaseAnnotation {
+export default class EllipseAnnotation extends Element {
 
   inRange(mouseX, mouseY, useFinalPosition) {
     return pointInEllipse({x: mouseX, y: mouseY}, this.getProps(['width', 'height', 'centerX', 'centerY'], useFinalPosition), this.options.rotation, this.options.borderWidth);
+  }
+
+  getCenterPoint(useFinalPosition) {
+    return getElementCenterPoint(this, useFinalPosition);
   }
 
   draw(ctx) {
