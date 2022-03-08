@@ -13,9 +13,8 @@ export default class BoxAnnotation extends Element {
   }
 
   draw(ctx) {
-    const rotation = this.options.rotation;
     ctx.save();
-    translate(ctx, this, rotation);
+    translate(ctx, this, this.options.rotation);
     drawBox(ctx, this, this.options);
     ctx.restore();
   }
