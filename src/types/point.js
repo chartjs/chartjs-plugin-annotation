@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {drawPoint} from 'chart.js/helpers';
-import {inPointRange, getElementCenterPoint, resolvePointPosition, setBorderStyle, setShadowStyle, isImageOrCanvas} from '../helpers';
+import {inPointRange, getElementCenterPoint, resolvePointProperties, setBorderStyle, setShadowStyle, isImageOrCanvas} from '../helpers';
 
 export default class PointAnnotation extends Element {
 
@@ -34,7 +34,7 @@ export default class PointAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    return resolvePointPosition(chart, options);
+    return resolvePointProperties(chart, options);
   }
 }
 

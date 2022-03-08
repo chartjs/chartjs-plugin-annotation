@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, RAD_PER_DEG} from 'chart.js/helpers';
-import {setBorderStyle, resolvePointPosition, getElementCenterPoint, setShadowStyle} from '../helpers';
+import {setBorderStyle, resolvePointProperties, getElementCenterPoint, setShadowStyle} from '../helpers';
 
 export default class PolygonAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
@@ -38,7 +38,7 @@ export default class PolygonAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    const properties = resolvePointPosition(chart, options);
+    const properties = resolvePointProperties(chart, options);
     const {x, y} = properties;
     const {sides, rotation} = options;
     const elements = [];

@@ -68,7 +68,7 @@ export function getChartPoint(chart, options) {
  * @param {CoreAnnotationOptions} options
  * @returns {{x:number, y: number, x2: number, y2: number, centerX: number, centerY: number, width: number, height: number}}
  */
-export function resolveBoxPosition(chart, options) {
+export function resolveBoxProperties(chart, options) {
   const xScale = chart.scales[options.xScaleID];
   const yScale = chart.scales[options.yScaleID];
   let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
@@ -101,9 +101,29 @@ export function resolveBoxPosition(chart, options) {
  * @param {PointAnnotationOptions|PolygonAnnotationOptions} options
  * @returns {{x:number, y: number, x2: number, y2: number, centerX: number, centerY: number, width: number, height: number}}
  */
-export function resolvePointPosition(chart, options) {
+function getChartCircle(chart, options) {
+  const point = getChartPoint(chart, options);
+  const size = options.radius * 2;
+  return {
+    x: point.x - options.radius + options.xAdjust,
+    y: point.y - options.radius + options.yAdjust,
+    x2: point.x + size + options.xAdjust,
+    y2: point.y + size + options.yAdjust,
+    centerX: point.x + options.xAdjust,
+    centerY: point.y + options.yAdjust,
+    width: size,
+    height: size
+  };
+}
+
+/**
+ * @param {Chart} chart
+ * @param {PointAnnotationOptions|PolygonAnnotationOptions} options
+ * @returns {{x:number, y: number, x2: number, y2: number, centerX: number, centerY: number, width: number, height: number}}
+ */
+export function resolvePointProperties(chart, options) {
   if (!isBoundToPoint(options)) {
-    const box = resolveBoxPosition(chart, options);
+    const box = resolveBoxProperties(chart, options);
     let radius = options.radius;
     if (!radius || isNaN(radius)) {
       radius = Math.min(box.width, box.height) / 2;
@@ -122,24 +142,4 @@ export function resolvePointPosition(chart, options) {
     };
   }
   return getChartCircle(chart, options);
-}
-
-/**
- * @param {Chart} chart
- * @param {PointAnnotationOptions|PolygonAnnotationOptions} options
- * @returns {{x:number, y: number, x2: number, y2: number, centerX: number, centerY: number, width: number, height: number}}
- */
-function getChartCircle(chart, options) {
-  const point = getChartPoint(chart, options);
-  const size = options.radius * 2;
-  return {
-    x: point.x - options.radius + options.xAdjust,
-    y: point.y - options.radius + options.yAdjust,
-    x2: point.x + size + options.xAdjust,
-    y2: point.y + size + options.yAdjust,
-    centerX: point.x + options.xAdjust,
-    centerY: point.y + options.yAdjust,
-    width: size,
-    height: size
-  };
 }

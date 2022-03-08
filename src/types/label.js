@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {drawBox, drawLabel, measureLabelSize, getChartPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, resolveBoxPosition, getRelativePosition, translate, rotated, getElementCenterPoint} from '../helpers';
+import {drawBox, drawLabel, measureLabelSize, getChartPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, resolveBoxProperties, getRelativePosition, translate, rotated, getElementCenterPoint} from '../helpers';
 import {toPadding, toRadians, distanceBetweenPoints} from 'chart.js/helpers';
 
 export default class LabelAnnotation extends Element {
@@ -30,7 +30,7 @@ export default class LabelAnnotation extends Element {
   resolveElementProperties(chart, options) {
     let point;
     if (!isBoundToPoint(options)) {
-      const {centerX, centerY} = resolveBoxPosition(chart, options);
+      const {centerX, centerY} = resolveBoxProperties(chart, options);
       point = {x: centerX, y: centerY};
     } else {
       point = getChartPoint(chart, options);
