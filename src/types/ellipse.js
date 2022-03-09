@@ -16,7 +16,7 @@ export default class EllipseAnnotation extends Element {
     const {width, height, centerX, centerY, options} = this;
 
     ctx.save();
-    translate(ctx, this, options.rotation);
+    translate(ctx, this.getCenterPoint(), options.rotation);
     setShadowStyle(ctx, this.options);
     ctx.beginPath();
     ctx.fillStyle = options.backgroundColor;

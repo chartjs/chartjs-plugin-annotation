@@ -14,7 +14,7 @@ export default class BoxAnnotation extends Element {
 
   draw(ctx) {
     ctx.save();
-    translate(ctx, this, this.options.rotation);
+    translate(ctx, this.getCenterPoint(), this.options.rotation);
     drawBox(ctx, this, this.options);
     ctx.restore();
   }
@@ -34,7 +34,7 @@ export default class BoxAnnotation extends Element {
     };
 
     ctx.save();
-    translate(ctx, this, label.rotation);
+    translate(ctx, this.getCenterPoint(), label.rotation);
     ctx.beginPath();
     ctx.rect(x + halfBorder + padding.left, y + halfBorder + padding.top,
       width - borderWidth - padding.width, height - borderWidth - padding.height);

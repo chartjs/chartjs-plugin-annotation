@@ -19,7 +19,7 @@ export default class LabelAnnotation extends Element {
       return;
     }
     ctx.save();
-    translate(ctx, this, options.rotation);
+    translate(ctx, this.getCenterPoint(), options.rotation);
     drawCallout(ctx, this);
     drawBox(ctx, this, options);
     drawLabel(ctx, getLabelSize(this), options);

@@ -7,7 +7,7 @@ import {isBoundToPoint} from './helpers.options';
  * @typedef { import("chart.js").Point } Point
  * @typedef { import('../../types/options').CoreAnnotationOptions } CoreAnnotationOptions
  * @typedef { import('../../types/options').PointAnnotationOptions } PointAnnotationOptions
- * @typedef { import('../../types/options').PointAnnotationOptions } PolygonAnnotationOptions
+ * @typedef { import('../../types/options').PolygonAnnotationOptions } PolygonAnnotationOptions
  */
 
 /**

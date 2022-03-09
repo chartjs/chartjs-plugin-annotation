@@ -131,7 +131,7 @@ export default class LineAnnotation extends Element {
     const {labelX, labelY, labelCenterX, labelCenterY, labelWidth, labelHeight, labelRotation, labelPadding, labelTextSize, options: {label}} = this;
 
     ctx.save();
-    translate(ctx, {centerX: labelCenterX, centerY: labelCenterY}, labelRotation);
+    translate(ctx, {x: labelCenterX, y: labelCenterY}, labelRotation);
 
     const boxRect = {
       x: labelX,
