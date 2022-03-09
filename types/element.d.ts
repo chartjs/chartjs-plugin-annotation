@@ -5,5 +5,9 @@ export interface AnnotationElement {
   y: number,
   x2: number,
   y2: number,
+  centerX: number,
+  centerY: number,
+  height: number,
+  width: number,
   options: AnnotationOptions
 }

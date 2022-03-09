@@ -5,7 +5,7 @@ import {drawBox, drawLabel, getRelativePosition, measureLabelSize, resolveBoxPro
 export default class BoxAnnotation extends Element {
   inRange(mouseX, mouseY, useFinalPosition) {
     const {x, y} = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.options.rotation));
-    return inBoxRange(x, y, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), this.options.borderWidth);
+    return inBoxRange(x, y, this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), this.options.borderWidth);
   }
 
   getCenterPoint(useFinalPosition) {
