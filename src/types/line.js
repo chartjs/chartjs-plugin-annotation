@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
-import {PI, toRadians, toPadding} from 'chart.js/helpers';
-import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle} from '../helpers';
+import {PI, toRadians, toDegrees, toPadding} from 'chart.js/helpers';
+import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, translate, getElementCenterPoint} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
@@ -86,13 +86,11 @@ export default class LineAnnotation extends Element {
     if (!this.labelIsVisible(useFinalPosition)) {
       return false;
     }
-    const {labelX, labelY, labelWidth, labelHeight, labelRotation} = this.getProps(['labelX', 'labelY', 'labelWidth', 'labelHeight', 'labelRotation'], useFinalPosition);
-    const {x, y} = rotated({x: mouseX, y: mouseY}, {x: labelX, y: labelY}, -labelRotation);
+    const {labelX, labelY, labelX2, labelY2, labelCenterX, labelCenterY, labelRotation} = this.getProps(['labelX', 'labelY', 'labelX2', 'labelY2', 'labelCenterX', 'labelCenterY', 'labelRotation'], useFinalPosition);
+    const {x, y} = rotated({x: mouseX, y: mouseY}, {x: labelCenterX, y: labelCenterY}, -toRadians(labelRotation));
     const hBorderWidth = this.options.label.borderWidth / 2 || 0;
-    const w2 = labelWidth / 2 + hBorderWidth;
-    const h2 = labelHeight / 2 + hBorderWidth;
-    return x >= labelX - w2 - defaultEpsilon && x <= labelX + w2 + defaultEpsilon &&
-      y >= labelY - h2 - defaultEpsilon && y <= labelY + h2 + defaultEpsilon;
+    return x >= labelX - hBorderWidth - defaultEpsilon && x <= labelX2 + hBorderWidth + defaultEpsilon &&
+      y >= labelY - hBorderWidth - defaultEpsilon && y <= labelY2 + hBorderWidth + defaultEpsilon;
   }
 
   inRange(mouseX, mouseY, useFinalPosition) {
@@ -100,11 +98,8 @@ export default class LineAnnotation extends Element {
     return this.intersects(mouseX, mouseY, epsilon, useFinalPosition) || this.isOnLabel(mouseX, mouseY, useFinalPosition);
   }
 
-  getCenterPoint() {
-    return {
-      x: (this.x2 + this.x) / 2,
-      y: (this.y2 + this.y) / 2
-    };
+  getCenterPoint(useFinalPosition) {
+    return getElementCenterPoint(this, useFinalPosition);
   }
 
   draw(ctx) {
@@ -136,23 +131,22 @@ export default class LineAnnotation extends Element {
     if (!this.labelIsVisible(false, chartArea)) {
       return;
     }
-    const {labelX, labelY, labelWidth, labelHeight, labelRotation, labelPadding, labelTextSize, options: {label}} = this;
+    const {labelX, labelY, labelCenterX, labelCenterY, labelWidth, labelHeight, labelRotation, labelPadding, labelTextSize, options: {label}} = this;
 
     ctx.save();
-    ctx.translate(labelX, labelY);
-    ctx.rotate(labelRotation);
+    translate(ctx, {centerX: labelCenterX, centerY: labelCenterY}, labelRotation);
 
     const boxRect = {
-      x: -(labelWidth / 2),
-      y: -(labelHeight / 2),
+      x: labelX,
+      y: labelY,
       width: labelWidth,
       height: labelHeight
     };
     drawBox(ctx, boxRect, label);
 
     const labelTextRect = {
-      x: -(labelWidth / 2) + labelPadding.left + label.borderWidth / 2,
-      y: -(labelHeight / 2) + labelPadding.top + label.borderWidth / 2,
+      x: labelX + labelPadding.left + label.borderWidth / 2,
+      y: labelY + labelPadding.top + label.borderWidth / 2,
       width: labelTextSize.width,
       height: labelTextSize.height
     };
@@ -193,6 +187,8 @@ export default class LineAnnotation extends Element {
     const properties = inside
       ? limitLineToArea({x, y}, {x: x2, y: y2}, chart.chartArea)
       : {x, y, x2, y2, width: Math.abs(x2 - x), height: Math.abs(y2 - y)};
+    properties.centerX = (x2 + x) / 2;
+    properties.centerY = (y2 + y) / 2;
 
     const label = options.label;
     if (label && label.content) {
@@ -305,26 +301,30 @@ LineAnnotation.defaultRoutes = {
   borderColor: 'color'
 };
 
-function loadLabelRect(line, chart, options) {
+function loadLabelRect(properties, chart, options) {
   // TODO: v2 remove support for xPadding and yPadding
   const {padding: lblPadding, xPadding, yPadding, borderWidth} = options;
   const padding = getPadding(lblPadding, xPadding, yPadding);
   const textSize = measureLabelSize(chart.ctx, options);
   const width = textSize.width + padding.width + borderWidth;
   const height = textSize.height + padding.height + borderWidth;
-  const labelRect = calculateLabelPosition(line, options, {width, height, padding}, chart.chartArea);
-  line.labelX = labelRect.x;
-  line.labelY = labelRect.y;
-  line.labelWidth = labelRect.width;
-  line.labelHeight = labelRect.height;
-  line.labelRotation = labelRect.rotation;
-  line.labelPadding = padding;
-  line.labelTextSize = textSize;
-  return line;
+  const labelRect = calculateLabelPosition(properties, options, {width, height, padding}, chart.chartArea);
+  properties.labelX = labelRect.x;
+  properties.labelY = labelRect.y;
+  properties.labelX2 = labelRect.x2;
+  properties.labelY2 = labelRect.y2;
+  properties.labelCenterX = labelRect.centerX;
+  properties.labelCenterY = labelRect.centerY;
+  properties.labelWidth = labelRect.width;
+  properties.labelHeight = labelRect.height;
+  properties.labelRotation = toDegrees(labelRect.rotation);
+  properties.labelPadding = padding;
+  properties.labelTextSize = textSize;
+  return properties;
 }
 
-function calculateAutoRotation(line) {
-  const {x, y, x2, y2} = line;
+function calculateAutoRotation(properties) {
+  const {x, y, x2, y2} = properties;
   const rotation = Math.atan2(y2 - y, x2 - x);
   // Flip the rotation if it goes > PI/2 or < -PI/2, so label stays upright
   return rotation > PI / 2 ? rotation - PI : rotation < PI / -2 ? rotation + PI : rotation;
@@ -339,21 +339,26 @@ function getPadding(padding, xPadding, yPadding) {
   return toPadding(tempPadding);
 }
 
-function calculateLabelPosition(line, label, sizes, chartArea) {
+function calculateLabelPosition(properties, label, sizes, chartArea) {
   const {width, height, padding} = sizes;
   const {xAdjust, yAdjust} = label;
-  const p1 = {x: line.x, y: line.y};
-  const p2 = {x: line.x2, y: line.y2};
-  const rotation = label.rotation === 'auto' ? calculateAutoRotation(line) : toRadians(label.rotation);
+  const p1 = {x: properties.x, y: properties.y};
+  const p2 = {x: properties.x2, y: properties.y2};
+  const rotation = label.rotation === 'auto' ? calculateAutoRotation(properties) : toRadians(label.rotation);
   const size = rotatedSize(width, height, rotation);
-  const t = calculateT(line, label, {labelSize: size, padding}, chartArea);
+  const t = calculateT(properties, label, {labelSize: size, padding}, chartArea);
   const pt = pointInLine(p1, p2, t);
   const xCoordinateSizes = {size: size.w, min: chartArea.left, max: chartArea.right, padding: padding.left};
   const yCoordinateSizes = {size: size.h, min: chartArea.top, max: chartArea.bottom, padding: padding.top};
-
+  const centerX = adjustLabelCoordinate(pt.x, xCoordinateSizes) + xAdjust;
+  const centerY = adjustLabelCoordinate(pt.y, yCoordinateSizes) + yAdjust;
   return {
-    x: adjustLabelCoordinate(pt.x, xCoordinateSizes) + xAdjust,
-    y: adjustLabelCoordinate(pt.y, yCoordinateSizes) + yAdjust,
+    x: centerX - (width / 2),
+    y: centerY - (height / 2),
+    x2: centerX + (width / 2),
+    y2: centerY + (height / 2),
+    centerX,
+    centerY,
     width,
     height,
     rotation
@@ -369,13 +374,13 @@ function rotatedSize(width, height, rotation) {
   };
 }
 
-function calculateT(line, label, sizes, chartArea) {
+function calculateT(properties, label, sizes, chartArea) {
   let t;
-  const space = spaceAround(line, chartArea);
+  const space = spaceAround(properties, chartArea);
   if (label.position === 'start') {
-    t = calculateTAdjust({w: line.x2 - line.x, h: line.y2 - line.y}, sizes, label, space);
+    t = calculateTAdjust({w: properties.x2 - properties.x, h: properties.y2 - properties.y}, sizes, label, space);
   } else if (label.position === 'end') {
-    t = 1 - calculateTAdjust({w: line.x - line.x2, h: line.y - line.y2}, sizes, label, space);
+    t = 1 - calculateTAdjust({w: properties.x - properties.x2, h: properties.y - properties.y2}, sizes, label, space);
   } else {
     t = getRelativePosition(1, label.position);
   }
@@ -391,8 +396,8 @@ function calculateTAdjust(lineSize, sizes, label, space) {
   return clamp(Math.max(x, y), 0, 0.25);
 }
 
-function spaceAround(line, chartArea) {
-  const {x, x2, y, y2} = line;
+function spaceAround(properties, chartArea) {
+  const {x, x2, y, y2} = properties;
   const t = Math.min(y, y2) - chartArea.top;
   const l = Math.min(x, x2) - chartArea.left;
   const b = chartArea.bottom - Math.max(y, y2);
