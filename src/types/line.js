@@ -1,12 +1,11 @@
 import {Element} from 'chart.js';
 import {PI, toRadians, toDegrees, toPadding} from 'chart.js/helpers';
-import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, translate, getElementCenterPoint} from '../helpers';
+import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, translate, getElementCenterPoint, inBoxRange} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
 const sqr = v => v * v;
-const defaultEpsilon = 0.001;
 
 function isLineInArea({x, y, x2, y2}, {top, right, bottom, left}) {
   return !(
@@ -46,7 +45,7 @@ function limitLineToArea(p1, p2, area) {
 export default class LineAnnotation extends Element {
 
   // TODO: make private in v2
-  intersects(x, y, epsilon = defaultEpsilon, useFinalPosition) {
+  intersects(x, y, epsilon = 0.001, useFinalPosition) {
     // Adapted from https://stackoverflow.com/a/6853926/25507
     const {x: x1, y: y1, x2, y2} = this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition);
     const dx = x2 - x1;
@@ -88,9 +87,7 @@ export default class LineAnnotation extends Element {
     }
     const {labelX, labelY, labelX2, labelY2, labelCenterX, labelCenterY, labelRotation} = this.getProps(['labelX', 'labelY', 'labelX2', 'labelY2', 'labelCenterX', 'labelCenterY', 'labelRotation'], useFinalPosition);
     const {x, y} = rotated({x: mouseX, y: mouseY}, {x: labelCenterX, y: labelCenterY}, -toRadians(labelRotation));
-    const hBorderWidth = this.options.label.borderWidth / 2 || 0;
-    return x >= labelX - hBorderWidth - defaultEpsilon && x <= labelX2 + hBorderWidth + defaultEpsilon &&
-      y >= labelY - hBorderWidth - defaultEpsilon && y <= labelY2 + hBorderWidth + defaultEpsilon;
+    return inBoxRange(x, y, {x: labelX, y: labelY, x2: labelX2, y2: labelY2}, this.options.label.borderWidth);
   }
 
   inRange(mouseX, mouseY, useFinalPosition) {
