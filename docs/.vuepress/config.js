@@ -82,7 +82,6 @@ module.exports = {
     sidebar: {
       '/guide/': [
         '',
-        'migrationV2',
         'integration',
         'usage',
         'options',
@@ -98,7 +97,8 @@ module.exports = {
             'types/point',
             'types/polygon'
           ]
-        }
+        },
+        'migrationV2'
       ],
       '/samples/': [
         'intro',
