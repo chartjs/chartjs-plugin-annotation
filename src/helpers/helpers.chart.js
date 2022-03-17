@@ -34,7 +34,7 @@ export function retrieveScaleID(scales, options, key) {
   }
   const axis = key.charAt(0);
   const axes = Object.values(scales).filter((scale) => scale.axis && scale.axis === axis);
-  if (axes.length === 1) {
+  if (axes.length) {
     return axes[0].id;
   }
   return axis;
