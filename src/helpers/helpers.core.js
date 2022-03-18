@@ -30,7 +30,7 @@ export function getElementCenterPoint(element, useFinalPosition) {
   return {x, y};
 }
 
-const isOlderPart = (act, req) => req > act || (act.length > req.length && act.substr(0, req.length) === req);
+const isOlderPart = (act, req) => req > act || (act.length > req.length && act.slice(0, req.length) === req);
 
 export function requireVersion(pkg, min, ver, strict = true) {
   const parts = ver.split('.');
