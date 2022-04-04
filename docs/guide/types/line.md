@@ -156,9 +156,7 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `textStrokeWidth` | `number` | `0` | Stroke width around the text.
 | `width` | `number`\|`string` | `undefined` | Overrides the width of the image or canvas element. Could be set in pixel by a number, or in percentage of current width of image or canvas element by a string. If undefined, uses the width of the image or canvas element. It is used only when the content is an image or canvas element.
 | `xAdjust` | `number` | `0` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
-| `xPadding` | `number` | `6` | Padding of label to add left/right. This is **deprecated**. Use `padding`.
 | `yAdjust` | `number` | `0` | Adjustment along y-axis (top-bottom) of label relative to computed position. Negative values move the label up, positive down.
-| `yPadding` | `number` | `6` | Padding of label to add top/bottom. This is **deprecated**. Use `padding`.
 
 ### borderRadius
 
