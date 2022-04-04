@@ -1,4 +1,4 @@
-import { Color, PointStyle, BorderRadius } from 'chart.js';
+import { Color, PointStyle, BorderRadius, CoreInteractionOptions } from 'chart.js';
 import { AnnotationEvents, PartialEventContext } from './events';
 import { LabelOptions, BoxLabelOptions, LabelTypeOptions } from './label';
 
@@ -157,9 +157,10 @@ interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationPoin
 }
 
 export interface AnnotationPluginOptions extends AnnotationEvents {
+  animations?: Record<string, unknown>,
   annotations: AnnotationOptions[] | Record<string, AnnotationOptions>,
   clip?: boolean,
   dblClickSpeed?: Scriptable<number, PartialEventContext>,
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
-  animations?: Record<string, unknown>,
+  interaction?: CoreInteractionOptions
 }
