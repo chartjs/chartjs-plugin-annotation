@@ -12,6 +12,6 @@ A number of changes were made to the configuration options passed to the plugin 
 
 ## Events
 
-`chartjs-plugin-annotation` plugin version 2 introduces the `interaction` options, to configure which events trigger annotation interactions. By default, the plugin uses the [chart interaction configuration](https://www.chartjs.org/docs/latest/configuration/interactions.html#interactions).
+`chartjs-plugin-annotation` plugin version 2 introduces the [`interaction`](options#interaction) options, to configure which events trigger annotation interactions. By default, the plugin uses the [chart interaction configuration](https://www.chartjs.org/docs/latest/configuration/interactions.html#interactions).
 
  * When [scatter charts](https://www.chartjs.org/docs/latest/charts/scatter.html) are used, the interaction default `mode` in Chart.js is `point`, while, in the previous plugin version, the default was `nearest`.
