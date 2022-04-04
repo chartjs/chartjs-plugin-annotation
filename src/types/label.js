@@ -91,16 +91,18 @@ LabelAnnotation.defaults = {
   shadowOffsetX: 0,
   shadowOffsetY: 0,
   textAlign: 'center',
+  textStrokeColor: undefined,
+  textStrokeWidth: 0,
   width: undefined,
   xAdjust: 0,
   xMax: undefined,
   xMin: undefined,
-  xScaleID: 'x',
+  xScaleID: undefined,
   xValue: undefined,
   yAdjust: 0,
   yMax: undefined,
   yMin: undefined,
-  yScaleID: 'y',
+  yScaleID: undefined,
   yValue: undefined
 };
 
@@ -127,7 +129,7 @@ function calculatePosition(start, size, adjust = 0, position) {
 
 function drawCallout(ctx, element) {
   const {pointX, pointY, calloutPosition, options} = element;
-  if (element.inRange(pointX, pointY)) {
+  if (!calloutPosition || element.inRange(pointX, pointY)) {
     return;
   }
   const callout = options.callout;

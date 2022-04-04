@@ -88,6 +88,6 @@ const actions = [
 
 module.exports = {
   actions: actions,
-  config: config,
+  config: config
 };
 ```

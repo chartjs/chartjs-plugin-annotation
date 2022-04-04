@@ -68,10 +68,10 @@ The following options are available for line annotations. All of these options c
 | [`value`](#positioning) | `number` | Yes | `undefined`
 | [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`xScaleID`](#positioning) | `string` | Yes | `'x'`
+| [`xScaleID`](#positioning) | `string` | Yes | `undefined`
 | [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yScaleID`](#positioning) | `string` | Yes | `'y'`
+| [`yScaleID`](#positioning) | `string` | Yes | `undefined`
 
 ### General
 
@@ -103,10 +103,10 @@ If `scaleID` is unset, then `xScaleID` and `yScaleID` are used to draw a line fr
 | `value` | End one of the line when a single scale is specified.
 | `xMax` | X coordinate of end two of the line in units along the x axis.
 | `xMin` | X coordinate of end one of the line in units along the x axis.
-| `xScaleID` | ID of the X scale to bind onto, default is 'x'.
+| `xScaleID` | ID of the X scale to bind onto. If missing, the plugin will try to use the scale of the chart, configured as `'x'` axis. If more than one scale has been defined in the chart as `'x'` axis, the option is mandatory to select the right scale.
 | `yMax` | Y coordinate of end two of the line in units along the y axis.
 | `yMin` | Y coordinate of end one of the line in units along the y axis.
-| `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
+| `yScaleID` | ID of the Y scale to bind onto. If missing, the plugin will try to use the scale of the chart, configured as `'y'` axis. If more than one scale has been defined in the chart as `'y'` axis, the option is mandatory to select the right scale.
 
 ### Styling
 
@@ -135,7 +135,7 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `borderColor` | [`Color`](../options#color) | `black` | The border line color.
 | `borderDash` | `number[]` | `[]` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | `number` | `0` | Offset for border line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
-| `borderJoinStyle` | `string` | `'miter'` | Border line joint style. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
+| `borderJoinStyle` | `string` | `'miter'` | Border line join style. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
 | [`borderRadius`](#borderradius) | `number` \| `object` | `6` | Radius of label box corners in pixels.
 | `borderShadowColor` | [`Color`](../options#color) | `'transparent'` | The color of border shadow of the box where the label is located. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderWidth` | `number` | `0` | The border line width (in pixels).
@@ -152,6 +152,8 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `shadowOffsetX` | `number` | `0` | The distance that shadow, of the box where the label is located, will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
 | `shadowOffsetY` | `number` | `0` | The distance that shadow, of the box where the label is located, will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
 | `textAlign` | `string` | `'center'` | Text alignment of label content when there's more than one line. Possible options are: `'start'`, `'center'`, `'end'`.
+| `textStrokeColor` | [`Color`](../options#color) | `undefined` | The color of the stroke around the text.
+| `textStrokeWidth` | `number` | `0` | Stroke width around the text.
 | `width` | `number`\|`string` | `undefined` | Overrides the width of the image or canvas element. Could be set in pixel by a number, or in percentage of current width of image or canvas element by a string. If undefined, uses the width of the image or canvas element. It is used only when the content is an image or canvas element.
 | `xAdjust` | `number` | `0` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
 | `xPadding` | `number` | `6` | Padding of label to add left/right. This is **deprecated**. Use `padding`.
@@ -177,7 +179,7 @@ All of these options can be [Scriptable](../options#scriptable-options)
 
 Enabling it, you can add arrow heads at start and/or end of a line. It uses the `borderWidth` of the line options to configure the line width of the arrow head.
 
-The following options are available for can be specified per (`start` and/or `end`) arrow head, or at the top level (`arrowHeads`) which apply to all arrow heads.
+The following options can be specified per (`start` and/or `end`) arrow head, or at the top level (`arrowHeads`) which apply to all arrow heads.
 
 All of these options can be [Scriptable](../options#scriptable-options)
 
