@@ -1,4 +1,4 @@
-import { Color, PointStyle, BorderRadius } from 'chart.js';
+import { Color, PointStyle, BorderRadius, CoreInteractionOptions } from 'chart.js';
 import { AnnotationEvents, PartialEventContext } from './events';
 import { LabelOptions, BoxLabelOptions, LabelTypeOptions } from './label';
 
@@ -39,8 +39,7 @@ export interface CoreAnnotationOptions extends AnnotationEvents, ShadowOptions {
   scaleID?: Scriptable<string, PartialEventContext>,
   value?: Scriptable<number|string, PartialEventContext>,
   xScaleID?: Scriptable<string, PartialEventContext>,
-  yScaleID?: Scriptable<string, PartialEventContext>,
-  yPadding?: Scriptable<number, PartialEventContext>
+  yScaleID?: Scriptable<string, PartialEventContext>
 }
 
 export type Scriptable<T, TContext> = T | ((ctx: TContext, options: AnnotationOptions) => T);
@@ -102,11 +101,6 @@ export interface BoxAnnotationOptions extends CoreAnnotationOptions, AnnotationC
    */
   borderJoinStyle?: Scriptable<CanvasLineJoin, PartialEventContext>,
   borderRadius?: Scriptable<number | BorderRadius, PartialEventContext>,
-  /**
-   * @deprecated replaced by borderRadius
-   * @todo remove at v2
-   */
-  cornerRadius?: Scriptable<number, PartialEventContext>,
   label?: BoxLabelOptions,
   rotation?: Scriptable<number, PartialEventContext>
 }
@@ -158,9 +152,10 @@ interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationPoin
 }
 
 export interface AnnotationPluginOptions extends AnnotationEvents {
+  animations?: Record<string, unknown>,
   annotations: AnnotationOptions[] | Record<string, AnnotationOptions>,
   clip?: boolean,
   dblClickSpeed?: Scriptable<number, PartialEventContext>,
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
-  animations?: Record<string, unknown>,
+  interaction?: CoreInteractionOptions
 }

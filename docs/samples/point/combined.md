@@ -37,6 +37,7 @@ const annotation1 = {
     end: {
       display: true,
       fill: true,
+      borderDash: [],
       borderColor: 'green'
     }
   },

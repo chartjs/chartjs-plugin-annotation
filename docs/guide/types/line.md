@@ -68,10 +68,10 @@ The following options are available for line annotations. All of these options c
 | [`value`](#positioning) | `number` | Yes | `undefined`
 | [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`xScaleID`](#positioning) | `string` | Yes | `'x'`
+| [`xScaleID`](#positioning) | `string` | Yes | `undefined`
 | [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yScaleID`](#positioning) | `string` | Yes | `'y'`
+| [`yScaleID`](#positioning) | `string` | Yes | `undefined`
 
 ### General
 
@@ -103,10 +103,10 @@ If `scaleID` is unset, then `xScaleID` and `yScaleID` are used to draw a line fr
 | `value` | End one of the line when a single scale is specified.
 | `xMax` | X coordinate of end two of the line in units along the x axis.
 | `xMin` | X coordinate of end one of the line in units along the x axis.
-| `xScaleID` | ID of the X scale to bind onto, default is 'x'.
+| `xScaleID` | ID of the X scale to bind onto. If missing, the plugin will try to use the scale of the chart, configured as `'x'` axis. If more than one scale has been defined in the chart as `'x'` axis, the option is mandatory to select the right scale.
 | `yMax` | Y coordinate of end two of the line in units along the y axis.
 | `yMin` | Y coordinate of end one of the line in units along the y axis.
-| `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
+| `yScaleID` | ID of the Y scale to bind onto. If missing, the plugin will try to use the scale of the chart, configured as `'y'` axis. If more than one scale has been defined in the chart as `'y'` axis, the option is mandatory to select the right scale.
 
 ### Styling
 
@@ -156,9 +156,7 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `textStrokeWidth` | `number` | `0` | Stroke width around the text.
 | `width` | `number`\|`string` | `undefined` | Overrides the width of the image or canvas element. Could be set in pixel by a number, or in percentage of current width of image or canvas element by a string. If undefined, uses the width of the image or canvas element. It is used only when the content is an image or canvas element.
 | `xAdjust` | `number` | `0` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
-| `xPadding` | `number` | `6` | Padding of label to add left/right. This is **deprecated**. Use `padding`.
 | `yAdjust` | `number` | `0` | Adjustment along y-axis (top-bottom) of label relative to computed position. Negative values move the label up, positive down.
-| `yPadding` | `number` | `6` | Padding of label to add top/bottom. This is **deprecated**. Use `padding`.
 
 ### borderRadius
 

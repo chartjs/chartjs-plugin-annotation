@@ -1,6 +1,4 @@
 module.exports = {
-  threshold: 0.2,
-  tolerance: 0.0071,
   config: {
     type: 'scatter',
     options: {
@@ -108,5 +106,8 @@ module.exports = {
         }
       }
     }
+  },
+  options: {
+    spriteText: true
   }
 };
