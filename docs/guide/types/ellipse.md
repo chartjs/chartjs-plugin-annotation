@@ -67,10 +67,10 @@ The following options are available for ellipse annotations.
 | [`shadowOffsetY`](#styling) | `number` | Yes | `0`
 | [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`xScaleID`](#general) | `string` | Yes | `'x'`
+| [`xScaleID`](#general) | `string` | Yes | `undefined`
 | [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yScaleID`](#general) | `string` | Yes | `'y'`
+| [`yScaleID`](#general) | `string` | Yes | `undefined`
 
 ### General
 
@@ -81,13 +81,13 @@ If one of the axes does not match an axis in the chart, the ellipse will take th
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
 | `display` | Whether or not this annotation is visible.
 | `drawTime` | See [drawTime](../options#draw-time).
-| `rotation` | Rotatation of the ellipse in degrees, default is 0.
+| `rotation` | Rotation of the ellipse in degrees, default is 0.
 | `xMax` | Right edge of the ellipse in units along the x axis.
 | `xMin` | Left edge of the ellipse in units along the x axis.
-| `xScaleID` | ID of the X scale to bind onto, default is 'x'.
+| `xScaleID` | ID of the X scale to bind onto. If missing, the plugin will try to use the scale of the chart, configured as `'x'` axis. If more than one scale has been defined in the chart as `'x'` axis, the option is mandatory to select the right scale.
 | `yMax` | Bottom edge of the ellipse in units along the y axis.
 | `yMin` | Top edge of the ellipse in units along the y axis.
-| `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
+| `yScaleID` | ID of the Y scale to bind onto. If missing, the plugin will try to use the scale of the chart, configured as `'y'` axis. If more than one scale has been defined in the chart as `'y'` axis, the option is mandatory to select the right scale.
 
 ### Styling
 

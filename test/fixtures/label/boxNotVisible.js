@@ -5,6 +5,7 @@ module.exports = {
     options: {
       scales: {
         x: {
+          display: false,
           labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
         },
         y: {
@@ -18,25 +19,25 @@ module.exports = {
           annotations: {
             text1: {
               type: 'label',
-              xValue: 'January',
-              yValue: 20,
+              xValue: 'April',
+              yValue: 4,
+              content: 'no borderWidth, no backgroundColor'
+            },
+            text2: {
+              type: 'label',
+              xValue: 'April',
+              yValue: 12,
               backgroundColor: 'missing',
               borderWidth: 0,
-              content: 'This is my text',
-              position: {
-                x: 'end'
-              }
+              content: ['borderWidth: 0, wrong backgroundColor', 'use default fill style: #000 (black)']
             },
             text3: {
               type: 'label',
-              xValue: 'May',
+              xValue: 'April',
               yValue: 20,
               backgroundColor: 'rgba(250,250,250,0)',
               borderWidth: 0,
-              content: 'This is my text',
-              position: {
-                x: 'start'
-              }
+              content: 'borderWidth: 0, backgroundColor: rgba(250,250,250,0)'
             }
           }
         }

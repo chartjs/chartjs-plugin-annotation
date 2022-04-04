@@ -1,11 +1,12 @@
-import {drawBox, drawLabel, measureLabelSize, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, getChartRect, getRelativePosition} from '../helpers';
-import {color, toPadding} from 'chart.js/helpers';
+import {drawBox, drawLabel, measureLabelSize, getChartPoint, getRectCenterPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, getChartRect, getRelativePosition, translate, rotated} from '../helpers';
+import {toPadding, toRadians, distanceBetweenPoints} from 'chart.js/helpers';
 import {Element} from 'chart.js';
 
 export default class LabelAnnotation extends Element {
 
   inRange(mouseX, mouseY, useFinalPosition) {
-    return inBoxRange(mouseX, mouseY, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), this.options.borderWidth);
+    const {x, y} = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.options.rotation));
+    return inBoxRange(x, y, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), this.options.borderWidth);
   }
 
   getCenterPoint(useFinalPosition) {
@@ -17,11 +18,12 @@ export default class LabelAnnotation extends Element {
       return;
     }
     const {labelX, labelY, labelWidth, labelHeight, options} = this;
+    ctx.save();
+    translate(ctx, this, options.rotation);
     drawCallout(ctx, this);
-    if (this.boxVisible) {
-      drawBox(ctx, this, options);
-    }
+    drawBox(ctx, this, options);
     drawLabel(ctx, {x: labelX, y: labelY, width: labelWidth, height: labelHeight}, options);
+    ctx.restore();
   }
 
   // TODO: make private in v2
@@ -30,20 +32,17 @@ export default class LabelAnnotation extends Element {
     const padding = toPadding(options.padding);
     const labelSize = measureLabelSize(chart.ctx, options);
     const boxSize = measureRect(point, labelSize, options, padding);
-    const bgColor = color(options.backgroundColor);
-    const boxVisible = options.borderWidth > 0 || (bgColor && bgColor.valid && bgColor.rgb.a > 0);
-
+    const hBorderWidth = options.borderWidth / 2;
     const properties = {
-      boxVisible,
       pointX: point.x,
       pointY: point.y,
       ...boxSize,
-      labelX: boxSize.x + padding.left + (options.borderWidth / 2),
-      labelY: boxSize.y + padding.top + (options.borderWidth / 2),
+      labelX: boxSize.x + padding.left + hBorderWidth,
+      labelY: boxSize.y + padding.top + hBorderWidth,
       labelWidth: labelSize.width,
       labelHeight: labelSize.height
     };
-    properties.calloutPosition = options.callout.enabled && resolveCalloutPosition(properties, options.callout);
+    properties.calloutPosition = options.callout.enabled && resolveCalloutPosition(properties, options.callout, options.rotation);
     return properties;
   }
 }
@@ -87,20 +86,23 @@ LabelAnnotation.defaults = {
   height: undefined,
   padding: 6,
   position: 'center',
+  rotation: 0,
   shadowBlur: 0,
   shadowOffsetX: 0,
   shadowOffsetY: 0,
   textAlign: 'center',
+  textStrokeColor: undefined,
+  textStrokeWidth: 0,
   width: undefined,
   xAdjust: 0,
   xMax: undefined,
   xMin: undefined,
-  xScaleID: 'x',
+  xScaleID: undefined,
   xValue: undefined,
   yAdjust: 0,
   yMax: undefined,
   yMin: undefined,
-  yScaleID: 'y',
+  yScaleID: undefined,
   yValue: undefined
 };
 
@@ -127,7 +129,7 @@ function calculatePosition(start, size, adjust = 0, position) {
 
 function drawCallout(ctx, element) {
   const {pointX, pointY, calloutPosition, options} = element;
-  if (!calloutPosition) {
+  if (!calloutPosition || element.inRange(pointX, pointY)) {
     return;
   }
   const callout = options.callout;
@@ -146,7 +148,8 @@ function drawCallout(ctx, element) {
   }
   ctx.moveTo(sideStart.x, sideStart.y);
   ctx.lineTo(sideEnd.x, sideEnd.y);
-  ctx.lineTo(pointX, pointY);
+  const rotatedPoint = rotated({x: pointX, y: pointY}, element.getCenterPoint(), toRadians(-options.rotation));
+  ctx.lineTo(rotatedPoint.x, rotatedPoint.y);
   ctx.stroke();
   ctx.restore();
 }
@@ -201,25 +204,31 @@ function getCalloutSideAdjust(position, options) {
   return side;
 }
 
-function resolveCalloutPosition(element, options) {
+function resolveCalloutPosition(properties, options, rotation) {
   const position = options.position;
   if (position === 'left' || position === 'right' || position === 'top' || position === 'bottom') {
     return position;
   }
-  return resolveCalloutAutoPosition(element, options);
+  return resolveCalloutAutoPosition(properties, options, rotation);
 }
 
-function resolveCalloutAutoPosition(element, options) {
-  const {x, y, width, height, pointX, pointY} = element;
-  const {margin, side} = options;
-  const adjust = margin + side;
-  if (pointX < (x - adjust)) {
-    return 'left';
-  } else if (pointX > (x + width + adjust)) {
-    return 'right';
-  } else if (pointY < (y - adjust)) {
-    return 'top';
-  } else if (pointY > (y + height + adjust)) {
-    return 'bottom';
+const positions = ['left', 'bottom', 'top', 'right'];
+
+function resolveCalloutAutoPosition(properties, options, rotation) {
+  const {x, y, width, height, pointX, pointY} = properties;
+  const center = {x: x + width / 2, y: y + height / 2};
+  const start = options.start;
+  const xAdjust = getSize(width, start);
+  const yAdjust = getSize(height, start);
+  const xPoints = [x, x + xAdjust, x + xAdjust, x + width];
+  const yPoints = [y + yAdjust, y + height, y, y + yAdjust];
+  const result = [];
+  for (let index = 0; index < 4; index++) {
+    const rotatedPoint = rotated({x: xPoints[index], y: yPoints[index]}, center, toRadians(rotation));
+    result.push({
+      position: positions[index],
+      distance: distanceBetweenPoints(rotatedPoint, {x: pointX, y: pointY})
+    });
   }
+  return result.sort((a, b) => a.distance - b.distance)[0].position;
 }

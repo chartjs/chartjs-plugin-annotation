@@ -22,6 +22,25 @@ export function scaleValue(scale, value, fallback) {
 }
 
 /**
+ * @param {Object} scales - chartjs object with all scales
+ * @param {Object} options - plugin options
+ * @param {string} key - annotation plugin scale id option key
+ * @returns {string} the unique scale defined in chartjs or the key passed as argument
+ */
+export function retrieveScaleID(scales, options, key) {
+  const scaleID = options[key];
+  if (scaleID || key === 'scaleID') {
+    return scaleID;
+  }
+  const axis = key.charAt(0);
+  const axes = Object.values(scales).filter((scale) => scale.axis && scale.axis === axis);
+  if (axes.length) {
+    return axes[0].id;
+  }
+  return axis;
+}
+
+/**
  * @param {Scale} scale
  * @param {{min: number, max: number, start: number, end: number}} options
  * @returns {{start: number, end: number}|undefined}
@@ -58,8 +77,8 @@ function getChartDimensionByScale(scale, options) {
  */
 export function getChartPoint(chart, options) {
   const {chartArea, scales} = chart;
-  const xScale = scales[options.xScaleID];
-  const yScale = scales[options.yScaleID];
+  const xScale = scales[retrieveScaleID(scales, options, 'xScaleID')];
+  const yScale = scales[retrieveScaleID(scales, options, 'yScaleID')];
   let x = chartArea.width / 2;
   let y = chartArea.height / 2;
 
@@ -79,8 +98,9 @@ export function getChartPoint(chart, options) {
  * @returns {{x?:number, y?: number, x2?: number, y2?: number, width?: number, height?: number}}
  */
 export function getChartRect(chart, options) {
-  const xScale = chart.scales[options.xScaleID];
-  const yScale = chart.scales[options.yScaleID];
+  const scales = chart.scales;
+  const xScale = scales[retrieveScaleID(scales, options, 'xScaleID')];
+  const yScale = scales[retrieveScaleID(scales, options, 'yScaleID')];
 
   if (!xScale && !yScale) {
     return {};

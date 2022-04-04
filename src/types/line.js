@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, toRadians, toPadding, valueOrDefault} from 'chart.js/helpers';
-import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, getDimensionByScale} from '../helpers';
+import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, retrieveScaleID, getDimensionByScale} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
@@ -176,8 +176,9 @@ export default class LineAnnotation extends Element {
         area.y2 = max;
       }
     } else {
-      const xScale = chart.scales[options.xScaleID];
-      const yScale = chart.scales[options.yScaleID];
+      const xScale = chart.scales[retrieveScaleID(chart.scales, options, 'xScaleID')];
+      const yScale = chart.scales[retrieveScaleID(chart.scales, options, 'yScaleID')];
+
       if (xScale) {
         applyScaleValueToDimension(area, xScale, {min: options.xMin, max: options.xMax, start: xScale.left, end: xScale.right, startProp: 'x', endProp: 'x2'});
       }
@@ -266,6 +267,8 @@ LineAnnotation.defaults = {
     shadowOffsetX: 0,
     shadowOffsetY: 0,
     textAlign: 'center',
+    textStrokeColor: undefined,
+    textStrokeWidth: 0,
     width: undefined,
     xAdjust: 0,
     xPadding: undefined, // TODO: v2 remove support for xPadding
@@ -279,10 +282,10 @@ LineAnnotation.defaults = {
   value: undefined,
   xMax: undefined,
   xMin: undefined,
-  xScaleID: 'x',
+  xScaleID: undefined,
   yMax: undefined,
   yMin: undefined,
-  yScaleID: 'y'
+  yScaleID: undefined
 };
 
 LineAnnotation.descriptors = {

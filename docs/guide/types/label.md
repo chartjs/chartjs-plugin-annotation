@@ -73,20 +73,23 @@ The following options are available for label annotations.
 | [`height`](#general) | `number`\|`string` | Yes | `undefined`
 | [`padding`](#general) | [`Padding`](../options#padding) | Yes | `6`
 | [`position`](#position) | `string`\|`{x: string, y: string}` | Yes | `'center'`
+| [`rotation`](#general) | `number`| Yes | `0`
 | [`shadowBlur`](#styling) | `number` | Yes | `0`
 | [`shadowOffsetX`](#styling) | `number` | Yes | `0`
 | [`shadowOffsetY`](#styling) | `number` | Yes | `0`
 | [`textAlign`](#general) | `string` | Yes | `'center'`
+| [`textStrokeColor`](#styling) | [`Color`](../options#color) | Yes | `undefined`
+| [`textStrokeWidth`](#styling) | `number` | Yes | `0`
 | [`width`](#general) | `number`\|`string` | Yes | `undefined`
 | [`xAdjust`](#general) | `number` | Yes | `0`
 | [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`xScaleID`](#general) | `string` | Yes | `'x'`
+| [`xScaleID`](#general) | `string` | Yes | `undefined`
 | [`xValue`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yAdjust`](#general) | `number` | Yes | `0`
 | [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yScaleID`](#general) | `string` | Yes | `'y'`
+| [`yScaleID`](#general) | `string` | Yes | `undefined`
 | [`yValue`](#general) | `number` \| `string` | Yes | `undefined`
 
 ### General
@@ -103,17 +106,18 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | `drawTime` | See [drawTime](../options#draw-time).
 | `height` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
 | `padding` | The padding to add around the text label.
+| `rotation` | Rotation of the label in degrees.
 | `textAlign` | Text alignment of label content when there's more than one line. Possible options are: `'left'`, `'start'`, `'center'`, `'end'`, `'right'`.
 | `width` | Overrides the width of the image or canvas element. Could be set in pixel by a number, or in percentage of current width of image or canvas element by a string. If undefined, uses the width of the image or canvas element. It is used only when the content is an image or canvas element.
 | `xAdjust` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
 | `xMax` | Right edge of the box in units along the x axis.
 | `xMin` | Left edge of the box in units along the x axis.
-| `xScaleID` | ID of the X scale to bind onto, default is 'x'.
+| `xScaleID` | ID of the X scale to bind onto. If missing, the plugin will try to use the scale of the chart, configured as `'x'` axis. If more than one scale has been defined in the chart as `'x'` axis, the option is mandatory to select the right scale.
 | `xValue` | X coordinate of the point in units along the x axis.
 | `yAdjust` | Adjustment along y-axis (top-bottom) of label relative to computed position. Negative values move the label up, positive down.
 | `yMax` | Bottom edge of the box in units along the y axis.
 | `yMin` | Top edge of the box in units along the y axis.
-| `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
+| `yScaleID` | ID of the Y scale to bind onto. If missing, the plugin will try to use the scale of the chart, configured as `'y'` axis. If more than one scale has been defined in the chart as `'y'` axis, the option is mandatory to select the right scale.
 | `yValue` | Y coordinate of the point in units along the y axis.
 
 ### Styling
@@ -126,7 +130,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | `borderColor` | Stroke color.
 | `borderDash` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | Offset for border line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
-| `borderJoinStyle` | Border line joint style. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
+| `borderJoinStyle` | Border line join style. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
 | `borderShadowColor` | The color of the border shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderWidth` | Stroke width (in pixels).
 | `color` | Text color.
@@ -134,6 +138,8 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | `shadowBlur` | The amount of blur applied to shadow of the box where the label is located. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
 | `shadowOffsetX` | The distance that shadow, of the box where the label is located, will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
 | `shadowOffsetY` | The distance that shadow, of the box where the label is located, will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
+| `textStrokeColor` | The color of the stroke around the text.
+| `textStrokeWidth` | Stroke width around the text.
 
 ### Position
 
@@ -216,7 +222,7 @@ All of these options can be [Scriptable](../options#scriptable-options).
 | `borderColor` | [`Color`](../options#color) | `undefined` | Stroke color of the pointer of the callout.
 | `borderDash` | `number[]` | `[]` | Length and spacing of dashes of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | `number` | `0` | Offset for line dashes of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
-| `borderJoinStyle` | `string` | `'miter'` | Border line joint style of the callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
+| `borderJoinStyle` | `string` | `'miter'` | Border line join style of the callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
 | `borderWidth` | `number` | `1` | Stroke width of the pointer of the callout.
 | `enabled` | `boolean` | `false` | If true, the callout is drawn.
 | `margin` | `number` | `5` | Amount of pixels between the label and the callout separator.
