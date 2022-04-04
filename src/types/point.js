@@ -4,9 +4,15 @@ import {inPointRange, getElementCenterPoint, resolvePointPosition, setBorderStyl
 
 export default class PointAnnotation extends Element {
 
-  inRange(mouseX, mouseY, useFinalPosition) {
-    const {width} = this.getProps(['width'], useFinalPosition);
-    return inPointRange({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), width / 2, this.options.borderWidth);
+  inRange(mouseX, mouseY, axis, useFinalPosition) {
+    const {x, y, width, height} = this.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
+    const borderWidth = this.options.borderWidth;
+    if (axis !== 'x' && axis !== 'y') {
+      return inPointRange({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), width / 2, borderWidth);
+    }
+    const hBorderWidth = borderWidth / 2;
+    const limit = axis === 'y' ? {start: y, size: height, value: mouseY} : {start: x, size: width, value: mouseX};
+    return limit.value >= limit.start - limit.size / 2 - hBorderWidth && limit.value <= limit.start + limit.size / 2 + hBorderWidth;
   }
 
   getCenterPoint(useFinalPosition) {

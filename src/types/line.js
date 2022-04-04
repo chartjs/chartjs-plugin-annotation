@@ -1,12 +1,11 @@
 import {Element} from 'chart.js';
 import {PI, toRadians, toPadding, valueOrDefault} from 'chart.js/helpers';
-import {clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, retrieveScaleID, getDimensionByScale} from '../helpers';
+import {EPSILON, clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, retrieveScaleID, getDimensionByScale} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
 const sqr = v => v * v;
-const defaultEpsilon = 0.001;
 
 function isLineInArea({x, y, x2, y2}, {top, right, bottom, left}) {
   return !(
@@ -46,7 +45,7 @@ function limitLineToArea(p1, p2, area) {
 export default class LineAnnotation extends Element {
 
   // TODO: make private in v2
-  intersects(x, y, epsilon = defaultEpsilon, useFinalPosition) {
+  intersects(x, y, epsilon = EPSILON, useFinalPosition) {
     // Adapted from https://stackoverflow.com/a/6853926/25507
     const {x: x1, y: y1, x2, y2} = this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition);
     const dx = x2 - x1;
@@ -82,7 +81,7 @@ export default class LineAnnotation extends Element {
   }
 
   // TODO: make private in v2
-  isOnLabel(mouseX, mouseY, useFinalPosition) {
+  isOnLabel(mouseX, mouseY, useFinalPosition, axis) {
     if (!this.labelIsVisible(useFinalPosition)) {
       return false;
     }
@@ -91,13 +90,25 @@ export default class LineAnnotation extends Element {
     const hBorderWidth = this.options.label.borderWidth / 2 || 0;
     const w2 = labelWidth / 2 + hBorderWidth;
     const h2 = labelHeight / 2 + hBorderWidth;
-    return x >= labelX - w2 - defaultEpsilon && x <= labelX + w2 + defaultEpsilon &&
-      y >= labelY - h2 - defaultEpsilon && y <= labelY + h2 + defaultEpsilon;
+    const inRangeX = x >= labelX - w2 - EPSILON && x <= labelX + w2 + EPSILON;
+    const inRangeY = y >= labelY - h2 - EPSILON && y <= labelY + h2 + EPSILON;
+    if (axis === 'x') {
+      return inRangeX;
+    } else if (axis === 'y') {
+      return inRangeY;
+    }
+    return inRangeX && inRangeY;
   }
 
-  inRange(mouseX, mouseY, useFinalPosition) {
-    const epsilon = sqr(this.options.borderWidth / 2);
-    return this.intersects(mouseX, mouseY, epsilon, useFinalPosition) || this.isOnLabel(mouseX, mouseY, useFinalPosition);
+  inRange(mouseX, mouseY, axis, useFinalPosition) {
+    const hBorderWidth = this.options.borderWidth / 2;
+    if (axis !== 'x' && axis !== 'y') {
+      const epsilon = sqr(hBorderWidth);
+      return this.intersects(mouseX, mouseY, epsilon, useFinalPosition) || this.isOnLabel(mouseX, mouseY, useFinalPosition);
+    }
+    const {x, y, x2, y2} = this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition);
+    const limit = axis === 'y' ? {start: Math.min(y, y2), end: Math.max(y, y2), value: mouseY} : {start: Math.min(x, x2), end: Math.max(x, x2), value: mouseX};
+    return (limit.value >= limit.start - hBorderWidth && limit.value <= limit.end + hBorderWidth) || this.isOnLabel(mouseX, mouseY, useFinalPosition, axis);
   }
 
   getCenterPoint() {
