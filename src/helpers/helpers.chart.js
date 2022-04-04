@@ -42,21 +42,31 @@ export function retrieveScaleID(scales, options, key) {
 
 /**
  * @param {Scale} scale
- * @param {{start: number, end: number}} options
+ * @param {{min: number, max: number, start: number, end: number}} options
+ * @returns {{start: number, end: number}|undefined}
+ */
+export function getDimensionByScale(scale, options) {
+  if (scale) {
+    const reverse = scale.options.reverse;
+    const start = scaleValue(scale, options.min, reverse ? options.end : options.start);
+    const end = scaleValue(scale, options.max, reverse ? options.start : options.end);
+    return {
+      start,
+      end
+    };
+  }
+}
+
+/**
+ * @param {Scale} scale
+ * @param {{min: number, max: number, start: number, end: number}} options
  * @returns {{start: number, end: number}}
  */
 function getChartDimensionByScale(scale, options) {
-  if (scale) {
-    const min = scaleValue(scale, options.min, options.start);
-    const max = scaleValue(scale, options.max, options.end);
-    return {
-      start: Math.min(min, max),
-      end: Math.max(min, max)
-    };
-  }
+  const result = getDimensionByScale(scale, options) || options;
   return {
-    start: options.start,
-    end: options.end
+    start: Math.min(result.start, result.end),
+    end: Math.max(result.start, result.end)
   };
 }
 
@@ -73,11 +83,11 @@ export function getChartPoint(chart, options) {
   let y = chartArea.height / 2;
 
   if (xScale) {
-    x = scaleValue(xScale, options.xValue, x);
+    x = scaleValue(xScale, options.xValue, xScale.left + xScale.width / 2);
   }
 
   if (yScale) {
-    y = scaleValue(yScale, options.yValue, y);
+    y = scaleValue(yScale, options.yValue, yScale.top + yScale.height / 2);
   }
   return {x, y};
 }
@@ -91,16 +101,17 @@ export function getChartRect(chart, options) {
   const scales = chart.scales;
   const xScale = scales[retrieveScaleID(scales, options, 'xScaleID')];
   const yScale = scales[retrieveScaleID(scales, options, 'yScaleID')];
-  let {top: y, left: x, bottom: y2, right: x2} = chart.chartArea;
 
   if (!xScale && !yScale) {
     return {};
   }
 
+  let {left: x, right: x2} = xScale || chart.chartArea;
+  let {top: y, bottom: y2} = yScale || chart.chartArea;
   const xDim = getChartDimensionByScale(xScale, {min: options.xMin, max: options.xMax, start: x, end: x2});
   x = xDim.start;
   x2 = xDim.end;
-  const yDim = getChartDimensionByScale(yScale, {min: options.yMin, max: options.yMax, start: y, end: y2});
+  const yDim = getChartDimensionByScale(yScale, {min: options.yMin, max: options.yMax, start: y2, end: y});
   y = yDim.start;
   y2 = yDim.end;
 
