@@ -4,8 +4,17 @@ import {calculateTextAlignment, getSize} from './helpers.options';
 
 const widthCache = new Map();
 
+/**
+ * Determine if content is an image or a canvas.
+ * @param {*} content
+ * @returns boolean|undefined
+ * @todo move this function to chart.js helpers
+ */
 export function isImageOrCanvas(content) {
-  return content instanceof Image || content instanceof HTMLCanvasElement;
+  if (content && typeof content === 'object') {
+    const type = content.toString();
+    return (type === '[object HTMLImageElement]' || type === '[object HTMLCanvasElement]');
+  }
 }
 
 /**
@@ -68,8 +77,9 @@ export function measureLabelSize(ctx, options) {
     };
   }
   const font = toFont(options.font);
+  const strokeWidth = options.textStrokeWidth;
   const lines = isArray(content) ? content : [content];
-  const mapKey = lines.join() + font.string + (ctx._measureText ? '-spriting' : '');
+  const mapKey = lines.join() + font.string + strokeWidth + (ctx._measureText ? '-spriting' : '');
   if (!widthCache.has(mapKey)) {
     ctx.save();
     ctx.font = font.string;
@@ -77,10 +87,10 @@ export function measureLabelSize(ctx, options) {
     let width = 0;
     for (let i = 0; i < count; i++) {
       const text = lines[i];
-      width = Math.max(width, ctx.measureText(text).width);
+      width = Math.max(width, ctx.measureText(text).width + strokeWidth);
     }
     ctx.restore();
-    const height = count * font.lineHeight;
+    const height = count * font.lineHeight + strokeWidth;
     widthCache.set(mapKey, {width, height});
   }
   return widthCache.get(mapKey);
@@ -114,6 +124,13 @@ export function drawBox(ctx, rect, options) {
   ctx.restore();
 }
 
+/**
+ * Draw a label with the size and the styling options.
+ * @param {CanvasRenderingContext2D} ctx - chart canvas context
+ * @param {{x: number, y: number, width: number, height: number}} rect - rect to map teh label
+ * @param {Object} options - options to style the label
+ * @returns {undefined}
+ */
 export function drawLabel(ctx, rect, options) {
   const content = options.content;
   if (isImageOrCanvas(content)) {
@@ -124,10 +141,26 @@ export function drawLabel(ctx, rect, options) {
   const font = toFont(options.font);
   const lh = font.lineHeight;
   const x = calculateTextAlignment(rect, options);
-  const y = rect.y + (lh / 2);
+  const y = rect.y + (lh / 2) + options.textStrokeWidth / 2;
+  ctx.save();
   ctx.font = font.string;
   ctx.textBaseline = 'middle';
   ctx.textAlign = options.textAlign;
+  if (setTextStrokeStyle(ctx, options)) {
+    labels.forEach((l, i) => ctx.strokeText(l, x, y + (i * lh)));
+  }
   ctx.fillStyle = options.color;
   labels.forEach((l, i) => ctx.fillText(l, x, y + (i * lh)));
+  ctx.restore();
+}
+
+function setTextStrokeStyle(ctx, options) {
+  if (options.textStrokeWidth > 0) {
+    // https://stackoverflow.com/questions/13627111/drawing-text-with-an-outer-stroke-with-html5s-canvas
+    ctx.lineJoin = 'round';
+    ctx.miterLimit = 2;
+    ctx.lineWidth = options.textStrokeWidth;
+    ctx.strokeStyle = options.textStrokeColor;
+    return true;
+  }
 }

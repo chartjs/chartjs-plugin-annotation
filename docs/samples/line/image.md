@@ -1,4 +1,4 @@
-# Basic
+# Using images as labels
 
 ```js chart-editor
 // <block:setup:2>
@@ -29,7 +29,16 @@ const annotation = {
   borderColor: 'black',
   borderWidth: 3,
   scaleID: 'y',
-  value: 50
+  value: 50,
+  label: {
+    enabled: true,
+    content: Utils.getImage(),
+    backgroundColor: 'white',
+    borderWidth: 3,
+    width: '20%',
+    height: '20%',
+    position: 'end'
+  }
 };
 // </block:annotation>
 
@@ -38,11 +47,6 @@ const config = {
   type: 'line',
   data,
   options: {
-    scales: {
-      y: {
-        stacked: true
-      }
-    },
     plugins: {
       annotation: {
         annotations: {

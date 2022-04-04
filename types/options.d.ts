@@ -107,7 +107,8 @@ export interface BoxAnnotationOptions extends CoreAnnotationOptions, AnnotationC
    * @todo remove at v2
    */
   cornerRadius?: Scriptable<number, PartialEventContext>,
-  label?: BoxLabelOptions
+  label?: BoxLabelOptions,
+  rotation?: Scriptable<number, PartialEventContext>
 }
 
 export interface EllipseAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
@@ -141,7 +142,8 @@ export interface CalloutOptions {
 }
 
 export interface LabelAnnotationOptions extends CoreAnnotationOptions, LabelTypeOptions, AnnotationPointCoordinates {
-  callout?: CalloutOptions;
+  callout?: CalloutOptions,
+  rotation?: Scriptable<number, PartialEventContext>
 }
 
 interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationPointCoordinates {
