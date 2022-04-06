@@ -120,7 +120,6 @@ export default {
       },
     },
     clip: true,
-    dblClickSpeed: 350, // ms
     drawTime: 'afterDatasetsDraw',
     interaction: {
       mode: undefined,

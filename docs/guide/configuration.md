@@ -10,7 +10,6 @@ The following options are available at the top level. They apply to all annotati
 | ---- | ---- | :----: | ---- | ----
 | [`animations`](#animations) | `object` | No | [see here](#default-animations) | To configure which element properties are animated and how.
 | `clip` | `boolean` | No | `true` | Are the annotations clipped to the chartArea.
-| `dblClickSpeed` | `number` | Yes | `350` | Time to detect a double click in ms.
 | `drawTime` | `string` | Yes | `'afterDatasetsDraw'` | See [drawTime](options#draw-time).
 | [`interaction`](options#interaction) | `Object` | No | `options.interaction` | To configure which events trigger plugin interactions
 
@@ -65,6 +64,5 @@ The following options are available for all annotation types. These options can 
 | Name | Type | [Scriptable](options#scriptable-options) | Notes
 | ---- | ---- | :----: | ----
 | `click` | `(context, event) => void` | No | Called when a single click occurs on the annotation.
-| `dblClick` | `(context, event) => void` | No | Called when a double click occurs on the annotation.
 | `enter` | `(context, event) => void` | No | Called when the mouse enters the annotation.
 | `leave` | `(context, event) => void` | No | Called when the mouse leaves the annotation.

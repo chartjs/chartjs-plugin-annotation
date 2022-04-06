@@ -93,28 +93,5 @@ describe('Common', function() {
         });
       });
     });
-
-    it('should detect a click event even if 2 clicks are fired', function(done) {
-      const dblClickSpy = jasmine.createSpy('dblclick');
-      annotation.dblclick = dblClickSpy;
-
-      const chart = window.scatterChart(10, 10, {annotation});
-      const eventPoint = window.getCenterPoint(chart);
-
-      let dblClick = false;
-      window.afterEvent(chart, 'click', function() {
-        if (!dblClick) {
-          dblClick = true;
-          setTimeout(() => {
-            window.triggerMouseEvent(chart, 'click', eventPoint);
-          }, 500);
-        } else {
-          expect(dblClickSpy.calls.count()).toBe(0);
-          delete annotation.dblclick;
-          done();
-        }
-      });
-      window.triggerMouseEvent(chart, 'click', eventPoint);
-    });
   });
 });

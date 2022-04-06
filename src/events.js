@@ -1,7 +1,7 @@
 import {defined, callback} from 'chart.js/helpers';
 import {getElements} from './interaction';
 
-const clickHooks = ['click', 'dblclick'];
+const clickHooks = ['click'];
 const moveHooks = ['enter', 'leave'];
 export const hooks = clickHooks.concat(moveHooks);
 
@@ -93,24 +93,7 @@ function handleClickEvents(state, event, options) {
   const listeners = state.listeners;
   const elements = getElements(state, event, options.interaction);
   for (const element of elements) {
-    const elOpts = element.options;
-    const dblclick = elOpts.dblclick || listeners.dblclick;
-    const click = elOpts.click || listeners.click;
-    if (element.clickTimeout) {
-      // 2nd click before timeout, so its a double click
-      clearTimeout(element.clickTimeout);
-      delete element.clickTimeout;
-      dispatchEvent(dblclick, element, event);
-    } else if (dblclick) {
-      // if there is a dblclick handler, wait for dblClickSpeed ms before deciding its a click
-      element.clickTimeout = setTimeout(() => {
-        delete element.clickTimeout;
-        dispatchEvent(click, element, event);
-      }, options.dblClickSpeed);
-    } else {
-      // no double click handler, just call the click handler directly
-      dispatchEvent(click, element, event);
-    }
+    dispatchEvent(element.options.click || listeners.click, element, event);
   }
 }
 
