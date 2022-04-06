@@ -21,7 +21,7 @@ module.exports = {
               label: {
                 backgroundColor: 'red',
                 content: 'should be drawn',
-                enabled: true
+                display: true
               }
             }
           }

@@ -112,4 +112,64 @@ describe('Polygon annotation', function() {
       });
     });
   });
+
+  describe('interaction', function() {
+    const rotated = window.helpers.rotated;
+
+    for (const rotation of [0, 90, 180, 270]) {
+      const outer = {
+        type: 'polygon',
+        xValue: 5,
+        yValue: 5,
+        radius: 50,
+        sides: 4,
+        borderWidth: 1,
+        rotation
+      };
+      const inner = {
+        type: 'polygon',
+        xValue: 5,
+        yValue: 5,
+        radius: 25,
+        sides: 4,
+        borderWidth: 1,
+        rotation
+      };
+
+      const chart = window.scatterChart(10, 10, {outer, inner});
+      const state = window['chartjs-plugin-annotation']._getState(chart);
+      const interactionOpts = {};
+      const outerEl = window.getAnnotationElements(chart)[0];
+      const innerEl = window.getAnnotationElements(chart)[1];
+
+      it('should return the right amount of annotation elements', function() {
+        for (const interaction of window.interactionData) {
+          const mode = interaction.mode;
+          interactionOpts.mode = mode;
+          for (const axis of Object.keys(interaction.axes)) {
+            interactionOpts.axis = axis;
+            [true, false].forEach(function(intersect) {
+              interactionOpts.intersect = intersect;
+              const elementsCounts = interaction.axes[axis].intersect[intersect];
+              const points = [{x: outerEl.x, y: outerEl.centerY, el: outerEl},
+                {x: innerEl.x, y: innerEl.centerY, el: innerEl},
+                {x: innerEl.centerX, y: innerEl.centerY, el: innerEl},
+                {x: innerEl.x2 + 1, y: innerEl.centerY, el: innerEl},
+                {x: outerEl.x2 + 1, y: outerEl.centerY, el: outerEl},
+                {x: outerEl.x + 1, y: outerEl.y - 1, el: outerEl}];
+
+              for (let i = 0; i < points.length; i++) {
+                const point = points[i];
+                const elementsCount = elementsCounts[i];
+                const {x, y} = rotated(point, point.el.getCenterPoint(), rotation / 180 * Math.PI);
+                const elements = state._getElements(state, {x, y}, interactionOpts);
+                expect(elements.length).withContext(`with rotation ${rotation}, interaction mode ${mode}, axis ${axis}, intersect ${intersect}, {x: ${point.x.toFixed(1)}, y: ${point.y.toFixed(1)}`).toEqual(elementsCount);
+              }
+            });
+          }
+        }
+      });
+    }
+  });
+
 });

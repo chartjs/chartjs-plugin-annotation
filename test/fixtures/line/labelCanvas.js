@@ -34,7 +34,7 @@ module.exports = {
                 content: window.createCanvas,
                 width: '25%',
                 height: '25%',
-                enabled: true
+                display: true
               },
             },
           }

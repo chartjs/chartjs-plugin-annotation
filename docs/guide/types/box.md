@@ -71,10 +71,10 @@ The following options are available for box annotations.
 | [`shadowOffsetY`](#styling) | `number` | Yes | `0`
 | [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`xScaleID`](#general) | `string` | Yes | `'x'`
+| [`xScaleID`](#general) | `string` | Yes | `undefined`
 | [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yScaleID`](#general) | `string` | Yes | `'y'`
+| [`yScaleID`](#general) | `string` | Yes | `undefined`
 
 ### General
 
@@ -88,10 +88,10 @@ If one of the axes does not match an axis in the chart, the box will take the en
 | `rotation` | Rotation of the box in degrees.
 | `xMax` | Right edge of the box in units along the x axis.
 | `xMin` | Left edge of the box in units along the x axis.
-| `xScaleID` | ID of the X scale to bind onto, default is 'x'.
+| `xScaleID` | ID of the X scale to bind onto. If missing, the plugin will try to use the scale of the chart, configured as `'x'` axis. If more than one scale has been defined in the chart as `'x'` axis, the option is mandatory to select the right scale.
 | `yMax` | Bottom edge of the box in units along the y axis.
 | `yMin` | Top edge of the box in units along the y axis.
-| `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
+| `yScaleID` | ID of the Y scale to bind onto. If missing, the plugin will try to use the scale of the chart, configured as `'y'` axis. If more than one scale has been defined in the chart as `'y'` axis, the option is mandatory to select the right scale.
 
 ### Styling
 
@@ -125,8 +125,8 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | ---- | ---- | :----: | ----
 | `color` | [`Color`](../options#color) | `'black'` | Text color.
 | `content` | `string`\|`string[]`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image)\|[`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) | `null` | The content to show in the label.
+| `display` | `boolean` | `false` | Whether or not the label is shown.
 | `drawTime` | `string` | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the box annotation draw time if unset
-| `enabled` | `boolean` | `false` | Whether or not the label is shown.
 | `font` | [`Font`](../options#font) | `{ weight: 'bold' }` | Label font
 | `height` | `number`\|`string` | `undefined` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
 | `padding` | [`Padding`](../options#padding) | `6` | The padding to add around the text label.

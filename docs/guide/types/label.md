@@ -84,17 +84,17 @@ The following options are available for label annotations.
 | [`xAdjust`](#general) | `number` | Yes | `0`
 | [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`xScaleID`](#general) | `string` | Yes | `'x'`
+| [`xScaleID`](#general) | `string` | Yes | `undefined`
 | [`xValue`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yAdjust`](#general) | `number` | Yes | `0`
 | [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yScaleID`](#general) | `string` | Yes | `'y'`
+| [`yScaleID`](#general) | `string` | Yes | `undefined`
 | [`yValue`](#general) | `number` \| `string` | Yes | `undefined`
 
 ### General
 
-If one of the axes does not match an axis in the chart, the content will be rendered in the center of the chart. The 2 coordinates, xValue, yValue are optional. If not specified, the content will be rendered in the center of the chart.
+If one of the axes does not match an axis in the chart, the content will be rendered in the center of the chart. The 2 coordinates, xValue, yValue are optional. If not specified, the content will be rendered in the center of the scale dimension.
 
 The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges in the respective direction and the box size is used to calculated the center of the point. To enable to use the box positioning, the `radius` must be set to `0` or `NaN`.
 
@@ -112,12 +112,12 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | `xAdjust` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
 | `xMax` | Right edge of the box in units along the x axis.
 | `xMin` | Left edge of the box in units along the x axis.
-| `xScaleID` | ID of the X scale to bind onto, default is 'x'.
+| `xScaleID` | ID of the X scale to bind onto. If missing, the plugin will try to use the scale of the chart, configured as `'x'` axis. If more than one scale has been defined in the chart as `'x'` axis, the option is mandatory to select the right scale.
 | `xValue` | X coordinate of the point in units along the x axis.
 | `yAdjust` | Adjustment along y-axis (top-bottom) of label relative to computed position. Negative values move the label up, positive down.
 | `yMax` | Bottom edge of the box in units along the y axis.
 | `yMin` | Top edge of the box in units along the y axis.
-| `yScaleID` | ID of the Y scale to bind onto, default is 'y'.
+| `yScaleID` | ID of the Y scale to bind onto. If missing, the plugin will try to use the scale of the chart, configured as `'y'` axis. If more than one scale has been defined in the chart as `'y'` axis, the option is mandatory to select the right scale.
 | `yValue` | Y coordinate of the point in units along the y axis.
 
 ### Styling
@@ -182,7 +182,7 @@ const options = {
             size: 18
           },
           callout: {
-            enabled: true,
+            display: true,
             side: 10
           }
         }
@@ -224,7 +224,7 @@ All of these options can be [Scriptable](../options#scriptable-options).
 | `borderDashOffset` | `number` | `0` | Offset for line dashes of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
 | `borderJoinStyle` | `string` | `'miter'` | Border line join style of the callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
 | `borderWidth` | `number` | `1` | Stroke width of the pointer of the callout.
-| `enabled` | `boolean` | `false` | If true, the callout is drawn.
+| `display` | `boolean` | `false` | If true, the callout is drawn.
 | `margin` | `number` | `5` | Amount of pixels between the label and the callout separator.
 | `position` | `string` | `'auto'` | The position of callout, with respect to the label. Could be `left`, `top`, `right`, `bottom` or `auto`.
 | `side` | `number` | `5` | Width of the starter line of callout pointer.

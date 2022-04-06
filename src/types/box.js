@@ -3,9 +3,10 @@ import {toPadding, toRadians} from 'chart.js/helpers';
 import {drawBox, drawLabel, getRelativePosition, measureLabelSize, resolveBoxProperties, toPosition, inBoxRange, rotated, translate, getElementCenterPoint} from '../helpers';
 
 export default class BoxAnnotation extends Element {
-  inRange(mouseX, mouseY, useFinalPosition) {
+
+  inRange(mouseX, mouseY, axis, useFinalPosition) {
     const {x, y} = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.options.rotation));
-    return inBoxRange(x, y, this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), this.options.borderWidth);
+    return inBoxRange({x, y}, this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis, this.options.borderWidth);
   }
 
   getCenterPoint(useFinalPosition) {
@@ -60,14 +61,13 @@ BoxAnnotation.defaults = {
   borderRadius: 0,
   borderShadowColor: 'transparent',
   borderWidth: 1,
-  cornerRadius: undefined, // TODO: v2 remove support for cornerRadius
   display: true,
   label: {
     borderWidth: undefined,
     color: 'black',
     content: null,
+    display: false,
     drawTime: undefined,
-    enabled: false,
     font: {
       family: undefined,
       lineHeight: undefined,
@@ -92,10 +92,10 @@ BoxAnnotation.defaults = {
   shadowOffsetY: 0,
   xMax: undefined,
   xMin: undefined,
-  xScaleID: 'x',
+  xScaleID: undefined,
   yMax: undefined,
   yMin: undefined,
-  yScaleID: 'y'
+  yScaleID: undefined
 };
 
 BoxAnnotation.defaultRoutes = {

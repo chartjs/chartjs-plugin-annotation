@@ -52,7 +52,7 @@ module.exports = {
               xValue: 'March',
               yValue: 5,
               callout: {
-                enabled: true
+                display: true
               }
             },
             emptyContent: {
@@ -67,7 +67,7 @@ module.exports = {
               yValue: 5,
               content: '',
               callout: {
-                enabled: true
+                display: true
               }
             }
           }

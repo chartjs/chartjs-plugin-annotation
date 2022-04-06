@@ -1,11 +1,20 @@
 import {Element} from 'chart.js';
 import {PI, toRadians} from 'chart.js/helpers';
-import {resolveBoxProperties, setBorderStyle, setShadowStyle, translate, getElementCenterPoint} from '../helpers';
+import {EPSILON, resolveBoxProperties, setBorderStyle, setShadowStyle, rotated, translate, getElementCenterPoint} from '../helpers';
 
 export default class EllipseAnnotation extends Element {
 
-  inRange(mouseX, mouseY, useFinalPosition) {
-    return pointInEllipse({x: mouseX, y: mouseY}, this.getProps(['width', 'height', 'centerX', 'centerY'], useFinalPosition), this.options.rotation, this.options.borderWidth);
+  inRange(mouseX, mouseY, axis, useFinalPosition) {
+    const rotation = this.options.rotation;
+    const borderWidth = this.options.borderWidth;
+    if (axis !== 'x' && axis !== 'y') {
+      return pointInEllipse({x: mouseX, y: mouseY}, this.getProps(['width', 'height', 'centerX', 'centerY'], useFinalPosition), rotation, borderWidth);
+    }
+    const {x, y, x2, y2} = this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition);
+    const hBorderWidth = borderWidth / 2;
+    const limit = axis === 'y' ? {start: y, end: y2} : {start: x, end: x2};
+    const rotatedPoint = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-rotation));
+    return rotatedPoint[axis] >= limit.start - hBorderWidth - EPSILON && rotatedPoint[axis] <= limit.end + hBorderWidth + EPSILON;
   }
 
   getCenterPoint(useFinalPosition) {
@@ -52,10 +61,10 @@ EllipseAnnotation.defaults = {
   shadowOffsetY: 0,
   xMax: undefined,
   xMin: undefined,
-  xScaleID: 'x',
+  xScaleID: undefined,
   yMax: undefined,
   yMin: undefined,
-  yScaleID: 'y'
+  yScaleID: undefined
 };
 
 EllipseAnnotation.defaultRoutes = {

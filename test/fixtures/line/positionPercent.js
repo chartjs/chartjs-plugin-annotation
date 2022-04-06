@@ -27,7 +27,7 @@ module.exports = {
                 position: '0%',
                 backgroundColor: 'black',
                 content: '0%',
-                enabled: true
+                display: true
               }
             },
             l1: {
@@ -40,7 +40,7 @@ module.exports = {
                 position: '10%',
                 backgroundColor: 'black',
                 content: '10%',
-                enabled: true
+                display: true
               }
             },
             l2: {
@@ -53,7 +53,7 @@ module.exports = {
                 position: '20%',
                 backgroundColor: 'black',
                 content: '20%',
-                enabled: true
+                display: true
               }
             },
             l3: {
@@ -66,7 +66,7 @@ module.exports = {
                 position: '30%',
                 backgroundColor: 'black',
                 content: '30%',
-                enabled: true
+                display: true
               }
             },
             l4: {
@@ -79,7 +79,7 @@ module.exports = {
                 position: '40%',
                 backgroundColor: 'black',
                 content: '40%',
-                enabled: true
+                display: true
               }
             },
             l5: {
@@ -92,7 +92,7 @@ module.exports = {
                 position: '50%',
                 backgroundColor: 'black',
                 content: '50%',
-                enabled: true
+                display: true
               }
             },
             l6: {
@@ -105,7 +105,7 @@ module.exports = {
                 position: '60%',
                 backgroundColor: 'black',
                 content: '60%',
-                enabled: true
+                display: true
               }
             },
             l7: {
@@ -118,7 +118,7 @@ module.exports = {
                 position: '70%',
                 backgroundColor: 'black',
                 content: '70%',
-                enabled: true
+                display: true
               }
             },
             l8: {
@@ -131,7 +131,7 @@ module.exports = {
                 position: '80%',
                 backgroundColor: 'black',
                 content: '80%',
-                enabled: true
+                display: true
               }
             },
             l9: {
@@ -144,7 +144,7 @@ module.exports = {
                 position: '90%',
                 backgroundColor: 'black',
                 content: '90%',
-                enabled: true
+                display: true
               }
             },
             l10: {
@@ -157,7 +157,7 @@ module.exports = {
                 position: '100%',
                 backgroundColor: 'black',
                 content: '100%',
-                enabled: true
+                display: true
               }
             },
           }

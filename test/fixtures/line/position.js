@@ -27,7 +27,7 @@ module.exports = {
                 position: 'start',
                 backgroundColor: 'black',
                 content: 'start',
-                enabled: true
+                display: true
               },
             },
             hCenter: {
@@ -40,7 +40,7 @@ module.exports = {
                 position: 'center',
                 backgroundColor: 'black',
                 content: 'center',
-                enabled: true
+                display: true
               },
             },
             right: {
@@ -53,7 +53,7 @@ module.exports = {
                 position: 'end',
                 backgroundColor: 'black',
                 content: 'end',
-                enabled: true
+                display: true
               },
             },
             top: {
@@ -66,7 +66,7 @@ module.exports = {
                 position: 'start',
                 backgroundColor: 'red',
                 content: 'start',
-                enabled: true
+                display: true
               }
             },
             vCenter: {
@@ -79,7 +79,7 @@ module.exports = {
                 position: 'center',
                 backgroundColor: 'red',
                 content: 'center',
-                enabled: true
+                display: true
               }
             },
             bottom: {
@@ -92,7 +92,7 @@ module.exports = {
                 position: 'end',
                 backgroundColor: 'red',
                 content: 'end',
-                enabled: true
+                display: true
               }
             }
           }

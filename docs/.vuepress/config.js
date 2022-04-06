@@ -97,7 +97,8 @@ module.exports = {
             'types/point',
             'types/polygon'
           ]
-        }
+        },
+        'migrationV2'
       ],
       '/samples/': [
         'intro',

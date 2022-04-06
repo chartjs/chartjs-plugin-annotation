@@ -31,7 +31,7 @@ module.exports = {
               xAdjust: -50,
               yAdjust: -50,
               callout: {
-                enabled: true,
+                display: true,
                 margin: 10,
                 position: 'right',
               }
@@ -57,7 +57,7 @@ module.exports = {
               xAdjust: 50,
               yAdjust: 50,
               callout: {
-                enabled: true,
+                display: true,
                 margin: 0,
                 position: 'left',
               }
@@ -83,7 +83,7 @@ module.exports = {
               xAdjust: -50,
               yAdjust: -50,
               callout: {
-                enabled: true,
+                display: true,
                 start: '10%',
                 side: 20,
                 position: 'bottom',
@@ -110,7 +110,7 @@ module.exports = {
               xAdjust: 50,
               yAdjust: 50,
               callout: {
-                enabled: true,
+                display: true,
                 start: 80,
                 side: 20,
                 position: 'top',
@@ -137,7 +137,7 @@ module.exports = {
               xAdjust: -20,
               yAdjust: -40,
               callout: {
-                enabled: true,
+                display: true,
                 start: '10%',
                 position: 'bottom'
               }
@@ -163,7 +163,7 @@ module.exports = {
               xAdjust: 20,
               yAdjust: 50,
               callout: {
-                enabled: true,
+                display: true,
                 start: 40,
                 position: 'top'
               }
@@ -186,7 +186,7 @@ module.exports = {
               xAdjust: -70,
               yAdjust: 70,
               callout: {
-                enabled: true,
+                display: true,
                 start: 'invalid'
               }
             },

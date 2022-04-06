@@ -32,7 +32,7 @@ module.exports = {
                 borderWidth: 3,
                 borderDash: [6, 6],
                 content: 'dashed 3px black border',
-                enabled: true
+                display: true
               },
             },
           }

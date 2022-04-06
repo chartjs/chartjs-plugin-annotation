@@ -47,7 +47,8 @@ export default {
       visibleElements: [],
       listeners: {},
       listened: false,
-      moveListened: false
+      moveListened: false,
+      hovered: []
     });
   },
 
@@ -121,6 +122,11 @@ export default {
     clip: true,
     dblClickSpeed: 350, // ms
     drawTime: 'afterDatasetsDraw',
+    interaction: {
+      mode: undefined,
+      axis: undefined,
+      intersect: undefined
+    },
     label: {
       drawTime: null
     }
@@ -133,6 +139,9 @@ export default {
       _allKeys: false,
       _fallback: (prop, opts) => `elements.${annotationTypes[resolveType(opts.type)].id}`,
     },
+    interaction: {
+      _fallback: true,
+    }
   },
 
   additionalOptionScopes: ['']
@@ -158,7 +167,7 @@ function draw(chart, caller, clip) {
       return;
     }
     const label = el.options.label;
-    if (label && label.enabled && label.content && (label.drawTime || el.options.drawTime) === caller) {
+    if (label && label.display && label.content && (label.drawTime || el.options.drawTime) === caller) {
       el.drawLabel(ctx, chartArea);
     }
   });

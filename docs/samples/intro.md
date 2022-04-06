@@ -40,7 +40,7 @@ const annotation1 = {
   label: {
     backgroundColor: 'red',
     content: 'Test Label',
-    enabled: true
+    display: true
   },
   scaleID: 'y',
   value: Utils.rand(-100, 100)

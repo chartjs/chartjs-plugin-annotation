@@ -32,7 +32,7 @@ const annotation1 = {
   label: {
     rotation: 'auto',
     content: 'Line at x=5',
-    enabled: true
+    display: true
   },
 };
 // </block:annotation1>
@@ -49,7 +49,7 @@ const annotation2 = {
     position: 'start',
     backgroundColor: 'black',
     content: 'Line at x=90',
-    enabled: true
+    display: true
   }
 };
 // </block:annotation2>

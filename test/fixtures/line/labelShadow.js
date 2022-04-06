@@ -27,7 +27,7 @@ module.exports = {
                 position: 'start',
                 backgroundColor: 'red',
                 content: 'no offset',
-                enabled: true,
+                display: true,
                 backgroundShadowColor: 'black',
                 shadowBlur: 12
               },
@@ -42,7 +42,7 @@ module.exports = {
                 position: 'center',
                 backgroundColor: 'red',
                 content: 'offset x: 10',
-                enabled: true,
+                display: true,
                 backgroundShadowColor: 'black',
                 shadowBlur: 3,
                 shadowOffsetX: 10
@@ -58,7 +58,7 @@ module.exports = {
                 position: 'end',
                 backgroundColor: 'black',
                 content: 'offset y: 10',
-                enabled: true,
+                display: true,
                 backgroundShadowColor: 'black',
                 shadowBlur: 3,
                 shadowOffsetY: 10
@@ -74,7 +74,7 @@ module.exports = {
                 position: 'start',
                 backgroundColor: 'red',
                 content: 'offset x: 10, y:10',
-                enabled: true,
+                display: true,
                 backgroundShadowColor: 'black',
                 shadowBlur: 3,
                 shadowOffsetX: 10,

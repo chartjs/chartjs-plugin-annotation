@@ -4,9 +4,9 @@ import {toPadding, toRadians, distanceBetweenPoints} from 'chart.js/helpers';
 
 export default class LabelAnnotation extends Element {
 
-  inRange(mouseX, mouseY, useFinalPosition) {
+  inRange(mouseX, mouseY, axis, useFinalPosition) {
     const {x, y} = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.options.rotation));
-    return inBoxRange(x, y, this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), this.options.borderWidth);
+    return inBoxRange({x, y}, this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis, this.options.borderWidth);
   }
 
   getCenterPoint(useFinalPosition) {
@@ -43,7 +43,7 @@ export default class LabelAnnotation extends Element {
       pointY: point.y,
       ...boxSize
     };
-    properties.calloutPosition = options.callout.enabled && resolveCalloutPosition(properties, options.callout, options.rotation);
+    properties.calloutPosition = options.callout.display && resolveCalloutPosition(properties, options.callout, options.rotation);
     return properties;
   }
 }
@@ -68,7 +68,7 @@ LabelAnnotation.defaults = {
     borderDashOffset: 0,
     borderJoinStyle: 'miter',
     borderWidth: 1,
-    enabled: false,
+    display: false,
     margin: 5,
     position: 'auto',
     side: 5,
@@ -98,12 +98,12 @@ LabelAnnotation.defaults = {
   xAdjust: 0,
   xMax: undefined,
   xMin: undefined,
-  xScaleID: 'x',
+  xScaleID: undefined,
   xValue: undefined,
   yAdjust: 0,
   yMax: undefined,
   yMin: undefined,
-  yScaleID: 'y',
+  yScaleID: undefined,
   yValue: undefined
 };
 

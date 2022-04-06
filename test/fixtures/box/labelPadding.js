@@ -25,7 +25,7 @@ module.exports = {
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 5,
               label: {
-                enabled: true,
+                display: true,
                 content: 'box1: This is a label',
                 position: 'start',
                 padding: 15
@@ -41,7 +41,7 @@ module.exports = {
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 5,
               label: {
-                enabled: true,
+                display: true,
                 content: 'box2: This is a label',
                 position: 'start',
                 padding: {x: 20}
@@ -57,7 +57,7 @@ module.exports = {
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 5,
               label: {
-                enabled: true,
+                display: true,
                 content: 'box3: This is a label with different length',
                 position: 'end',
                 padding: {y: 10}
@@ -73,7 +73,7 @@ module.exports = {
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 5,
               label: {
-                enabled: true,
+                display: true,
                 content: 'box4: This is the label',
                 color: 'red',
                 position: {

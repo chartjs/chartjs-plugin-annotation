@@ -33,7 +33,7 @@ const annotation = {
   borderWidth: 1,
   display: (ctx) => ctx.chart.isDatasetVisible(1),
   label: {
-    enabled: true,
+    display: true,
     content: 'Now',
     position: 'start'
   },

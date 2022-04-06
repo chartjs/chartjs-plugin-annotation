@@ -74,4 +74,55 @@ describe('Point annotation', function() {
       });
     });
   });
+
+  describe('interaction', function() {
+    const outer = {
+      type: 'point',
+      xValue: 5,
+      yValue: 5,
+      radius: 40,
+      borderWidth: 0
+    };
+    const inner = {
+      type: 'point',
+      xValue: 5,
+      yValue: 5,
+      radius: 20,
+      borderWidth: 0
+    };
+
+    const chart = window.scatterChart(10, 10, {outer, inner});
+    const state = window['chartjs-plugin-annotation']._getState(chart);
+    const interactionOpts = {};
+    const outerEl = window.getAnnotationElements(chart)[0];
+    const innerEl = window.getAnnotationElements(chart)[1];
+
+    it('should return the right amount of annotation elements', function() {
+      for (const interaction of window.interactionData) {
+        const mode = interaction.mode;
+        interactionOpts.mode = mode;
+        for (const axis of Object.keys(interaction.axes)) {
+          interactionOpts.axis = axis;
+          [true, false].forEach(function(intersect) {
+            interactionOpts.intersect = intersect;
+            const elementsCounts = interaction.axes[axis].intersect[intersect];
+            const points = [{x: outerEl.x, y: outerEl.centerY},
+              {x: innerEl.x, y: innerEl.centerY},
+              {x: innerEl.centerX, y: innerEl.centerY},
+              {x: innerEl.x2 + 1, y: innerEl.centerY},
+              {x: outerEl.x2 + 1, y: outerEl.centerY},
+              {x: outerEl.x + 1, y: outerEl.y - 1}];
+
+            for (let i = 0; i < points.length; i++) {
+              const point = points[i];
+              const elementsCount = elementsCounts[i];
+              const elements = state._getElements(state, point, interactionOpts);
+              expect(elements.length).withContext(`with interaction mode ${mode}, axis ${axis}, intersect ${intersect}, {x: ${point.x.toFixed(1)}, y: ${point.y.toFixed(1)}`).toEqual(elementsCount);
+            }
+          });
+        }
+      }
+    });
+  });
+
 });

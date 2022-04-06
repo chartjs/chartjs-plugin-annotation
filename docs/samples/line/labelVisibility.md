@@ -29,7 +29,7 @@ const annotation1 = {
   borderColor: 'lightGreen',
   borderWidth: 10,
   label: {
-    enabled: false,
+    display: false,
     backgroundColor: 'green',
     drawTime: 'afterDatasetsDraw',
     content: (ctx) => ['Average of dataset', 'is: ' + average(ctx).toFixed(3)]
@@ -39,11 +39,11 @@ const annotation1 = {
   // For simple property changes, you can directly modify the annotation
   // element's properties then call chart.draw().  This is faster.
   enter({chart, element}, event) {
-    element.options.label.enabled = true;
+    element.options.label.display = true;
     chart.draw();
   },
   leave({chart, element}, event) {
-    element.options.label.enabled = false;
+    element.options.label.display = false;
     chart.draw();
   }
 };
@@ -55,7 +55,7 @@ const annotation2 = {
   borderColor: 'lightBlue',
   borderWidth: 10,
   label: {
-    enabled: (ctx) => ctx.hovered,
+    display: (ctx) => ctx.hovered,
     backgroundColor: 'blue',
     drawTime: 'afterDatasetsDraw',
     content: (ctx) => ['Min of dataset', 'is: ' + min(ctx).toFixed(3)],
@@ -85,7 +85,7 @@ const config = {
   options: {
     plugins: {
       tooltip: {
-        enabled: false,
+        display: false,
       },
       annotation: {
         drawTime: 'beforeDatasetsDraw',

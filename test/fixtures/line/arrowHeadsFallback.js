@@ -1,4 +1,5 @@
 module.exports = {
+  tolerance: 0.0020,
   config: {
     type: 'line',
     options: {
@@ -17,11 +18,11 @@ module.exports = {
               borderColor: 'blue',
               borderWidth: 4,
               label: {
-                enabled: true,
-                content: ['start and end are enabled', 'without options']
+                display: true,
+                content: ['start and end are displayed', 'without options']
               },
               arrowHeads: {
-                enabled: true,
+                display: true,
                 fill: true,
                 borderColor: 'blue',
                 length: 30,
@@ -35,8 +36,8 @@ module.exports = {
               borderColor: 'purple',
               borderWidth: 4,
               label: {
-                enabled: true,
-                content: ['only start has options', 'and is enabled']
+                display: true,
+                content: ['only start has options', 'and is displayed']
               },
               arrowHeads: {
                 fill: true,
@@ -44,7 +45,7 @@ module.exports = {
                 length: 30,
                 width: 15,
                 start: {
-                  enabled: true,
+                  display: true,
                 }
               }
             },
@@ -55,17 +56,17 @@ module.exports = {
               borderColor: 'red',
               borderWidth: 4,
               label: {
-                enabled: true,
+                display: true,
                 content: ['only start has options', 'and is not filled']
               },
               arrowHeads: {
-                enabled: true,
+                display: true,
                 fill: true,
                 borderColor: 'red',
                 length: 30,
                 width: 15,
                 start: {
-                  enabled: true,
+                  display: true,
                   fill: false
                 }
               }

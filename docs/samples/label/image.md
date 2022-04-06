@@ -30,7 +30,7 @@ const annotation1 = {
   borderWidth: 1,
   borderDash: [6, 6],
   callout: {
-    enabled: true,
+    display: true,
     position: 'left'
   }
 };
