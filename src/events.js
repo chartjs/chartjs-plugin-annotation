@@ -1,9 +1,8 @@
 import {defined, callback} from 'chart.js/helpers';
 import {getElements} from './interaction';
 
-const clickHooks = ['click'];
 const moveHooks = ['enter', 'leave'];
-export const hooks = clickHooks.concat(moveHooks);
+export const hooks = moveHooks.concat('click');
 
 export function updateListeners(chart, state, options) {
   state.listened = false;
@@ -27,11 +26,9 @@ export function updateListeners(chart, state, options) {
   if (!state.listened || !state.moveListened) {
     state.annotations.forEach(scope => {
       if (!state.listened) {
-        clickHooks.forEach(hook => {
-          if (typeof scope[hook] === 'function') {
-            state.listened = true;
-          }
-        });
+        if (typeof scope.click === 'function') {
+          state.listened = true;
+        }
       }
       if (!state.moveListened) {
         moveHooks.forEach(hook => {
