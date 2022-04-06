@@ -29,7 +29,7 @@ module.exports = {
               borderColor: 'red',
               borderWidth: 2,
               label: {
-                enabled: true,
+                display: true,
                 content: 'p: 0%,100%',
                 position: {
                   x: '0%',
@@ -47,7 +47,7 @@ module.exports = {
               borderColor: 'red',
               borderWidth: 2,
               label: {
-                enabled: true,
+                display: true,
                 content: 'p: 25%,75%',
                 position: {
                   x: '25%',
@@ -65,7 +65,7 @@ module.exports = {
               borderColor: 'red',
               borderWidth: 2,
               label: {
-                enabled: true,
+                display: true,
                 content: 'p: 50%,50%',
                 position: {
                   x: '50%',
@@ -83,7 +83,7 @@ module.exports = {
               borderColor: 'red',
               borderWidth: 2,
               label: {
-                enabled: true,
+                display: true,
                 content: 'p: 100%,0%',
                 position: {
                   x: '100%',

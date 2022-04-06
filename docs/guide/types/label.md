@@ -182,7 +182,7 @@ const options = {
             size: 18
           },
           callout: {
-            enabled: true,
+            display: true,
             side: 10
           }
         }
@@ -224,7 +224,7 @@ All of these options can be [Scriptable](../options#scriptable-options).
 | `borderDashOffset` | `number` | `0` | Offset for line dashes of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
 | `borderJoinStyle` | `string` | `'miter'` | Border line join style of the callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
 | `borderWidth` | `number` | `1` | Stroke width of the pointer of the callout.
-| `enabled` | `boolean` | `false` | If true, the callout is drawn.
+| `display` | `boolean` | `false` | If true, the callout is drawn.
 | `margin` | `number` | `5` | Amount of pixels between the label and the callout separator.
 | `position` | `string` | `'auto'` | The position of callout, with respect to the label. Could be `left`, `top`, `right`, `bottom` or `auto`.
 | `side` | `number` | `5` | Width of the starter line of callout pointer.

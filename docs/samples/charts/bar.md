@@ -36,7 +36,7 @@ const annotation1 = {
   value: 0.5,
   label: {
     content: 'Line annotation at x=0.5',
-    enabled: true
+    display: true
   },
 };
 // </block:annotation1>
@@ -53,7 +53,7 @@ const annotation2 = {
     position: 'start',
     backgroundColor: 'black',
     content: 'Line at x=Label 5',
-    enabled: true
+    display: true
   }
 };
 // </block:annotation2>

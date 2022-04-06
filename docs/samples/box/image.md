@@ -27,7 +27,7 @@ const annotation = {
   xMax: 2,
   xMin: 5,
   label: {
-    enabled: true,
+    display: true,
     content: Utils.getImage(),
     width: 150,
     height: 150,

@@ -31,7 +31,7 @@ const annotation = {
   borderDashOffset: 0,
   borderWidth: 3,
   label: {
-    enabled: true,
+    display: true,
     content: (ctx) => 'Average: ' + average(ctx).toFixed(2),
     position: 'end'
   },

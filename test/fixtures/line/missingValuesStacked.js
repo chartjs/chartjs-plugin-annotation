@@ -40,7 +40,7 @@ module.exports = {
               borderWidth: 2,
               value: 1,
               label: {
-                enabled: true,
+                display: true,
                 content: 'Cross scales',
                 backgroundColor: 'white',
                 color: 'black'
@@ -53,7 +53,7 @@ module.exports = {
               xMin: 3,
               xMax: 3,
               label: {
-                enabled: true,
+                display: true,
                 content: ['Limited to', 'bottom scale'],
                 backgroundColor: 'white',
                 color: 'black'
@@ -66,7 +66,7 @@ module.exports = {
               xMin: 5,
               xMax: 5,
               label: {
-                enabled: true,
+                display: true,
                 content: ['Limited to', 'top scale'],
                 backgroundColor: 'white',
                 color: 'black'

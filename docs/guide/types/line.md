@@ -141,8 +141,8 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `borderWidth` | `number` | `0` | The border line width (in pixels).
 | `color` | [`Color`](../options#color) | `'#fff'` | Text color.
 | `content` | `string`\|`string[]`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image)\|[`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) | `null` | The content to show in the label.
+| `display` | `boolean` | `false` | Whether or not the label is shown.
 | `drawTime` | `string` | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the line annotation draw time if unset.
-| `enabled` | `boolean` | `false` | Whether or not the label is shown.
 | `font` | [`Font`](../options#font) | `{ weight: 'bold' }` | Label font.
 | `height` | `number`\|`string` | `undefined` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
 | `padding` | [`Padding`](../options#padding) | `6` | The padding to add around the text label.
@@ -190,7 +190,7 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `borderDashOffset` | `number` | `lineAnnotation.borderDashOffset` | Offset for border arrow head dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
 | `borderShadowColor` | [`Color`](../options#color) | `lineAnnotation.borderShadowColor` | The color of border shadow of the arrow head. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderWidth` | `number` | `lineAnnotation.borderWidth` | The border line width (in pixels).
-| `enabled` | `boolean` | `false` | Whether or not the arrow head is shown.
+| `display` | `boolean` | `false` | Whether or not the arrow head is shown.
 | `fill` | `boolean` | `false` | Whether or not the arrow head is filled.
 | `length` | `number` | `12` | The length of the arrow head in pixels.
 | `shadowBlur` | `number` | `lineAnnotation.shadowBlur` | The amount of blur applied to shadow of the arrow head. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).

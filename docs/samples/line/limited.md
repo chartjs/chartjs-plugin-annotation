@@ -26,7 +26,7 @@ const annotation1 = {
   borderColor: 'green',
   borderWidth: 3,
   label: {
-    enabled: true,
+    display: true,
     backgroundColor: 'lightGreen',
     borderRadius: 0,
     color: 'green',
@@ -34,11 +34,11 @@ const annotation1 = {
   },
   arrowHeads: {
     start: {
-      enabled: true,
+      display: true,
       borderColor: 'green'
     },
     end: {
-      enabled: true,
+      display: true,
       borderColor: 'green'
     }
   },

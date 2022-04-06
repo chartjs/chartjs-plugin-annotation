@@ -28,7 +28,7 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 1,
               label: {
-                enabled: true,
+                display: true,
                 content: ['text stroke width 5', 'text stroke color red'],
                 textStrokeWidth: 5,
                 textStrokeColor: 'red',
@@ -47,7 +47,7 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 1,
               label: {
-                enabled: true,
+                display: true,
                 textStrokeWidth: 3,
                 color: 'white',
                 content: 'text stroke width 3',
@@ -66,7 +66,7 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 1,
               label: {
-                enabled: true,
+                display: true,
                 color: '#40E0D0',
                 content: ['text stroke width 10', 'text stroke color turq'],
                 textStrokeWidth: 10,

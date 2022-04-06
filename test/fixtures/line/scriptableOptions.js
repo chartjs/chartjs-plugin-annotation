@@ -42,7 +42,7 @@ module.exports = {
                 position: 'start',
                 backgroundColor: 'red',
                 content: 'auto rotation',
-                enabled: true
+                display: true
               },
             },
             auto2: {
@@ -75,7 +75,7 @@ module.exports = {
                 rotation: 'auto',
                 backgroundColor: 'red',
                 content: 'auto rotation',
-                enabled: true
+                display: true
               },
             },
             auto3: {
@@ -108,7 +108,7 @@ module.exports = {
                 rotation: 'auto',
                 backgroundColor: 'red',
                 content: 'auto rotation',
-                enabled: true
+                display: true
               },
             },
             auto4: {
@@ -141,7 +141,7 @@ module.exports = {
                 rotation: 'auto',
                 backgroundColor: 'red',
                 content: 'auto rotation',
-                enabled: true
+                display: true
               },
             },
             man1: {
@@ -174,7 +174,7 @@ module.exports = {
                 rotation: 90,
                 backgroundColor: 'red',
                 content: 'rotated 90',
-                enabled: true
+                display: true
               },
             },
             man2: {
@@ -207,7 +207,7 @@ module.exports = {
                 rotation: -80,
                 backgroundColor: 'red',
                 content: 'rotated -80',
-                enabled: true
+                display: true
               },
             }
           }

@@ -29,7 +29,7 @@ module.exports = {
               borderWidth: 1,
               rotation: 45,
               label: {
-                enabled: true,
+                display: true,
                 content: 'rot: 45'
               }
             },
@@ -44,7 +44,7 @@ module.exports = {
               borderWidth: 1,
               rotation: 90,
               label: {
-                enabled: true,
+                display: true,
                 content: 'rot: 90'
               }
             },
@@ -59,7 +59,7 @@ module.exports = {
               borderWidth: 1,
               rotation: 135,
               label: {
-                enabled: true,
+                display: true,
                 content: 'rot: 135'
               }
             },
@@ -74,7 +74,7 @@ module.exports = {
               borderWidth: 1,
               rotation: 180,
               label: {
-                enabled: true,
+                display: true,
                 content: 'rot: 180'
               }
             },
@@ -89,7 +89,7 @@ module.exports = {
               borderWidth: 1,
               rotation: 225,
               label: {
-                enabled: true,
+                display: true,
                 content: 'rot: 225'
               }
             },
@@ -104,7 +104,7 @@ module.exports = {
               borderWidth: 1,
               rotation: 270,
               label: {
-                enabled: true,
+                display: true,
                 content: 'rot: 270'
               }
             },
@@ -119,7 +119,7 @@ module.exports = {
               borderWidth: 1,
               rotation: 315,
               label: {
-                enabled: true,
+                display: true,
                 content: 'rot: 315'
               }
             }

@@ -28,7 +28,7 @@ module.exports = {
               backgroundShadowColor: 'black',
               shadowBlur: 3,
               label: {
-                enabled: true,
+                display: true,
                 content: 'no offset'
               }
             },
@@ -45,7 +45,7 @@ module.exports = {
               shadowBlur: 3,
               shadowOffsetX: 10,
               label: {
-                enabled: true,
+                display: true,
                 content: 'offset x:10'
               }
             },
@@ -62,7 +62,7 @@ module.exports = {
               shadowBlur: 3,
               shadowOffsetY: 10,
               label: {
-                enabled: true,
+                display: true,
                 content: 'offset y:10'
               }
             },
@@ -80,7 +80,7 @@ module.exports = {
               shadowOffsetX: 10,
               shadowOffsetY: 10,
               label: {
-                enabled: true,
+                display: true,
                 content: ['offset', 'x:10', 'y:10']
               }
             }

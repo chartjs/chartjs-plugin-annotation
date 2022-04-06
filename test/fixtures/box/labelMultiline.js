@@ -25,7 +25,7 @@ module.exports = {
               borderColor: 'red',
               borderWidth: 5,
               label: {
-                enabled: true,
+                display: true,
                 content: ['This is a label', 'but this is multiline'],
               }
             },
@@ -39,7 +39,7 @@ module.exports = {
               borderColor: 'red',
               borderWidth: 5,
               label: {
-                enabled: true,
+                display: true,
                 content: ['This is a label', 'but this is multiline'],
                 position: 'start'
               }
@@ -54,7 +54,7 @@ module.exports = {
               borderColor: 'red',
               borderWidth: 5,
               label: {
-                enabled: true,
+                display: true,
                 content: ['This is a label', 'but this is multiline'],
                 position: 'end'
               }
@@ -69,7 +69,7 @@ module.exports = {
               borderColor: 'red',
               borderWidth: 5,
               label: {
-                enabled: true,
+                display: true,
                 content: (ctx) => ['This is a label', 'type:' + ctx.type],
                 color: 'red',
                 position: {

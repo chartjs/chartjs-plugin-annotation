@@ -26,7 +26,7 @@ module.exports = {
               label: {
                 backgroundColor: 'red',
                 content: 'shold not be drawn',
-                enabled: true
+                display: true
               }
             }
           }

@@ -29,7 +29,7 @@ module.exports = {
                 position: 'start',
                 backgroundColor: 'red',
                 content: 'afterDraw/undefined',
-                enabled: true
+                display: true
               },
             },
             hCenter: {
@@ -43,7 +43,7 @@ module.exports = {
                 position: 'center',
                 backgroundColor: 'red',
                 content: 'beforeDraw/afterDraw',
-                enabled: true
+                display: true
               },
             },
             right: {
@@ -58,7 +58,7 @@ module.exports = {
                 position: 'end',
                 backgroundColor: 'black',
                 content: 'afterDraw/beforeDraw',
-                enabled: true
+                display: true
               },
             },
             top: {
@@ -71,7 +71,7 @@ module.exports = {
                 position: 'start',
                 backgroundColor: 'red',
                 content: 'fallback/fallback',
-                enabled: true
+                display: true
               }
             },
             bottomRight: {
@@ -83,7 +83,7 @@ module.exports = {
                 position: 'end',
                 backgroundColor: 'green',
                 content: 'fallback = beforeDraw',
-                enabled: true
+                display: true
               }
             }
           }

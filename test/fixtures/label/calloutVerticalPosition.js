@@ -30,7 +30,7 @@ module.exports = {
               xAdjust: -50,
               yAdjust: -50,
               callout: {
-                enabled: true,
+                display: true,
                 position: 'bottom',
               }
             },
@@ -55,7 +55,7 @@ module.exports = {
               xAdjust: 50,
               yAdjust: 50,
               callout: {
-                enabled: true,
+                display: true,
                 position: 'top',
               }
             },
@@ -76,7 +76,7 @@ module.exports = {
               position: 'center',
               yAdjust: 50,
               callout: {
-                enabled: true,
+                display: true,
                 position: 'auto',
               }
             },
@@ -97,7 +97,7 @@ module.exports = {
               position: 'center',
               yAdjust: -50,
               callout: {
-                enabled: true,
+                display: true,
                 position: 'auto',
               }
             },
@@ -118,7 +118,7 @@ module.exports = {
               position: 'center',
               yAdjust: -50,
               callout: {
-                enabled: true,
+                display: true,
                 position: 'auto',
                 borderWidth: 0
               }
@@ -140,7 +140,7 @@ module.exports = {
               position: 'center',
               yAdjust: 50,
               callout: {
-                enabled: true,
+                display: true,
                 position: 'wrong'
               }
             },

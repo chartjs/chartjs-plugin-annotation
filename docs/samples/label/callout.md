@@ -21,7 +21,7 @@ const annotation = {
   type: 'label',
   backgroundColor: 'rgba(245, 245, 245)',
   callout: {
-    enabled: true,
+    display: true,
     borderColor: (ctx) => ctx.chart.data.datasets[0].borderColor
   },
   content: (ctx) => 'Maximum value is ' + maxValue(ctx).toFixed(2),

@@ -33,7 +33,7 @@ const annotation1 = {
   borderColor: 'black',
   borderWidth: 3,
   label: {
-    enabled: true,
+    display: true,
     backgroundColor: 'black',
     borderColor: 'black',
     borderRadius: 10,
@@ -52,7 +52,7 @@ const annotation2 = {
   borderWidth: 3,
   borderColor: 'black',
   label: {
-    enabled: true,
+    display: true,
     backgroundColor: 'black',
     borderColor: 'black',
     borderRadius: 10,

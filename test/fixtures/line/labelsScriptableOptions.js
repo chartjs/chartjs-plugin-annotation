@@ -50,7 +50,7 @@ module.exports = {
                 content() {
                   return 'auto rotation';
                 },
-                enabled() {
+                display() {
                   return true;
                 },
               },
@@ -91,7 +91,7 @@ module.exports = {
                 content() {
                   return 'auto rotation';
                 },
-                enabled() {
+                display() {
                   return true;
                 },
               },
@@ -132,7 +132,7 @@ module.exports = {
                 content() {
                   return 'auto rotation';
                 },
-                enabled() {
+                display() {
                   return true;
                 },
               },
@@ -173,7 +173,7 @@ module.exports = {
                 content() {
                   return 'auto rotation';
                 },
-                enabled() {
+                display() {
                   return true;
                 },
               },
@@ -214,7 +214,7 @@ module.exports = {
                 content() {
                   return 'rotated 90';
                 },
-                enabled() {
+                display() {
                   return true;
                 },
               },
@@ -255,7 +255,7 @@ module.exports = {
                 content() {
                   return 'rotated -80';
                 },
-                enabled() {
+                display() {
                   return true;
                 },
               },

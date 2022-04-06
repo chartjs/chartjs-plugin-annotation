@@ -61,7 +61,7 @@ describe('Line annotation', function() {
         scaleID: 'y',
         value: 5,
         label: {
-          enabled: true,
+          display: true,
           content: 'Label of the element',
           rotation
         }
@@ -165,7 +165,7 @@ describe('Line annotation', function() {
       yMax: 8,
       borderWidth: 0,
       label: {
-        enabled: true,
+        display: true,
         content: ['outer label row 1', 'outer label row 2', 'outer label row 3'],
         borderWidth: 0
       }
@@ -178,7 +178,7 @@ describe('Line annotation', function() {
       yMax: 8,
       borderWidth: 0,
       label: {
-        enabled: true,
+        display: true,
         content: ['inner label 1', 'inner label 2'],
         borderWidth: 0
       }

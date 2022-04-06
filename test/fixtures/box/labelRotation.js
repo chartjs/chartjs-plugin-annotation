@@ -26,7 +26,7 @@ module.exports = {
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
               label: {
-                enabled: true,
+                display: true,
                 rotation: 45,
                 content: 'rotation: 45',
               }
@@ -40,7 +40,7 @@ module.exports = {
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
               label: {
-                enabled: true,
+                display: true,
                 rotation: 90,
                 content: 'rotation: 90',
               }
@@ -54,7 +54,7 @@ module.exports = {
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
               label: {
-                enabled: true,
+                display: true,
                 rotation: 135,
                 content: 'rotation: 135',
               }
@@ -68,7 +68,7 @@ module.exports = {
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
               label: {
-                enabled: true,
+                display: true,
                 rotation: 180,
                 content: 'rotation: 180',
               }
@@ -82,7 +82,7 @@ module.exports = {
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
               label: {
-                enabled: true,
+                display: true,
                 rotation: 225,
                 content: 'rotation: 225',
               }
@@ -96,7 +96,7 @@ module.exports = {
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
               label: {
-                enabled: true,
+                display: true,
                 rotation: 270,
                 content: 'rotation: 270',
               }
@@ -110,7 +110,7 @@ module.exports = {
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
               label: {
-                enabled: true,
+                display: true,
                 rotation: 315,
                 content: 'rotation: 315',
               }
@@ -125,7 +125,7 @@ module.exports = {
               borderColor: 'rgba(255, 99, 132)',
               rotation: 45,
               label: {
-                enabled: true,
+                display: true,
                 rotation: 0,
                 content: ['box rot: 45', 'label rot: 0']
               }

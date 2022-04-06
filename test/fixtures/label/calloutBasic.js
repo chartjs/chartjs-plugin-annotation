@@ -27,7 +27,7 @@ module.exports = {
               xAdjust: 150,
               yAdjust: -70,
               callout: {
-                enabled: true,
+                display: true,
               }
             },
             overlap: {
@@ -41,7 +41,7 @@ module.exports = {
               xAdjust: 1,
               yAdjust: 1,
               callout: {
-                enabled: true,
+                display: true,
               }
             },
             crossLabel: {
@@ -55,7 +55,7 @@ module.exports = {
               xAdjust: 100,
               yAdjust: -50,
               callout: {
-                enabled: true,
+                display: true,
                 position: 'right',
                 side: 10
               }
@@ -71,7 +71,7 @@ module.exports = {
               xAdjust: 150,
               yAdjust: -100,
               callout: {
-                enabled: true,
+                display: true,
                 side: 10,
                 borderColor: 'red',
                 borderWidth: 2,

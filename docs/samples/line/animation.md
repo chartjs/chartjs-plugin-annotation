@@ -30,7 +30,7 @@ const line = {
   borderColor: 'red',
   borderWidth: 3,
   label: {
-    enabled: true,
+    display: true,
     content: 'Limit',
     rotation: 90
   },

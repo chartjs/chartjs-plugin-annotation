@@ -27,7 +27,7 @@ const annotation1 = {
   borderDash: [6, 6],
   borderWidth: 3,
   label: {
-    enabled: true,
+    display: true,
     backgroundColor: 'lightGreen',
     borderRadius: 0,
     color: 'green',
@@ -35,7 +35,7 @@ const annotation1 = {
   },
   arrowHeads: {
     end: {
-      enabled: true,
+      display: true,
       fill: true,
       borderDash: [],
       borderColor: 'green'

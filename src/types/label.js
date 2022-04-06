@@ -42,7 +42,7 @@ export default class LabelAnnotation extends Element {
       labelWidth: labelSize.width,
       labelHeight: labelSize.height
     };
-    properties.calloutPosition = options.callout.enabled && resolveCalloutPosition(properties, options.callout, options.rotation);
+    properties.calloutPosition = options.callout.display && resolveCalloutPosition(properties, options.callout, options.rotation);
     return properties;
   }
 }
@@ -67,7 +67,7 @@ LabelAnnotation.defaults = {
     borderDashOffset: 0,
     borderJoinStyle: 'miter',
     borderWidth: 1,
-    enabled: false,
+    display: false,
     margin: 5,
     position: 'auto',
     side: 5,

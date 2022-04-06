@@ -29,7 +29,7 @@ module.exports = {
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 2,
               label: {
-                enabled: true,
+                display: true,
                 position: 'start',
                 content: window.createCanvas,
                 width: '25%',
@@ -46,7 +46,7 @@ module.exports = {
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 2,
               label: {
-                enabled: true,
+                display: true,
                 position: 'end',
                 content: window.createCanvas,
                 width: '25%',
@@ -63,7 +63,7 @@ module.exports = {
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 2,
               label: {
-                enabled: true,
+                display: true,
                 position: {
                   x: 'start',
                   y: 'center'
@@ -83,7 +83,7 @@ module.exports = {
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 2,
               label: {
-                enabled: true,
+                display: true,
                 position: {
                   x: 'center',
                   y: 'end'

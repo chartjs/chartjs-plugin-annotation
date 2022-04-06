@@ -36,7 +36,7 @@ module.exports = {
               borderWidth: 2,
               yMin: 3,
               label: {
-                enabled: true,
+                display: true,
                 content: ['yMin: 3', 'yMax: scale.top'],
                 backgroundColor: 'white',
                 color: 'black'
@@ -47,7 +47,7 @@ module.exports = {
               borderWidth: 2,
               yMax: 5,
               label: {
-                enabled: true,
+                display: true,
                 content: ['yMin: scale:bottom', 'yMax: 5'],
                 backgroundColor: 'white',
                 color: 'black'
@@ -59,7 +59,7 @@ module.exports = {
               borderWidth: 2,
               yMin: 3,
               label: {
-                enabled: true,
+                display: true,
                 content: ['reverse', 'yMin: 3', 'yMax: scale.bottom'],
                 backgroundColor: 'white',
                 color: 'black'
@@ -71,7 +71,7 @@ module.exports = {
               borderWidth: 2,
               yMax: 5,
               label: {
-                enabled: true,
+                display: true,
                 content: ['reverse', 'yMin: scale:top', 'yMax: 5'],
                 backgroundColor: 'white',
                 color: 'black'

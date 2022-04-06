@@ -27,7 +27,7 @@ module.exports = {
               borderDash: [6, 6],
               borderWidth: 5,
               label: {
-                enabled: true,
+                display: true,
                 content: 'This is a label',
               }
             },
@@ -41,7 +41,7 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 15,
               label: {
-                enabled: true,
+                display: true,
                 borderColor: 'green',
                 content: 'This label tests clipping',
                 position: 'start'
@@ -58,7 +58,7 @@ module.exports = {
               borderDash: [6, 6],
               borderWidth: 5,
               label: {
-                enabled: true,
+                display: true,
                 content: 'This is a label with different length',
                 position: 'end'
               }
@@ -74,7 +74,7 @@ module.exports = {
               borderDash: [6, 6],
               borderWidth: 5,
               label: {
-                enabled: true,
+                display: true,
                 content: 'This is the label',
                 color: 'red',
                 position: {

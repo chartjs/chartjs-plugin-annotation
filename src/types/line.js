@@ -74,7 +74,7 @@ export default class LineAnnotation extends Element {
    */
   labelIsVisible(useFinalPosition, chartArea) {
     const labelOpts = this.options.label;
-    if (!labelOpts || !labelOpts.enabled) {
+    if (!labelOpts || !labelOpts.display) {
       return false;
     }
     return !chartArea || isLineInArea(this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), chartArea);
@@ -222,7 +222,7 @@ const arrowHeadsDefaults = {
   borderDashOffset: undefined,
   borderShadowColor: undefined,
   borderWidth: undefined,
-  enabled: undefined,
+  display: undefined,
   fill: undefined,
   length: undefined,
   shadowBlur: undefined,
@@ -234,7 +234,7 @@ const arrowHeadsDefaults = {
 LineAnnotation.defaults = {
   adjustScaleRange: true,
   arrowHeads: {
-    enabled: false,
+    display: false,
     end: Object.assign({}, arrowHeadsDefaults),
     fill: false,
     length: 12,
@@ -260,8 +260,8 @@ LineAnnotation.defaults = {
     borderWidth: 0,
     color: '#fff',
     content: null,
+    display: false,
     drawTime: undefined,
-    enabled: false,
     font: {
       family: undefined,
       lineHeight: undefined,
@@ -447,7 +447,7 @@ function getArrowHeads(line) {
 }
 
 function getLineAdjust(line, arrowOpts) {
-  if (!arrowOpts || !arrowOpts.enabled) {
+  if (!arrowOpts || !arrowOpts.display) {
     return 0;
   }
   const {length, width} = arrowOpts;
@@ -458,7 +458,7 @@ function getLineAdjust(line, arrowOpts) {
 }
 
 function drawArrowHead(ctx, offset, adjust, arrowOpts) {
-  if (!arrowOpts || !arrowOpts.enabled) {
+  if (!arrowOpts || !arrowOpts.display) {
     return;
   }
   const {length, width, fill, backgroundColor, borderColor} = arrowOpts;
