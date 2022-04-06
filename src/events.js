@@ -25,10 +25,8 @@ export function updateListeners(chart, state, options) {
 
   if (!state.listened || !state.moveListened) {
     state.annotations.forEach(scope => {
-      if (!state.listened) {
-        if (typeof scope.click === 'function') {
-          state.listened = true;
-        }
+      if (!state.listened && typeof scope.click === 'function') {
+        state.listened = true;
       }
       if (!state.moveListened) {
         moveHooks.forEach(hook => {
