@@ -19,8 +19,6 @@ A number of changes were made to the configuration options passed to the plugin 
 
 ![145609678-792aac72-2cf0-4bb7-9b05-464a605e8d80](https://user-images.githubusercontent.com/11741250/156187206-62cb4236-527e-45ae-9dc6-6b6c50ad8991.png)
 
-Additional properties are stored for specific annotation types:
-
 ## Events
 
 `chartjs-plugin-annotation` plugin version 2 introduces the [`interaction`](options#interaction) options, to configure which events trigger annotation interactions. By default, the plugin uses the [chart interaction configuration](https://www.chartjs.org/docs/latest/configuration/interactions.html#interactions).
