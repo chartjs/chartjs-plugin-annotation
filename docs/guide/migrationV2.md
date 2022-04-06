@@ -15,9 +15,43 @@ A number of changes were made to the configuration options passed to the plugin 
 
 ## Elements
 
-`chartjs-plugin-annotation` plugin version 2 normalizes the properties of the annotation elements in order to be based on common box model, as following:
+`chartjs-plugin-annotation` plugin version 2 normalizes the properties of the annotation elements in order to be based on common box model.
 
-![145609678-792aac72-2cf0-4bb7-9b05-464a605e8d80](https://user-images.githubusercontent.com/11741250/156187206-62cb4236-527e-45ae-9dc6-6b6c50ad8991.png)
+#### Box annotation
+
+The following diagram is showing the element properties about a `'box'` annotation:
+
+![box](../img/elementBoxProps.png)
+
+#### Ellipse annotation
+
+The following diagram is showing the element properties about a `'ellipse'` annotation:
+
+![ellipse](../img/elementEllipseProps.png)
+
+#### Label annotation
+
+The following diagram is showing the element properties about a `'label'` annotation:
+
+![label](../img/elementLabelProps.png)
+
+#### Line annotation
+
+The following diagram is showing the element properties about a `'line'` annotation and the inner label:
+
+![line](../img/elementLineProps.png)
+
+#### Point annotation
+
+The following diagram is showing the element properties about a `'point'` annotation:
+
+![point](../img/elementPointProps.png)
+
+#### Polygon annotation
+
+The following diagram is showing the element properties about a `'polygon'` annotation:
+
+![polygon](../img/elementPolygonProps.png)
 
 ## Events
 
