@@ -1,10 +1,10 @@
-# 3.x Migration Guide
+# 1.x Migration Guide
 
-chartjs-plugin-annotation 3.0 introduces a number of breaking changes.
+`chartjs-plugin-annotation` plugin version 1 introduces a number of breaking changes in order to compatible with Chart.js 3 and to align with Chart.js 3 options.
 
 ## Setup and installation
 
-* Chart.js 3 is tree-shakeable and thus requires registering the plugins when used as an `npm` module. Here is an example:
+Chart.js 3 is tree-shakeable and thus requires registering the plugins when used as an `npm` module. Here is an example:
 
 ```javascript
 import { Chart, LineController, LineElement, PointElement, LinearScale } from 'chart.js';
