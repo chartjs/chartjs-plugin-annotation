@@ -98,6 +98,7 @@ module.exports = {
             'types/polygon'
           ]
         },
+        'migrationV1',
         'migrationV2'
       ],
       '/samples/': [
