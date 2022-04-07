@@ -45,11 +45,9 @@ export function handleEvent(state, event, options) {
     switch (event.type) {
     case 'mousemove':
     case 'mouseout':
-      handleMoveEvents(state, event, options);
-      break;
+      return handleMoveEvents(state, event, options);
     case 'click':
-      handleClickEvents(state, event, options);
-      break;
+      return handleClickEvents(state, event, options);
     default:
     }
   }
@@ -72,26 +70,30 @@ function handleMoveEvents(state, event, options) {
   state.hovered = elements;
 
   const context = {state, event};
-  dispatchMoveEvents(context, 'leave', previous, elements);
-  dispatchMoveEvents(context, 'enter', elements, previous);
+  let changed = dispatchMoveEvents(context, 'leave', previous, elements);
+  return dispatchMoveEvents(context, 'enter', elements, previous) || changed;
 }
 
 function dispatchMoveEvents({state, event}, hook, elements, checkElements) {
+  let changed;
   for (const element of elements) {
     if (checkElements.indexOf(element) < 0) {
-      dispatchEvent(element.options[hook] || state.listeners[hook], element, event);
+      changed = dispatchEvent(element.options[hook] || state.listeners[hook], element, event) || changed;
     }
   }
+  return changed;
 }
 
 function handleClickEvents(state, event, options) {
   const listeners = state.listeners;
   const elements = getElements(state, event, options.interaction);
+  let changed;
   for (const element of elements) {
-    dispatchEvent(element.options.click || listeners.click, element, event);
+    changed = dispatchEvent(element.options.click || listeners.click, element, event) || changed;
   }
+  return changed;
 }
 
 function dispatchEvent(handler, element, event) {
-  callback(handler, [element.$context, event]);
+  return callback(handler, [element.$context, event]) === true;
 }

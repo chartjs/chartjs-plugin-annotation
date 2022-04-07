@@ -35,9 +35,9 @@ module.exports = {
                 content: 'dynamic label',
                 display: false
               },
-              enter({chart, element}) {
+              enter({element}) {
                 element.options.label.display = true;
-                chart.draw();
+                return true;
               }
             },
           }

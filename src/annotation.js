@@ -101,7 +101,9 @@ export default {
 
   beforeEvent(chart, args, options) {
     const state = chartStates.get(chart);
-    handleEvent(state, args.event, options);
+    if (handleEvent(state, args.event, options)) {
+      args.changed = true;
+    }
   },
 
   destroy(chart) {

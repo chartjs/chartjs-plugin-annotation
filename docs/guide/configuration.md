@@ -61,8 +61,14 @@ const options = {
 
 The following options are available for all annotation types. These options can be specified per annotation, or at the top level which apply to all annotations.
 
-| Name | Type | [Scriptable](options#scriptable-options) | Notes
-| ---- | ---- | :----: | ----
-| `click` | `(context, event) => void` | No | Called when a single click occurs on the annotation.
-| `enter` | `(context, event) => void` | No | Called when the mouse enters the annotation.
-| `leave` | `(context, event) => void` | No | Called when the mouse leaves the annotation.
+| Name | Type | Chart event<sup>1</sup> | Notes
+| ---- | ---- | ---- | ----
+| `click` | `(context, event) => boolean | void` | `'click'` | Called when a single click occurs on the annotation.
+| `enter` | `(context, event) => boolean | void` | `'mousemove'` | Called when the mouse enters the annotation.
+| `leave` | `(context, event) => boolean | void` | `'mousemove'` | Called when the mouse leaves the annotation.
+
+::: tip
+**<sup>1</sup>** [Chart.js events](https://www.chartjs.org/docs/latest/configuration/interactions.html#events) that need to be enabled in order to get the associated annotation event working. Note that by default Chart.js enables `'mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'`, meaning that annotation events work out-of-the-box.
+:::
+
+If the event callbacks explicitly returns `true`, the chart will re-render automatically after processing the event completely. This is important when there are the annotations that require re-draws (for instance, after a change of a rendering options).
