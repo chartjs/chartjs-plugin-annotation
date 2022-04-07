@@ -6,11 +6,6 @@ defaults.set({
       tension: 0.4
     }
   },
-  interaction: {
-    mode: 'nearest',
-    axis: 'xy',
-    intersect: true
-  },
   plugins: {
     legend: false
   },
