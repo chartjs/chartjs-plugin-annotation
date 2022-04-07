@@ -2,6 +2,8 @@ import {Element} from 'chart.js';
 import {drawBox, drawLabel, measureLabelSize, getChartPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, resolveBoxProperties, getRelativePosition, translate, rotated, getElementCenterPoint} from '../helpers';
 import {toPadding, toRadians, distanceBetweenPoints} from 'chart.js/helpers';
 
+const positions = ['left', 'bottom', 'top', 'right'];
+
 export default class LabelAnnotation extends Element {
 
   inRange(mouseX, mouseY, axis, useFinalPosition) {
@@ -26,7 +28,6 @@ export default class LabelAnnotation extends Element {
     ctx.restore();
   }
 
-  // TODO: make private in v2
   resolveElementProperties(chart, options) {
     let point;
     if (!isBoundToPoint(options)) {
@@ -218,8 +219,6 @@ function resolveCalloutPosition(properties, options, rotation) {
   }
   return resolveCalloutAutoPosition(properties, options, rotation);
 }
-
-const positions = ['left', 'bottom', 'top', 'right'];
 
 function resolveCalloutAutoPosition(properties, options, rotation) {
   const {x, y, x2, y2, width, height, pointX, pointY, centerX, centerY} = properties;

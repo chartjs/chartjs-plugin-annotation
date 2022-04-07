@@ -16,6 +16,12 @@ A number of changes were made to the configuration options passed to the plugin 
 
 ## Elements
 
+`chartjs-plugin-annotation` plugin version 2 hides the following methods in the `line` annotation element because they should be used only internally:
+
+ * `intersects`
+ * `labelIsVisible`
+ * `isOnLabel`
+
 `chartjs-plugin-annotation` plugin version 2 normalizes the properties of the annotation elements in order to be based on common box model.
 
 #### Box annotation
