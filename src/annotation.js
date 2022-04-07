@@ -102,7 +102,7 @@ export default {
   beforeEvent(chart, args, options) {
     const state = chartStates.get(chart);
     if (handleEvent(state, args.event, options)) {
-        args.changed = true;
+      args.changed = true;
     }
   },
 
