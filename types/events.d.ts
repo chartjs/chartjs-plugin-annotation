@@ -20,7 +20,7 @@ export interface PartialEventContext {
 }
 
 export interface AnnotationEvents {
-  enter?(context: EventContext, event: ChartEvent): void,
-  leave?(context: EventContext, event: ChartEvent): void,
-  click?(context: EventContext, event: ChartEvent): void,
+  enter?(context: EventContext, event: ChartEvent): boolean | void,
+  leave?(context: EventContext, event: ChartEvent): boolean | void,
+  click?(context: EventContext, event: ChartEvent): boolean | void,
 }

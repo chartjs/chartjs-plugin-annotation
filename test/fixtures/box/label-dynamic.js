@@ -30,9 +30,9 @@ module.exports = {
                 display: false,
                 content: 'This is dynamic!',
               },
-              enter({chart, element}) {
+              enter({element}) {
                 element.options.label.display = true;
-                chart.draw();
+                return true;
               }
             },
           }

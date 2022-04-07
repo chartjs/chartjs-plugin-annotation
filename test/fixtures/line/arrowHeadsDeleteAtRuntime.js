@@ -40,9 +40,9 @@ module.exports = {
                   display: true,
                 }
               },
-              click({chart, element}) {
+              click({element}) {
                 delete element.options.arrowHeads.start;
-                chart.draw();
+                return true;
               }
             },
             {
@@ -68,9 +68,9 @@ module.exports = {
                   display: true,
                 }
               },
-              click({chart, element}) {
+              click({element}) {
                 delete element.options.arrowHeads.end;
-                chart.draw();
+                return true;
               }
             },
             {
@@ -96,10 +96,10 @@ module.exports = {
                   display: true,
                 }
               },
-              click({chart, element}) {
+              click({element}) {
                 delete element.options.arrowHeads.start;
                 delete element.options.arrowHeads.end;
-                chart.draw();
+                return true;
               }
             }
           ]

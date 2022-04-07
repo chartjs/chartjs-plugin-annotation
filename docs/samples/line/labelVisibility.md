@@ -37,14 +37,14 @@ const annotation1 = {
   scaleID: 'y',
   value: (ctx) => average(ctx),
   // For simple property changes, you can directly modify the annotation
-  // element's properties then call chart.draw().  This is faster.
+  // element's properties then return true to force chart re-drawing.  This is faster.
   enter({chart, element}, event) {
     element.options.label.display = true;
-    chart.draw();
+    return true;
   },
   leave({chart, element}, event) {
     element.options.label.display = false;
-    chart.draw();
+    return true;
   }
 };
 // </block:annotation1>
