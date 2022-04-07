@@ -38,11 +38,11 @@ const annotation1 = {
   value: (ctx) => average(ctx),
   // For simple property changes, you can directly modify the annotation
   // element's properties then return true to force chart re-drawing.  This is faster.
-  enter({chart, element}, event) {
+  enter({element}, event) {
     element.options.label.display = true;
     return true;
   },
-  leave({chart, element}, event) {
+  leave({element}, event) {
     element.options.label.display = false;
     return true;
   }
