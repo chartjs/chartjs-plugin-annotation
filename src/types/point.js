@@ -1,18 +1,18 @@
 import {Element} from 'chart.js';
 import {drawPoint} from 'chart.js/helpers';
-import {inPointRange, getElementCenterPoint, resolvePointPosition, setBorderStyle, setShadowStyle, isImageOrCanvas} from '../helpers';
+import {inPointRange, getElementCenterPoint, resolvePointProperties, setBorderStyle, setShadowStyle, isImageOrCanvas} from '../helpers';
 
 export default class PointAnnotation extends Element {
 
   inRange(mouseX, mouseY, axis, useFinalPosition) {
-    const {x, y, width, height} = this.getProps(['x', 'y', 'width', 'height'], useFinalPosition);
+    const {x, y, x2, y2, width} = this.getProps(['x', 'y', 'x2', 'y2', 'width'], useFinalPosition);
     const borderWidth = this.options.borderWidth;
     if (axis !== 'x' && axis !== 'y') {
       return inPointRange({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), width / 2, borderWidth);
     }
     const hBorderWidth = borderWidth / 2;
-    const limit = axis === 'y' ? {start: y, size: height, value: mouseY} : {start: x, size: width, value: mouseX};
-    return limit.value >= limit.start - limit.size / 2 - hBorderWidth && limit.value <= limit.start + limit.size / 2 + hBorderWidth;
+    const limit = axis === 'y' ? {start: y, end: y2, value: mouseY} : {start: x, end: x2, value: mouseX};
+    return limit.value >= limit.start - hBorderWidth && limit.value <= limit.end + hBorderWidth;
   }
 
   getCenterPoint(useFinalPosition) {
@@ -30,7 +30,7 @@ export default class PointAnnotation extends Element {
     setShadowStyle(ctx, options);
     const stroke = setBorderStyle(ctx, options);
     options.borderWidth = 0;
-    drawPoint(ctx, options, this.x, this.y);
+    drawPoint(ctx, options, this.centerX, this.centerY);
     if (stroke && !isImageOrCanvas(options.pointStyle)) {
       ctx.shadowColor = options.borderShadowColor;
       ctx.stroke();
@@ -40,7 +40,7 @@ export default class PointAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    return resolvePointPosition(chart, options);
+    return resolvePointProperties(chart, options);
   }
 }
 

@@ -20,15 +20,14 @@ export function isImageOrCanvas(content) {
 /**
  * Set the translation on the canvas if the rotation must be applied.
  * @param {CanvasRenderingContext2D} ctx - chart canvas context
- * @param {Element} element - annotation element to use for applying the translation
+ * @param {{x, y}} point - the point of translation
  * @param {number} rotation - rotation (in degrees) to apply
  */
-export function translate(ctx, element, rotation) {
+export function translate(ctx, {x, y}, rotation) {
   if (rotation) {
-    const center = element.getCenterPoint();
-    ctx.translate(center.x, center.y);
+    ctx.translate(x, y);
     ctx.rotate(toRadians(rotation));
-    ctx.translate(-center.x, -center.y);
+    ctx.translate(-x, -y);
   }
 }
 

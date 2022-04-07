@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, RAD_PER_DEG, toRadians} from 'chart.js/helpers';
-import {setBorderStyle, resolvePointPosition, getElementCenterPoint, setShadowStyle, rotated} from '../helpers';
+import {setBorderStyle, resolvePointProperties, getElementCenterPoint, setShadowStyle, rotated} from '../helpers';
 
 export default class PolygonAnnotation extends Element {
 
@@ -46,27 +46,18 @@ export default class PolygonAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    const {x, y, width, height} = resolvePointPosition(chart, options);
-    const {sides, radius, rotation, borderWidth} = options;
-    const halfBorder = borderWidth / 2;
+    const properties = resolvePointProperties(chart, options);
+    const {x, y} = properties;
+    const {sides, rotation} = options;
     const elements = [];
     const angle = (2 * PI) / sides;
     let rad = rotation * RAD_PER_DEG;
     for (let i = 0; i < sides; i++, rad += angle) {
-      const sin = Math.sin(rad);
-      const cos = Math.cos(rad);
-      elements.push({
-        type: 'point',
-        optionScope: 'point',
-        properties: {
-          x: x + sin * radius,
-          y: y - cos * radius,
-          bX: x + sin * (radius + halfBorder),
-          bY: y - cos * (radius + halfBorder)
-        }
-      });
+      elements.push(buildPointElement(properties, options, rad));
     }
-    return {x, y, width, height, elements, initProperties: {x, y}};
+    properties.elements = elements;
+    properties.initProperties = {x, y};
+    return properties;
   }
 }
 
@@ -107,6 +98,25 @@ PolygonAnnotation.defaultRoutes = {
   borderColor: 'color',
   backgroundColor: 'color'
 };
+
+function buildPointElement({centerX, centerY}, {radius, borderWidth}, rad) {
+  const halfBorder = borderWidth / 2;
+  const sin = Math.sin(rad);
+  const cos = Math.cos(rad);
+  const point = {x: centerX + sin * radius, y: centerY - cos * radius};
+  return {
+    type: 'point',
+    optionScope: 'point',
+    properties: {
+      x: point.x,
+      y: point.y,
+      centerX: point.x,
+      centerY: point.y,
+      bX: centerX + sin * (radius + halfBorder),
+      bY: centerY - cos * (radius + halfBorder)
+    }
+  };
+}
 
 function pointIsInPolygon(points, x, y, useFinalPosition) {
   let isInside = false;

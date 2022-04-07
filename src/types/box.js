@@ -1,21 +1,21 @@
 import {Element} from 'chart.js';
 import {toPadding, toRadians} from 'chart.js/helpers';
-import {drawBox, drawLabel, getRelativePosition, measureLabelSize, getRectCenterPoint, getChartRect, toPosition, inBoxRange, rotated, translate} from '../helpers';
+import {drawBox, drawLabel, getRelativePosition, measureLabelSize, resolveBoxProperties, toPosition, inBoxRange, rotated, translate, getElementCenterPoint} from '../helpers';
 
 export default class BoxAnnotation extends Element {
 
   inRange(mouseX, mouseY, axis, useFinalPosition) {
     const {x, y} = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.options.rotation));
-    return inBoxRange({x, y}, this.getProps(['x', 'y', 'width', 'height'], useFinalPosition), axis, this.options.borderWidth);
+    return inBoxRange({x, y}, this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis, this.options.borderWidth);
   }
 
   getCenterPoint(useFinalPosition) {
-    return getRectCenterPoint(this.getProps(['x', 'y', 'width', 'height'], useFinalPosition));
+    return getElementCenterPoint(this, useFinalPosition);
   }
 
   draw(ctx) {
     ctx.save();
-    translate(ctx, this, this.options.rotation);
+    translate(ctx, this.getCenterPoint(), this.options.rotation);
     drawBox(ctx, this, this.options);
     ctx.restore();
   }
@@ -35,7 +35,7 @@ export default class BoxAnnotation extends Element {
     };
 
     ctx.save();
-    translate(ctx, this, label.rotation);
+    translate(ctx, this.getCenterPoint(), label.rotation);
     ctx.beginPath();
     ctx.rect(x + halfBorder + padding.left, y + halfBorder + padding.top,
       width - borderWidth - padding.width, height - borderWidth - padding.height);
@@ -45,7 +45,7 @@ export default class BoxAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    return getChartRect(chart, options);
+    return resolveBoxProperties(chart, options);
   }
 }
 

@@ -108,7 +108,7 @@ describe('Polygon annotation', function() {
 
     elemsNoRad.forEach(function(element) {
       it(`should return false radius is 0 element '${element.options.id}'`, function() {
-        expect(element.inRange(element.x, element.y)).toEqual(false);
+        expect(element.inRange(element.centerX, element.centerY)).toEqual(false);
       });
     });
   });
@@ -151,12 +151,12 @@ describe('Polygon annotation', function() {
             [true, false].forEach(function(intersect) {
               interactionOpts.intersect = intersect;
               const elementsCounts = interaction.axes[axis].intersect[intersect];
-              const points = [{x: outerEl.x - outerEl.width / 2, y: outerEl.y, el: outerEl},
-                {x: innerEl.x - innerEl.width / 2, y: innerEl.y, el: innerEl},
-                {x: innerEl.x, y: innerEl.y, el: innerEl},
-                {x: innerEl.x + innerEl.width / 2 + 1, y: innerEl.y, el: innerEl},
-                {x: outerEl.x + outerEl.width / 2 + 1, y: outerEl.y, el: outerEl},
-                {x: outerEl.x - outerEl.width / 2 + 1, y: outerEl.y - outerEl.height / 2 - 1, el: outerEl}];
+              const points = [{x: outerEl.x, y: outerEl.centerY, el: outerEl},
+                {x: innerEl.x, y: innerEl.centerY, el: innerEl},
+                {x: innerEl.centerX, y: innerEl.centerY, el: innerEl},
+                {x: innerEl.x2 + 1, y: innerEl.centerY, el: innerEl},
+                {x: outerEl.x2 + 1, y: outerEl.centerY, el: outerEl},
+                {x: outerEl.x + 1, y: outerEl.y - 1, el: outerEl}];
 
               for (let i = 0; i < points.length; i++) {
                 const point = points[i];
@@ -171,4 +171,5 @@ describe('Polygon annotation', function() {
       });
     }
   });
+
 });

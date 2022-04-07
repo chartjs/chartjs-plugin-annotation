@@ -17,10 +17,10 @@ export function inPointRange(point, center, radius, borderWidth) {
   return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius + hBorderWidth, 2);
 }
 
-export function inBoxRange(point, {x, y, width, height}, axis, borderWidth) {
+export function inBoxRange(point, {x, y, x2, y2}, axis, borderWidth) {
   const hBorderWidth = borderWidth / 2;
-  const inRangeX = point.x >= x - hBorderWidth - EPSILON && point.x <= x + width + hBorderWidth + EPSILON;
-  const inRangeY = point.y >= y - hBorderWidth - EPSILON && point.y <= y + height + hBorderWidth + EPSILON;
+  const inRangeX = point.x >= x - hBorderWidth - EPSILON && point.x <= x2 + hBorderWidth + EPSILON;
+  const inRangeY = point.y >= y - hBorderWidth - EPSILON && point.y <= y2 + hBorderWidth + EPSILON;
   if (axis === 'x') {
     return inRangeX;
   } else if (axis === 'y') {
@@ -30,8 +30,8 @@ export function inBoxRange(point, {x, y, width, height}, axis, borderWidth) {
 }
 
 export function getElementCenterPoint(element, useFinalPosition) {
-  const {x, y} = element.getProps(['x', 'y'], useFinalPosition);
-  return {x, y};
+  const {centerX, centerY} = element.getProps(['centerX', 'centerY'], useFinalPosition);
+  return {x: centerX, y: centerY};
 }
 
 const isOlderPart = (act, req) => req > act || (act.length > req.length && act.slice(0, req.length) === req);

@@ -73,10 +73,10 @@ describe('Line annotation', function() {
           const halfBorder = borderWidth / 2;
           element.options.label.borderWidth = borderWidth;
           const rad = rotation / 180 * Math.PI;
-          for (const ax of [element.labelX - element.labelWidth / 2 - halfBorder, element.labelX + element.labelWidth / 2 + halfBorder]) {
-            for (const ay of [element.labelY - element.labelHeight / 2 - halfBorder, element.labelY + element.labelHeight / 2 + halfBorder]) {
+          for (const ax of [element.labelX - halfBorder, element.labelX2 + halfBorder]) {
+            for (const ay of [element.labelY - halfBorder, element.labelY2 + halfBorder]) {
               const {x, y} = rotated({x: ax, y: ay},
-                {x: element.labelX, y: element.labelY}, rad);
+                {x: element.labelCenterX, y: element.labelCenterY}, rad);
               expect(element.inRange(x, y)).withContext(`rotation: ${rotation}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
             }
           }
@@ -88,10 +88,10 @@ describe('Line annotation', function() {
           const halfBorder = borderWidth / 2;
           element.options.label.borderWidth = borderWidth;
           const rad = rotation / 180 * Math.PI;
-          for (const ax of [element.labelX - element.labelWidth / 2 - halfBorder - 1, element.labelX + element.labelWidth / 2 + halfBorder + 1]) {
-            for (const ay of [element.labelY - element.labelHeight / 2 - halfBorder - 1, element.labelY + element.labelHeight / 2 + halfBorder + 1]) {
+          for (const ax of [element.labelX - halfBorder - 1, element.labelX2 + halfBorder + 1]) {
+            for (const ay of [element.labelY - halfBorder - 1, element.labelY2 + halfBorder + 1]) {
               const {x, y} = rotated({x: ax, y: ay},
-                {x: element.labelX, y: element.labelY}, rad);
+                {x: element.labelCenterX, y: element.labelCenterY}, rad);
               expect(element.inRange(x, y)).withContext(`rotation: ${rotation}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
             }
           }
@@ -156,6 +156,7 @@ describe('Line annotation', function() {
     });
   });
 
+
   describe('with label interaction', function() {
     const outer = {
       type: 'line',
@@ -200,12 +201,12 @@ describe('Line annotation', function() {
           [true, false].forEach(function(intersect) {
             interactionOpts.intersect = intersect;
             const elementsCounts = interaction.axes[axis].intersect[intersect];
-            const points = [{x: outerEl.labelX - outerEl.labelWidth / 2, y: outerEl.labelY},
-              {x: innerEl.labelX - innerEl.labelWidth / 2, y: innerEl.labelY},
+            const points = [{x: outerEl.labelX, y: outerEl.labelY},
               {x: innerEl.labelX, y: innerEl.labelY},
-              {x: innerEl.labelX + innerEl.labelWidth / 2 + 1, y: innerEl.labelY},
-              {x: outerEl.labelX + outerEl.labelWidth / 2 + 1, y: outerEl.labelY},
-              {x: outerEl.labelX - outerEl.labelWidth / 2 + 1, y: outCenter.y - outerEl.height / 2 - 1}];
+              {x: innerEl.labelCenterX, y: innerEl.labelCenterY},
+              {x: innerEl.labelX2 + 1, y: innerEl.labelY},
+              {x: outerEl.labelX2 + 1, y: outerEl.labelY},
+              {x: outerEl.labelX + 1, y: outCenter.y - outerEl.height / 2 - 1}];
 
             for (let i = 0; i < points.length; i++) {
               const point = points[i];

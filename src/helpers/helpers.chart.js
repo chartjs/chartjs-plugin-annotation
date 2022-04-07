@@ -1,5 +1,4 @@
 import {isFinite} from 'chart.js/helpers';
-import {getRectCenterPoint} from './helpers.geometric';
 import {isBoundToPoint} from './helpers.options';
 
 /**
@@ -8,6 +7,7 @@ import {isBoundToPoint} from './helpers.options';
  * @typedef { import("chart.js").Point } Point
  * @typedef { import('../../types/options').CoreAnnotationOptions } CoreAnnotationOptions
  * @typedef { import('../../types/options').PointAnnotationOptions } PointAnnotationOptions
+ * @typedef { import('../../types/options').PolygonAnnotationOptions } PolygonAnnotationOptions
  */
 
 /**
@@ -95,9 +95,9 @@ export function getChartPoint(chart, options) {
 /**
  * @param {Chart} chart
  * @param {CoreAnnotationOptions} options
- * @returns {{x?:number, y?: number, x2?: number, y2?: number, width?: number, height?: number}}
+ * @returns {{x:number, y: number, x2: number, y2: number, centerX: number, centerY: number, width: number, height: number}}
  */
-export function getChartRect(chart, options) {
+export function resolveBoxProperties(chart, options) {
   const scales = chart.scales;
   const xScale = scales[retrieveScaleID(scales, options, 'xScaleID')];
   const yScale = scales[retrieveScaleID(scales, options, 'yScaleID')];
@@ -121,43 +121,55 @@ export function getChartRect(chart, options) {
     x2,
     y2,
     width: x2 - x,
-    height: y2 - y
+    height: y2 - y,
+    centerX: x + (x2 - x) / 2,
+    centerY: y + (y2 - y) / 2
   };
 }
 
 /**
  * @param {Chart} chart
- * @param {PointAnnotationOptions} options
+ * @param {PointAnnotationOptions|PolygonAnnotationOptions} options
+ * @returns {{x:number, y: number, x2: number, y2: number, centerX: number, centerY: number, width: number, height: number}}
  */
-export function getChartCircle(chart, options) {
+function getChartCircle(chart, options) {
   const point = getChartPoint(chart, options);
+  const size = options.radius * 2;
   return {
-    x: point.x + options.xAdjust,
-    y: point.y + options.yAdjust,
-    width: options.radius * 2,
-    height: options.radius * 2
+    x: point.x - options.radius + options.xAdjust,
+    y: point.y - options.radius + options.yAdjust,
+    x2: point.x + options.radius + options.xAdjust,
+    y2: point.y + options.radius + options.yAdjust,
+    centerX: point.x + options.xAdjust,
+    centerY: point.y + options.yAdjust,
+    width: size,
+    height: size
   };
 }
 
 /**
  * @param {Chart} chart
- * @param {PointAnnotationOptions} options
- * @returns
+ * @param {PointAnnotationOptions|PolygonAnnotationOptions} options
+ * @returns {{x:number, y: number, x2: number, y2: number, centerX: number, centerY: number, width: number, height: number}}
  */
-export function resolvePointPosition(chart, options) {
+export function resolvePointProperties(chart, options) {
   if (!isBoundToPoint(options)) {
-    const box = getChartRect(chart, options);
-    const point = getRectCenterPoint(box);
+    const box = resolveBoxProperties(chart, options);
     let radius = options.radius;
     if (!radius || isNaN(radius)) {
       radius = Math.min(box.width, box.height) / 2;
       options.radius = radius;
     }
+    const size = radius * 2;
     return {
-      x: point.x + options.xAdjust,
-      y: point.y + options.yAdjust,
-      width: radius * 2,
-      height: radius * 2
+      x: box.x + options.xAdjust,
+      y: box.y + options.yAdjust,
+      x2: box.x + size + options.xAdjust,
+      y2: box.y + size + options.yAdjust,
+      centerX: box.centerX + options.xAdjust,
+      centerY: box.centerY + options.yAdjust,
+      width: size,
+      height: size
     };
   }
   return getChartCircle(chart, options);

@@ -13,6 +13,46 @@ A number of changes were made to the configuration options passed to the plugin 
  * `xPadding` and `yPadding` options were merged into a single `padding` object in the label configuration of line annotation to align with Chart.js options.
  * `enabled` option was replaced by `display` in the callout configuration of label annotation, in the label configuration of line and box annotations and in the arrow heads configuration of line annotation to have the same option on all elements.
 
+## Elements
+
+`chartjs-plugin-annotation` plugin version 2 normalizes the properties of the annotation elements in order to be based on common box model.
+
+#### Box annotation
+
+The following diagram is showing the element properties about a `'box'` annotation:
+
+![box](../img/elementBoxProps.png)
+
+#### Ellipse annotation
+
+The following diagram is showing the element properties about a `'ellipse'` annotation:
+
+![ellipse](../img/elementEllipseProps.png)
+
+#### Label annotation
+
+The following diagram is showing the element properties about a `'label'` annotation:
+
+![label](../img/elementLabelProps.png)
+
+#### Line annotation
+
+The following diagram is showing the element properties about a `'line'` annotation and the inner label:
+
+![line](../img/elementLineProps.png)
+
+#### Point annotation
+
+The following diagram is showing the element properties about a `'point'` annotation:
+
+![point](../img/elementPointProps.png)
+
+#### Polygon annotation
+
+The following diagram is showing the element properties about a `'polygon'` annotation:
+
+![polygon](../img/elementPolygonProps.png)
+
 ## Events
 
 `chartjs-plugin-annotation` plugin version 2 introduces the [`interaction`](options#interaction) options, to configure which events trigger annotation interactions. By default, the plugin uses the [chart interaction configuration](https://www.chartjs.org/docs/latest/configuration/interactions.html#interactions).
