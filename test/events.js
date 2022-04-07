@@ -99,31 +99,6 @@ export function testEvents(options) {
         });
         window.triggerMouseEvent(chart, 'click', getCenterPoint(chart));
       });
-
-      it('should detect dbl click event', function(done) {
-        const dblClickSpy = jasmine.createSpy('dblclick');
-
-        targetOptions.dblclick = dblClickSpy;
-        pluginOpts.dblClickSpeed = 1000;
-        pluginOpts.annotations = [options];
-
-        const chart = window.acquireChart(chartConfig);
-        const eventPoint = getCenterPoint(chart);
-
-        let dblClick = false;
-        window.afterEvent(chart, 'click', function() {
-          if (!dblClick) {
-            dblClick = true;
-            window.triggerMouseEvent(chart, 'click', eventPoint);
-          } else {
-            expect(dblClickSpy.calls.count()).toBe(1);
-            delete targetOptions.dblclick;
-            delete pluginOpts.dblClickSpeed;
-            done();
-          }
-        });
-        window.triggerMouseEvent(chart, 'click', eventPoint);
-      });
     });
   });
 }
