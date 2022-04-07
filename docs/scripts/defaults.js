@@ -8,8 +8,8 @@ defaults.set({
   },
   interaction: {
     mode: 'nearest',
-    axis: 'x',
-    intersect: false
+    axis: 'xy',
+    intersect: true
   },
   plugins: {
     legend: false
