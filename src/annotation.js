@@ -5,7 +5,7 @@ import {adjustScaleRange, verifyScaleOptions} from './scale';
 import {updateElements, resolveType} from './elements';
 import {annotationTypes} from './types';
 import {requireVersion} from './helpers';
-import {name, version} from '../package.json';
+import {version} from '../package.json';
 
 const chartStates = new Map();
 
