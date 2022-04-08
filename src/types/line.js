@@ -8,97 +8,17 @@ const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p
 const sqr = v => v * v;
 const rangeLimit = (mouseX, mouseY, {x, y, x2, y2}, axis) => axis === 'y' ? {start: Math.min(y, y2), end: Math.max(y, y2), value: mouseY} : {start: Math.min(x, x2), end: Math.max(x, x2), value: mouseX};
 
-function isLineInArea({x, y, x2, y2}, {top, right, bottom, left}) {
-  return !(
-    (x < left && x2 < left) ||
-    (x > right && x2 > right) ||
-    (y < top && y2 < top) ||
-    (y > bottom && y2 > bottom)
-  );
-}
-
-function limitPointToArea({x, y}, p2, {top, right, bottom, left}) {
-  if (x < left) {
-    y = interpolateY(left, {x, y}, p2);
-    x = left;
-  }
-  if (x > right) {
-    y = interpolateY(right, {x, y}, p2);
-    x = right;
-  }
-  if (y < top) {
-    x = interpolateX(top, {x, y}, p2);
-    y = top;
-  }
-  if (y > bottom) {
-    x = interpolateX(bottom, {x, y}, p2);
-    y = bottom;
-  }
-  return {x, y};
-}
-
-function limitLineToArea(p1, p2, area) {
-  const {x, y} = limitPointToArea(p1, p2, area);
-  const {x: x2, y: y2} = limitPointToArea(p2, p1, area);
-  return {x, y, x2, y2, width: Math.abs(x2 - x), height: Math.abs(y2 - y)};
-}
-
 export default class LineAnnotation extends Element {
-
-  // TODO: make private in v2
-  intersects(x, y, epsilon = EPSILON, useFinalPosition) {
-    // Adapted from https://stackoverflow.com/a/6853926/25507
-    const {x: x1, y: y1, x2, y2} = this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition);
-    const dx = x2 - x1;
-    const dy = y2 - y1;
-    const lenSq = sqr(dx) + sqr(dy);
-    const t = lenSq === 0 ? -1 : ((x - x1) * dx + (y - y1) * dy) / lenSq;
-    let xx, yy;
-    if (t < 0) {
-      xx = x1;
-      yy = y1;
-    } else if (t > 1) {
-      xx = x2;
-      yy = y2;
-    } else {
-      xx = x1 + t * dx;
-      yy = y1 + t * dy;
-    }
-    return (sqr(x - xx) + sqr(y - yy)) <= epsilon;
-  }
-
-  /**
-   * @todo make private in v2
-   * @param {boolean} useFinalPosition - use the element's animation target instead of current position
-   * @param {top, right, bottom, left} [chartArea] - optional, area of the chart
-   * @returns {boolean} true if the label is visible
-   */
-  labelIsVisible(useFinalPosition, chartArea) {
-    const labelOpts = this.options.label;
-    if (!labelOpts || !labelOpts.display) {
-      return false;
-    }
-    return !chartArea || isLineInArea(this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), chartArea);
-  }
-
-  // TODO: make private in v2
-  isOnLabel(mouseX, mouseY, useFinalPosition, axis) {
-    if (!this.labelIsVisible(useFinalPosition)) {
-      return false;
-    }
-    const {labelX, labelY, labelX2, labelY2, labelCenterX, labelCenterY, labelRotation} = this.getProps(['labelX', 'labelY', 'labelX2', 'labelY2', 'labelCenterX', 'labelCenterY', 'labelRotation'], useFinalPosition);
-    const {x, y} = rotated({x: mouseX, y: mouseY}, {x: labelCenterX, y: labelCenterY}, -toRadians(labelRotation));
-    return inBoxRange({x, y}, {x: labelX, y: labelY, x2: labelX2, y2: labelY2}, axis, this.options.label.borderWidth);
-  }
 
   inRange(mouseX, mouseY, axis, useFinalPosition) {
     const hBorderWidth = this.options.borderWidth / 2;
     if (axis !== 'x' && axis !== 'y') {
       const epsilon = sqr(hBorderWidth);
-      return this.intersects(mouseX, mouseY, epsilon, useFinalPosition) || this.isOnLabel(mouseX, mouseY, useFinalPosition);
+      const point = {mouseX, mouseY};
+      return intersects(this, point, epsilon, useFinalPosition) || isOnLabel(this, point, useFinalPosition);
     }
     const limit = rangeLimit(mouseX, mouseY, this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis);
-    return (limit.value >= limit.start - hBorderWidth && limit.value <= limit.end + hBorderWidth) || this.isOnLabel(mouseX, mouseY, useFinalPosition, axis);
+    return (limit.value >= limit.start - hBorderWidth && limit.value <= limit.end + hBorderWidth) || isOnLabel(this, {mouseX, mouseY}, useFinalPosition, axis);
   }
 
   getCenterPoint(useFinalPosition) {
@@ -131,7 +51,7 @@ export default class LineAnnotation extends Element {
   }
 
   drawLabel(ctx, chartArea) {
-    if (!this.labelIsVisible(false, chartArea)) {
+    if (!labelIsVisible(this, false, chartArea)) {
       return;
     }
     const {labelX, labelY, labelCenterX, labelCenterY, labelWidth, labelHeight, labelRotation, labelPadding, labelTextSize, options: {label}} = this;
@@ -299,6 +219,84 @@ LineAnnotation.descriptors = {
 LineAnnotation.defaultRoutes = {
   borderColor: 'color'
 };
+
+function isLineInArea({x, y, x2, y2}, {top, right, bottom, left}) {
+  return !(
+    (x < left && x2 < left) ||
+    (x > right && x2 > right) ||
+    (y < top && y2 < top) ||
+    (y > bottom && y2 > bottom)
+  );
+}
+
+function limitPointToArea({x, y}, p2, {top, right, bottom, left}) {
+  if (x < left) {
+    y = interpolateY(left, {x, y}, p2);
+    x = left;
+  }
+  if (x > right) {
+    y = interpolateY(right, {x, y}, p2);
+    x = right;
+  }
+  if (y < top) {
+    x = interpolateX(top, {x, y}, p2);
+    y = top;
+  }
+  if (y > bottom) {
+    x = interpolateX(bottom, {x, y}, p2);
+    y = bottom;
+  }
+  return {x, y};
+}
+
+function limitLineToArea(p1, p2, area) {
+  const {x, y} = limitPointToArea(p1, p2, area);
+  const {x: x2, y: y2} = limitPointToArea(p2, p1, area);
+  return {x, y, x2, y2, width: Math.abs(x2 - x), height: Math.abs(y2 - y)};
+}
+
+function intersects(element, {mouseX, mouseY}, epsilon = EPSILON, useFinalPosition) {
+  // Adapted from https://stackoverflow.com/a/6853926/25507
+  const {x: x1, y: y1, x2, y2} = element.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition);
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const lenSq = sqr(dx) + sqr(dy);
+  const t = lenSq === 0 ? -1 : ((mouseX - x1) * dx + (mouseY - y1) * dy) / lenSq;
+  let xx, yy;
+  if (t < 0) {
+    xx = x1;
+    yy = y1;
+  } else if (t > 1) {
+    xx = x2;
+    yy = y2;
+  } else {
+    xx = x1 + t * dx;
+    yy = y1 + t * dy;
+  }
+  return (sqr(mouseX - xx) + sqr(mouseY - yy)) <= epsilon;
+}
+
+/**
+ * @param {boolean} useFinalPosition - use the element's animation target instead of current position
+ * @param {top, right, bottom, left} [chartArea] - optional, area of the chart
+ * @returns {boolean} true if the label is visible
+ */
+function labelIsVisible(element, useFinalPosition, chartArea) {
+  const labelOpts = element.options.label;
+  if (!labelOpts || !labelOpts.display) {
+    return false;
+  }
+  return !chartArea || isLineInArea(element.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), chartArea);
+}
+
+function isOnLabel(element, {mouseX, mouseY}, useFinalPosition, axis) {
+  if (!labelIsVisible(element, useFinalPosition)) {
+    return false;
+  }
+  const {labelX, labelY, labelX2, labelY2, labelCenterX, labelCenterY, labelRotation} = element.getProps(['labelX', 'labelY', 'labelX2', 'labelY2', 'labelCenterX', 'labelCenterY', 'labelRotation'], useFinalPosition);
+  const {x, y} = rotated({x: mouseX, y: mouseY}, {x: labelCenterX, y: labelCenterY}, -toRadians(labelRotation));
+  return inBoxRange({x, y}, {x: labelX, y: labelY, x2: labelX2, y2: labelY2}, axis, element.options.label.borderWidth);
+}
 
 function translateArea(source, mapping) {
   const ret = {};
