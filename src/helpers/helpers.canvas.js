@@ -5,9 +5,13 @@ import {calculateTextAlignment, getSize} from './helpers.options';
 const widthCache = new Map();
 
 /**
+ * @typedef { import('chart.js').Point } Point
+ */
+
+/**
  * Determine if content is an image or a canvas.
- * @param {*} content
- * @returns boolean|undefined
+ * @param {*} content - object to check
+ * @returns boolean|undefined - true if is an image or a canvas
  * @todo move this function to chart.js helpers
  */
 export function isImageOrCanvas(content) {
@@ -20,7 +24,7 @@ export function isImageOrCanvas(content) {
 /**
  * Set the translation on the canvas if the rotation must be applied.
  * @param {CanvasRenderingContext2D} ctx - chart canvas context
- * @param {{x, y}} point - the point of translation
+ * @param {Point} point - the point of translation
  * @param {number} rotation - rotation (in degrees) to apply
  */
 export function translate(ctx, {x, y}, rotation) {
@@ -35,7 +39,7 @@ export function translate(ctx, {x, y}, rotation) {
  * Apply border options to the canvas context before drawing a shape
  * @param {CanvasRenderingContext2D} ctx - chart canvas context
  * @param {Object} options - options with border configuration
- * @returns {boolean} true is the border options have been applied
+ * @returns {boolean} - true is the border options have been applied
  */
 export function setBorderStyle(ctx, options) {
   if (options && options.borderWidth) {
@@ -65,7 +69,7 @@ export function setShadowStyle(ctx, options) {
  * Measure the label size using the label options.
  * @param {CanvasRenderingContext2D} ctx - chart canvas context
  * @param {Object} options - options to configure the label
- * @returns {{width: number, height: number}} the measured size of the label
+ * @returns {{width: number, height: number}} - the measured size of the label
  */
 export function measureLabelSize(ctx, options) {
   const content = options.content;
@@ -100,7 +104,6 @@ export function measureLabelSize(ctx, options) {
  * @param {CanvasRenderingContext2D} ctx - chart canvas context
  * @param {{x: number, y: number, width: number, height: number}} rect - rect to draw
  * @param {Object} options - options to style the box
- * @returns {undefined}
  */
 export function drawBox(ctx, rect, options) {
   const {x, y, width, height} = rect;
@@ -127,7 +130,6 @@ export function drawBox(ctx, rect, options) {
  * @param {CanvasRenderingContext2D} ctx - chart canvas context
  * @param {{x: number, y: number, width: number, height: number}} rect - rect to map teh label
  * @param {Object} options - options to style the label
- * @returns {undefined}
  */
 export function drawLabel(ctx, rect, options) {
   const content = options.content;

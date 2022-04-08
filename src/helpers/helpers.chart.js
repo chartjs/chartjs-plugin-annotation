@@ -5,16 +5,18 @@ import {isBoundToPoint} from './helpers.options';
  * @typedef { import("chart.js").Chart } Chart
  * @typedef { import("chart.js").Scale } Scale
  * @typedef { import("chart.js").Point } Point
+ * @typedef { import('../../types/element').AnnotationBoxModel } AnnotationBoxModel
  * @typedef { import('../../types/options').CoreAnnotationOptions } CoreAnnotationOptions
  * @typedef { import('../../types/options').PointAnnotationOptions } PointAnnotationOptions
  * @typedef { import('../../types/options').PolygonAnnotationOptions } PolygonAnnotationOptions
  */
 
 /**
- * @param {Scale} scale
- * @param {number|string} value
- * @param {number} fallback
- * @returns {number}
+ * Return the location of the given data point.
+ * @param {Scale} scale - the scale instance
+ * @param {number|string} value - value can either be an index or a numerical or string value
+ * @param {number} fallback - default location if the location of the given data point is not consistent
+ * @returns {number} - the location of the given data point
  */
 export function scaleValue(scale, value, fallback) {
   value = typeof value === 'number' ? value : scale.parse(value);
@@ -22,10 +24,11 @@ export function scaleValue(scale, value, fallback) {
 }
 
 /**
+ * Search the scale defined in chartjs by the axis related to the annotation options key.
  * @param {Object} scales - chartjs object with all scales
  * @param {Object} options - plugin options
  * @param {string} key - annotation plugin scale id option key
- * @returns {string} the unique scale defined in chartjs or the key passed as argument
+ * @returns {string} - the unique scale defined in chartjs or the key passed as argument
  */
 export function retrieveScaleID(scales, options, key) {
   const scaleID = options[key];
@@ -41,9 +44,10 @@ export function retrieveScaleID(scales, options, key) {
 }
 
 /**
- * @param {Scale} scale
- * @param {{min: number, max: number, start: number, end: number}} options
- * @returns {{start: number, end: number}|undefined}
+ * Return the dimension of annotation by scale.
+ * @param {Scale} scale - the scale instance
+ * @param {{min: number, max: number, start: number, end: number}} options - box definition with values
+ * @returns {{start: number, end: number}|undefined} - the dimension of annotation or undefined if scale instance not consistent
  */
 export function getDimensionByScale(scale, options) {
   if (scale) {
@@ -58,22 +62,10 @@ export function getDimensionByScale(scale, options) {
 }
 
 /**
- * @param {Scale} scale
- * @param {{min: number, max: number, start: number, end: number}} options
- * @returns {{start: number, end: number}}
- */
-function getChartDimensionByScale(scale, options) {
-  const result = getDimensionByScale(scale, options) || options;
-  return {
-    start: Math.min(result.start, result.end),
-    end: Math.max(result.start, result.end)
-  };
-}
-
-/**
- * @param {Chart} chart
- * @param {CoreAnnotationOptions} options
- * @returns {Point}
+ * Return a point in chart area by the annotation options.
+ * @param {Chart} chart - chart instance
+ * @param {CoreAnnotationOptions} options - annotation options
+ * @returns {Point} - a point in chart area
  */
 export function getChartPoint(chart, options) {
   const {chartArea, scales} = chart;
@@ -93,9 +85,10 @@ export function getChartPoint(chart, options) {
 }
 
 /**
- * @param {Chart} chart
- * @param {CoreAnnotationOptions} options
- * @returns {{x:number, y: number, x2: number, y2: number, centerX: number, centerY: number, width: number, height: number}}
+ * Return a model calculated by the box options
+ * @param {Chart} chart - chart instance
+ * @param {CoreAnnotationOptions} options - annotation options
+ * @returns {AnnotationBoxModel} - a annotation box model
  */
 export function resolveBoxProperties(chart, options) {
   const scales = chart.scales;
@@ -128,29 +121,10 @@ export function resolveBoxProperties(chart, options) {
 }
 
 /**
- * @param {Chart} chart
- * @param {PointAnnotationOptions|PolygonAnnotationOptions} options
- * @returns {{x:number, y: number, x2: number, y2: number, centerX: number, centerY: number, width: number, height: number}}
- */
-function getChartCircle(chart, options) {
-  const point = getChartPoint(chart, options);
-  const size = options.radius * 2;
-  return {
-    x: point.x - options.radius + options.xAdjust,
-    y: point.y - options.radius + options.yAdjust,
-    x2: point.x + options.radius + options.xAdjust,
-    y2: point.y + options.radius + options.yAdjust,
-    centerX: point.x + options.xAdjust,
-    centerY: point.y + options.yAdjust,
-    width: size,
-    height: size
-  };
-}
-
-/**
- * @param {Chart} chart
- * @param {PointAnnotationOptions|PolygonAnnotationOptions} options
- * @returns {{x:number, y: number, x2: number, y2: number, centerX: number, centerY: number, width: number, height: number}}
+ * Return a model calculated by the point options
+ * @param {Chart} chart - chart instance
+ * @param {PointAnnotationOptions|PolygonAnnotationOptions} options - annotation options
+ * @returns {AnnotationBoxModel} - a annotation box model
  */
 export function resolvePointProperties(chart, options) {
   if (!isBoundToPoint(options)) {
@@ -173,4 +147,27 @@ export function resolvePointProperties(chart, options) {
     };
   }
   return getChartCircle(chart, options);
+}
+
+function getChartCircle(chart, options) {
+  const point = getChartPoint(chart, options);
+  const size = options.radius * 2;
+  return {
+    x: point.x - options.radius + options.xAdjust,
+    y: point.y - options.radius + options.yAdjust,
+    x2: point.x + options.radius + options.xAdjust,
+    y2: point.y + options.radius + options.yAdjust,
+    centerX: point.x + options.xAdjust,
+    centerY: point.y + options.yAdjust,
+    width: size,
+    height: size
+  };
+}
+
+function getChartDimensionByScale(scale, options) {
+  const result = getDimensionByScale(scale, options) || options;
+  return {
+    start: Math.min(result.start, result.end),
+    end: Math.max(result.start, result.end)
+  };
 }

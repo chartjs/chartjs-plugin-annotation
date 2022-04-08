@@ -7,7 +7,7 @@
  * @param {Point} point - the point to rotate
  * @param {Point} center - center point for rotation
  * @param {number} angle - angle for rotation, in radians
- * @returns {Point} rotated point
+ * @returns {Point} - rotated point
  */
 export function rotated(point, center, angle) {
   const cos = Math.cos(angle);

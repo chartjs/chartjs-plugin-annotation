@@ -1,12 +1,17 @@
 import {distanceBetweenPoints} from 'chart.js/helpers';
 
+/**
+ * @typedef { import("chart.js").ChartEvent } ChartEvent
+ * @typedef { import('../../types/element').AnnotationElement } AnnotationElement
+ */
+
 const interaction = {
   modes: {
     /**
      * Point mode returns all elements that hit test based on the event position
      * @param {Object} state - the state of the plugin
      * @param {ChartEvent} event - the event we are find things at
-     * @return {Element[]} - elements that are found
+     * @return {AnnotationElement[]} - elements that are found
      */
     point(state, event) {
       return filterElements(state, event, {intersect: true});
@@ -17,7 +22,7 @@ const interaction = {
      * @param {Object} state - the state of the plugin
      * @param {ChartEvent} event - the event we are find things at
      * @param {Object} options - interaction options to use
-     * @return {Element[]} - elements that are found (only 1 element)
+     * @return {AnnotationElement[]} - elements that are found (only 1 element)
      */
     nearest(state, event, options) {
       return getNearestItem(state, event, options);
@@ -27,7 +32,7 @@ const interaction = {
      * @param {Object} state - the state of the plugin
      * @param {ChartEvent} event - the event we are find things at
      * @param {Object} options - interaction options to use
-     * @return {Element[]} - elements that are found
+     * @return {AnnotationElement[]} - elements that are found
      */
     x(state, event, options) {
       return filterElements(state, event, {intersect: options.intersect, axis: 'x'});
@@ -38,7 +43,7 @@ const interaction = {
      * @param {Object} state - the state of the plugin
      * @param {ChartEvent} event - the event we are find things at
      * @param {Object} options - interaction options to use
-     * @return {Element[]} - elements that are found
+     * @return {AnnotationElement[]} - elements that are found
      */
     y(state, event, options) {
       return filterElements(state, event, {intersect: options.intersect, axis: 'y'});
@@ -51,7 +56,7 @@ const interaction = {
  * @param {Object} state - the state of the plugin
  * @param {ChartEvent} event - the event we are find things at
  * @param {Object} options - interaction options to use
- * @return {Element[]} - elements that are found
+ * @return {AnnotationElement[]} - elements that are found
  */
 export function getElements(state, event, options) {
   const mode = interaction.modes[options.mode] || interaction.modes.nearest;

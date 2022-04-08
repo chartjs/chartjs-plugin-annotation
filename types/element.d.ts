@@ -1,6 +1,6 @@
 import { AnnotationOptions } from './options';
 
-export interface AnnotationElement {
+export interface AnnotationBoxModel {
   x: number,
   y: number,
   x2: number,
@@ -8,6 +8,9 @@ export interface AnnotationElement {
   centerX: number,
   centerY: number,
   height: number,
-  width: number,
+  width: number
+}
+
+export interface AnnotationElement extends AnnotationBoxModel {
   options: AnnotationOptions
 }

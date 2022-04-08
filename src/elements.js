@@ -8,9 +8,14 @@ const directUpdater = {
 };
 
 /**
+ * @typedef { import("chart.js").Chart } Chart
+ * @typedef { import("chart.js").UpdateMode } UpdateMode
+ */
+
+/**
  * Resolve the annotation type, checking if is supported.
  * @param {string} [type=line] - annotation type
- * @returns {string} resolved annotation type
+ * @returns {string} - resolved annotation type
  */
 export function resolveType(type = 'line') {
   if (annotationTypes[type]) {
