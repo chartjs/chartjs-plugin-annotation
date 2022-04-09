@@ -23,26 +23,6 @@ const data = {
 };
 // </block:setup>
 
-// <block:printer:4>
-const printer = {
-  id: 'printer',
-  afterDraw(chart) {
-    const options = chart.options.plugins.annotation.interaction;
-    const mode = options.mode || 'nearest';
-    const axis = options.axis || 'xy';
-    const intersect = !!options.intersect;
-    const ctx = chart.ctx;
-    ctx.save();
-    ctx.font = '14px monospace';
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'top';
-    ctx.fillText('Mode: ' + mode + ', axis: ' + axis + ', intersect: ' + intersect, chart.chartArea.left, chart.canvas.offsetHeight - 16);
-    ctx.restore();
-  }
-};
-// </block:printer>
-
 // <block:annotation1:1>
 const annotation1 = {
   type: 'box',
@@ -51,12 +31,16 @@ const annotation1 = {
   borderWidth: 2,
   enter: function({element}) {
     console.log(element.options.label.content + ' entered');
+    element.options.label.font.size = 14;
+    return true;
   },
   click: function({element}) {
     console.log(element.options.label.content + ' clicked');
   },
   leave: function({element}) {
     console.log(element.options.label.content + ' left');
+    element.options.label.font.size = 12;
+    return true;
   },
   label: {
     display: true,
@@ -65,7 +49,7 @@ const annotation1 = {
       y: 'start'
     },
     font: {
-      size: 14
+      size: 12
     }
   },
   xMax: 'June',
@@ -85,12 +69,16 @@ const annotation2 = {
   borderWidth: 2,
   enter: function({element}) {
     console.log(element.options.label.content + ' entered');
+    element.options.label.font.size = 14;
+    return true;
   },
   click: function({element}) {
     console.log(element.options.label.content + ' clicked');
   },
   leave: function({element}) {
     console.log(element.options.label.content + ' left');
+    element.options.label.font.size = 12;
+    return true;
   },
   label: {
     display: true,
@@ -99,7 +87,7 @@ const annotation2 = {
       y: 'start'
     },
     font: {
-      size: 14
+      size: 12
     }
   },
   xMax: 'May',
@@ -111,17 +99,21 @@ const annotation2 = {
 };
 // </block:annotation2>
 
+// <block:utils:4>
+function getTitle({chart}) {
+  const options = chart.options.plugins.annotation.interaction;
+  const mode = options.mode || 'nearest';
+  const axis = options.axis || 'xy';
+  const intersect = !!options.intersect;
+  return 'Mode: ' + mode + ', axis: ' + axis + ', intersect: ' + intersect;
+}
+// </block:utils>
+
 /* <block:config:0> */
 const config = {
   type: 'line',
-  plugins: [printer],
   data,
   options: {
-    layout: {
-      padding: {
-        bottom: 24
-      }
-    },
     scales: {
       y: {
         beginAtZero: true,
@@ -130,6 +122,14 @@ const config = {
       }
     },
     plugins: {
+      title: {
+        display: true,
+        text: getTitle,
+        position: 'bottom',
+        font: {
+          size: 14
+        }
+      },
       annotation: {
         annotations: {
           outer: annotation1,
