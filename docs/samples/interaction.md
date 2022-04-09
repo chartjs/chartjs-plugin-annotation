@@ -132,8 +132,8 @@ const config = {
       },
       annotation: {
         annotations: {
-          outer: annotation1,
-          inner: annotation2
+          annotation1,
+          annotation2
         }
       }
     }
