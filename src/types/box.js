@@ -50,7 +50,7 @@ BoxAnnotation.defaults = {
     backgroundColor: 'transparent',
     borderWidth: 0,
     callout: {
-      display: false,
+      display: false
     },
     color: 'black',
     content: null,
@@ -137,6 +137,8 @@ function getBox(properties, padding, borderWidth) {
 
 function resolveLabelElementProperties(chart, properties, options) {
   const label = options.label;
+  label.backgroundColor = 'transparent';
+  label.callout.display = false;
   const position = toPosition(label.position);
   const padding = toPadding(label.padding);
   const labelSize = measureLabelSize(chart.ctx, label);
