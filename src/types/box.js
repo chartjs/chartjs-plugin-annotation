@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {toPadding, toRadians} from 'chart.js/helpers';
-import {drawBox, drawLabel, getRelativePosition, measureLabelSize, resolveBoxProperties, toPosition, inBoxRange, rotated, translate, getElementCenterPoint} from '../helpers';
+import {drawBox, getRelativePosition, measureLabelSize, resolveBoxProperties, toPosition, inBoxRange, rotated, translate, getElementCenterPoint} from '../helpers';
 
 export default class BoxAnnotation extends Element {
 
@@ -20,32 +20,16 @@ export default class BoxAnnotation extends Element {
     ctx.restore();
   }
 
-  drawLabel(ctx) {
-    const {x, y, width, height, options} = this;
-    const {label, borderWidth} = options;
-    const halfBorder = borderWidth / 2;
-    const position = toPosition(label.position);
-    const padding = toPadding(label.padding);
-    const labelSize = measureLabelSize(ctx, label);
-    const labelRect = {
-      x: calculateX(this, labelSize, position, padding),
-      y: calculateY(this, labelSize, position, padding),
-      width: labelSize.width,
-      height: labelSize.height
-    };
-
-    ctx.save();
-    translate(ctx, this.getCenterPoint(), label.rotation);
-    ctx.beginPath();
-    ctx.rect(x + halfBorder + padding.left, y + halfBorder + padding.top,
-      width - borderWidth - padding.width, height - borderWidth - padding.height);
-    ctx.clip();
-    drawLabel(ctx, labelRect, label);
-    ctx.restore();
-  }
-
   resolveElementProperties(chart, options) {
-    return resolveBoxProperties(chart, options);
+    const properties = resolveBoxProperties(chart, options);
+    const {x, y} = properties;
+    properties.elements = [{
+      type: 'label',
+      optionScope: 'label',
+      properties: resolveLabelElementProperties(chart, properties, options)
+    }];
+    properties.initProperties = {x, y};
+    return properties;
   }
 }
 
@@ -63,7 +47,11 @@ BoxAnnotation.defaults = {
   borderWidth: 1,
   display: true,
   label: {
-    borderWidth: undefined,
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+    callout: {
+      display: false,
+    },
     color: 'black',
     content: null,
     display: false,
@@ -109,31 +97,63 @@ BoxAnnotation.descriptors = {
   }
 };
 
-function calculateX(box, labelSize, position, padding) {
-  const {x: start, x2: end, width: size, options} = box;
-  const {xAdjust: adjust, borderWidth} = options.label;
-  return calculatePosition({start, end, size}, {
+function calculateX({properties, options}, labelSize, position, padding) {
+  const {x: start, x2: end, width: size} = properties;
+  return calculatePosition({start, end, size, borderWidth: options.borderWidth}, {
     position: position.x,
     padding: {start: padding.left, end: padding.right},
-    adjust, borderWidth,
+    adjust: options.label.xAdjust,
     size: labelSize.width
   });
 }
 
-function calculateY(box, labelSize, position, padding) {
-  const {y: start, y2: end, height: size, options} = box;
-  const {yAdjust: adjust, borderWidth} = options.label;
-  return calculatePosition({start, end, size}, {
+function calculateY({properties, options}, labelSize, position, padding) {
+  const {y: start, y2: end, height: size} = properties;
+  return calculatePosition({start, end, size, borderWidth: options.borderWidth}, {
     position: position.y,
     padding: {start: padding.top, end: padding.bottom},
-    adjust, borderWidth,
+    adjust: options.label.yAdjust,
     size: labelSize.height
   });
 }
 
 function calculatePosition(boxOpts, labelOpts) {
-  const {start, end} = boxOpts;
-  const {position, padding: {start: padStart, end: padEnd}, adjust, borderWidth} = labelOpts;
+  const {start, end, borderWidth} = boxOpts;
+  const {position, padding: {start: padStart, end: padEnd}, adjust} = labelOpts;
   const availableSize = end - borderWidth - start - padStart - padEnd - labelOpts.size;
-  return start + borderWidth / 2 + adjust + padStart + getRelativePosition(availableSize, position);
+  return start + borderWidth / 2 + adjust + getRelativePosition(availableSize, position);
+}
+
+function getBox(properties, padding, borderWidth) {
+  const {x, y, width, height} = properties;
+  const halfBorder = borderWidth / 2;
+  return {
+    x: x + halfBorder + padding.left,
+    y: y + halfBorder + padding.top,
+    width: width - borderWidth - padding.width,
+    height: height - borderWidth - padding.height
+  };
+}
+
+function resolveLabelElementProperties(chart, properties, options) {
+  const label = options.label;
+  const position = toPosition(label.position);
+  const padding = toPadding(label.padding);
+  const labelSize = measureLabelSize(chart.ctx, label);
+  const borderWidth = options.borderWidth;
+  const x = calculateX({properties, options}, labelSize, position, padding);
+  const y = calculateY({properties, options}, labelSize, position, padding);
+  const width = labelSize.width + padding.width;
+  const height = labelSize.height + padding.height;
+  return {
+    x,
+    y,
+    x2: x + width,
+    y2: y + height,
+    width,
+    height,
+    centerX: x + width / 2,
+    centerY: y + height / 2,
+    box: getBox(properties, padding, borderWidth)
+  };
 }

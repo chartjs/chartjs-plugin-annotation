@@ -24,6 +24,13 @@ export default class LabelAnnotation extends Element {
     translate(ctx, this.getCenterPoint(), options.rotation);
     drawCallout(ctx, this);
     drawBox(ctx, this, options);
+    if (this.box) {
+      const {x, y, width, height} = this.box;
+      // clip
+      ctx.beginPath();
+      ctx.rect(x, y, width, height);
+      ctx.clip();
+    }
     drawLabel(ctx, getLabelSize(this), options);
     ctx.restore();
   }
