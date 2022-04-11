@@ -2,6 +2,10 @@
 
 `chartjs-plugin-annotation` plugin version 2 introduces a number of breaking changes. In order to improve performance, offer new features, and improve maintainability, it was necessary to break backwards compatibility, but we aimed to do so only when worth the benefit.
 
+## Chart.js version
+
+The annotation plugin requires at least version 3.7.0 to work because of some bug fixes that happend within chart.js itself.
+
 ## Options
 
 A number of changes were made to the configuration options passed to the plugin configuration. Those changes are documented below.
