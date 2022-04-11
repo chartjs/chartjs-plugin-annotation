@@ -8,10 +8,9 @@ import {retrieveScaleID} from './helpers';
  */
 
 /**
- * Changes minimum and maximum values of the scale accordingly with annotations options.
- * @param {Chart} chart - chart instance
- * @param {Scale} scale - scale instance
- * @param {CoreAnnotationOptions[]} annotations - all defined annotations
+ * @param {Chart} chart
+ * @param {Scale} scale
+ * @param {CoreAnnotationOptions[]} annotations
  */
 export function adjustScaleRange(chart, scale, annotations) {
   const range = getScaleLimits(chart.scales, scale, annotations);
@@ -23,9 +22,8 @@ export function adjustScaleRange(chart, scale, annotations) {
 }
 
 /**
- * Check if the scale ids, defined by annotations options, are consistent in relation of chart configuration.
- * @param {CoreAnnotationOptions[]} annotations - all defined annotations
- * @param {Object} scales - all configured chart scales
+ * @param {CoreAnnotationOptions[]} annotations
+ * @param {{ [key: string]: Scale }} scales
  */
 export function verifyScaleOptions(annotations, scales) {
   for (const annotation of annotations) {

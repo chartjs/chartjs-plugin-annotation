@@ -5,16 +5,16 @@ const isPercentString = (s) => typeof s === 'string' && s.endsWith('%');
 const toPercent = (s) => clamp(parseFloat(s) / 100, 0, 1);
 
 /**
+ * @typedef { import('../../types/options').AnnotationPointCoordinates } AnnotationPointCoordinates
  * @typedef { import('../../types/label').CoreLabelOptions } CoreLabelOptions
  * @typedef { import('../../types/label').LabelPositionObject } LabelPositionObject
  */
 
 /**
- * Return the position based on the size of the annotation.
- * @param {number} size - size of the annotation element
- * @param {number|string} position - the position option
- * @param {number} to - maximum value
- * @returns {number} - the position based on the size of the annotation
+ * @param {number} size
+ * @param {number|string} position
+ * @param {number} to
+ * @returns {number}
  */
 export function getRelativePosition(size, position) {
   if (position === 'start') {
@@ -30,11 +30,10 @@ export function getRelativePosition(size, position) {
 }
 
 /**
- * Check and return a size based on the passed and current one as argument and new value.
- * @param {number} size - size to manage
- * @param {number|string} value - if a number, is new size value, if a string, is the percentage of the passed value.
- * @param {number} to - maximum value
- * @returns {number} - new size
+ * @param {number} size
+ * @param {number|string} value
+ * @param {number} to
+ * @returns {number}
  */
 export function getSize(size, value) {
   if (typeof value === 'number') {
@@ -46,10 +45,9 @@ export function getSize(size, value) {
 }
 
 /**
- * Return the position of the text of a label by text align option.
- * @param {{x, width}} size - the location and width of the label
- * @param {CoreLabelOptions} options - label options where the text align options is set
- * @returns {number} - position of text in the label
+ * @param {{x: number, width: number}} size
+ * @param {CoreLabelOptions} options
+ * @returns {number}
  */
 export function calculateTextAlignment(size, options) {
   const {x, width} = size;
@@ -63,9 +61,8 @@ export function calculateTextAlignment(size, options) {
 }
 
 /**
- * Normalize the position option for labels.
- * @param {LabelPositionObject|string} value - position value to nornmalize
- * @returns {LabelPositionObject} - normalized position of text in the label
+ * @param {LabelPositionObject|string} value
+ * @returns {LabelPositionObject}
  */
 export function toPosition(value) {
   if (isObject(value)) {
@@ -82,9 +79,8 @@ export function toPosition(value) {
 }
 
 /**
- * Check if an annotation is configured to be located by a 'point', thru its options
- * @param {LabelPositionObject|string} options - annotation options to check
- * @returns {boolean} - true if an annotation is configured to be located by a 'point'
+ * @param {AnnotationPointCoordinates} options
+ * @returns {boolean}
  */
 export function isBoundToPoint(options) {
   return options && (defined(options.xValue) || defined(options.yValue));

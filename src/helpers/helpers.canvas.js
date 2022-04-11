@@ -6,6 +6,7 @@ const widthCache = new Map();
 
 /**
  * @typedef { import('chart.js').Point } Point
+ * @typedef { import('../../types/label').CoreLabelOptions } CoreLabelOptions
  */
 
 /**
@@ -36,10 +37,9 @@ export function translate(ctx, {x, y}, rotation) {
 }
 
 /**
- * Apply border options to the canvas context before drawing a shape
- * @param {CanvasRenderingContext2D} ctx - chart canvas context
- * @param {Object} options - options with border configuration
- * @returns {boolean} - true is the border options have been applied
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {Object} options
+ * @returns {boolean|undefined}
  */
 export function setBorderStyle(ctx, options) {
   if (options && options.borderWidth) {
@@ -54,9 +54,8 @@ export function setBorderStyle(ctx, options) {
 }
 
 /**
- * Apply shadow options to the canvas context before drawing a shape
- * @param {CanvasRenderingContext2D} ctx - chart canvas context
- * @param {Object} options - options with shadow configuration
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {Object} options
  */
 export function setShadowStyle(ctx, options) {
   ctx.shadowColor = options.backgroundShadowColor;
@@ -66,10 +65,9 @@ export function setShadowStyle(ctx, options) {
 }
 
 /**
- * Measure the label size using the label options.
- * @param {CanvasRenderingContext2D} ctx - chart canvas context
- * @param {Object} options - options to configure the label
- * @returns {{width: number, height: number}} - the measured size of the label
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {CoreLabelOptions} options
+ * @returns {{width: number, height: number}}
  */
 export function measureLabelSize(ctx, options) {
   const content = options.content;
@@ -100,10 +98,9 @@ export function measureLabelSize(ctx, options) {
 }
 
 /**
- * Draw a box with the size and the styling options.
- * @param {CanvasRenderingContext2D} ctx - chart canvas context
- * @param {{x: number, y: number, width: number, height: number}} rect - rect to draw
- * @param {Object} options - options to style the box
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {{x: number, y: number, width: number, height: number}} rect
+ * @param {Object} options
  */
 export function drawBox(ctx, rect, options) {
   const {x, y, width, height} = rect;
@@ -126,10 +123,9 @@ export function drawBox(ctx, rect, options) {
 }
 
 /**
- * Draw a label with the size and the styling options.
- * @param {CanvasRenderingContext2D} ctx - chart canvas context
- * @param {{x: number, y: number, width: number, height: number}} rect - rect to map teh label
- * @param {Object} options - options to style the label
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {{x: number, y: number, width: number, height: number}} rect
+ * @param {CoreLabelOptions} options
  */
 export function drawLabel(ctx, rect, options) {
   const content = options.content;

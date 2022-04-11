@@ -8,16 +8,12 @@ const moveHooks = ['enter', 'leave'];
  * @typedef { import('../../types/options').AnnotationPluginOptions } AnnotationPluginOptions
  */
 
-/**
- * @const {Array} hooks - the list of managed event hooks.
- */
 export const hooks = moveHooks.concat('click');
 
 /**
- * Update the state about event management.
- * @param {Chart} chart - the chart where the plugin is enabled
- * @param {Object} state - the state of the plugin
- * @param {AnnotationPluginOptions} options - annotation plugin options
+ * @param {Chart} chart
+ * @param {Object} state
+ * @param {AnnotationPluginOptions} options
  */
 export function updateListeners(chart, state, options) {
   state.listened = false;
@@ -56,11 +52,10 @@ export function updateListeners(chart, state, options) {
 }
 
 /**
- * Handle the chart events.
- * @param {Object} state - the state of the plugin
- * @param {ChartEvent} event - the event we are find things at
- * @param {AnnotationPluginOptions} options - annotation plugin options
- * @return {boolean|undefined} - true to request chart redrawing
+ * @param {Object} state
+ * @param {ChartEvent} event
+ * @param {AnnotationPluginOptions} options
+ * @return {boolean|undefined}
  */
 export function handleEvent(state, event, options) {
   if (state.listened) {

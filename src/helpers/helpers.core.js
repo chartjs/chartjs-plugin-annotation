@@ -6,26 +6,14 @@ const isOlderPart = (act, req) => req > act || (act.length > req.length && act.s
  * @typedef { import('../../types/element').AnnotationElement } AnnotationElement
  */
 
-/**
- * @const {number} EPSILON - the upper bound on the relative error due to rounding in floating point arithmetic.
- */
 export const EPSILON = 0.001;
-
-/**
- * @const {function} clamp - check and adjust the value between a minimum and a maximum.
- * @param {number} x - value to check
- * @param {number} from - minimum value
- * @param {number} to - maximum value
- * @returns {number} - the adjusted value after checking
- */
 export const clamp = (x, from, to) => Math.min(to, Math.max(from, x));
 
 /**
- * Checks and adjust all values of an object are between a minimum and a maximum.
- * @param {Object} obj - object to check
- * @param {number} from - minimum value
- * @param {number} to - maximum value
- * @returns {Object} - the object passed as argument with all adjusted values after checking
+ * @param {Object} obj
+ * @param {number} from
+ * @param {number} to
+ * @returns {Object}
  */
 export function clampAll(obj, from, to) {
   for (const key of Object.keys(obj)) {
@@ -35,12 +23,11 @@ export function clampAll(obj, from, to) {
 }
 
 /**
- * Checks if a point is inside a circle.
- * @param {Point} point - point to check
- * @param {Point} center - center point of the circle
- * @param {number} radius - radius of the circle (in pixels)
- * @param {number} borderWidth - the line width (in pixels) to draw the circle
- * @returns {boolean} - true if the point passed as argument is in the circle otherwise false
+ * @param {Point} point
+ * @param {Point} center
+ * @param {number} radius
+ * @param {number} borderWidth
+ * @returns {boolean}
  */
 export function inPointRange(point, center, radius, borderWidth) {
   if (!point || !center || radius <= 0) {
@@ -51,12 +38,11 @@ export function inPointRange(point, center, radius, borderWidth) {
 }
 
 /**
- * Checks if a point is inside a rectangle.
- * @param {Point} point - point to check
- * @param {{x: number, y: number, x2: number, y2: number}} rect - the dimension of the rectangle, top/left and bottom/right
- * @param {InteractionAxis} axis - the type of direction, used in calculating distances
- * @param {number} borderWidth - the line width (in pixels) to draw the box
- * @returns {boolean} - true if the point passed as argument is in the box otherwise false
+ * @param {Point} point
+ * @param {{x: number, y: number, x2: number, y2: number}} rect
+ * @param {InteractionAxis} axis
+ * @param {number} borderWidth
+ * @returns {boolean}
  */
 export function inBoxRange(point, {x, y, x2, y2}, axis, borderWidth) {
   const hBorderWidth = borderWidth / 2;
@@ -71,10 +57,9 @@ export function inBoxRange(point, {x, y, x2, y2}, axis, borderWidth) {
 }
 
 /**
- * Return the center point of an annotation element.
- * @param {AnnotationElement} element - element instance
- * @param {boolean} useFinalPosition - use the element's animation target instead of current position
- * @returns {Point} - the center point of an annotation element.
+ * @param {AnnotationElement} element
+ * @param {boolean} useFinalPosition
+ * @returns {Point}
  */
 export function getElementCenterPoint(element, useFinalPosition) {
   const {centerX, centerY} = element.getProps(['centerX', 'centerY'], useFinalPosition);
@@ -82,12 +67,11 @@ export function getElementCenterPoint(element, useFinalPosition) {
 }
 
 /**
- * Check if the version of needed package is compliant with the required one for the plugin.
- * @param {string} pkg - package name to check
- * @param {string} min - required version for the plugin
- * @param {string} ver - the version of the package in use at runtime
- * @param {boolean} [strict=true] - if true and the versions are not matching, an error will be thrown
- * @returns {boolean} - true if the version of the package is compliant with the required one otherwise false
+ * @param {string} pkg
+ * @param {string} min
+ * @param {string} ver
+ * @param {boolean} [strict=true]
+ * @returns {boolean}
  */
 export function requireVersion(pkg, min, ver, strict = true) {
   const parts = ver.split('.');
