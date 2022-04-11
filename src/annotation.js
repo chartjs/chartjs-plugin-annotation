@@ -160,10 +160,10 @@ function draw(chart, caller, clip) {
   });
 }
 
-function drawElements(ctx, elements, caller) {
+function drawElements(ctx, elements, caller, parent) {
   for (const el of elements) {
     if (el.options.drawTime === caller) {
-      el.draw(ctx);
+      el.draw(ctx, parent);
     }
   }
 }
@@ -171,7 +171,7 @@ function drawElements(ctx, elements, caller) {
 function drawSubElements(ctx, elements, caller) {
   for (const el of elements) {
     if (isArray(el.elements)) {
-      drawElements(ctx, el.elements, caller);
+      drawElements(ctx, el.elements, caller, el);
     }
   }
 }

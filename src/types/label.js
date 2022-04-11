@@ -15,7 +15,7 @@ export default class LabelAnnotation extends Element {
     return getElementCenterPoint(this, useFinalPosition);
   }
 
-  draw(ctx) {
+  draw(ctx, parent) {
     const options = this.options;
     if (!options.content) {
       return;
@@ -24,8 +24,8 @@ export default class LabelAnnotation extends Element {
     translate(ctx, this.getCenterPoint(), options.rotation);
     drawCallout(ctx, this);
     drawBox(ctx, this, options);
-    if (this.box) {
-      const {x, y, width, height} = this.box;
+    if (parent && 'getBoundingBox' in parent) {
+      const {x, y, width, height} = parent.getBoundingBox();
       // clip
       ctx.beginPath();
       ctx.rect(x, y, width, height);

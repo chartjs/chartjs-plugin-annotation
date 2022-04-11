@@ -20,6 +20,20 @@ export default class BoxAnnotation extends Element {
     ctx.restore();
   }
 
+  getBoundingBox() {
+    const {x, y, width, height} = this.getProps('x', 'y', 'width', 'height');
+    const label = this.options.label;
+    const padding = toPadding(label.padding);
+    const borderWidth = this.options.borderWidth;
+    const halfBorder = borderWidth / 2;
+    return {
+      x: x + halfBorder + padding.left,
+      y: y + halfBorder + padding.top,
+      width: width - borderWidth - padding.width,
+      height: height - borderWidth - padding.height
+    };
+  }
+
   resolveElementProperties(chart, options) {
     const properties = resolveBoxProperties(chart, options);
     const {x, y} = properties;
@@ -124,17 +138,6 @@ function calculatePosition(boxOpts, labelOpts) {
   return start + borderWidth / 2 + adjust + getRelativePosition(availableSize, position);
 }
 
-function getBox(properties, padding, borderWidth) {
-  const {x, y, width, height} = properties;
-  const halfBorder = borderWidth / 2;
-  return {
-    x: x + halfBorder + padding.left,
-    y: y + halfBorder + padding.top,
-    width: width - borderWidth - padding.width,
-    height: height - borderWidth - padding.height
-  };
-}
-
 function resolveLabelElementProperties(chart, properties, options) {
   const label = options.label;
   label.backgroundColor = 'transparent';
@@ -142,7 +145,6 @@ function resolveLabelElementProperties(chart, properties, options) {
   const position = toPosition(label.position);
   const padding = toPadding(label.padding);
   const labelSize = measureLabelSize(chart.ctx, label);
-  const borderWidth = options.borderWidth;
   const x = calculateX({properties, options}, labelSize, position, padding);
   const y = calculateY({properties, options}, labelSize, position, padding);
   const width = labelSize.width + padding.width;
@@ -155,7 +157,6 @@ function resolveLabelElementProperties(chart, properties, options) {
     width,
     height,
     centerX: x + width / 2,
-    centerY: y + height / 2,
-    box: getBox(properties, padding, borderWidth)
+    centerY: y + height / 2
   };
 }
