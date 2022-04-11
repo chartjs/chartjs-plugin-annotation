@@ -279,7 +279,7 @@ function intersects(element, {mouseX, mouseY}, epsilon = EPSILON, useFinalPositi
 /**
  * @param {boolean} useFinalPosition - use the element's animation target instead of current position
  * @param {top, right, bottom, left} [chartArea] - optional, area of the chart
- * @returns {boolean} - true if the label is visible
+ * @returns {boolean} true if the label is visible
  */
 function labelIsVisible(element, useFinalPosition, chartArea) {
   const labelOpts = element.options.label;

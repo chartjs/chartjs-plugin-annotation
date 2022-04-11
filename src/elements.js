@@ -16,7 +16,7 @@ const directUpdater = {
 /**
  * Resolve the annotation type, checking if is supported.
  * @param {string} [type=line] - annotation type
- * @returns {string} - resolved annotation type
+ * @returns {string} resolved annotation type
  */
 export function resolveType(type = 'line') {
   if (annotationTypes[type]) {

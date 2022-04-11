@@ -11,8 +11,8 @@ const widthCache = new Map();
 
 /**
  * Determine if content is an image or a canvas.
- * @param {*} content - object to check
- * @returns boolean|undefined - true if is an image or a canvas
+ * @param {*} content
+ * @returns boolean|undefined
  * @todo move this function to chart.js helpers
  */
 export function isImageOrCanvas(content) {
