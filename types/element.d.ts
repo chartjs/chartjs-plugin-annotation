@@ -9,5 +9,6 @@ export interface AnnotationElement {
   centerY: number,
   height: number,
   width: number,
+  elements?: AnnotationElement[],
   options: AnnotationOptions
 }
