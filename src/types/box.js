@@ -21,7 +21,7 @@ export default class BoxAnnotation extends Element {
   }
 
   getBoundingBox() {
-    const {x, y, width, height} = this.getProps('x', 'y', 'width', 'height');
+    const {x, y, width, height} = this.getProps(['x', 'y', 'width', 'height']);
     const label = this.options.label;
     const padding = toPadding(label.padding);
     const borderWidth = this.options.borderWidth;
