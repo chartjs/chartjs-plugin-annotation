@@ -17,7 +17,7 @@ export default class LabelAnnotation extends Element {
 
   draw(ctx, parent) {
     const options = this.options;
-    if (!options.content) {
+    if (!options.display || !options.content) {
       return;
     }
     ctx.save();

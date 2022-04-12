@@ -36,13 +36,16 @@ export default class BoxAnnotation extends Element {
 
   resolveElementProperties(chart, options) {
     const properties = resolveBoxProperties(chart, options);
-    const {x, y} = properties;
-    properties.elements = [{
-      type: 'label',
-      optionScope: 'label',
-      properties: resolveLabelElementProperties(chart, properties, options)
-    }];
-    properties.initProperties = {x, y};
+    const label = options.label;
+    if (label && label.content) {
+      const {x, y} = properties;
+      properties.elements = [{
+        type: 'label',
+        optionScope: 'label',
+        properties: resolveLabelElementProperties(chart, properties, options)
+      }];
+      properties.initProperties = {x, y};
+    }
     return properties;
   }
 }
