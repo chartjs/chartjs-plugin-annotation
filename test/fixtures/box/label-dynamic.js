@@ -31,7 +31,7 @@ module.exports = {
                 content: 'This is dynamic!',
               },
               enter({element}) {
-                element.elements[0].options.display = true;
+                element.label.options.display = true;
                 return true;
               }
             },

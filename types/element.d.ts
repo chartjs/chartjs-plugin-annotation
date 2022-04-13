@@ -12,6 +12,6 @@ export interface AnnotationBoxModel {
 }
 
 export interface AnnotationElement extends AnnotationBoxModel {
-  elements?: AnnotationElement[],
+  label?: AnnotationElement,
   options: AnnotationOptions
 }

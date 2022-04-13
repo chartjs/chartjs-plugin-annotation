@@ -30,16 +30,16 @@ const annotation1 = {
   borderColor: 'rgb(255, 245, 157)',
   borderWidth: 2,
   enter: function({element}) {
-    console.log(element.elements[0].options.content + ' entered');
-    element.elements[0].options.font.size = 14;
+    console.log(element.label.options.content + ' entered');
+    element.label.options.font.size = 14;
     return true;
   },
   click: function({element}) {
-    console.log(element.elements[0].options.content + ' clicked');
+    console.log(element.label.options.content + ' clicked');
   },
   leave: function({element}) {
-    console.log(element.elements[0].options.content + ' left');
-    element.elements[0].options.font.size = 12;
+    console.log(element.label.options.content + ' left');
+    element.label.options.font.size = 12;
     return true;
   },
   label: {
@@ -68,16 +68,16 @@ const annotation2 = {
   borderColor: 'rgb(165, 214, 167)',
   borderWidth: 2,
   enter: function({element}) {
-    console.log(element.elements[0].options.content + ' entered');
-    element.elements[0].options.font.size = 14;
+    console.log(element.label.options.content + ' entered');
+    element.label.options.font.size = 14;
     return true;
   },
   click: function({element}) {
-    console.log(element.elements[0].options.content + ' clicked');
+    console.log(element.label.options.content + ' clicked');
   },
   leave: function({element}) {
-    console.log(element.elements[0].options.content + ' left');
-    element.elements[0].options.font.size = 12;
+    console.log(element.label.options.content + ' left');
+    element.label.options.font.size = 12;
     return true;
   },
   label: {

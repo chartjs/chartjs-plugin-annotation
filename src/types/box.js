@@ -34,6 +34,10 @@ export default class BoxAnnotation extends Element {
     };
   }
 
+  get label() {
+    return this.elements && this.elements[0];
+  }
+
   resolveElementProperties(chart, options) {
     const properties = resolveBoxProperties(chart, options);
     const {x, y} = properties;
