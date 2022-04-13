@@ -8,6 +8,12 @@ const directUpdater = {
 };
 
 /**
+ * @typedef { import("chart.js").Chart } Chart
+ * @typedef { import("chart.js").UpdateMode } UpdateMode
+ * @typedef { import('../../types/options').AnnotationPluginOptions } AnnotationPluginOptions
+ */
+
+/**
  * Resolve the annotation type, checking if is supported.
  * @param {string} [type=line] - annotation type
  * @returns {string} resolved annotation type
@@ -21,11 +27,10 @@ export function resolveType(type = 'line') {
 }
 
 /**
- * Create or update all annotation elements, configured to the plugin.
- * @param {Chart} chart - the chart where the plugin is enabled
- * @param {Object} state - the state of the plugin
- * @param {Object} options - annotation options to use
- * @param {UpdateMode} mode - The update mode
+ * @param {Chart} chart
+ * @param {Object} state
+ * @param {AnnotationPluginOptions} options
+ * @param {UpdateMode} mode
  */
 export function updateElements(chart, state, options, mode) {
   const animations = resolveAnimations(chart, options.animations, mode);

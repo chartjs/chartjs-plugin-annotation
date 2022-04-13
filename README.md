@@ -7,12 +7,13 @@
 [![documentation](https://img.shields.io/static/v1?message=Documentation&color=informational)](https://www.chartjs.org/chartjs-plugin-annotation/index)
 <a href="https://github.com/chartjs/awesome"><img src="https://awesome.re/badge-flat2.svg" alt="Awesome"></a>
 
-An annotation plugin for Chart.js >= 3.0.0
+An annotation plugin for Chart.js >= 3.7.0
 
 ---
 > This plugin needs to be registered. It does not function as inline plugin.
 ---
 
+For Chart.js 3.0.0 to 3.6.2 support, use [version 1.4.0 of this plugin](https://github.com/chartjs/chartjs-plugin-annotation/releases/tag/v1.4.0)
 For Chart.js 2.4.0 to 2.9.x support, use [version 0.5.7 of this plugin](https://github.com/chartjs/chartjs-plugin-annotation/releases/tag/v0.5.7)
 
 This plugin draws lines, boxes, points, labels, polygons and ellipses on the chart area.

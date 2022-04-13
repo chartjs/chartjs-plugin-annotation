@@ -2,8 +2,19 @@ import {defined, callback} from 'chart.js/helpers';
 import {getElements} from './interaction';
 
 const moveHooks = ['enter', 'leave'];
+
+/**
+ * @typedef { import("chart.js").Chart } Chart
+ * @typedef { import('../../types/options').AnnotationPluginOptions } AnnotationPluginOptions
+ */
+
 export const hooks = moveHooks.concat('click');
 
+/**
+ * @param {Chart} chart
+ * @param {Object} state
+ * @param {AnnotationPluginOptions} options
+ */
 export function updateListeners(chart, state, options) {
   state.listened = false;
   state.moveListened = false;
@@ -40,6 +51,12 @@ export function updateListeners(chart, state, options) {
   }
 }
 
+/**
+ * @param {Object} state
+ * @param {ChartEvent} event
+ * @param {AnnotationPluginOptions} options
+ * @return {boolean|undefined}
+ */
 export function handleEvent(state, event, options) {
   if (state.listened) {
     switch (event.type) {
