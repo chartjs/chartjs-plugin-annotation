@@ -164,12 +164,16 @@ function drawElements(ctx, elements, caller) {
     if (el.options.drawTime === caller) {
       el.draw(ctx);
     }
-    if (el.elements && el.elements.length) {
-      const box = 'getBoundingBox' in el ? el.getBoundingBox() : undefined;
-      for (const sub of el.elements) {
-        if (sub.options.drawTime === caller) {
-          sub.draw(ctx, box);
-        }
+    drawSubElements(ctx, el, caller);
+  }
+}
+
+function drawSubElements(ctx, el, caller) {
+  if (el.elements && el.elements.length) {
+    const box = 'getBoundingBox' in el ? el.getBoundingBox() : undefined;
+    for (const sub of el.elements) {
+      if (sub.options.drawTime === caller) {
+        sub.draw(ctx, box);
       }
     }
   }
