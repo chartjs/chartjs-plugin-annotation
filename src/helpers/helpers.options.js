@@ -4,19 +4,37 @@ import {clamp} from './helpers.core';
 const isPercentString = (s) => typeof s === 'string' && s.endsWith('%');
 const toPercent = (s) => clamp(parseFloat(s) / 100, 0, 1);
 
-export function getRelativePosition(size, positionOption) {
-  if (positionOption === 'start') {
+/**
+ * @typedef { import('../../types/options').AnnotationPointCoordinates } AnnotationPointCoordinates
+ * @typedef { import('../../types/label').CoreLabelOptions } CoreLabelOptions
+ * @typedef { import('../../types/label').LabelPositionObject } LabelPositionObject
+ */
+
+/**
+ * @param {number} size
+ * @param {number|string} position
+ * @param {number} to
+ * @returns {number}
+ */
+export function getRelativePosition(size, position) {
+  if (position === 'start') {
     return 0;
   }
-  if (positionOption === 'end') {
+  if (position === 'end') {
     return size;
   }
-  if (isPercentString(positionOption)) {
-    return toPercent(positionOption) * size;
+  if (isPercentString(position)) {
+    return toPercent(position) * size;
   }
   return size / 2;
 }
 
+/**
+ * @param {number} size
+ * @param {number|string} value
+ * @param {number} to
+ * @returns {number}
+ */
 export function getSize(size, value) {
   if (typeof value === 'number') {
     return value;
@@ -26,6 +44,11 @@ export function getSize(size, value) {
   return size;
 }
 
+/**
+ * @param {{x: number, width: number}} size
+ * @param {CoreLabelOptions} options
+ * @returns {number}
+ */
 export function calculateTextAlignment(size, options) {
   const {x, width} = size;
   const textAlign = options.textAlign;
@@ -37,6 +60,10 @@ export function calculateTextAlignment(size, options) {
   return x;
 }
 
+/**
+ * @param {LabelPositionObject|string} value
+ * @returns {LabelPositionObject}
+ */
 export function toPosition(value) {
   if (isObject(value)) {
     return {
@@ -51,6 +78,10 @@ export function toPosition(value) {
   };
 }
 
+/**
+ * @param {AnnotationPointCoordinates} options
+ * @returns {boolean}
+ */
 export function isBoundToPoint(options) {
   return options && (defined(options.xValue) || defined(options.yValue));
 }

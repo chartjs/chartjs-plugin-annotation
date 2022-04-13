@@ -1,6 +1,17 @@
 import {isFinite, valueOrDefault, defined} from 'chart.js/helpers';
 import {retrieveScaleID} from './helpers';
 
+/**
+ * @typedef { import("chart.js").Chart } Chart
+ * @typedef { import("chart.js").Scale } Scale
+ * @typedef { import('../../types/options').CoreAnnotationOptions } CoreAnnotationOptions
+ */
+
+/**
+ * @param {Chart} chart
+ * @param {Scale} scale
+ * @param {CoreAnnotationOptions[]} annotations
+ */
 export function adjustScaleRange(chart, scale, annotations) {
   const range = getScaleLimits(chart.scales, scale, annotations);
   let changed = changeScaleLimit(scale, range, 'min', 'suggestedMin');
@@ -10,6 +21,10 @@ export function adjustScaleRange(chart, scale, annotations) {
   }
 }
 
+/**
+ * @param {CoreAnnotationOptions[]} annotations
+ * @param {{ [key: string]: Scale }} scales
+ */
 export function verifyScaleOptions(annotations, scales) {
   for (const annotation of annotations) {
     verifyScaleIDs(annotation, scales);
