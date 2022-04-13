@@ -143,7 +143,6 @@ function draw(chart, caller, clip) {
   }
 
   drawElements(ctx, visibleElements, caller);
-  drawSubElements(ctx, visibleElements, caller);
 
   if (clip) {
     unclipArea(ctx);
@@ -160,18 +159,18 @@ function draw(chart, caller, clip) {
   });
 }
 
-function drawElements(ctx, elements, caller, parent) {
+function drawElements(ctx, elements, caller) {
   for (const el of elements) {
     if (el.options.drawTime === caller) {
-      el.draw(ctx, parent);
+      el.draw(ctx);
     }
-  }
-}
-
-function drawSubElements(ctx, elements, caller) {
-  for (const el of elements) {
-    if (isArray(el.elements)) {
-      drawElements(ctx, el.elements, caller, el);
+    if (el.elements && el.elements.length) {
+      const box = 'getBoundingBox' in el ? el.getBoundingBox() : undefined;
+      for (const sub of el.elements) {
+        if (sub.options.drawTime === caller) {
+          sub.draw(ctx, box);
+        }
+      }
     }
   }
 }
