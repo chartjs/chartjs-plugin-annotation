@@ -135,15 +135,16 @@ export default {
 };
 
 function draw(chart, caller, clip) {
-  const {ctx, chartArea} = chart;
+  const {ctx, canvas, chartArea} = chart;
   const {visibleElements} = chartStates.get(chart);
+  let box = {x: 0, y: 0, width: canvas.width, height: canvas.height};
 
   if (clip) {
     clipArea(ctx, chartArea);
+    box = {x: chartArea.left, y: chartArea.top, width: chartArea.width, height: chartArea.height};
   }
 
-  drawElements(ctx, visibleElements, caller);
-  drawSubElements(ctx, visibleElements, caller);
+  drawElements(ctx, visibleElements, caller, box);
 
   if (clip) {
     unclipArea(ctx);
@@ -160,18 +161,18 @@ function draw(chart, caller, clip) {
   });
 }
 
-function drawElements(ctx, elements, caller) {
+function drawElements(ctx, elements, caller, area) {
   for (const el of elements) {
     if (el.options.drawTime === caller) {
       el.draw(ctx);
     }
-  }
-}
-
-function drawSubElements(ctx, elements, caller) {
-  for (const el of elements) {
-    if (isArray(el.elements)) {
-      drawElements(ctx, el.elements, caller);
+    if (el.elements && el.elements.length) {
+      const box = 'getBoundingBox' in el ? el.getBoundingBox() : area;
+      for (const sub of el.elements) {
+        if (sub.options.drawTime === caller) {
+          sub.draw(ctx, box);
+        }
+      }
     }
   }
 }
