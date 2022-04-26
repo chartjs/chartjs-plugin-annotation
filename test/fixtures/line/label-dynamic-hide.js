@@ -36,11 +36,11 @@ module.exports = {
                 display: false
               },
               enter({element}) {
-                element.options.label.display = true;
+                element.label.options.display = true;
                 return true;
               },
               leave({element}) {
-                element.options.label.display = false;
+                element.label.options.display = false;
                 return true;
               }
             },

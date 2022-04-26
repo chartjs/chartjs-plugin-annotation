@@ -151,33 +151,24 @@ function draw(chart, caller, clip) {
     box = {x: chartArea.left, y: chartArea.top, width: chartArea.width, height: chartArea.height};
   }
 
-  drawElements(ctx, visibleElements, caller, box);
+  drawElements(chart, visibleElements, caller, box);
 
   if (clip) {
     unclipArea(ctx);
   }
-
-  visibleElements.forEach(el => {
-    if (!('drawLabel' in el)) {
-      return;
-    }
-    const label = el.options.label;
-    if (label && label.display && label.content && label.drawTime === caller) {
-      el.drawLabel(ctx, chartArea);
-    }
-  });
 }
 
-function drawElements(ctx, elements, caller, area) {
+function drawElements(chart, elements, caller, area) {
   for (const el of elements) {
     if (el.options.drawTime === caller) {
-      el.draw(ctx);
+      el.draw(chart.ctx);
     }
     if (el.elements && el.elements.length) {
       const box = 'getBoundingBox' in el ? el.getBoundingBox() : area;
+      const labelIsVisible = 'labelIsVisible' in el ? el.labelIsVisible(false, chart.chartArea) : true;
       for (const sub of el.elements) {
         if (sub.options.drawTime === caller) {
-          sub.draw(ctx, box);
+          sub.draw(chart.ctx, box, labelIsVisible);
         }
       }
     }
