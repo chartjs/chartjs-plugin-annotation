@@ -39,11 +39,11 @@ const annotation1 = {
   // For simple property changes, you can directly modify the annotation
   // element's properties then return true to force chart re-drawing.  This is faster.
   enter({element}, event) {
-    element.options.label.display = true;
+    element.label.options.display = true;
     return true;
   },
   leave({element}, event) {
-    element.options.label.display = false;
+    element.label.options.display = false;
     return true;
   }
 };

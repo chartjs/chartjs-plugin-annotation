@@ -7,7 +7,8 @@ const positions = ['left', 'bottom', 'top', 'right'];
 export default class LabelAnnotation extends Element {
 
   inRange(mouseX, mouseY, axis, useFinalPosition) {
-    const {x, y} = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.options.rotation));
+    const rotation = this.rotation || this.options.rotation;
+    const {x, y} = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-rotation));
     return inBoxRange({x, y}, this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis, this.options.borderWidth);
   }
 
@@ -15,13 +16,13 @@ export default class LabelAnnotation extends Element {
     return getElementCenterPoint(this, useFinalPosition);
   }
 
-  draw(ctx, box) {
+  draw(ctx, box, labelIsVisible = true) {
     const options = this.options;
-    if (!options.display || !options.content) {
+    if (!labelIsVisible || !options.display || !options.content) {
       return;
     }
     ctx.save();
-    translate(ctx, this.getCenterPoint(), options.rotation);
+    translate(ctx, this.getCenterPoint(), this.rotation || options.rotation);
     drawCallout(ctx, this);
     drawBox(ctx, this, options);
     if (isObject(box)) {
