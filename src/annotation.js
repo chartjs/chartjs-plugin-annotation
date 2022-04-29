@@ -160,7 +160,7 @@ function drawElements(chart, elements, caller, area) {
       const box = 'getBoundingBox' in el ? el.getBoundingBox() : area;
       const labelIsVisible = 'labelIsVisible' in el ? el.labelIsVisible(false, chart.chartArea) : true;
       for (const sub of el.elements) {
-        if (sub.options.drawTime === caller) {
+        if (sub.options.display && sub.options.drawTime === caller) {
           sub.draw(chart.ctx, box, labelIsVisible);
         }
       }

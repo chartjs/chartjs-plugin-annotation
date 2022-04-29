@@ -300,11 +300,7 @@ function resolveLabelElementProperties(chart, properties, options) {
   const textSize = measureLabelSize(chart.ctx, options);
   const width = textSize.width + padding.width + borderWidth;
   const height = textSize.height + padding.height + borderWidth;
-  const labelRect = calculateLabelPosition(properties, options, {width, height, padding}, chart.chartArea);
-  return {
-    ...labelRect,
-    rotation: toDegrees(labelRect.rotation)
-  };
+  return calculateLabelPosition(properties, options, {width, height, padding}, chart.chartArea);
 }
 
 function calculateAutoRotation(properties) {
@@ -336,7 +332,7 @@ function calculateLabelPosition(properties, label, sizes, chartArea) {
     centerY,
     width,
     height,
-    rotation
+    rotation: toDegrees(rotation)
   };
 }
 
