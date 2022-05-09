@@ -27,7 +27,7 @@ jobs:
         npm ci
         npm run build
         if [ "${{ runner.os }}" == "Windows" ]; then
-          npm test
+          npm run lint
         else
           xvfb-run --auto-servernum npm test
         fi
