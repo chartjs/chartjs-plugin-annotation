@@ -33,6 +33,7 @@ jobs:
         fi
       shell: bash
     - name: Coveralls Parallel - Chrome
+      if: runner.os != 'Windows'
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.github_token }}
@@ -40,6 +41,7 @@ jobs:
         flag-name: ${{ matrix.os }}-chrome
         parallel: true
     - name: Coveralls Parallel - Firefox
+      if: runner.os != 'Windows'
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.github_token }}
