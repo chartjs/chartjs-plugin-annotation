@@ -173,7 +173,13 @@ module.exports = {
             'charts/line',
           ],
         },
-        'interaction',
+        {
+          title: 'Interaction',
+          children: [
+            'interaction/interaction',
+            'interaction/dragging',
+          ],
+        },
         'utils',
       ]
     }
