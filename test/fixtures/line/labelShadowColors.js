@@ -1,5 +1,4 @@
 module.exports = {
-  tolerance: 0.0015,
   config: {
     type: 'scatter',
     options: {
@@ -43,7 +42,6 @@ module.exports = {
               borderColor: 'black',
               borderWidth: 5,
               label: {
-                drawTime: 'afterDraw',
                 position: 'center',
                 backgroundColor: 'red',
                 borderColor: 'rgb(101, 33, 171)',
