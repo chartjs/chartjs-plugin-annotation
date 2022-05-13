@@ -108,14 +108,16 @@ export default {
       },
     },
     clip: true,
-    drawTime: 'afterDatasetsDraw',
-    interaction: {
-      mode: undefined,
-      axis: undefined,
-      intersect: undefined
-    },
-    label: {
-      drawTime: null
+    dblClickSpeed: 350, // ms
+    common: {
+      drawTime: 'afterDatasetsDraw',
+      interaction: {
+        mode: undefined,
+        axis: undefined,
+        intersect: undefined
+      },
+      label: {
+      }
     }
   },
 
@@ -124,10 +126,15 @@ export default {
     _scriptable: (prop) => !hooks.includes(prop),
     annotations: {
       _allKeys: false,
-      _fallback: (prop, opts) => `elements.${annotationTypes[resolveType(opts.type)].id}`,
+      _fallback: (prop, opts) => `elements.${annotationTypes[resolveType(opts.type)].id}`
     },
-    interaction: {
-      _fallback: true,
+    common: {
+      interaction: {
+        _fallback: true
+      },
+      label: {
+        _fallback: true
+      }
     }
   },
 
