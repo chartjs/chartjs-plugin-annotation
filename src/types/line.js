@@ -54,19 +54,6 @@ export default class LineAnnotation extends Element {
     return this.elements && this.elements[0];
   }
 
-  /**
-   * @param {boolean} useFinalPosition - use the element's animation target instead of current position
-   * @param {top, right, bottom, left} [chartArea] - optional, area of the chart
-   * @returns {boolean} true if the label is visible
-   */
-  labelIsVisible(useFinalPosition, chartArea) {
-    const labelOpts = this.label.options;
-    if (!labelOpts || !labelOpts.display) {
-      return false;
-    }
-    return !chartArea || isLineInArea(this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), chartArea);
-  }
-
   resolveElementProperties(chart, options) {
     const {scales, chartArea} = chart;
     const scale = scales[options.scaleID];
