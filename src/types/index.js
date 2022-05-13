@@ -34,6 +34,6 @@ export {
  */
 Object.keys(annotationTypes).forEach(key => {
   defaults.describe(`elements.${annotationTypes[key].id}`, {
-    _fallback: 'plugins.annotation'
+    _fallback: 'plugins.annotation.common'
   });
 });
