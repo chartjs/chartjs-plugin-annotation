@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {PI, toRadians, toDegrees, toPadding, valueOrDefault} from 'chart.js/helpers';
+import {PI, toRadians, toDegrees, toPadding} from 'chart.js/helpers';
 import {EPSILON, clamp, scaleValue, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, getElementCenterPoint, retrieveScaleID, getDimensionByScale} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
@@ -68,8 +68,9 @@ export default class LineAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    const scale = chart.scales[options.scaleID];
-    const area = translateArea(chart.chartArea, {y: 'top', x: 'left', y2: 'bottom', x2: 'right'});
+    const {scales, chartArea} = chart;
+    const scale = scales[options.scaleID];
+    const area = {x: chartArea.left, y: chartArea.top, x2: chartArea.right, y2: chartArea.bottom};
     let min, max;
 
     if (scale) {
@@ -83,8 +84,8 @@ export default class LineAnnotation extends Element {
         area.y2 = max;
       }
     } else {
-      const xScale = chart.scales[retrieveScaleID(chart.scales, options, 'xScaleID')];
-      const yScale = chart.scales[retrieveScaleID(chart.scales, options, 'yScaleID')];
+      const xScale = scales[retrieveScaleID(scales, options, 'xScaleID')];
+      const yScale = scales[retrieveScaleID(scales, options, 'yScaleID')];
 
       if (xScale) {
         applyScaleValueToDimension(area, xScale, {min: options.xMin, max: options.xMax, start: xScale.left, end: xScale.right, startProp: 'x', endProp: 'x2'});
@@ -101,6 +102,9 @@ export default class LineAnnotation extends Element {
       : {x, y, x2, y2, width: Math.abs(x2 - x), height: Math.abs(y2 - y)};
     properties.centerX = (x2 + x) / 2;
     properties.centerY = (y2 + y) / 2;
+    if (!inside) {
+      options.label.display = false;
+    }
     properties.elements = [{
       type: 'label',
       optionScope: 'label',
@@ -270,20 +274,8 @@ function intersects(element, {mouseX, mouseY}, epsilon = EPSILON, useFinalPositi
 }
 
 function isOnLabel(element, {mouseX, mouseY}, useFinalPosition, axis) {
-  if (!element.labelIsVisible(element, useFinalPosition)) {
-    return false;
-  }
-  return element.label.inRange(mouseX, mouseY, axis, useFinalPosition);
-}
-
-function translateArea(source, mapping) {
-  const ret = {};
-  const keys = Object.keys(mapping);
-  const read = prop => valueOrDefault(source[prop], source[mapping[prop]]);
-  for (const prop of keys) {
-    ret[prop] = read(prop);
-  }
-  return ret;
+  const label = element.label;
+  return label.options.display && label.inRange(mouseX, mouseY, axis, useFinalPosition);
 }
 
 function applyScaleValueToDimension(area, scale, options) {

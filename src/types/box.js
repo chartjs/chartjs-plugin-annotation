@@ -27,8 +27,8 @@ export default class BoxAnnotation extends Element {
     const borderWidth = this.options.borderWidth;
     const halfBorder = borderWidth / 2;
     return {
-      x: x + halfBorder + padding.left,
-      y: y + halfBorder + padding.top,
+      left: x + halfBorder + padding.left,
+      top: y + halfBorder + padding.top,
       width: width - borderWidth - padding.width,
       height: height - borderWidth - padding.height
     };

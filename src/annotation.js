@@ -108,7 +108,6 @@ export default {
       },
     },
     clip: true,
-    dblClickSpeed: 350, // ms
     common: {
       drawTime: 'afterDatasetsDraw',
       interaction: {
@@ -144,14 +143,14 @@ export default {
 function draw(chart, caller, clip) {
   const {ctx, canvas, chartArea} = chart;
   const {visibleElements} = chartStates.get(chart);
-  let box = {x: 0, y: 0, width: canvas.width, height: canvas.height};
+  let area = {left: 0, top: 0, width: canvas.width, height: canvas.height};
 
   if (clip) {
     clipArea(ctx, chartArea);
-    box = {x: chartArea.left, y: chartArea.top, width: chartArea.width, height: chartArea.height};
+    area = chartArea;
   }
 
-  drawElements(chart, visibleElements, caller, box);
+  drawElements(chart, visibleElements, caller, area);
 
   if (clip) {
     unclipArea(ctx);
@@ -161,14 +160,13 @@ function draw(chart, caller, clip) {
 function drawElements(chart, elements, caller, area) {
   for (const el of elements) {
     if (el.options.drawTime === caller) {
-      el.draw(chart.ctx);
+      el.draw(chart.ctx, area);
     }
     if (el.elements && el.elements.length) {
       const box = 'getBoundingBox' in el ? el.getBoundingBox() : area;
-      const labelIsVisible = 'labelIsVisible' in el ? el.labelIsVisible(false, chart.chartArea) : true;
       for (const sub of el.elements) {
         if (sub.options.display && sub.options.drawTime === caller) {
-          sub.draw(chart.ctx, box, labelIsVisible);
+          sub.draw(chart.ctx, box);
         }
       }
     }
