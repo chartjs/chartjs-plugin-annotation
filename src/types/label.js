@@ -7,8 +7,7 @@ const positions = ['left', 'bottom', 'top', 'right'];
 export default class LabelAnnotation extends Element {
 
   inRange(mouseX, mouseY, axis, useFinalPosition) {
-    const rotation = this.rotation || this.options.rotation;
-    const {x, y} = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-rotation));
+    const {x, y} = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.rotation));
     return inBoxRange({x, y}, this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis, this.options.borderWidth);
   }
 
@@ -22,7 +21,7 @@ export default class LabelAnnotation extends Element {
       return;
     }
     ctx.save();
-    translate(ctx, this.getCenterPoint(), this.rotation || options.rotation);
+    translate(ctx, this.getCenterPoint(), this.rotation);
     drawCallout(ctx, this);
     drawBox(ctx, this, options);
     if (area) {
@@ -49,7 +48,8 @@ export default class LabelAnnotation extends Element {
     const properties = {
       pointX: point.x,
       pointY: point.y,
-      ...boxSize
+      ...boxSize,
+      rotation: options.rotation
     };
     properties.calloutPosition = options.callout.display && resolveCalloutPosition(properties, options.callout, options.rotation);
     return properties;
@@ -163,7 +163,7 @@ function drawCallout(ctx, element) {
   }
   ctx.moveTo(sideStart.x, sideStart.y);
   ctx.lineTo(sideEnd.x, sideEnd.y);
-  const rotatedPoint = rotated({x: pointX, y: pointY}, element.getCenterPoint(), toRadians(-options.rotation));
+  const rotatedPoint = rotated({x: pointX, y: pointY}, element.getCenterPoint(), toRadians(-element.rotation));
   ctx.lineTo(rotatedPoint.x, rotatedPoint.y);
   ctx.stroke();
   ctx.restore();

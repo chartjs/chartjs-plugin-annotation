@@ -161,6 +161,7 @@ function resolveLabelElementProperties(chart, properties, options) {
     width,
     height,
     centerX: x + width / 2,
-    centerY: y + height / 2
+    centerY: y + height / 2,
+    rotation: label.rotation
   };
 }
