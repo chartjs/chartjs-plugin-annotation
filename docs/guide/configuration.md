@@ -10,14 +10,13 @@ The following options are available at the top level. They apply to all annotati
 | ---- | ---- | :----: | ---- | ----
 | [`animations`](#animations) | `object` | No | [see here](#default-animations) | To configure which element properties are animated and how.
 | `clip` | `boolean` | No | `true` | Are the annotations clipped to the chartArea.
-| `drawTime` | `string` | Yes | `'afterDatasetsDraw'` | See [drawTime](options#draw-time).
-| [`interaction`](options#interaction) | `Object` | No | `options.interaction` | To configure which events trigger plugin interactions
+| [`common`](#common) | `Object` | No | | To configure common options apply to all annotations
 
 :::warning
 
 Setting `clip` to `false`, you can enable the possibility to draw part of the annotation outside of the chart area.
 
-Nevertheless events are only catched over the chartArea.
+Nevertheless events are only caught over the chartArea.
 
 :::
 
@@ -56,6 +55,15 @@ const options = {
 | ---- | ---- | ----
 | `numbers` | `properties` | `['x', 'y', 'x2', 'y2', 'width', 'height', 'centerX', 'centerY', 'pointX', 'pointY', 'labelX', 'labelY', 'labelWidth', 'labelHeight', 'radius']`
 | `numbers` | `type` | `number`
+
+## Common
+
+The following options apply to all annotations unless they are overwritten on a per-annotation basis.
+
+| Name | Type | [Scriptable](options#scriptable-options) | Default | Notes
+| ---- | ---- | :----: | ---- | ----
+| `drawTime` | `string` | Yes | `'afterDatasetsDraw'` | See [drawTime](options#draw-time).
+| [`interaction`](options#interaction) | `Object` | No | `options.interaction` | To configure which events trigger plugin interactions
 
 ## Events
 
