@@ -88,9 +88,10 @@ BoxAnnotation.defaults = {
     textAlign: 'start',
     textStrokeColor: undefined,
     textStrokeWidth: 0,
+    width: undefined,
     xAdjust: 0,
     yAdjust: 0,
-    width: undefined
+    z: undefined
   },
   rotation: 0,
   shadowBlur: 0,
@@ -101,7 +102,8 @@ BoxAnnotation.defaults = {
   xScaleID: undefined,
   yMax: undefined,
   yMin: undefined,
-  yScaleID: undefined
+  yScaleID: undefined,
+  z: 0
 };
 
 BoxAnnotation.defaultRoutes = {
