@@ -143,7 +143,7 @@ function calculatePosition(start, size, adjust = 0, position) {
 function drawCallout(ctx, element) {
   const {pointX, pointY, options} = element;
   const callout = options.callout;
-  const calloutPosition = callout && callout.display && resolveCalloutPosition(element, callout, options.rotation);
+  const calloutPosition = callout && callout.display && resolveCalloutPosition(element, callout);
   if (!calloutPosition || element.inRange(pointX, pointY)) {
     return;
   }
@@ -218,16 +218,16 @@ function getCalloutSideAdjust(position, options) {
   return side;
 }
 
-function resolveCalloutPosition(properties, options, rotation) {
+function resolveCalloutPosition(element, options) {
   const position = options.position;
   if (position === 'left' || position === 'right' || position === 'top' || position === 'bottom') {
     return position;
   }
-  return resolveCalloutAutoPosition(properties, options, rotation);
+  return resolveCalloutAutoPosition(element, options);
 }
 
-function resolveCalloutAutoPosition(properties, options, rotation) {
-  const {x, y, x2, y2, width, height, pointX, pointY, centerX, centerY} = properties;
+function resolveCalloutAutoPosition(element, options) {
+  const {x, y, x2, y2, width, height, pointX, pointY, centerX, centerY, rotation} = element;
   const center = {x: centerX, y: centerY};
   const start = options.start;
   const xAdjust = getSize(width, start);
