@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Dragging annotations | chartjs-plugin-annotation</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="icon" href="/chartjs-plugin-annotation/master/favicon.png">
+    <meta name="description" content="Annotations for Chart.js">
+    <link rel="preload" href="/chartjs-plugin-annotation/master/assets/css/0.styles.7c8ac9a0.css" as="style"><link rel="preload" href="/chartjs-plugin-annotation/master/assets/js/app.f475759f.js" as="script"><link rel="preload" href="/chartjs-plugin-annotation/master/assets/js/2.9c7b7a5a.js" as="script"><link rel="preload" href="/chartjs-plugin-annotation/master/assets/js/32.99945ce1.js" as="script"><link rel="preload" href="/chartjs-plugin-annotation/master/assets/js/3.8c7e4b75.js" as="script"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/10.7947a87c.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/11.a4429ab9.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/12.c76fbd67.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/13.ed555fe3.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/14.b59b29e4.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/15.2fac5d00.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/16.b2b80b53.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/17.22b8aa10.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/18.0f480f32.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/19.d8046b1f.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/20.1461c9e0.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/21.a4f2b94b.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/22.3be03c3d.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/23.54bc63de.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/24.de1d36ee.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/25.b2bdca50.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/26.2679253f.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/27.31081880.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/28.691cdc54.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/29.ca422404.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/30.f4d066af.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/31.46d0e7f5.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/33.30cafd0f.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/34.96ae0133.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/35.720bd518.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/36.54ef6296.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/37.a7b97f8c.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/38.91381f36.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/39.f8c11651.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/4.2555058e.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/40.73669e3c.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/41.0f5c80e9.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/42.4122d25e.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/43.3f6f7f8f.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/44.84cb2b21.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/45.e2f9e2ee.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/46.d4493172.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/47.5246c9a7.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/48.ee491aeb.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/49.bcf673ca.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/5.027cb121.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/50.91f55920.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/51.58ad09d8.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/52.a6a85b24.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/53.52ae4b63.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/54.60b2cb85.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/55.30f4b18b.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/56.704ff0db.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/57.e72f4145.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/58.0c433a59.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/59.b0997170.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/6.0c4c79de.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/60.cc1b03c7.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/61.6181b010.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/7.ee6e24b1.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/8.c7c17c54.js"><link rel="prefetch" href="/chartjs-plugin-annotation/master/assets/js/9.19c44259.js">
+    <link rel="stylesheet" href="/chartjs-plugin-annotation/master/assets/css/0.styles.7c8ac9a0.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/chartjs-plugin-annotation/master/" class="home-link router-link-active"><img src="/chartjs-plugin-annotation/master/favicon.png" alt="chartjs-plugin-annotation" class="logo"> <span class="site-name can-hide">chartjs-plugin-annotation</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/chartjs-plugin-annotation/master/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/chartjs-plugin-annotation/master/guide/" class="nav-link">
+  Guide
+</a></div><div class="nav-item"><a href="/chartjs-plugin-annotation/master/samples/" class="nav-link router-link-active">
+  Samples
+</a></div> <a href="https://github.com/chartjs/chartjs-plugin-annotation" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/chartjs-plugin-annotation/master/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/chartjs-plugin-annotation/master/guide/" class="nav-link">
+  Guide
+</a></div><div class="nav-item"><a href="/chartjs-plugin-annotation/master/samples/" class="nav-link router-link-active">
+  Samples
+</a></div> <a href="https://github.com/chartjs/chartjs-plugin-annotation" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><a href="/chartjs-plugin-annotation/master/samples/intro.html" class="sidebar-link">Intro</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Box annotations</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Ellipse annotations</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Label annotations</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Line annotations</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Point annotations</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Polygon annotations</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Charts</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Interaction</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/chartjs-plugin-annotation/master/samples/interaction/interaction.html" class="sidebar-link">Interaction</a></li><li><a href="/chartjs-plugin-annotation/master/samples/interaction/dragging.html" aria-current="page" class="active sidebar-link">Dragging annotations</a></li></ul></section></li><li><a href="/chartjs-plugin-annotation/master/samples/utils.html" class="sidebar-link">Utils</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="dragging-annotations"><a href="#dragging-annotations" class="header-anchor">#</a> Dragging annotations</h1> <div class="chart-editor" data-v-365c20ab><div class="chart-view" data-v-365c20ab><canvas></canvas></div> <div class="chart-actions" data-v-2afd21f1 data-v-365c20ab></div> <div class="code-editor" data-v-66ca8197 data-v-365c20ab><div class="code-editor-header" data-v-66ca8197><div class="code-editor-tabs" data-v-66ca8197><button class="code-editor-tab active" data-v-66ca8197>
+        config
+      </button><button class="code-editor-tab" data-v-66ca8197>
+        annotation1
+      </button><button class="code-editor-tab" data-v-66ca8197>
+        annotation2
+      </button><button class="code-editor-tab" data-v-66ca8197>
+        annotation3
+      </button><button class="code-editor-tab" data-v-66ca8197>
+        annotation4
+      </button><button class="code-editor-tab" data-v-66ca8197>
+        dragger
+      </button><button class="code-editor-tab" data-v-66ca8197>
+        setup
+      </button><button class="code-editor-tab" data-v-66ca8197>
+        utils
+      </button></div> <div class="code-editor-tools" data-v-66ca8197><!----> <a href="https://github.com/chartjs/chartjs-plugin-annotation/blob/master/docs/samples/interaction/dragging.md" title="View on GitHub" target="_blank" class="code-editor-tool fab fa-github fa-lg" data-v-66ca8197></a></div></div> <div class="code-editor-views" data-v-66ca8197><div class="editor-textarea ps" data-v-05f11386 data-v-66ca8197><div class="editor-textarea-content" data-v-05f11386><div class="prism-editor-wrapper" data-v-05f11386><div class="prism-editor__container"><textarea spellCheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" data-gramm="false" placeholder="" data-testid="textarea" class="prism-editor__textarea">const config = {
+  type: 'line',
+  plugins: [dragger],
+  data,
+  options: {
+    events: ['mousedown', 'mouseup', 'mousemove', 'mouseout'],
+    scales: {
+      y: {
+        beginAtZero: true,
+        min: 0,
+        max: 100
+      }
+    },
+    plugins: {
+      annotation: {
+        enter(ctx) {
+          element = ctx.element;
+        },
+        leave() {
+          element = undefined;
+          lastEvent = undefined;
+        },
+        annotations: {
+          annotation1,
+          annotation2,
+          annotation3,
+          annotation4
+        }
+      }
+    }
+  }
+};</textarea><pre data-testid="preview" class="prism-editor__editor"><span class="token keyword">const</span> config <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'line'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">plugins</span><span class="token operator">:</span> <span class="token punctuation">[</span>dragger<span class="token punctuation">]</span><span class="token punctuation">,</span>
+  data<span class="token punctuation">,</span>
+  <span class="token literal-property property">options</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">events</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'mousedown'</span><span class="token punctuation">,</span> <span class="token string">'mouseup'</span><span class="token punctuation">,</span> <span class="token string">'mousemove'</span><span class="token punctuation">,</span> <span class="token string">'mouseout'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">scales</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">y</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token literal-property property">beginAtZero</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">min</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">max</span><span class="token operator">:</span> <span class="token number">100</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">plugins</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">annotation</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token function">enter</span><span class="token punctuation">(</span><span class="token parameter">ctx</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          element <span class="token operator">=</span> ctx<span class="token punctuation">.</span>element<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token function">leave</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          element <span class="token operator">=</span> <span class="token keyword">undefined</span><span class="token punctuation">;</span>
+          lastEvent <span class="token operator">=</span> <span class="token keyword">undefined</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">annotations</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+          annotation1<span class="token punctuation">,</span>
+          annotation2<span class="token punctuation">,</span>
+          annotation3<span class="token punctuation">,</span>
+          annotation4
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span><br /></pre></div></div></div></div><div class="editor-textarea ps" style="display:none;" data-v-05f11386 data-v-66ca8197><div class="editor-textarea-content" data-v-05f11386><div class="prism-editor-wrapper" data-v-05f11386><div class="prism-editor__container"><textarea spellCheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" data-gramm="false" placeholder="" data-testid="textarea" class="prism-editor__textarea">const annotation1 = {
+  type: 'box',
+  backgroundColor: 'rgba(165, 214, 167, 0.2)',
+  borderColor: 'rgb(165, 214, 167)',
+  borderWidth: 2,
+  label: {
+    display: true,
+    content: ['Box annotation', 'to drag'],
+    textAlign: 'center'
+  },
+  xMax: 'May',
+  xMin: 'April',
+  xScaleID: 'x',
+  yMax: 75,
+  yMin: 25,
+  yScaleID: 'y'
+};</textarea><pre data-testid="preview" class="prism-editor__editor"><span class="token keyword">const</span> annotation1 <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'box'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">backgroundColor</span><span class="token operator">:</span> <span class="token string">'rgba(165, 214, 167, 0.2)'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">borderColor</span><span class="token operator">:</span> <span class="token string">'rgb(165, 214, 167)'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">borderWidth</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">label</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">display</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">content</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'Box annotation'</span><span class="token punctuation">,</span> <span class="token string">'to drag'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">textAlign</span><span class="token operator">:</span> <span class="token string">'center'</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">xMax</span><span class="token operator">:</span> <span class="token string">'May'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">xMin</span><span class="token operator">:</span> <span class="token string">'April'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">xScaleID</span><span class="token operator">:</span> <span class="token string">'x'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">yMax</span><span class="token operator">:</span> <span class="token number">75</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">yMin</span><span class="token operator">:</span> <span class="token number">25</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">yScaleID</span><span class="token operator">:</span> <span class="token string">'y'</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span><br /></pre></div></div></div></div><div class="editor-textarea ps" style="display:none;" data-v-05f11386 data-v-66ca8197><div class="editor-textarea-content" data-v-05f11386><div class="prism-editor-wrapper" data-v-05f11386><div class="prism-editor__container"><textarea spellCheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" data-gramm="false" placeholder="" data-testid="textarea" class="prism-editor__textarea">const annotation2 = {
+  type: 'label',
+  backgroundColor: 'rgba(255, 99, 132, 0.25)',
+  borderWidth: 3,
+  borderColor: 'black',
+  content: ['Label annotation', 'to drag'],
+  callout: {
+    display: true,
+    borderColor: 'black',
+  },
+  xValue: 1,
+  yValue: 40
+};</textarea><pre data-testid="preview" class="prism-editor__editor"><span class="token keyword">const</span> annotation2 <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'label'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">backgroundColor</span><span class="token operator">:</span> <span class="token string">'rgba(255, 99, 132, 0.25)'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">borderWidth</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">borderColor</span><span class="token operator">:</span> <span class="token string">'black'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">content</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'Label annotation'</span><span class="token punctuation">,</span> <span class="token string">'to drag'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">callout</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">display</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">borderColor</span><span class="token operator">:</span> <span class="token string">'black'</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">xValue</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">yValue</span><span class="token operator">:</span> <span class="token number">40</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span><br /></pre></div></div></div></div><div class="editor-textarea ps" style="display:none;" data-v-05f11386 data-v-66ca8197><div class="editor-textarea-content" data-v-05f11386><div class="prism-editor-wrapper" data-v-05f11386><div class="prism-editor__container"><textarea spellCheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" data-gramm="false" placeholder="" data-testid="textarea" class="prism-editor__textarea">const annotation3 = {
+  type: 'point',
+  backgroundColor: 'rgba(0, 255, 255, 0.4)',
+  borderWidth: 2,
+  borderColor: 'black',
+  radius: 20,
+  xValue: 'March',
+  yValue: 50
+};</textarea><pre data-testid="preview" class="prism-editor__editor"><span class="token keyword">const</span> annotation3 <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'point'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">backgroundColor</span><span class="token operator">:</span> <span class="token string">'rgba(0, 255, 255, 0.4)'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">borderWidth</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">borderColor</span><span class="token operator">:</span> <span class="token string">'black'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">radius</span><span class="token operator">:</span> <span class="token number">20</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">xValue</span><span class="token operator">:</span> <span class="token string">'March'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">yValue</span><span class="token operator">:</span> <span class="token number">50</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span><br /></pre></div></div></div></div><div class="editor-textarea ps" style="display:none;" data-v-05f11386 data-v-66ca8197><div class="editor-textarea-content" data-v-05f11386><div class="prism-editor-wrapper" data-v-05f11386><div class="prism-editor__container"><textarea spellCheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" data-gramm="false" placeholder="" data-testid="textarea" class="prism-editor__textarea">const annotation4 = {
+  type: 'polygon',
+  backgroundColor: 'rgba(150, 0, 0, 0.25)',
+  borderWidth: 2,
+  borderColor: 'black',
+  radius: 50,
+  sides: 6,
+  xValue: 'June',
+  yValue: 20
+};</textarea><pre data-testid="preview" class="prism-editor__editor"><span class="token keyword">const</span> annotation4 <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'polygon'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">backgroundColor</span><span class="token operator">:</span> <span class="token string">'rgba(150, 0, 0, 0.25)'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">borderWidth</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">borderColor</span><span class="token operator">:</span> <span class="token string">'black'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">radius</span><span class="token operator">:</span> <span class="token number">50</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">sides</span><span class="token operator">:</span> <span class="token number">6</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">xValue</span><span class="token operator">:</span> <span class="token string">'June'</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">yValue</span><span class="token operator">:</span> <span class="token number">20</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span><br /></pre></div></div></div></div><div class="editor-textarea ps" style="display:none;" data-v-05f11386 data-v-66ca8197><div class="editor-textarea-content" data-v-05f11386><div class="prism-editor-wrapper" data-v-05f11386><div class="prism-editor__container"><textarea spellCheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" data-gramm="false" placeholder="" data-testid="textarea" class="prism-editor__textarea">const dragger = {
+  id: 'dragger',
+  beforeEvent(chart, args, options) {
+    if (handleDrag(args.event)) {
+      args.changed = true;
+      return;
+    }
+  }
+};</textarea><pre data-testid="preview" class="prism-editor__editor"><span class="token keyword">const</span> dragger <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">id</span><span class="token operator">:</span> <span class="token string">'dragger'</span><span class="token punctuation">,</span>
+  <span class="token function">beforeEvent</span><span class="token punctuation">(</span><span class="token parameter">chart<span class="token punctuation">,</span> args<span class="token punctuation">,</span> options</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">handleDrag</span><span class="token punctuation">(</span>args<span class="token punctuation">.</span>event<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      args<span class="token punctuation">.</span>changed <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span><br /></pre></div></div></div></div><div class="editor-textarea ps" style="display:none;" data-v-05f11386 data-v-66ca8197><div class="editor-textarea-content" data-v-05f11386><div class="prism-editor-wrapper" data-v-05f11386><div class="prism-editor__container"><textarea spellCheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" data-gramm="false" placeholder="" data-testid="textarea" class="prism-editor__textarea">Utils.srand(8);
+const data = {
+  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  datasets: [{
+    type: 'line',
+    label: 'Dataset 1',
+    borderColor: 'rgb(54, 162, 235)',
+    borderWidth: 2,
+    fill: false,
+    data: Utils.numbers({count: 7, min: 0, max: 100}),
+  }]
+};</textarea><pre data-testid="preview" class="prism-editor__editor">Utils<span class="token punctuation">.</span><span class="token function">srand</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">labels</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'January'</span><span class="token punctuation">,</span> <span class="token string">'February'</span><span class="token punctuation">,</span> <span class="token string">'March'</span><span class="token punctuation">,</span> <span class="token string">'April'</span><span class="token punctuation">,</span> <span class="token string">'May'</span><span class="token punctuation">,</span> <span class="token string">'June'</span><span class="token punctuation">,</span> <span class="token string">'July'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">datasets</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+    <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'line'</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">label</span><span class="token operator">:</span> <span class="token string">'Dataset 1'</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">borderColor</span><span class="token operator">:</span> <span class="token string">'rgb(54, 162, 235)'</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">borderWidth</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">fill</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">data</span><span class="token operator">:</span> Utils<span class="token punctuation">.</span><span class="token function">numbers</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token literal-property property">count</span><span class="token operator">:</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token literal-property property">min</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token literal-property property">max</span><span class="token operator">:</span> <span class="token number">100</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span><br /></pre></div></div></div></div><div class="editor-textarea ps" style="display:none;" data-v-05f11386 data-v-66ca8197><div class="editor-textarea-content" data-v-05f11386><div class="prism-editor-wrapper" data-v-05f11386><div class="prism-editor__container"><textarea spellCheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" data-gramm="false" placeholder="" data-testid="textarea" class="prism-editor__textarea">let element;
+let lastEvent;
+const drag = function(moveX, moveY) {
+  element.x += moveX;
+  element.y += moveY;
+  element.x2 += moveX;
+  element.y2 += moveY;
+  element.centerX += moveX;
+  element.centerY += moveY;
+  if (element.elements &amp;&amp; element.elements.length) {
+    for (const subEl of element.elements) {
+      subEl.x += moveX;
+      subEl.y += moveY;
+      subEl.x2 += moveX;
+      subEl.y2 += moveY;
+      subEl.centerX += moveX;
+      subEl.centerY += moveY;
+      subEl.bX += moveX;
+      subEl.bY += moveY;
+    }
+  }
+};
+const handleElementDragging = function(event) {
+  if (!lastEvent || !element) {
+    return;
+  }
+  const moveX = event.x - lastEvent.x;
+  const moveY = event.y - lastEvent.y;
+  drag(moveX, moveY);
+  lastEvent = event;
+  return true;
+};
+const handleDrag = function(event) {
+  if (element) {
+    switch (event.type) {
+    case 'mousemove':
+      return handleElementDragging(event);
+    case 'mouseout':
+    case 'mouseup':
+      lastEvent = undefined;
+      break;
+    case 'mousedown':
+      lastEvent = event;
+      break;
+    default:
+    }
+  }
+};
+// &lt;/block:dragger&gt;</textarea><pre data-testid="preview" class="prism-editor__editor"><span class="token keyword">let</span> element<span class="token punctuation">;</span>
+<span class="token keyword">let</span> lastEvent<span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token function-variable function">drag</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">moveX<span class="token punctuation">,</span> moveY</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  element<span class="token punctuation">.</span>x <span class="token operator">+=</span> moveX<span class="token punctuation">;</span>
+  element<span class="token punctuation">.</span>y <span class="token operator">+=</span> moveY<span class="token punctuation">;</span>
+  element<span class="token punctuation">.</span>x2 <span class="token operator">+=</span> moveX<span class="token punctuation">;</span>
+  element<span class="token punctuation">.</span>y2 <span class="token operator">+=</span> moveY<span class="token punctuation">;</span>
+  element<span class="token punctuation">.</span>centerX <span class="token operator">+=</span> moveX<span class="token punctuation">;</span>
+  element<span class="token punctuation">.</span>centerY <span class="token operator">+=</span> moveY<span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>element<span class="token punctuation">.</span>elements <span class="token operator">&amp;&amp;</span> element<span class="token punctuation">.</span>elements<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> subEl <span class="token keyword">of</span> element<span class="token punctuation">.</span>elements<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      subEl<span class="token punctuation">.</span>x <span class="token operator">+=</span> moveX<span class="token punctuation">;</span>
+      subEl<span class="token punctuation">.</span>y <span class="token operator">+=</span> moveY<span class="token punctuation">;</span>
+      subEl<span class="token punctuation">.</span>x2 <span class="token operator">+=</span> moveX<span class="token punctuation">;</span>
+      subEl<span class="token punctuation">.</span>y2 <span class="token operator">+=</span> moveY<span class="token punctuation">;</span>
+      subEl<span class="token punctuation">.</span>centerX <span class="token operator">+=</span> moveX<span class="token punctuation">;</span>
+      subEl<span class="token punctuation">.</span>centerY <span class="token operator">+=</span> moveY<span class="token punctuation">;</span>
+      subEl<span class="token punctuation">.</span>bX <span class="token operator">+=</span> moveX<span class="token punctuation">;</span>
+      subEl<span class="token punctuation">.</span>bY <span class="token operator">+=</span> moveY<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token function-variable function">handleElementDragging</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>lastEvent <span class="token operator">||</span> <span class="token operator">!</span>element<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">const</span> moveX <span class="token operator">=</span> event<span class="token punctuation">.</span>x <span class="token operator">-</span> lastEvent<span class="token punctuation">.</span>x<span class="token punctuation">;</span>
+  <span class="token keyword">const</span> moveY <span class="token operator">=</span> event<span class="token punctuation">.</span>y <span class="token operator">-</span> lastEvent<span class="token punctuation">.</span>y<span class="token punctuation">;</span>
+  <span class="token function">drag</span><span class="token punctuation">(</span>moveX<span class="token punctuation">,</span> moveY<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  lastEvent <span class="token operator">=</span> event<span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token function-variable function">handleDrag</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>element<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">switch</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token string">'mousemove'</span><span class="token operator">:</span>
+      <span class="token keyword">return</span> <span class="token function">handleElementDragging</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token string">'mouseout'</span><span class="token operator">:</span>
+    <span class="token keyword">case</span> <span class="token string">'mouseup'</span><span class="token operator">:</span>
+      lastEvent <span class="token operator">=</span> <span class="token keyword">undefined</span><span class="token punctuation">;</span>
+      <span class="token keyword">break</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token string">'mousedown'</span><span class="token operator">:</span>
+      lastEvent <span class="token operator">=</span> event<span class="token punctuation">;</span>
+      <span class="token keyword">break</span><span class="token punctuation">;</span>
+    <span class="token keyword">default</span><span class="token operator">:</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token comment">// &lt;/block:dragger></span><br /></pre></div></div></div></div></div></div></div></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/chartjs/chartjs-plugin-annotation/edit/master/docs/samples/interaction/dragging.md" target="_blank" rel="noopener noreferrer">Edit this page</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">5/16/2022, 10:22:01 AM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/chartjs-plugin-annotation/master/samples/interaction/interaction.html" class="prev">
+        Interaction
+      </a></span> <span class="next"><a href="/chartjs-plugin-annotation/master/samples/utils.html">
+        Utils
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/chartjs-plugin-annotation/master/assets/js/app.f475759f.js" defer></script><script src="/chartjs-plugin-annotation/master/assets/js/2.9c7b7a5a.js" defer></script><script src="/chartjs-plugin-annotation/master/assets/js/32.99945ce1.js" defer></script><script src="/chartjs-plugin-annotation/master/assets/js/3.8c7e4b75.js" defer></script>
+  </body>
+</html>
