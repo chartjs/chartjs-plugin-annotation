@@ -20,10 +20,10 @@ A number of changes were made to the configuration options passed to the plugin 
 
 ## Elements
 
-In `chartjs-plugin-annotation` plugin version 2 the label of box annotation is a sub-element. This has changed how to access to the label options. Now the label options are at `element.label.options`. The following example shows how to show and hide the label when the mouse is hovering the box:
+In `chartjs-plugin-annotation` plugin version 2 the label of box and line annotations is a sub-element. This has changed how to access to the label options. Now the label options are at `element.label.options`. The following example shows how to show and hide the label when the mouse is hovering the box:
 
 ```javascript
-type: 'box',
+type: 'box', // or 'line'
 enter: function({element}) {
   element.label.options.display = true;
   return true;
@@ -37,7 +37,6 @@ leave: function({element}) {
 `chartjs-plugin-annotation` plugin version 2 hides the following methods in the `line` annotation element because they should be used only internally:
 
  * `intersects`
- * `labelIsVisible`
  * `isOnLabel`
 
 `chartjs-plugin-annotation` plugin version 2 normalizes the properties of the annotation elements in order to be based on common box model.

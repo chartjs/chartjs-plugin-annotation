@@ -71,12 +71,12 @@ describe('Line annotation', function() {
       it('should return true inside label of element', function() {
         for (const borderWidth of [0, 10]) {
           const halfBorder = borderWidth / 2;
-          element.options.label.borderWidth = borderWidth;
+          element.label.options.borderWidth = borderWidth;
           const rad = rotation / 180 * Math.PI;
-          for (const ax of [element.labelX - halfBorder, element.labelX2 + halfBorder]) {
-            for (const ay of [element.labelY - halfBorder, element.labelY2 + halfBorder]) {
+          for (const ax of [element.label.x - halfBorder, element.label.x2 + halfBorder]) {
+            for (const ay of [element.label.y - halfBorder, element.label.y2 + halfBorder]) {
               const {x, y} = rotated({x: ax, y: ay},
-                {x: element.labelCenterX, y: element.labelCenterY}, rad);
+                {x: element.label.centerX, y: element.label.centerY}, rad);
               expect(element.inRange(x, y)).withContext(`rotation: ${rotation}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
             }
           }
@@ -86,12 +86,12 @@ describe('Line annotation', function() {
       it('should return false outside label of element', function() {
         for (const borderWidth of [0, 10]) {
           const halfBorder = borderWidth / 2;
-          element.options.label.borderWidth = borderWidth;
+          element.label.options.borderWidth = borderWidth;
           const rad = rotation / 180 * Math.PI;
-          for (const ax of [element.labelX - halfBorder - 1, element.labelX2 + halfBorder + 1]) {
-            for (const ay of [element.labelY - halfBorder - 1, element.labelY2 + halfBorder + 1]) {
+          for (const ax of [element.label.x - halfBorder - 1, element.label.x2 + halfBorder + 1]) {
+            for (const ay of [element.label.y - halfBorder - 1, element.label.y2 + halfBorder + 1]) {
               const {x, y} = rotated({x: ax, y: ay},
-                {x: element.labelCenterX, y: element.labelCenterY}, rad);
+                {x: element.label.centerX, y: element.label.centerY}, rad);
               expect(element.inRange(x, y)).withContext(`rotation: ${rotation}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
             }
           }
@@ -201,12 +201,12 @@ describe('Line annotation', function() {
           [true, false].forEach(function(intersect) {
             interactionOpts.intersect = intersect;
             const elementsCounts = interaction.axes[axis].intersect[intersect];
-            const points = [{x: outerEl.labelX, y: outerEl.labelY},
-              {x: innerEl.labelX, y: innerEl.labelY},
-              {x: innerEl.labelCenterX, y: innerEl.labelCenterY},
-              {x: innerEl.labelX2 + 1, y: innerEl.labelY},
-              {x: outerEl.labelX2 + 1, y: outerEl.labelY},
-              {x: outerEl.labelX + 1, y: outCenter.y - outerEl.height / 2 - 1}];
+            const points = [{x: outerEl.label.x, y: outerEl.label.y},
+              {x: innerEl.label.x, y: innerEl.label.y},
+              {x: innerEl.label.centerX, y: innerEl.label.centerY},
+              {x: innerEl.label.x2 + 1, y: innerEl.label.y},
+              {x: outerEl.label.x2 + 1, y: outerEl.label.y},
+              {x: outerEl.label.x + 1, y: outCenter.y - outerEl.height / 2 - 1}];
 
             for (let i = 0; i < points.length; i++) {
               const point = points[i];

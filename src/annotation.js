@@ -103,12 +103,11 @@ export default {
   defaults: {
     animations: {
       numbers: {
-        properties: ['x', 'y', 'x2', 'y2', 'width', 'height', 'centerX', 'centerY', 'pointX', 'pointY', 'labelX', 'labelY', 'labelWidth', 'labelHeight', 'radius'],
+        properties: ['x', 'y', 'x2', 'y2', 'width', 'height', 'centerX', 'centerY', 'pointX', 'pointY', 'radius'],
         type: 'number'
       },
     },
     clip: true,
-    dblClickSpeed: 350, // ms
     common: {
       drawTime: 'afterDatasetsDraw',
       interaction: {
@@ -144,40 +143,30 @@ export default {
 function draw(chart, caller, clip) {
   const {ctx, canvas, chartArea} = chart;
   const {visibleElements} = chartStates.get(chart);
-  let box = {x: 0, y: 0, width: canvas.width, height: canvas.height};
+  let area = {left: 0, top: 0, width: canvas.width, height: canvas.height};
 
   if (clip) {
     clipArea(ctx, chartArea);
-    box = {x: chartArea.left, y: chartArea.top, width: chartArea.width, height: chartArea.height};
+    area = chartArea;
   }
 
-  drawElements(ctx, visibleElements, caller, box);
+  drawElements(chart, visibleElements, caller, area);
 
   if (clip) {
     unclipArea(ctx);
   }
-
-  visibleElements.forEach(el => {
-    if (!('drawLabel' in el)) {
-      return;
-    }
-    const label = el.options.label;
-    if (label && label.display && label.content && label.drawTime === caller) {
-      el.drawLabel(ctx, chartArea);
-    }
-  });
 }
 
-function drawElements(ctx, elements, caller, area) {
+function drawElements(chart, elements, caller, area) {
   for (const el of elements) {
     if (el.options.drawTime === caller) {
-      el.draw(ctx);
+      el.draw(chart.ctx, area);
     }
     if (el.elements && el.elements.length) {
       const box = 'getBoundingBox' in el ? el.getBoundingBox() : area;
       for (const sub of el.elements) {
-        if (sub.options.drawTime === caller) {
-          sub.draw(ctx, box);
+        if (sub.options.display && sub.options.drawTime === caller) {
+          sub.draw(chart.ctx, box);
         }
       }
     }

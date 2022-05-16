@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
-import {PI, toRadians, toDegrees, toPadding, valueOrDefault} from 'chart.js/helpers';
-import {EPSILON, clamp, scaleValue, rotated, drawBox, drawLabel, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, translate, getElementCenterPoint, inBoxRange, retrieveScaleID, getDimensionByScale} from '../helpers';
+import {PI, toRadians, toDegrees, toPadding} from 'chart.js/helpers';
+import {EPSILON, clamp, scaleValue, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, getElementCenterPoint, retrieveScaleID, getDimensionByScale} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
@@ -50,36 +50,14 @@ export default class LineAnnotation extends Element {
     ctx.restore();
   }
 
-  drawLabel(ctx, chartArea) {
-    if (!labelIsVisible(this, false, chartArea)) {
-      return;
-    }
-    const {labelX, labelY, labelCenterX, labelCenterY, labelWidth, labelHeight, labelRotation, labelPadding, labelTextSize, options: {label}} = this;
-
-    ctx.save();
-    translate(ctx, {x: labelCenterX, y: labelCenterY}, labelRotation);
-
-    const boxRect = {
-      x: labelX,
-      y: labelY,
-      width: labelWidth,
-      height: labelHeight
-    };
-    drawBox(ctx, boxRect, label);
-
-    const labelTextRect = {
-      x: labelX + labelPadding.left + label.borderWidth / 2,
-      y: labelY + labelPadding.top + label.borderWidth / 2,
-      width: labelTextSize.width,
-      height: labelTextSize.height
-    };
-    drawLabel(ctx, labelTextRect, label);
-    ctx.restore();
+  get label() {
+    return this.elements && this.elements[0];
   }
 
   resolveElementProperties(chart, options) {
-    const scale = chart.scales[options.scaleID];
-    const area = translateArea(chart.chartArea, {y: 'top', x: 'left', y2: 'bottom', x2: 'right'});
+    const {scales, chartArea} = chart;
+    const scale = scales[options.scaleID];
+    const area = {x: chartArea.left, y: chartArea.top, x2: chartArea.right, y2: chartArea.bottom};
     let min, max;
 
     if (scale) {
@@ -93,8 +71,8 @@ export default class LineAnnotation extends Element {
         area.y2 = max;
       }
     } else {
-      const xScale = chart.scales[retrieveScaleID(chart.scales, options, 'xScaleID')];
-      const yScale = chart.scales[retrieveScaleID(chart.scales, options, 'yScaleID')];
+      const xScale = scales[retrieveScaleID(scales, options, 'xScaleID')];
+      const yScale = scales[retrieveScaleID(scales, options, 'yScaleID')];
 
       if (xScale) {
         applyScaleValueToDimension(area, xScale, {min: options.xMin, max: options.xMax, start: xScale.left, end: xScale.right, startProp: 'x', endProp: 'x2'});
@@ -111,11 +89,14 @@ export default class LineAnnotation extends Element {
       : {x, y, x2, y2, width: Math.abs(x2 - x), height: Math.abs(y2 - y)};
     properties.centerX = (x2 + x) / 2;
     properties.centerY = (y2 + y) / 2;
-
-    const label = options.label;
-    if (label && label.content) {
-      return loadLabelRect(properties, chart, label);
+    if (!inside) {
+      options.label.display = false;
     }
+    properties.elements = [{
+      type: 'label',
+      optionScope: 'label',
+      properties: resolveLabelElementProperties(chart, properties, options.label)
+    }];
     return properties;
   }
 }
@@ -166,6 +147,9 @@ LineAnnotation.defaults = {
     borderRadius: 6,
     borderShadowColor: 'transparent',
     borderWidth: 0,
+    callout: {
+      display: false
+    },
     color: '#fff',
     content: null,
     display: false,
@@ -276,36 +260,9 @@ function intersects(element, {mouseX, mouseY}, epsilon = EPSILON, useFinalPositi
   return (sqr(mouseX - xx) + sqr(mouseY - yy)) <= epsilon;
 }
 
-/**
- * @param {boolean} useFinalPosition - use the element's animation target instead of current position
- * @param {top, right, bottom, left} [chartArea] - optional, area of the chart
- * @returns {boolean} true if the label is visible
- */
-function labelIsVisible(element, useFinalPosition, chartArea) {
-  const labelOpts = element.options.label;
-  if (!labelOpts || !labelOpts.display) {
-    return false;
-  }
-  return !chartArea || isLineInArea(element.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), chartArea);
-}
-
 function isOnLabel(element, {mouseX, mouseY}, useFinalPosition, axis) {
-  if (!labelIsVisible(element, useFinalPosition)) {
-    return false;
-  }
-  const {labelX, labelY, labelX2, labelY2, labelCenterX, labelCenterY, labelRotation} = element.getProps(['labelX', 'labelY', 'labelX2', 'labelY2', 'labelCenterX', 'labelCenterY', 'labelRotation'], useFinalPosition);
-  const {x, y} = rotated({x: mouseX, y: mouseY}, {x: labelCenterX, y: labelCenterY}, -toRadians(labelRotation));
-  return inBoxRange({x, y}, {x: labelX, y: labelY, x2: labelX2, y2: labelY2}, axis, element.options.label.borderWidth);
-}
-
-function translateArea(source, mapping) {
-  const ret = {};
-  const keys = Object.keys(mapping);
-  const read = prop => valueOrDefault(source[prop], source[mapping[prop]]);
-  for (const prop of keys) {
-    ret[prop] = read(prop);
-  }
-  return ret;
+  const label = element.label;
+  return label.options.display && label.inRange(mouseX, mouseY, axis, useFinalPosition);
 }
 
 function applyScaleValueToDimension(area, scale, options) {
@@ -314,25 +271,15 @@ function applyScaleValueToDimension(area, scale, options) {
   area[options.endProp] = dim.end;
 }
 
-function loadLabelRect(properties, chart, options) {
+function resolveLabelElementProperties(chart, properties, options) {
+  // TODO to remove by another PR to enable callout for line label
+  options.callout.display = false;
   const borderWidth = options.borderWidth;
   const padding = toPadding(options.padding);
   const textSize = measureLabelSize(chart.ctx, options);
   const width = textSize.width + padding.width + borderWidth;
   const height = textSize.height + padding.height + borderWidth;
-  const labelRect = calculateLabelPosition(properties, options, {width, height, padding}, chart.chartArea);
-  properties.labelX = labelRect.x;
-  properties.labelY = labelRect.y;
-  properties.labelX2 = labelRect.x2;
-  properties.labelY2 = labelRect.y2;
-  properties.labelCenterX = labelRect.centerX;
-  properties.labelCenterY = labelRect.centerY;
-  properties.labelWidth = labelRect.width;
-  properties.labelHeight = labelRect.height;
-  properties.labelRotation = toDegrees(labelRect.rotation);
-  properties.labelPadding = padding;
-  properties.labelTextSize = textSize;
-  return properties;
+  return calculateLabelPosition(properties, options, {width, height, padding}, chart.chartArea);
 }
 
 function calculateAutoRotation(properties) {
@@ -364,7 +311,7 @@ function calculateLabelPosition(properties, label, sizes, chartArea) {
     centerY,
     width,
     height,
-    rotation
+    rotation: toDegrees(rotation)
   };
 }
 
