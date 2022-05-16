@@ -152,9 +152,8 @@ function draw(chart, caller, clip) {
 
   const drawableElements = drawElements(visibleElements, caller, area).sort((a, b) => a.element.options.z - b.element.options.z);
 
-  for (const drawableItem of drawableElements) {
-    const {element, elArea} = drawableItem;
-    element.draw(chart.ctx, elArea);
+  for (const item of drawableElements) {
+    item.element.draw(chart.ctx, item.area);
   }
 
   if (clip) {
@@ -166,13 +165,13 @@ function drawElements(elements, caller, area) {
   const drawableElements = [];
   for (const el of elements) {
     if (el.options.drawTime === caller) {
-      drawableElements.push({element: el, elArea: area});
+      drawableElements.push({element: el, area});
     }
     if (el.elements && el.elements.length) {
       const box = 'getBoundingBox' in el ? el.getBoundingBox() : area;
       for (const sub of el.elements) {
         if (sub.options.display && sub.options.drawTime === caller) {
-          drawableElements.push({element: sub, elArea: box});
+          drawableElements.push({element: sub, area: box});
         }
       }
     }
