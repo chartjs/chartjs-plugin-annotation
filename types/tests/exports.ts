@@ -16,12 +16,13 @@ const chart = new Chart('id', {
     plugins: {
       annotation: {
         clip: false,
+        interaction: {
+          mode: 'nearest',
+          axis: 'xy',
+          intersect: true
+        },
         common: {
-          interaction: {
-            mode: 'nearest',
-            axis: 'xy',
-            intersect: true
-          }
+          drawTime: 'afterDraw'
         },
         annotations: [{
           type: 'line',
