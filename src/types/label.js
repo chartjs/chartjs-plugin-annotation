@@ -45,14 +45,12 @@ export default class LabelAnnotation extends Element {
     const padding = toPadding(options.padding);
     const labelSize = measureLabelSize(chart.ctx, options);
     const boxSize = measureRect(point, labelSize, options, padding);
-    const properties = {
+    return {
       pointX: point.x,
       pointY: point.y,
       ...boxSize,
       rotation: options.rotation
     };
-    properties.calloutPosition = options.callout.display && resolveCalloutPosition(properties, options.callout, options.rotation);
-    return properties;
   }
 }
 
@@ -143,11 +141,12 @@ function calculatePosition(start, size, adjust = 0, position) {
 }
 
 function drawCallout(ctx, element) {
-  const {pointX, pointY, calloutPosition, options} = element;
+  const {pointX, pointY, options} = element;
+  const callout = options.callout;
+  const calloutPosition = callout && callout.display && resolveCalloutPosition(element, callout, options.rotation);
   if (!calloutPosition || element.inRange(pointX, pointY)) {
     return;
   }
-  const callout = options.callout;
 
   ctx.save();
   ctx.beginPath();
