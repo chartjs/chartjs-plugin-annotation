@@ -151,10 +151,14 @@ interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationPoin
   yAdjust?: Scriptable<number, PartialEventContext>,
 }
 
+export interface AnnotationPluginCommonOptions {
+  drawTime?: Scriptable<DrawTime, PartialEventContext>,
+  interaction?: CoreInteractionOptions
+}
+
 export interface AnnotationPluginOptions extends AnnotationEvents {
   animations?: Record<string, unknown>,
   annotations: AnnotationOptions[] | Record<string, AnnotationOptions>,
   clip?: boolean,
-  drawTime?: Scriptable<DrawTime, PartialEventContext>,
-  interaction?: CoreInteractionOptions
+  common?: AnnotationPluginCommonOptions
 }

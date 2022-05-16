@@ -84,7 +84,9 @@ const config = {
     plugins: {
       annotation: {
         clip: false,
-        drawTime: 'afterDraw',
+        common: {
+          drawTime: 'afterDraw'
+        },
         annotations: {
           annotation1,
           annotation2,

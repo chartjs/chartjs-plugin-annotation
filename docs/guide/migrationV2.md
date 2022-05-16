@@ -4,7 +4,7 @@
 
 ## Chart.js version
 
-The annotation plugin requires at least version 3.7.0 to work because of some bug fixes that happend within chart.js itself.
+The annotation plugin requires at least version 3.7.0 to work because of some bug fixes that happened within chart.js itself.
 
 ## Options
 
@@ -17,6 +17,20 @@ A number of changes were made to the configuration options passed to the plugin 
  * `xPadding` and `yPadding` options were merged into a single `padding` object in the label configuration of line annotation to align with Chart.js options.
  * `enabled` option was replaced by `display` in the callout configuration of label annotation, in the label configuration of line and box annotations and in the arrow heads configuration of line annotation to have the same option on all elements.
  * `dblClickSpeed` option was removed from the plugin options because `dblclick` event hook is not available anymore.
+ * `drawTime` option at top level plugin configuration is moved to new `common` object in the plugin annotation options, which contains options to apply to all annotations: 
+
+```javascript
+plugins: {
+  annotation: {
+    common: {
+      drawTime: 'afterDraw'
+    },
+    annotations: [
+      ...
+    ]
+  }
+}
+```
 
 ## Elements
 

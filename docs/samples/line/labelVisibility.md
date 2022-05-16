@@ -88,7 +88,9 @@ const config = {
         display: false,
       },
       annotation: {
-        drawTime: 'beforeDatasetsDraw',
+        common: {
+          drawTime: 'beforeDatasetsDraw'
+        },
         annotations: {
           annotation1,
           annotation2

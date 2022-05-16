@@ -95,7 +95,9 @@ const config = {
     },
     plugins: {
       annotation: {
-        drawTime: 'beforeDraw',
+        common: {
+          drawTime: 'beforeDraw'
+        },
         annotations: {
           annotation1,
           annotation2,
