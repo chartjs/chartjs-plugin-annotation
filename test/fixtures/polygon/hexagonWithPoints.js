@@ -18,7 +18,9 @@ module.exports = {
       plugins: {
         legend: false,
         annotation: {
-          drawTime: 'afterDraw',
+          common: {
+            drawTime: 'afterDraw'
+          },
           annotations: {
             octagon: {
               type: 'polygon',
