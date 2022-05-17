@@ -144,6 +144,7 @@ interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationPoin
   backgroundColor: Scriptable<Color, PartialEventContext>,
   borderCapStyle?: Scriptable<CanvasLineCap, PartialEventContext>,
   borderJoinStyle?: Scriptable<CanvasLineJoin, PartialEventContext>,
+  point?: PointAnnotationOptions,
   radius?: Scriptable<number, PartialEventContext>,
   rotation?: Scriptable<number, PartialEventContext>,
   sides?: Scriptable<number, PartialEventContext>,
