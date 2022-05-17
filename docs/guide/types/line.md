@@ -90,7 +90,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the li
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
 | `display` | Whether or not this annotation is visible.
 | `drawTime` | See [drawTime](../options#draw-time).
-| `z` | The `z` property determines the drawing stack level of the line annotation element. All visible elements will be drawn in crescent order of `z` option, with the same `drawTime` option.
+| `z` | The `z` property determines the drawing stack level of the line annotation element. All visible elements will be drawn in ascending order of `z` option, with the same `drawTime` option.
 
 ### Positioning
 

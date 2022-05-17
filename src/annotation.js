@@ -150,7 +150,7 @@ function draw(chart, caller, clip) {
     area = chartArea;
   }
 
-  const drawableElements = drawElements(visibleElements, caller, area).sort((a, b) => a.element.options.z - b.element.options.z);
+  const drawableElements = getDrawableElements(visibleElements, caller, area).sort((a, b) => a.element.options.z - b.element.options.z);
 
   for (const item of drawableElements) {
     item.element.draw(chart.ctx, item.area);
@@ -161,7 +161,7 @@ function draw(chart, caller, clip) {
   }
 }
 
-function drawElements(elements, caller, area) {
+function getDrawableElements(elements, caller, area) {
   const drawableElements = [];
   for (const el of elements) {
     if (el.options.drawTime === caller) {

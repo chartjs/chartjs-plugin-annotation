@@ -100,7 +100,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | `yMin` | Top edge of the box in units along the y axis.
 | `yScaleID` | ID of the Y scale to bind onto. If missing, the plugin will try to use the scale of the chart, configured as `'y'` axis. If more than one scale has been defined in the chart as `'y'` axis, the option is mandatory to select the right scale.
 | `yValue` | Y coordinate of the point in units along the y axis.
-| `z` | The `z` property determines the drawing stack level of the point annotation element. All visible elements will be drawn in crescent order of `z` option, with the same `drawTime` option.
+| `z` | The `z` property determines the drawing stack level of the point annotation element. All visible elements will be drawn in ascending order of `z` option, with the same `drawTime` option.
 
 ### Styling
 
