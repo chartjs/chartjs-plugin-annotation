@@ -167,14 +167,18 @@ function getDrawableElements(elements, caller, area) {
     if (el.options.drawTime === caller) {
       drawableElements.push({element: el, area});
     }
-    if (el.elements && el.elements.length) {
-      const box = 'getBoundingBox' in el ? el.getBoundingBox() : area;
-      for (const sub of el.elements) {
-        if (sub.options.display && sub.options.drawTime === caller) {
-          drawableElements.push({element: sub, area: box});
-        }
+    loadDrawableSubElements(el, caller, area, drawableElements);
+  }
+  return drawableElements;
+}
+
+function loadDrawableSubElements(el, caller, area, drawableElements) {
+  if (el.elements && el.elements.length) {
+    const box = 'getBoundingBox' in el ? el.getBoundingBox() : area;
+    for (const sub of el.elements) {
+      if (sub.options.display && sub.options.drawTime === caller) {
+        drawableElements.push({element: sub, area: box});
       }
     }
   }
-  return drawableElements;
 }
