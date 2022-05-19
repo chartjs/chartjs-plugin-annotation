@@ -308,10 +308,8 @@ function calculateLabelPosition(properties, label, sizes, chartArea) {
   const pt = pointInLine(p1, p2, t);
   const xCoordinateSizes = {size: size.w, min: chartArea.left, max: chartArea.right, padding: padding.left};
   const yCoordinateSizes = {size: size.h, min: chartArea.top, max: chartArea.bottom, padding: padding.top};
-  const pointX = adjustLabelCoordinate(pt.x, xCoordinateSizes);
-  const pointY = adjustLabelCoordinate(pt.y, yCoordinateSizes);
-  const centerX = pointX + xAdjust;
-  const centerY = pointY + yAdjust;
+  const centerX = adjustLabelCoordinate(pt.x, xCoordinateSizes) + xAdjust;
+  const centerY = adjustLabelCoordinate(pt.y, yCoordinateSizes) + yAdjust;
   return {
     x: centerX - (width / 2),
     y: centerY - (height / 2),
@@ -319,8 +317,8 @@ function calculateLabelPosition(properties, label, sizes, chartArea) {
     y2: centerY + (height / 2),
     centerX,
     centerY,
-    pointX,
-    pointY,
+    pointX: pt.x,
+    pointY: pt.y,
     width,
     height,
     rotation: toDegrees(rotation)
