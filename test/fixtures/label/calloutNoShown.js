@@ -26,7 +26,7 @@ module.exports = {
               borderWidth: 1,
               content: ['callout is', 'not drawn'],
               xAdjust: -10,
-			  yAdjust: 26,
+              yAdjust: 26,
               callout: {
                 display: true,
                 margin: 5,
@@ -49,7 +49,7 @@ module.exports = {
               borderWidth: 1,
               content: ['callout is', 'not drawn'],
               xAdjust: -10,
-			  yAdjust: -26,
+              yAdjust: -26,
               callout: {
                 display: true,
                 margin: 5,
