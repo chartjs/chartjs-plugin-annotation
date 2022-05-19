@@ -60,6 +60,7 @@ export interface CoreLabelOptions {
    * or in percentage of current height of image by a string
    */
   height?: Scriptable<number | percentString, PartialEventContext>,
+  z?: Scriptable<number, PartialEventContext>
 }
 
 export interface ContainedLabelOptions extends CoreLabelOptions {
