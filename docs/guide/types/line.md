@@ -72,6 +72,7 @@ The following options are available for line annotations. All of these options c
 | [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yScaleID`](#positioning) | `string` | Yes | `undefined`
+| [`z`](#general) | `number` | Yes | `0`
 
 ### General
 
@@ -89,6 +90,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the li
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
 | `display` | Whether or not this annotation is visible.
 | `drawTime` | See [drawTime](../options#draw-time).
+| `z` | The `z` property determines the drawing stack level of the line annotation element. All visible elements will be drawn in ascending order of `z` option, with the same `drawTime` option.
 
 ### Positioning
 
@@ -157,6 +159,7 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `width` | `number`\|`string` | `undefined` | Overrides the width of the image or canvas element. Could be set in pixel by a number, or in percentage of current width of image or canvas element by a string. If undefined, uses the width of the image or canvas element. It is used only when the content is an image or canvas element.
 | `xAdjust` | `number` | `0` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
 | `yAdjust` | `number` | `0` | Adjustment along y-axis (top-bottom) of label relative to computed position. Negative values move the label up, positive down.
+| `z` | `number` | `0` | It determines the drawing stack level of the label element, with same `drawTime`.
 
 ### borderRadius
 

@@ -150,25 +150,31 @@ function draw(chart, caller, clip) {
     area = chartArea;
   }
 
-  drawElements(chart, visibleElements, caller, area);
+  const drawableElements = getDrawableElements(visibleElements, caller, area).sort((a, b) => a.element.options.z - b.element.options.z);
+
+  for (const item of drawableElements) {
+    item.element.draw(chart.ctx, item.area);
+  }
 
   if (clip) {
     unclipArea(ctx);
   }
 }
 
-function drawElements(chart, elements, caller, area) {
+function getDrawableElements(elements, caller, area) {
+  const drawableElements = [];
   for (const el of elements) {
     if (el.options.drawTime === caller) {
-      el.draw(chart.ctx, area);
+      drawableElements.push({element: el, area});
     }
     if (el.elements && el.elements.length) {
       const box = 'getBoundingBox' in el ? el.getBoundingBox() : area;
       for (const sub of el.elements) {
         if (sub.options.display && sub.options.drawTime === caller) {
-          sub.draw(chart.ctx, box);
+          drawableElements.push({element: sub, area: box});
         }
       }
     }
   }
+  return drawableElements;
 }

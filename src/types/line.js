@@ -173,7 +173,8 @@ LineAnnotation.defaults = {
     textStrokeWidth: 0,
     width: undefined,
     xAdjust: 0,
-    yAdjust: 0
+    yAdjust: 0,
+    z: undefined
   },
   scaleID: undefined,
   shadowBlur: 0,
@@ -185,7 +186,8 @@ LineAnnotation.defaults = {
   xScaleID: undefined,
   yMax: undefined,
   yMin: undefined,
-  yScaleID: undefined
+  yScaleID: undefined,
+  z: 0
 };
 
 LineAnnotation.descriptors = {

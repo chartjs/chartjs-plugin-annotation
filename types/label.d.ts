@@ -46,6 +46,7 @@ export interface CoreLabelOptions {
    * or in percentage of current height of image by a string
    */
   height?: Scriptable<number | percentString, PartialEventContext>,
+  z?: Scriptable<number, PartialEventContext>
 }
 
 export interface ContainedLabelOptions extends CoreLabelOptions {
@@ -76,7 +77,7 @@ export interface ContainedLabelOptions extends CoreLabelOptions {
    * Border radius of the label rectangle
    * @default 6
    */
-  borderRadius?: Scriptable<number | BorderRadius, PartialEventContext>,
+  borderRadius?: Scriptable<number | BorderRadius, PartialEventContext>
 }
 
 export interface LabelOptions extends ContainedLabelOptions, ShadowOptions {
