@@ -144,7 +144,7 @@ function drawCallout(ctx, element) {
   const {pointX, pointY, options} = element;
   const callout = options.callout;
   const calloutPosition = callout && callout.display && resolveCalloutPosition(element, callout, options.rotation);
-  if (!calloutPosition || element.inRange(pointX, pointY)) {
+  if (!calloutPosition || isPointInRange(element, callout, calloutPosition)) {
     return;
   }
 
@@ -254,4 +254,21 @@ function getLabelSize({x, y, width, height, options}) {
     width: width - padding.left - padding.right - options.borderWidth,
     height: height - padding.top - padding.bottom - options.borderWidth
   };
+}
+
+function isPointInRange(element, callout, position) {
+  const {pointX, pointY} = element;
+  const margin = callout.margin;
+  let x = pointX;
+  let y = pointY;
+  if (position === 'left') {
+    x += margin;
+  } else if (position === 'right') {
+    x -= margin;
+  } else if (position === 'top') {
+    y += margin;
+  } else if (position === 'bottom') {
+    y -= margin;
+  }
+  return element.inRange(x, y);
 }
