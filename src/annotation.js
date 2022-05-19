@@ -108,13 +108,13 @@ export default {
       },
     },
     clip: true,
+    interaction: {
+      mode: undefined,
+      axis: undefined,
+      intersect: undefined
+    },
     common: {
       drawTime: 'afterDatasetsDraw',
-      interaction: {
-        mode: undefined,
-        axis: undefined,
-        intersect: undefined
-      },
       label: {
       }
     }
@@ -127,10 +127,10 @@ export default {
       _allKeys: false,
       _fallback: (prop, opts) => `elements.${annotationTypes[resolveType(opts.type)].id}`
     },
+    interaction: {
+      _fallback: true
+    },
     common: {
-      interaction: {
-        _fallback: true
-      },
       label: {
         _fallback: true
       }

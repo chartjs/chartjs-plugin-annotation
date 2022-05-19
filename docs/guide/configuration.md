@@ -11,6 +11,7 @@ The following options are available at the top level. They apply to all annotati
 | [`animations`](#animations) | `object` | No | [see here](#default-animations) | To configure which element properties are animated and how.
 | `clip` | `boolean` | No | `true` | Are the annotations clipped to the chartArea.
 | [`common`](#common) | `Object` | No | | To configure common options apply to all annotations
+| [`interaction`](options#interaction) | `Object` | No | `options.interaction` | To configure which events trigger plugin interactions
 
 :::warning
 
@@ -63,7 +64,6 @@ The following options apply to all annotations unless they are overwritten on a 
 | Name | Type | [Scriptable](options#scriptable-options) | Default | Notes
 | ---- | ---- | :----: | ---- | ----
 | `drawTime` | `string` | Yes | `'afterDatasetsDraw'` | See [drawTime](options#draw-time).
-| [`interaction`](options#interaction) | `Object` | No | `options.interaction` | To configure which events trigger plugin interactions
 
 ## Events
 
