@@ -148,7 +148,17 @@ LineAnnotation.defaults = {
     borderShadowColor: 'transparent',
     borderWidth: 0,
     callout: {
-      display: false
+      borderCapStyle: 'butt',
+      borderColor: undefined,
+      borderDash: [],
+      borderDashOffset: 0,
+      borderJoinStyle: 'miter',
+      borderWidth: 1,
+      display: false,
+      margin: 5,
+      position: 'auto',
+      side: 5,
+      start: '50%',
     },
     color: '#fff',
     content: null,
@@ -272,8 +282,6 @@ function applyScaleValueToDimension(area, scale, options) {
 }
 
 function resolveLabelElementProperties(chart, properties, options) {
-  // TODO to remove by another PR to enable callout for line label
-  options.callout.display = false;
   const borderWidth = options.borderWidth;
   const padding = toPadding(options.padding);
   const textSize = measureLabelSize(chart.ctx, options);
@@ -300,8 +308,10 @@ function calculateLabelPosition(properties, label, sizes, chartArea) {
   const pt = pointInLine(p1, p2, t);
   const xCoordinateSizes = {size: size.w, min: chartArea.left, max: chartArea.right, padding: padding.left};
   const yCoordinateSizes = {size: size.h, min: chartArea.top, max: chartArea.bottom, padding: padding.top};
-  const centerX = adjustLabelCoordinate(pt.x, xCoordinateSizes) + xAdjust;
-  const centerY = adjustLabelCoordinate(pt.y, yCoordinateSizes) + yAdjust;
+  const pointX = adjustLabelCoordinate(pt.x, xCoordinateSizes);
+  const pointY = adjustLabelCoordinate(pt.y, yCoordinateSizes);
+  const centerX = pointX + xAdjust;
+  const centerY = pointY + yAdjust;
   return {
     x: centerX - (width / 2),
     y: centerY - (height / 2),
@@ -309,6 +319,8 @@ function calculateLabelPosition(properties, label, sizes, chartArea) {
     y2: centerY + (height / 2),
     centerX,
     centerY,
+    pointX,
+    pointY,
     width,
     height,
     rotation: toDegrees(rotation)

@@ -2,6 +2,20 @@ import { Color, FontSpec, BorderRadius } from 'chart.js';
 import { PartialEventContext } from './events';
 import { DrawTime, Scriptable, ShadowOptions } from './options';
 
+export interface CalloutOptions {
+  borderCapStyle?: Scriptable<CanvasLineCap, PartialEventContext>,
+  borderColor?: Scriptable<Color, PartialEventContext>,
+  borderDash?: Scriptable<number[], PartialEventContext>,
+  borderDashOffset?: Scriptable<number, PartialEventContext>,
+  borderJoinStyle?: Scriptable<CanvasLineJoin, PartialEventContext>,
+  borderWidth?: Scriptable<number, PartialEventContext>,
+  display?: Scriptable<boolean, PartialEventContext>,
+  margin?: Scriptable<number, PartialEventContext>,
+  position?: Scriptable<CalloutPosition, PartialEventContext>,
+  side?: Scriptable<number, PartialEventContext>,
+  start?: Scriptable<number | string, PartialEventContext>,
+}
+
 export interface CoreLabelOptions {
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
   font?: FontSpec
@@ -77,6 +91,7 @@ export interface ContainedLabelOptions extends CoreLabelOptions {
    * @default 6
    */
   borderRadius?: Scriptable<number | BorderRadius, PartialEventContext>,
+  callout?: CalloutOptions,
 }
 
 export interface LabelOptions extends ContainedLabelOptions, ShadowOptions {
@@ -106,6 +121,8 @@ export interface BoxLabelOptions extends CoreLabelOptions {
 export interface LabelTypeOptions extends ContainedLabelOptions {
   position?: Scriptable<LabelPosition | LabelPositionObject, PartialEventContext>,
 }
+
+export type CalloutPosition = 'left' | 'top' | 'bottom' | 'right' | 'auto';
 
 type percentString = string;
 export type LabelPosition = 'start' | 'center' | 'end' | percentString;

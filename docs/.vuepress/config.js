@@ -140,6 +140,7 @@ module.exports = {
             'line/limited',
             'line/average',
             'line/standardDeviation',
+            'line/callout',
             'line/visibility',
             'line/labelVisibility',
             'line/canvas',
