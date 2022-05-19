@@ -71,6 +71,7 @@ The following options are available for ellipse annotations.
 | [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yScaleID`](#general) | `string` | Yes | `undefined`
+| [`z`](#general) | `number` | Yes | `0`
 
 ### General
 
@@ -88,6 +89,7 @@ If one of the axes does not match an axis in the chart, the ellipse will take th
 | `yMax` | Bottom edge of the ellipse in units along the y axis.
 | `yMin` | Top edge of the ellipse in units along the y axis.
 | `yScaleID` | ID of the Y scale to bind onto. If missing, the plugin will try to use the scale of the chart, configured as `'y'` axis. If more than one scale has been defined in the chart as `'y'` axis, the option is mandatory to select the right scale.
+| `z` | The `z` property determines the drawing stack level of the ellipse annotation element. All visible elements will be drawn in ascending order of `z` option, with the same `drawTime` option.
 
 ### Styling
 

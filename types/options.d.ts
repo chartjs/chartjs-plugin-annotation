@@ -39,7 +39,8 @@ export interface CoreAnnotationOptions extends AnnotationEvents, ShadowOptions {
   scaleID?: Scriptable<string, PartialEventContext>,
   value?: Scriptable<number|string, PartialEventContext>,
   xScaleID?: Scriptable<string, PartialEventContext>,
-  yScaleID?: Scriptable<string, PartialEventContext>
+  yScaleID?: Scriptable<string, PartialEventContext>,
+  z?: Scriptable<number, PartialEventContext>
 }
 
 export type Scriptable<T, TContext> = T | ((ctx: TContext, options: AnnotationOptions) => T);
@@ -153,13 +154,13 @@ interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationPoin
 }
 
 export interface AnnotationPluginCommonOptions {
-  drawTime?: Scriptable<DrawTime, PartialEventContext>,
-  interaction?: CoreInteractionOptions
+  drawTime?: Scriptable<DrawTime, PartialEventContext>
 }
 
 export interface AnnotationPluginOptions extends AnnotationEvents {
   animations?: Record<string, unknown>,
   annotations: AnnotationOptions[] | Record<string, AnnotationOptions>,
   clip?: boolean,
-  common?: AnnotationPluginCommonOptions
+  common?: AnnotationPluginCommonOptions,
+  interaction?: CoreInteractionOptions
 }

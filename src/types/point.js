@@ -69,7 +69,8 @@ PointAnnotation.defaults = {
   yMax: undefined,
   yMin: undefined,
   yScaleID: undefined,
-  yValue: undefined
+  yValue: undefined,
+  z: 0
 };
 
 PointAnnotation.defaultRoutes = {
