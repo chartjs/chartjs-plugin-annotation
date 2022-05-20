@@ -221,7 +221,7 @@ function getCalloutSideAdjust(position, options) {
 
 function resolveCalloutPosition(element, options) {
   const position = options.position;
-  if (position === 'left' || position === 'right' || position === 'top' || position === 'bottom') {
+  if (positions.indexOf(position) >=0) {
     return position;
   }
   return resolveCalloutAutoPosition(element, options);
