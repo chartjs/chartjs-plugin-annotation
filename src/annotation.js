@@ -1,6 +1,7 @@
 import {Chart} from 'chart.js';
 import {clipArea, unclipArea, isObject, isArray} from 'chart.js/helpers';
-import {handleEvent, hooks, updateListeners} from './events';
+import {handleEvent, eventHooks, updateListeners} from './events';
+import {drawElement, elementHooks, updateHooks, resetCounters} from './hooks';
 import {adjustScaleRange, verifyScaleOptions} from './scale';
 import {updateElements, resolveType} from './elements';
 import {annotationTypes} from './types';
@@ -8,6 +9,7 @@ import {requireVersion} from './helpers';
 import {version} from '../package.json';
 
 const chartStates = new Map();
+const hooks = eventHooks.concat(elementHooks);
 
 export default {
   id: 'annotation',
@@ -34,6 +36,8 @@ export default {
       listeners: {},
       listened: false,
       moveListened: false,
+      hooks: {},
+      hooked: false,
       hovered: []
     });
   },
@@ -67,6 +71,7 @@ export default {
     updateListeners(chart, state, options);
     updateElements(chart, state, options, args.mode);
     state.visibleElements = state.elements.filter(el => !el.skip && el.options.display);
+    updateHooks(chart, state, options);
   },
 
   beforeDatasetsDraw(chart, _args, options) {
@@ -78,6 +83,7 @@ export default {
   },
 
   beforeDraw(chart, _args, options) {
+    resetCounters(chartStates.get(chart));
     draw(chart, 'beforeDraw', options.clip);
   },
 
@@ -142,18 +148,18 @@ export default {
 
 function draw(chart, caller, clip) {
   const {ctx, canvas, chartArea} = chart;
-  const {visibleElements} = chartStates.get(chart);
   let area = {left: 0, top: 0, width: canvas.width, height: canvas.height};
+  const state = chartStates.get(chart);
 
   if (clip) {
     clipArea(ctx, chartArea);
     area = chartArea;
   }
 
-  const drawableElements = getDrawableElements(visibleElements, caller, area).sort((a, b) => a.element.options.z - b.element.options.z);
+  const drawableElements = getDrawableElements(state.visibleElements, caller, area).sort((a, b) => a.element.options.z - b.element.options.z);
 
   for (const item of drawableElements) {
-    item.element.draw(chart.ctx, item.area);
+    drawElement(chart, state, item);
   }
 
   if (clip) {
@@ -171,7 +177,7 @@ function getDrawableElements(elements, caller, area) {
       const box = 'getBoundingBox' in el ? el.getBoundingBox() : area;
       for (const sub of el.elements) {
         if (sub.options.display && sub.options.drawTime === caller) {
-          drawableElements.push({element: sub, area: box});
+          drawableElements.push({element: sub, area: box, main: el});
         }
       }
     }
