@@ -1,6 +1,7 @@
 import {Element} from 'chart.js';
 import {PI, toRadians, toDegrees, toPadding} from 'chart.js/helpers';
 import {EPSILON, clamp, scaleValue, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, getElementCenterPoint, retrieveScaleID, getDimensionByScale} from '../helpers';
+import LabelAnnotation from './label';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
@@ -147,19 +148,7 @@ LineAnnotation.defaults = {
     borderRadius: 6,
     borderShadowColor: 'transparent',
     borderWidth: 0,
-    callout: {
-      borderCapStyle: 'butt',
-      borderColor: undefined,
-      borderDash: [],
-      borderDashOffset: 0,
-      borderJoinStyle: 'miter',
-      borderWidth: 1,
-      display: false,
-      margin: 5,
-      position: 'auto',
-      side: 5,
-      start: '50%',
-    },
+    callout: Object.assign({}, LabelAnnotation.defaults.callout),
     color: '#fff',
     content: null,
     display: false,
