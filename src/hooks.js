@@ -51,7 +51,8 @@ export function drawElement(chart, state, item) {
 export function resetCounters(state) {
   state.visibleElements.forEach(function(el) {
     el._drawnElements = 0;
-    el._drawCount = (el.elements || []).length + 1;
+    const subElements = (el.elements || []).filter(item => item.options.display);
+    el._drawCount = subElements.length + 1;
   });
 }
 
