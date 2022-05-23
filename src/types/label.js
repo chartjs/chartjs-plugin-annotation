@@ -102,16 +102,7 @@ LabelAnnotation.defaults = {
   textStrokeWidth: 0,
   width: undefined,
   xAdjust: 0,
-  xMax: undefined,
-  xMin: undefined,
-  xScaleID: undefined,
-  xValue: undefined,
   yAdjust: 0,
-  yMax: undefined,
-  yMin: undefined,
-  yScaleID: undefined,
-  yValue: undefined,
-  z: 0
 };
 
 LabelAnnotation.defaultRoutes = {

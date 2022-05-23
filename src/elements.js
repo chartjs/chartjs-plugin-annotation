@@ -1,5 +1,6 @@
 import {Animations} from 'chart.js';
-import {isObject, defined} from 'chart.js/helpers';
+import {defined, isObject} from 'chart.js/helpers';
+import {commonDefaults} from './commonDefaults';
 import {hooks} from './events';
 import {annotationTypes} from './types';
 
@@ -105,25 +106,52 @@ function getOrCreateElement(elements, index, type, initProperties) {
 
 function resolveAnnotationOptions(resolver) {
   const elementClass = annotationTypes[resolveType(resolver.type)];
-  const result = {};
-  result.id = resolver.id;
-  result.type = resolver.type;
-  result.drawTime = resolver.drawTime;
-  Object.assign(result,
-    resolveObj(resolver, elementClass.defaults),
-    resolveObj(resolver, elementClass.defaultRoutes));
+  const result = mergeDeep(
+    {
+      id: resolver.id,
+      type: resolver.type,
+      drawTime: resolver.drawTime,
+    },
+    resolveObj(resolver,
+      mergeDeep(
+        elementClass.defaults,
+        elementClass.defaultRoutes,
+        commonDefaults
+      )
+    ),
+  );
   for (const hook of hooks) {
     result[hook] = resolver[hook];
   }
   return result;
 }
 
-function resolveObj(resolver, defs) {
+function mergeDeep(...objects) {
+  return objects.reduce((prev, obj) => {
+    for (const prop of Object.keys(obj)) {
+      const pVal = prev[prop];
+      const oVal = obj[prop];
+
+      if (Array.isArray(pVal) && Array.isArray(oVal)) {
+        prev[prop] = pVal.concat(...oVal);
+      } else if (isObject(pVal) && isObject(oVal)) {
+        prev[prop] = mergeDeep(pVal, oVal);
+      } else if (defined(oVal)) {
+        prev[prop] = oVal;
+      }
+    }
+
+    return prev;
+  }, {});
+}
+
+function resolveObj(resolver, defs, common = {}) {
   const result = {};
   for (const prop of Object.keys(defs)) {
+    const commonDefs = common[prop];
     const optDefs = defs[prop];
     const value = resolver[prop];
-    result[prop] = isObject(optDefs) ? resolveObj(value, optDefs) : value;
+    result[prop] = isObject(optDefs) || isObject(commonDefs) ? resolveObj(value, optDefs, commonDefs) : value;
   }
   return result;
 }

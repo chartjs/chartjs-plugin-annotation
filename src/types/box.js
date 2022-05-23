@@ -97,13 +97,6 @@ BoxAnnotation.defaults = {
   shadowBlur: 0,
   shadowOffsetX: 0,
   shadowOffsetY: 0,
-  xMax: undefined,
-  xMin: undefined,
-  xScaleID: undefined,
-  yMax: undefined,
-  yMin: undefined,
-  yScaleID: undefined,
-  z: 0
 };
 
 BoxAnnotation.defaultRoutes = {
