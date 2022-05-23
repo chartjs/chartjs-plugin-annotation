@@ -136,7 +136,7 @@ function mergeDeep(...objects) {
         prev[prop] = pVal.concat(...oVal);
       } else if (isObject(pVal) && isObject(oVal)) {
         prev[prop] = mergeDeep(pVal, oVal);
-      } else if (defined(oVal)) {
+      } else if (defined(oVal) || !defined(pVal)) {
         prev[prop] = oVal;
       }
     }
