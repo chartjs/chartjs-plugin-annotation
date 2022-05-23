@@ -1,5 +1,5 @@
 import { Color, PointStyle, BorderRadius, CoreInteractionOptions } from 'chart.js';
-import { AnnotationEvents, PartialEventContext } from './events';
+import { AnnotationEvents, PartialEventContext, EventContext } from './events';
 import { LabelOptions, BoxLabelOptions, LabelTypeOptions } from './label';
 
 export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw';
@@ -18,6 +18,11 @@ export type AnnotationType = keyof AnnotationTypeRegistry;
 export type AnnotationOptions<TYPE extends AnnotationType = AnnotationType> =
 	{ [key in TYPE]: { type: key } & AnnotationTypeRegistry[key] }[TYPE]
 
+interface AnnotationHooks {
+  beforeDraw?(context: EventContext): void,
+  afterDraw?(context: EventContext): void
+}
+
 interface ShadowOptions {
   backgroundShadowColor?: Scriptable<Color, PartialEventContext>,
   borderShadowColor?: Scriptable<Color, PartialEventContext>,
@@ -26,7 +31,7 @@ interface ShadowOptions {
   shadowOffsetY?: Scriptable<number, PartialEventContext>
 }
 
-export interface CoreAnnotationOptions extends AnnotationEvents, ShadowOptions {
+export interface CoreAnnotationOptions extends AnnotationEvents, ShadowOptions, AnnotationHooks {
   id?: string,
   display?: Scriptable<boolean, PartialEventContext>,
   adjustScaleRange?: Scriptable<boolean, PartialEventContext>,
@@ -157,7 +162,7 @@ export interface AnnotationPluginCommonOptions {
   drawTime?: Scriptable<DrawTime, PartialEventContext>
 }
 
-export interface AnnotationPluginOptions extends AnnotationEvents {
+export interface AnnotationPluginOptions extends AnnotationEvents, AnnotationHooks {
   animations?: Record<string, unknown>,
   annotations: AnnotationOptions[] | Record<string, AnnotationOptions>,
   clip?: boolean,
