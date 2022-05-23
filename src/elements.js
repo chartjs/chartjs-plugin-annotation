@@ -145,13 +145,12 @@ function mergeDeep(...objects) {
   }, {});
 }
 
-function resolveObj(resolver, defs, common = {}) {
+function resolveObj(resolver, defs) {
   const result = {};
   for (const prop of Object.keys(defs)) {
-    const commonDefs = common[prop];
     const optDefs = defs[prop];
     const value = resolver[prop];
-    result[prop] = isObject(optDefs) || isObject(commonDefs) ? resolveObj(value, optDefs, commonDefs) : value;
+    result[prop] = isObject(optDefs) ? resolveObj(value, optDefs) : value;
   }
   return result;
 }
