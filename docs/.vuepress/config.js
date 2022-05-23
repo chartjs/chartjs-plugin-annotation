@@ -146,6 +146,7 @@ module.exports = {
             'line/image',
             'line/datasetBars',
             'line/animation',
+            'line/hook',
           ]
         },
         {
