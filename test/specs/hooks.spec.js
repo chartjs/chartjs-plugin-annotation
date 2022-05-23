@@ -44,14 +44,19 @@ describe('Hooks', function() {
       it(`should detect hooks invocations on ${type}`, function() {
         targetOptions.beforeDraw = function({element}) {
           element.invocations = (element.invocations || 0) + 1;
+          element.count = (element.count || 0) + 1;
         };
         targetOptions.afterDraw = function({element}) {
-          element.invocations = (element.invocations || 0) - 1;
+          expect(element.invocations).toBe(1);
+          element.invocations--;
+          expect(element.count).toBe(1);
+          element.count++;
         };
         pluginOpts.annotations = [options];
         const chart = window.acquireChart(chartConfig);
         const element = window.getAnnotationElements(chart)[0];
         expect(element.invocations).toBe(0);
+        expect(element.count).toBe(2);
       });
     });
   });
