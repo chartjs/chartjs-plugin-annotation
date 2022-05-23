@@ -45,37 +45,23 @@ module.exports = {
 
 ## Configuration
 
+### Point annotation specific options
+
 The following options are available for point annotations.
 
 | Name | Type | [Scriptable](../options#scriptable-options) | Default
 | ---- | ---- | :----: | ----
-| [`adjustScaleRange`](#general) | `boolean` | Yes | `true`
-| [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
 | [`backgroundShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
-| [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
-| [`borderDash`](#styling) | `number[]`| Yes | `[]`
-| [`borderDashOffset`](#styling) | `number`| Yes | `0`
-| [`borderShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
 | [`borderWidth`](#styling) | `number`| Yes | `1`
-| [`display`](#general) | `boolean` | Yes | `true`
-| [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
 | [`pointStyle`](#styling) | [`PointStyle`](../options#point-style) | Yes | `'circle'`
 | [`radius`](#general) | `number` | Yes | `10`
 | [`rotation`](#general) | `number` | Yes | `0`
-| [`shadowBlur`](#styling) | `number` | Yes | `0`
-| [`shadowOffsetX`](#styling) | `number` | Yes | `0`
-| [`shadowOffsetY`](#styling) | `number` | Yes | `0`
 | [`xAdjust`](#general) | `number` | Yes | `0`
-| [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
-| [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`xScaleID`](#general) | `string` | Yes | `undefined`
 | [`xValue`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yAdjust`](#general) | `number` | Yes | `0`
-| [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yScaleID`](#general) | `string` | Yes | `undefined`
 | [`yValue`](#general) | `number` \| `string` | Yes | `undefined`
-| [`z`](#general) | `number` | Yes | `0`
+
+!!!include(./guide/types/_commonOptions.md)!!!
 
 ### General
 
