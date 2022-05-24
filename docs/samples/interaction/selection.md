@@ -2,13 +2,8 @@
 
 ```js chart-editor
 // <block:setup:3>
-const AXIS = ['xy', 'x', 'y'];
-const MODE = ['nearest', 'point', 'x', 'y'];
 let count = 0;
 const selected = [];
-
-let axisIndex = 0;
-let modeIndex = 0;
 
 Utils.srand(8);
 
