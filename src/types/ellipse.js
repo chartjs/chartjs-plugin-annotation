@@ -1,6 +1,7 @@
 import {Element} from 'chart.js';
 import {PI, toRadians} from 'chart.js/helpers';
-import {EPSILON, resolveBoxProperties, setBorderStyle, setShadowStyle, rotated, translate, getElementCenterPoint} from '../helpers';
+import {EPSILON, resolveBoxAndLabelProperties, setBorderStyle, setShadowStyle, rotated, translate, getElementCenterPoint} from '../helpers';
+import BoxAnnotation from './box';
 
 export default class EllipseAnnotation extends Element {
 
@@ -40,7 +41,7 @@ export default class EllipseAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    return resolveBoxProperties(chart, options);
+    return resolveBoxAndLabelProperties(chart, options);
   }
 
 }
@@ -55,6 +56,7 @@ EllipseAnnotation.defaults = {
   borderShadowColor: 'transparent',
   borderWidth: 1,
   display: true,
+  label: Object.assign({}, BoxAnnotation.defaults.label),
   rotation: 0,
   shadowBlur: 0,
   shadowOffsetX: 0,
@@ -71,6 +73,12 @@ EllipseAnnotation.defaults = {
 EllipseAnnotation.defaultRoutes = {
   borderColor: 'color',
   backgroundColor: 'color'
+};
+
+EllipseAnnotation.descriptors = {
+  label: {
+    _fallback: true
+  }
 };
 
 function pointInEllipse(p, ellipse, rotation, borderWidth) {
