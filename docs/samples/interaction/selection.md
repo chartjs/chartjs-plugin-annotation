@@ -26,35 +26,7 @@ const annotation1 = {
   backgroundColor: 'rgba(255, 245, 157, 0.2)',
   borderColor: 'rgb(255, 245, 157)',
   borderWidth: 2,
-  enter: function({chart, element}) {
-    console.log(element.label.options.content + ' entered');
-    if (!count) {
-      chart.canvas.style.cursor = 'pointer';
-    }
-    count++;
-    element.label.options.font.size = 14;
-    return true;
-  },
-  click: function({element}) {
-    console.log(element.label.options.content + ' selected');
-    if (selected.includes(element)) {
-      selected.splice(selected.indexOf(element), 1);
-      element.options.backgroundColor = 'rgba(255, 245, 157, 0.2)';
-    } else {
-      selected.push(element);
-      element.options.backgroundColor = 'rgba(255, 245, 157, 0.8)';
-    }
-    return true;
-  },
-  leave: function({chart, element}) {
-    console.log(element.label.options.content + ' left');
-    count--;
-    if (!count) {
-      chart.canvas.style.cursor = 'default';
-    }
-    element.label.options.font.size = 12;
-    return true;
-  },
+  click: ({element}) => select(element, 'rgba(255, 245, 157, 0.8)', 'rgba(255, 245, 157, 0.2)'),
   label: {
     display: true,
     content: 'Yellow box annotation',
@@ -80,35 +52,7 @@ const annotation2 = {
   backgroundColor: 'rgba(165, 214, 167, 0.2)',
   borderColor: 'rgb(165, 214, 167)',
   borderWidth: 2,
-  enter: function({chart, element}) {
-    console.log(element.label.options.content + ' entered');
-    if (!count) {
-      chart.canvas.style.cursor = 'pointer';
-    }
-    count++;
-    element.label.options.font.size = 14;
-    return true;
-  },
-  click: function({element}) {
-    console.log(element.label.options.content + ' selected');
-    if (selected.includes(element)) {
-      selected.splice(selected.indexOf(element), 1);
-      element.options.backgroundColor = 'rgba(165, 214, 167, 0.2)';
-    } else {
-      selected.push(element);
-      element.options.backgroundColor = 'rgba(165, 214, 167, 0.8)';
-    }
-    return true;
-  },
-  leave: function({chart, element}) {
-    console.log(element.label.options.content + ' left');
-    count--;
-    if (!count) {
-      chart.canvas.style.cursor = 'default';
-    }
-    element.label.options.font.size = 12;
-    return true;
-  },
+  click: ({element}) => select(element, 'rgba(165, 214, 167, 0.8)', 'rgba(165, 214, 167, 0.2)'),
   label: {
     display: true,
     content: 'Green box annotation',
@@ -128,6 +72,38 @@ const annotation2 = {
 };
 // </block:annotation2>
 
+// <block:utils:4>
+function enter({chart, element}) {
+  console.log(element.label.options.content + ' entered');
+  if (!count) {
+    chart.canvas.style.cursor = 'pointer';
+  }
+  count++;
+}
+
+function leave({chart, element}) {
+  console.log(element.label.options.content + ' left');
+  count--;
+  if (!count) {
+    chart.canvas.style.cursor = 'default';
+  }
+}
+
+function select(element, selectedColor, unselectedColor) {
+  console.log(element.label.options.content + ' selected');
+  if (selected.includes(element)) {
+    selected.splice(selected.indexOf(element), 1);
+    element.options.backgroundColor = unselectedColor;
+    element.label.options.font.size = 12;
+  } else {
+    selected.push(element);
+    element.options.backgroundColor = selectedColor;
+    element.label.options.font.size = 14;
+  }
+  return true;
+}
+// </block:utils>
+
 /* <block:config:0> */
 const config = {
   type: 'line',
@@ -142,6 +118,8 @@ const config = {
     },
     plugins: {
       annotation: {
+        enter: enter,
+        leave: leave,
         common: {
           drawTime: 'beforeDraw'
         },
