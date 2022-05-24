@@ -46,33 +46,20 @@ module.exports = {
 
 ## Configuration
 
-The following options are available for line annotations. All of these options can be .
+### Line annotation specific options
+
+The following options are available for line annotations.
 
 | Name | Type | [Scriptable](../options#scriptable-options) | Default
 | ---- | ---- | :----: | ----
-| [`adjustScaleRange`](#general) | `boolean` | Yes | `true`
 | [`arrowHeads`](#arrow-heads) | `{start: object, end:object}` | Yes |
-| [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
-| [`borderDash`](#styling) | `number[]` | Yes | `[]`
-| [`borderDashOffset`](#styling) | `number` | Yes | `0`
-| [`borderShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
 | [`borderWidth`](#styling) | `number` | Yes | `2`
-| [`display`](#general) | `boolean` | Yes | `true`
-| [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
 | [`endValue`](#positioning) | `number` | Yes | `undefined`
 | [`label`](#label) | `object` | Yes |
 | [`scaleID`](#positioning) | `string` | Yes | `undefined`
-| [`shadowBlur`](#styling) | `number` | Yes | `0`
-| [`shadowOffsetX`](#styling) | `number` | Yes | `0`
-| [`shadowOffsetY`](#styling) | `number` | Yes | `0`
 | [`value`](#positioning) | `number` | Yes | `undefined`
-| [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
-| [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`xScaleID`](#positioning) | `string` | Yes | `undefined`
-| [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yScaleID`](#positioning) | `string` | Yes | `undefined`
-| [`z`](#general) | `number` | Yes | `0`
+
+!!!include(./guide/types/_commonOptions.md)!!!
 
 ### General
 
@@ -85,14 +72,7 @@ If one of the axes does not match an axis in the chart then the line behaviors a
 The 2 coordinates, start, end, are optional. If not specified, the line is expanded out to the edges in the respective direction.
 The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the line is expanded out to the edges in the respective direction.
 
-| Name | Description
-| ---- | ----
-| `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
-| `display` | Whether or not this annotation is visible.
-| `drawTime` | See [drawTime](../options#draw-time).
-| `z` | The `z` property determines the drawing stack level of the line annotation element. All visible elements will be drawn in ascending order of `z` option, with the same `drawTime` option.
-
-### Positioning
+#### Positioning
 
 The line can be positioned in two different ways. If `scaleID` is set, then `value` and `endValue` must also be set to indicate the endpoints of the line. The line will be perpendicular to the axis identified by `scaleID`.
 
@@ -100,6 +80,9 @@ If `scaleID` is unset, then `xScaleID` and `yScaleID` are used to draw a line fr
 
 | Name | Description
 | ---- | ----
+| `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
+| `display` | Whether or not this annotation is visible.
+| `drawTime` | See [drawTime](../options#draw-time).
 | `endValue` | End two of the line when a single scale is specified.
 | `scaleID` | ID of the scale in single scale mode. If unset, `xScaleID` and `yScaleID` are used.
 | `value` | End one of the line when a single scale is specified.
@@ -109,6 +92,7 @@ If `scaleID` is unset, then `xScaleID` and `yScaleID` are used to draw a line fr
 | `yMax` | Y coordinate of end two of the line in units along the y axis.
 | `yMin` | Y coordinate of end one of the line in units along the y axis.
 | `yScaleID` | ID of the Y scale to bind onto. If missing, the plugin will try to use the scale of the chart, configured as `'y'` axis. If more than one scale has been defined in the chart as `'y'` axis, the option is mandatory to select the right scale.
+| `z` | The `z` property determines the drawing stack level of the line annotation element. All visible elements will be drawn in ascending order of `z` option, with the same `drawTime` option.
 
 ### Styling
 
