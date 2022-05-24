@@ -184,6 +184,7 @@ module.exports = {
           children: [
             'interaction/interaction',
             'interaction/dragging',
+            'interaction/selection',
           ],
         },
         'utils',
