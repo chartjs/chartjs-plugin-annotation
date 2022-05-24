@@ -40,6 +40,10 @@ export default class EllipseAnnotation extends Element {
     ctx.restore();
   }
 
+  get label() {
+    return this.elements && this.elements[0];
+  }
+
   resolveElementProperties(chart, options) {
     return resolveBoxAndLabelProperties(chart, options);
   }
