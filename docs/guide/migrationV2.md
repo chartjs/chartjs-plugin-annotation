@@ -61,6 +61,8 @@ The following diagram is showing the element properties about a `'box'` annotati
 
 ![box](../img/elementBoxProps.png)
 
+The label of a box annotation is described as a [label annotation](#label-annotation) and accessible by `element.label`.
+
 #### Ellipse annotation
 
 The following diagram is showing the element properties about a `'ellipse'` annotation:
@@ -78,6 +80,8 @@ The following diagram is showing the element properties about a `'label'` annota
 The following diagram is showing the element properties about a `'line'` annotation and the inner label:
 
 ![line](../img/elementLineProps.png)
+
+The label of a line annotation is described as a [label annotation](#label-annotation) and accessible by `element.label`.
 
 #### Point annotation
 
