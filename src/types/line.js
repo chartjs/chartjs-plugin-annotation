@@ -7,6 +7,11 @@ const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
 const sqr = v => v * v;
 const rangeLimit = (mouseX, mouseY, {x, y, x2, y2}, axis) => axis === 'y' ? {start: Math.min(y, y2), end: Math.max(y, y2), value: mouseY} : {start: Math.min(x, x2), end: Math.max(x, x2), value: mouseX};
+// http://www.independent-software.com/determining-coordinates-on-a-html-canvas-bezier-curve.html
+const coordInCurve = (start, cp, end, t) => (1 - t) * (1 - t) * start + 2 * (1 - t) * t * cp + t * t * end;
+const pointInCurve = (start, cp, end, t) => ({x: coordInCurve(start.x, cp.x, end.x, t), y: coordInCurve(start.y, cp.y, end.y, t)});
+const coordAngleInCurve = (start, cp, end, t) => 2 * (1 - t) * (cp - start) + 2 * t * (end - cp);
+const angleInCurve = (start, cp, end, t) => -Math.atan2(coordAngleInCurve(start.x, cp.x, end.x, t), coordAngleInCurve(start.y, cp.y, end.y, t)) + 0.5 * PI;
 
 export default class LineAnnotation extends Element {
 
@@ -25,8 +30,7 @@ export default class LineAnnotation extends Element {
       const point = {mouseX, mouseY};
       return intersects(this, point, epsilon, useFinalPosition) || isOnLabel(this, point, useFinalPosition);
     }
-    const limit = rangeLimit(mouseX, mouseY, this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis);
-    return (limit.value >= limit.start - hBorderWidth && limit.value <= limit.end + hBorderWidth) || isOnLabel(this, {mouseX, mouseY}, useFinalPosition, axis);
+    return inYorXAxisRange(this, {mouseX, mouseY}, axis, {hBorderWidth, useFinalPosition});
   }
 
   getCenterPoint(useFinalPosition) {
@@ -206,6 +210,11 @@ function getControlPoint(properties, options, distance) {
     x: centerX + getSize(distance, cp.x, false),
     y: centerY + getSize(distance, cp.y, false)
   };
+}
+
+function inYorXAxisRange(element, {mouseX, mouseY}, axis, {hBorderWidth, useFinalPosition}) {
+  const limit = rangeLimit(mouseX, mouseY, element.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis);
+  return (limit.value >= limit.start - hBorderWidth && limit.value <= limit.end + hBorderWidth) || isOnLabel(element, {mouseX, mouseY}, useFinalPosition, axis);
 }
 
 function isLineInArea({x, y, x2, y2}, {top, right, bottom, left}) {
@@ -419,20 +428,6 @@ function drawArrowHead(ctx, offset, adjust, arrowOpts) {
     ctx.shadowColor = arrowOpts.borderShadowColor;
   }
   ctx.stroke();
-}
-
-// http://www.independent-software.com/determining-coordinates-on-a-html-canvas-bezier-curve.html
-function pointInCurve(start, cp, end, t) {
-  return {
-    x: (1 - t) * (1 - t) * start.x + 2 * (1 - t) * t * cp.x + t * t * end.x,
-    y: (1 - t) * (1 - t) * start.y + 2 * (1 - t) * t * cp.y + t * t * end.y
-  };
-}
-
-function angleInCurve(start, cp, end, t) {
-  const dx = 2 * (1 - t) * (cp.x - start.x) + 2 * t * (end.x - cp.x);
-  const dy = 2 * (1 - t) * (cp.y - start.y) + 2 * t * (end.y - cp.y);
-  return -Math.atan2(dx, dy) + 0.5 * PI;
 }
 
 function drawArrowHeadOnCurve(ctx, {x, y}, {angle, adjust}, arrowOpts) {
