@@ -294,11 +294,10 @@ function calculateLabelPosition(properties, label, sizes, chartArea) {
   const {xAdjust, yAdjust} = label;
   const p1 = {x: properties.x, y: properties.y};
   const p2 = {x: properties.x2, y: properties.y2};
-  const cp = properties.cp;
-  const rotation = !cp && label.rotation === 'auto' ? calculateAutoRotation(properties) : toRadians(label.rotation);
+  const rotation = label.rotation === 'auto' ? calculateAutoRotation(properties) : toRadians(label.rotation);
   const size = rotatedSize(width, height, rotation);
   const t = calculateT(properties, label, {labelSize: size, padding}, chartArea);
-  const pt = cp ? pointInCurve(p1, cp, p2, t) : pointInLine(p1, p2, t);
+  const pt = properties.cp ? pointInCurve(p1, properties.cp, p2, t) : pointInLine(p1, p2, t);
   const xCoordinateSizes = {size: size.w, min: chartArea.left, max: chartArea.right, padding: padding.left};
   const yCoordinateSizes = {size: size.h, min: chartArea.top, max: chartArea.bottom, padding: padding.top};
   const centerX = adjustLabelCoordinate(pt.x, xCoordinateSizes) + xAdjust;
