@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, toRadians, toDegrees, toPadding, distanceBetweenPoints} from 'chart.js/helpers';
-import {EPSILON, clamp, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, getElementCenterPoint, toPointOption, getSize, resolveLineProperties} from '../helpers';
+import {EPSILON, clamp, rotated, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, getElementCenterPoint, toPointOption, getSize, resolveLineProperties} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
@@ -18,16 +18,16 @@ export default class LineAnnotation extends Element {
   inRange(mouseX, mouseY, axis, useFinalPosition) {
     const hBorderWidth = this.options.borderWidth / 2;
     if (axis !== 'x' && axis !== 'y') {
+      const point = {mouseX, mouseY};
       const path = this.path;
       if (path) {
         const ctx = this.$context.chart.ctx;
         setBorderStyle(ctx, this.options);
-        const result = ctx.isPointInStroke(path, mouseX, mouseY);
+        const result = ctx.isPointInStroke(path, mouseX, mouseY) || isOnLabel(this, point, useFinalPosition);
         ctx.restore();
         return result;
       }
       const epsilon = sqr(hBorderWidth);
-      const point = {mouseX, mouseY};
       return intersects(this, point, epsilon, useFinalPosition) || isOnLabel(this, point, useFinalPosition);
     }
     return inYorXAxisRange(this, {mouseX, mouseY}, axis, {hBorderWidth, useFinalPosition});
@@ -49,7 +49,7 @@ export default class LineAnnotation extends Element {
 
     if (options.curve && cp) {
       drawCurve(ctx, this, cp);
-      return;
+      return ctx.restore();
     }
     const {startOpts, endOpts, startAdjust, endAdjust} = getArrowHeads(this);
     const angle = Math.atan2(y2 - y, x2 - x);
@@ -85,7 +85,7 @@ export default class LineAnnotation extends Element {
     if (options.curve) {
       const p1 = {x: properties.x, y: properties.y};
       const p2 = {x: properties.x2, y: properties.y2};
-      properties.cp = getControlPoint(properties, options, distanceBetweenPoints(p1, p2) / 2);
+      properties.cp = getControlPoint(properties, options, distanceBetweenPoints(p1, p2));
     }
     properties.elements = [{
       type: 'label',
@@ -130,7 +130,9 @@ LineAnnotation.defaults = {
   borderShadowColor: 'transparent',
   borderWidth: 2,
   curve: false,
-  controlPoint: '100%',
+  controlPoint: {
+    y: '-50%'
+  },
   display: true,
   endValue: undefined,
   label: {
@@ -202,15 +204,6 @@ LineAnnotation.descriptors = {
 LineAnnotation.defaultRoutes = {
   borderColor: 'color'
 };
-
-function getControlPoint(properties, options, distance) {
-  const {centerX, centerY} = properties;
-  const cp = toPointOption(options.controlPoint, '100%');
-  return {
-    x: centerX + getSize(distance, cp.x, false),
-    y: centerY + getSize(distance, cp.y, false)
-  };
-}
 
 function inYorXAxisRange(element, {mouseX, mouseY}, axis, {hBorderWidth, useFinalPosition}) {
   const limit = rangeLimit(mouseX, mouseY, element.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis);
@@ -430,6 +423,17 @@ function drawArrowHead(ctx, offset, adjust, arrowOpts) {
   ctx.stroke();
 }
 
+function getControlPoint(properties, options, distance) {
+  const {x, y, x2, y2, centerX, centerY} = properties;
+  const angle = Math.atan2(y2 - y, x2 - x);
+  const cp = toPointOption(options.controlPoint, 0);
+  const point = {
+    x: centerX + getSize(distance, cp.x, false),
+    y: centerY + getSize(distance, cp.y, false)
+  };
+  return rotated(point, {x: centerX, y: centerY}, angle);
+}
+
 function drawArrowHeadOnCurve(ctx, {x, y}, {angle, adjust}, arrowOpts) {
   if (!arrowOpts || !arrowOpts.display) {
     return;
@@ -455,7 +459,6 @@ function drawCurve(ctx, element, cp) {
   path.quadraticCurveTo(cp.x, cp.y, x2, y2);
   ctx.shadowColor = options.borderShadowColor;
   ctx.stroke(path);
-  ctx.restore();
   element.path = path;
   drawArrowHeadOnCurve(ctx, p1, {angle: startAngle, adjust: startAdjust}, startOpts);
   drawArrowHeadOnCurve(ctx, p2, {angle: endAngle, adjust: endAdjust}, endOpts);
