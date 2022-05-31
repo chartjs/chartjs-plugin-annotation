@@ -77,7 +77,7 @@ The following diagram is showing the element properties about a `'label'` annota
 
 #### Line annotation
 
-The following diagram is showing the element properties about a `'line'` annotation and the inner label:
+The following diagram is showing the element properties about a `'line'` annotation:
 
 ![line](../img/elementLineProps.png)
 
