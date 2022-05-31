@@ -142,6 +142,7 @@ module.exports = {
           title: 'Line annotations',
           children: [
             'line/basic',
+            'line/curve',
             'line/lowerUpper',
             'line/limited',
             'line/average',
