@@ -46,13 +46,13 @@ export default class LineAnnotation extends Element {
     }
     setShadowStyle(ctx, options);
 
+    const length = Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2));
     if (options.curve && cp) {
-      drawCurve(ctx, this, cp);
+      drawCurve(ctx, this, cp, length);
       return ctx.restore();
     }
     const {startOpts, endOpts, startAdjust, endAdjust} = getArrowHeads(this);
     const angle = Math.atan2(y2 - y, x2 - x);
-    const length = Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2));
     ctx.translate(x, y);
     ctx.rotate(angle);
     ctx.beginPath();
@@ -443,9 +443,8 @@ function drawArrowHeadOnCurve(ctx, {x, y}, {angle, adjust}, arrowOpts) {
   ctx.restore();
 }
 
-function drawCurve(ctx, element, cp) {
+function drawCurve(ctx, element, cp, length) {
   const {x, y, x2, y2, options} = element;
-  const length = Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2));
   const {startOpts, endOpts, startAdjust, endAdjust} = getArrowHeads(element);
   const p1 = {x, y};
   const p2 = {x: x2, y: y2};
