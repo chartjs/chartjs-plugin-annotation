@@ -1,6 +1,11 @@
 import {isFinite} from 'chart.js/helpers';
 import {isBoundToPoint} from './helpers.options';
 
+const limitedLineScale = {
+  xScaleID: {min: 'xMin', max: 'xMax', start: 'left', end: 'right', startProp: 'x', endProp: 'x2'},
+  yScaleID: {min: 'yMin', max: 'yMax', start: 'bottom', end: 'top', startProp: 'y', endProp: 'y2'}
+};
+
 /**
  * @typedef { import("chart.js").Chart } Chart
  * @typedef { import("chart.js").Scale } Scale
@@ -185,12 +190,6 @@ function getChartDimensionByScale(scale, options) {
   };
 }
 
-function applyScaleValueToDimension(area, scale, options) {
-  const dim = getDimensionByScale(scale, options);
-  area[options.startProp] = dim.start;
-  area[options.endProp] = dim.end;
-}
-
 function resolveFullLineProperties(scale, area, options) {
   const min = scaleValue(scale, options.value, NaN);
   const max = scaleValue(scale, options.endValue, min);
@@ -204,14 +203,13 @@ function resolveFullLineProperties(scale, area, options) {
 }
 
 function resolveLimitedLineProperties(scales, area, options) {
-  const xScale = scales[retrieveScaleID(scales, options, 'xScaleID')];
-  const yScale = scales[retrieveScaleID(scales, options, 'yScaleID')];
-
-  if (xScale) {
-    applyScaleValueToDimension(area, xScale, {min: options.xMin, max: options.xMax, start: xScale.left, end: xScale.right, startProp: 'x', endProp: 'x2'});
-  }
-
-  if (yScale) {
-    applyScaleValueToDimension(area, yScale, {min: options.yMin, max: options.yMax, start: yScale.bottom, end: yScale.top, startProp: 'y', endProp: 'y2'});
+  for (const scaleId of Object.keys(limitedLineScale)) {
+    const scale = scales[retrieveScaleID(scales, options, scaleId)];
+    if (scale) {
+      const {min, max, start, end, startProp, endProp} = limitedLineScale[scaleId];
+      const dim = getDimensionByScale(scale, {min: options[min], max: options[max], start: scale[start], end: scale[end]});
+      area[startProp] = dim.start;
+      area[endProp] = dim.end;
+    }
   }
 }
