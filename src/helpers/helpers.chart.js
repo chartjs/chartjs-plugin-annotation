@@ -152,29 +152,11 @@ export function resolveLineProperties(chart, options) {
   const {scales, chartArea} = chart;
   const scale = scales[options.scaleID];
   const area = {x: chartArea.left, y: chartArea.top, x2: chartArea.right, y2: chartArea.bottom};
-  let min, max;
 
   if (scale) {
-    min = scaleValue(scale, options.value, NaN);
-    max = scaleValue(scale, options.endValue, min);
-    if (scale.isHorizontal()) {
-      area.x = min;
-      area.x2 = max;
-    } else {
-      area.y = min;
-      area.y2 = max;
-    }
+    resolveFullLineProperties(scale, area, options);
   } else {
-    const xScale = scales[retrieveScaleID(scales, options, 'xScaleID')];
-    const yScale = scales[retrieveScaleID(scales, options, 'yScaleID')];
-
-    if (xScale) {
-      applyScaleValueToDimension(area, xScale, {min: options.xMin, max: options.xMax, start: xScale.left, end: xScale.right, startProp: 'x', endProp: 'x2'});
-    }
-
-    if (yScale) {
-      applyScaleValueToDimension(area, yScale, {min: options.yMin, max: options.yMax, start: yScale.bottom, end: yScale.top, startProp: 'y', endProp: 'y2'});
-    }
+    resolveLimitedLineProperties(scales, area, options);
   }
   return area;
 }
@@ -206,4 +188,29 @@ function applyScaleValueToDimension(area, scale, options) {
   const dim = getDimensionByScale(scale, options);
   area[options.startProp] = dim.start;
   area[options.endProp] = dim.end;
+}
+
+function resolveFullLineProperties(scale, area, options) {
+  const min = scaleValue(scale, options.value, NaN);
+  const max = scaleValue(scale, options.endValue, min);
+  if (scale.isHorizontal()) {
+    area.x = min;
+    area.x2 = max;
+  } else {
+    area.y = min;
+    area.y2 = max;
+  }
+}
+
+function resolveLimitedLineProperties(scales, area, options) {
+  const xScale = scales[retrieveScaleID(scales, options, 'xScaleID')];
+  const yScale = scales[retrieveScaleID(scales, options, 'yScaleID')];
+
+  if (xScale) {
+    applyScaleValueToDimension(area, xScale, {min: options.xMin, max: options.xMax, start: xScale.left, end: xScale.right, startProp: 'x', endProp: 'x2'});
+  }
+
+  if (yScale) {
+    applyScaleValueToDimension(area, yScale, {min: options.yMin, max: options.yMax, start: yScale.bottom, end: yScale.top, startProp: 'y', endProp: 'y2'});
+  }
 }
