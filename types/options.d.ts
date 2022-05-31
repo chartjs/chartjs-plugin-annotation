@@ -74,8 +74,15 @@ export interface ArrowHeadsOptions extends ArrowHeadOptions{
   start?: ArrowHeadOptions,
 }
 
+export interface ControlPointOptions {
+  x?: Scriptable<number | string, PartialEventContext>,
+  y?: Scriptable<number | string, PartialEventContext>,
+}
+
 export interface LineAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
   arrowHeads?: ArrowHeadsOptions,
+  curve?: Scriptable<boolean, PartialEventContext>,
+  controlPoint?: Scriptable<number | string | ControlPointOptions, PartialEventContext>,
   label?: LabelOptions
 }
 
