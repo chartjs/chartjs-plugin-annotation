@@ -19,9 +19,8 @@ export default class LineAnnotation extends Element {
     const hBorderWidth = this.options.borderWidth / 2;
     if (axis !== 'x' && axis !== 'y') {
       const point = {mouseX, mouseY};
-      const path = this.path;
+      const {path, ctx} = this;
       if (path) {
-        const ctx = this.$context.chart.ctx;
         setBorderStyle(ctx, this.options);
         const result = ctx.isPointInStroke(path, mouseX, mouseY) || isOnLabel(this, point, useFinalPosition);
         ctx.restore();
@@ -446,19 +445,23 @@ function drawArrowHeadOnCurve(ctx, {x, y}, {angle, adjust}, arrowOpts) {
 
 function drawCurve(ctx, element, cp) {
   const {x, y, x2, y2, options} = element;
+  const length = Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2));
   const {startOpts, endOpts, startAdjust, endAdjust} = getArrowHeads(element);
   const p1 = {x, y};
   const p2 = {x: x2, y: y2};
   const startAngle = angleInCurve(p1, cp, p2, 0);
   const endAngle = angleInCurve(p1, cp, p2, 1) - PI;
+  const ps = pointInCurve(p1, cp, p2, startAdjust / length);
+  const pe = pointInCurve(p1, cp, p2, 1 - endAdjust / length);
 
   const path = new Path2D();
   ctx.beginPath();
-  path.moveTo(x, y);
-  path.quadraticCurveTo(cp.x, cp.y, x2, y2);
+  path.moveTo(ps.x, ps.y);
+  path.quadraticCurveTo(cp.x, cp.y, pe.x, pe.y);
   ctx.shadowColor = options.borderShadowColor;
   ctx.stroke(path);
   element.path = path;
-  drawArrowHeadOnCurve(ctx, p1, {angle: startAngle, adjust: startAdjust}, startOpts);
-  drawArrowHeadOnCurve(ctx, p2, {angle: endAngle, adjust: endAdjust}, endOpts);
+  element.ctx = ctx;
+  drawArrowHeadOnCurve(ctx, ps, {angle: startAngle, adjust: startAdjust}, startOpts);
+  drawArrowHeadOnCurve(ctx, pe, {angle: endAngle, adjust: endAdjust}, endOpts);
 }
