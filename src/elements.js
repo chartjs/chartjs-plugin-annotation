@@ -47,7 +47,7 @@ export function updateElements(chart, state, options, mode) {
     properties.skip = toSkip(properties);
 
     if ('elements' in properties) {
-      updateSubElements(element, properties, resolver, animations);
+      updateSubElements(element, properties.elements, resolver, animations);
       // Remove the sub-element definitions from properties, so the actual elements
       // are not overwritten by their definitions
       delete properties.elements;
@@ -61,6 +61,10 @@ export function updateElements(chart, state, options, mode) {
       Object.assign(element, properties);
     }
 
+    const initProperties = properties.initProperties;
+    if (isObject(initProperties)) {
+      Object.assign(element, initProperties);
+    }
     properties.options = resolveAnnotationOptions(resolver);
 
     animations.update(element, properties);
@@ -78,13 +82,13 @@ function resolveAnimations(chart, animOpts, mode) {
   return new Animations(chart, animOpts);
 }
 
-function updateSubElements(mainElement, {elements, initProperties}, resolver, animations) {
+function updateSubElements(mainElement, elements, resolver, animations) {
   const subElements = mainElement.elements || (mainElement.elements = []);
   subElements.length = elements.length;
   for (let i = 0; i < elements.length; i++) {
     const definition = elements[i];
     const properties = definition.properties;
-    const subElement = getOrCreateElement(subElements, i, definition.type, initProperties);
+    const subElement = getOrCreateElement(subElements, i, definition.type, definition.initProperties);
     const subResolver = resolver[definition.optionScope].override(definition);
     properties.options = resolveAnnotationOptions(subResolver);
     animations.update(subElement, properties);

@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {drawBox, drawLabel, measureLabelSize, getChartPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, resolveBoxProperties, getRelativePosition, translate, rotated, getElementCenterPoint} from '../helpers';
+import {drawBox, drawLabel, measureLabelSize, getChartPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, resolveBoxProperties, getRelativePosition, translate, rotated, getElementCenterPoint, initAnimationProperties} from '../helpers';
 import {toPadding, toRadians, distanceBetweenPoints} from 'chart.js/helpers';
 
 const positions = ['left', 'bottom', 'top', 'right'];
@@ -46,6 +46,7 @@ export default class LabelAnnotation extends Element {
     const labelSize = measureLabelSize(chart.ctx, options);
     const boxSize = measureRect(point, labelSize, options, padding);
     return {
+      initProperties: initAnimationProperties(chart, boxSize, options),
       pointX: point.x,
       pointY: point.y,
       ...boxSize,
@@ -91,6 +92,7 @@ LabelAnnotation.defaults = {
     weight: undefined
   },
   height: undefined,
+  initAnimation: undefined,
   padding: 6,
   position: 'center',
   rotation: 0,

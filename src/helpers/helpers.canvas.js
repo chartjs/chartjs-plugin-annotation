@@ -143,10 +143,10 @@ export function drawLabel(ctx, rect, options) {
   ctx.textBaseline = 'middle';
   ctx.textAlign = options.textAlign;
   if (setTextStrokeStyle(ctx, options)) {
-    labels.forEach((l, i) => ctx.strokeText(l, x, y + (i * lh)));
+    labels.forEach((l, i) => ctx.strokeText(l, x, y + (i * lh), rect.width));
   }
   ctx.fillStyle = options.color;
-  labels.forEach((l, i) => ctx.fillText(l, x, y + (i * lh)));
+  labels.forEach((l, i) => ctx.fillText(l, x, y + (i * lh), rect.width));
   ctx.restore();
 }
 

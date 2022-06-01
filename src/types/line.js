@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, toRadians, toDegrees, toPadding} from 'chart.js/helpers';
-import {EPSILON, clamp, scaleValue, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, getElementCenterPoint, retrieveScaleID, getDimensionByScale} from '../helpers';
+import {EPSILON, clamp, scaleValue, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, getElementCenterPoint, retrieveScaleID, getDimensionByScale, initAnimationProperties} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
@@ -92,10 +92,12 @@ export default class LineAnnotation extends Element {
     if (!inside) {
       options.label.display = false;
     }
+    properties.initProperties = initAnimationProperties(chart, properties, options);
     properties.elements = [{
       type: 'label',
       optionScope: 'label',
-      properties: resolveLabelElementProperties(chart, properties, options.label)
+      properties: resolveLabelElementProperties(chart, properties, options.label),
+      initProperties: properties.initProperties
     }];
     return properties;
   }
@@ -136,6 +138,7 @@ LineAnnotation.defaults = {
   borderWidth: 2,
   display: true,
   endValue: undefined,
+  initAnimation: undefined,
   label: {
     backgroundColor: 'rgba(0,0,0,0.8)',
     backgroundShadowColor: 'transparent',

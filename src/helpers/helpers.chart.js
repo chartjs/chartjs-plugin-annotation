@@ -137,6 +137,7 @@ export function resolvePointProperties(chart, options) {
       y2: box.y + size + options.yAdjust,
       centerX: box.centerX + options.xAdjust,
       centerY: box.centerY + options.yAdjust,
+      radius,
       width: size,
       height: size
     };
@@ -154,6 +155,7 @@ function getChartCircle(chart, options) {
     y2: point.y + options.radius + options.yAdjust,
     centerX: point.x + options.xAdjust,
     centerY: point.y + options.yAdjust,
+    radius: options.radius,
     width: size,
     height: size
   };

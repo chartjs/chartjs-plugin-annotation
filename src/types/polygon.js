@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, RAD_PER_DEG, toRadians} from 'chart.js/helpers';
-import {setBorderStyle, resolvePointProperties, getElementCenterPoint, setShadowStyle, rotated} from '../helpers';
+import {setBorderStyle, resolvePointProperties, getElementCenterPoint, setShadowStyle, rotated, initAnimationProperties} from '../helpers';
 
 export default class PolygonAnnotation extends Element {
 
@@ -47,16 +47,16 @@ export default class PolygonAnnotation extends Element {
 
   resolveElementProperties(chart, options) {
     const properties = resolvePointProperties(chart, options);
-    const {x, y} = properties;
     const {sides, rotation} = options;
     const elements = [];
     const angle = (2 * PI) / sides;
     let rad = rotation * RAD_PER_DEG;
     for (let i = 0; i < sides; i++, rad += angle) {
-      elements.push(buildPointElement(properties, options, rad));
+      const elProps = buildPointElement(properties, options, rad);
+      elProps.initProperties = initAnimationProperties(chart, properties, options);
+      elements.push(elProps);
     }
     properties.elements = elements;
-    properties.initProperties = {x, y};
     return properties;
   }
 }
@@ -73,6 +73,7 @@ PolygonAnnotation.defaults = {
   borderShadowColor: 'transparent',
   borderWidth: 1,
   display: true,
+  initAnimation: 'fade',
   point: {
     radius: 0
   },

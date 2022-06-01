@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, toRadians} from 'chart.js/helpers';
-import {EPSILON, resolveBoxProperties, setBorderStyle, setShadowStyle, rotated, translate, getElementCenterPoint} from '../helpers';
+import {EPSILON, resolveBoxProperties, setBorderStyle, setShadowStyle, rotated, translate, getElementCenterPoint, initAnimationProperties} from '../helpers';
 
 export default class EllipseAnnotation extends Element {
 
@@ -23,7 +23,6 @@ export default class EllipseAnnotation extends Element {
 
   draw(ctx) {
     const {width, height, centerX, centerY, options} = this;
-
     ctx.save();
     translate(ctx, this.getCenterPoint(), options.rotation);
     setShadowStyle(ctx, this.options);
@@ -40,7 +39,9 @@ export default class EllipseAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    return resolveBoxProperties(chart, options);
+    const properties = resolveBoxProperties(chart, options);
+    properties.initProperties = initAnimationProperties(chart, properties, options, true);
+    return properties;
   }
 
 }
@@ -55,6 +56,7 @@ EllipseAnnotation.defaults = {
   borderShadowColor: 'transparent',
   borderWidth: 1,
   display: true,
+  initAnimation: undefined,
   rotation: 0,
   shadowBlur: 0,
   shadowOffsetX: 0,
