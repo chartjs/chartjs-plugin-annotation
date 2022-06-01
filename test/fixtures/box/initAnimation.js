@@ -67,6 +67,21 @@ module.exports = {
             },
             box4: {
               type: 'box',
+              xMin: 0.5,
+              xMax: 'May',
+              yMin: 0.5,
+              yMax: 4,
+              initAnimation: () => ({y: 0, y2: 0}),
+              backgroundColor: 'rgba(255, 99, 132, 0.5)',
+              borderColor: 'rgba(255, 99, 132)',
+              borderWidth: 1,
+              label: {
+                display: true,
+                content: 'initAnimation: callback object'
+              }
+            },
+            box5: {
+              type: 'box',
               xMin: 'April',
               xMax: 'July',
               yMin: 5,

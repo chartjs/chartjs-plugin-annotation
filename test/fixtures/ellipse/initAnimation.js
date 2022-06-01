@@ -55,6 +55,17 @@ module.exports = {
             },
             ellipse4: {
               type: 'ellipse',
+              xMin: 0.5,
+              xMax: 'May',
+              yMin: 0.5,
+              yMax: 4,
+              initAnimation: () => ({y: 0, y2: 0}),
+              backgroundColor: 'rgba(255, 99, 132, 0.5)',
+              borderColor: 'rgba(255, 99, 132)',
+              borderWidth: 1
+            },
+            ellipse5: {
+              type: 'ellipse',
               xMin: 'April',
               xMax: 'July',
               yMin: 5,

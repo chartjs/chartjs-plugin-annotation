@@ -58,6 +58,18 @@ module.exports = {
             },
             label4: {
               type: 'label',
+              xMin: 0.5,
+              xMax: 'May',
+              yMin: 0.5,
+              yMax: 4,
+              initAnimation: () => ({y: 0, y2: 0}),
+              backgroundColor: 'rgba(255, 99, 132, 0.5)',
+              borderColor: 'rgba(255, 99, 132)',
+              borderWidth: 1,
+              content: 'initAnimation: callback object'
+            },
+            label5: {
+              type: 'label',
               xMin: 'April',
               xMax: 'July',
               yMin: 5,

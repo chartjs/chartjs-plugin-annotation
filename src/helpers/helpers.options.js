@@ -112,9 +112,7 @@ export function initAnimationProperties(chart, properties, options, type = 'xy')
 
 function applyDefault(chart, properties, type) {
   const typeImpl = animationTypes[type];
-  if (typeImpl) {
-    return typeImpl(chart.chartArea, properties);
-  }
+  return typeImpl(chart.chartArea, properties);
 }
 
 function checkCallbackResult(chart, properties, type, result) {

@@ -61,6 +61,19 @@ module.exports = {
             },
             line4: {
               type: 'line',
+              xMin: 0.5,
+              xMax: 'May',
+              yMin: 0.5,
+              yMax: 4,
+              initAnimation: () => ({y: 0, y2: 0}),
+              borderColor: 'rgba(255, 99, 132)',
+              label: {
+                display: true,
+                content: 'initAnimation: callback object'
+              }
+            },
+            line5: {
+              type: 'line',
               xMin: 'April',
               xMax: 'July',
               yMin: 5,
