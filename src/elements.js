@@ -61,10 +61,7 @@ export function updateElements(chart, state, options, mode) {
       Object.assign(element, properties);
     }
 
-    const initProperties = properties.initProperties;
-    if (isObject(initProperties)) {
-      Object.assign(element, initProperties);
-    }
+    applyInitProperties(element, properties.initProperties);
     properties.options = resolveAnnotationOptions(resolver);
 
     animations.update(element, properties);
@@ -100,9 +97,7 @@ function getOrCreateElement(elements, index, type, initProperties) {
   let element = elements[index];
   if (!element || !(element instanceof elementClass)) {
     element = elements[index] = new elementClass();
-    if (isObject(initProperties)) {
-      Object.assign(element, initProperties);
-    }
+    applyInitProperties(element, initProperties);
   }
   return element;
 }
@@ -151,4 +146,10 @@ function resyncElements(elements, annotations) {
     elements.splice(count, start - count);
   }
   return elements;
+}
+
+function applyInitProperties(element, initProperties) {
+  if (isObject(initProperties)) {
+    Object.assign(element, initProperties);
+  }
 }

@@ -116,27 +116,21 @@ export function isBoundToPoint(options) {
  * @param {Chart} chart
  * @param {AnnotationBoxModel} properties
  * @param {CoreAnnotationOptions} options
- * @param {boolean} [centerBased=false]
- * @param {boolean} [useRadius=false]
+ * @param {{centerBased: boolean, useRadius: boolean}} [animOpts={centerBased: false, useRadius: false}]
  * @returns {AnnotationBoxModel}
  */
-export function initAnimationProperties(chart, properties, options, centerBased = false, useRadius = false) {
+export function initAnimationProperties(chart, properties, options, animOpts = {centerBased: false, useRadius: false}) {
+  if (!options.initAnimation) {
+    return;
+  }
+  const {centerBased, useRadius} = animOpts;
   const {mode, fade} = toAnimationMode(options.initAnimation);
-  if (mode) {
-    const modes = centerBased ? pointAnimationModes : animationModes;
-    const modeImpl = modes[mode];
-    if (modeImpl) {
-      const animProps = modeImpl(chart.chartArea, properties);
-      if (fade) {
-        if (useRadius) {
-          animProps.radius = 0;
-        } else {
-          animProps.width = 0;
-          animProps.height = 0;
-        }
-      }
-      return animProps;
-    }
+  const modes = centerBased ? pointAnimationModes : animationModes;
+  const modeImpl = modes[mode];
+  if (modeImpl) {
+    const animProps = modeImpl(chart.chartArea, properties);
+    applyFading(animProps, fade, useRadius);
+    return animProps;
   }
 }
 
@@ -150,4 +144,15 @@ function toAnimationMode(value) {
   return {
     mode: value
   };
+}
+
+function applyFading(properties, fade, useRadius) {
+  if (fade) {
+    if (useRadius) {
+      properties.radius = 0;
+    } else {
+      properties.width = 0;
+      properties.height = 0;
+    }
+  }
 }

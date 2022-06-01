@@ -29,7 +29,9 @@ export default class PointAnnotation extends Element {
     ctx.fillStyle = options.backgroundColor;
     setShadowStyle(ctx, options);
     const stroke = setBorderStyle(ctx, options);
+    // REMINDER: Sets to 0 in order to avoid that Chart.js function will perform stroking
     options.borderWidth = 0;
+    // for animation on radius, the element property must be used
     options.radius = this.radius;
     drawPoint(ctx, options, this.centerX, this.centerY);
     if (stroke && !isImageOrCanvas(options.pointStyle)) {
@@ -42,7 +44,7 @@ export default class PointAnnotation extends Element {
 
   resolveElementProperties(chart, options) {
     const properties = resolvePointProperties(chart, options);
-    properties.initProperties = initAnimationProperties(chart, properties, options, true, true);
+    properties.initProperties = initAnimationProperties(chart, properties, options, {centerBased: true, useRadius: true});
     return properties;
   }
 }
