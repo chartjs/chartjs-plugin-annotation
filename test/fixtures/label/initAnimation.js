@@ -30,7 +30,7 @@ module.exports = {
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgb(255, 99, 132)',
               borderWidth: 1,
-              content: 'initAnimation: true'
+              content: 'true'
             },
             label2: {
               type: 'label',
@@ -38,11 +38,11 @@ module.exports = {
               xMax: 'July',
               yMin: 11,
               yMax: 15,
-              initAnimation: false,
+              initAnimation: () => undefined,
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 1,
-              content: 'initAnimation: false'
+              content: 'callback undef'
             },
             label3: {
               type: 'label',
@@ -54,7 +54,7 @@ module.exports = {
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 1,
-              content: 'initAnimation: callback'
+              content: 'callback'
             },
             label4: {
               type: 'label',
@@ -66,7 +66,7 @@ module.exports = {
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 1,
-              content: 'initAnimation: callback object'
+              content: 'callback object'
             },
             label5: {
               type: 'label',
@@ -77,7 +77,7 @@ module.exports = {
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 1,
-              content: 'initAnimation: fallback'
+              content: 'fallback'
             }
           }
         }

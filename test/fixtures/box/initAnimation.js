@@ -32,7 +32,7 @@ module.exports = {
               borderWidth: 1,
               label: {
                 display: true,
-                content: 'initAnimation: true'
+                content: 'true'
               }
             },
             box2: {
@@ -41,13 +41,13 @@ module.exports = {
               xMax: 'July',
               yMin: 11,
               yMax: 15,
-              initAnimation: false,
+              initAnimation: () => undefined,
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 1,
               label: {
                 display: true,
-                content: 'initAnimation: false'
+                content: 'callback undef'
               }
             },
             box3: {
@@ -62,7 +62,7 @@ module.exports = {
               borderWidth: 1,
               label: {
                 display: true,
-                content: 'initAnimation: callback'
+                content: 'callback'
               }
             },
             box4: {
@@ -77,7 +77,7 @@ module.exports = {
               borderWidth: 1,
               label: {
                 display: true,
-                content: 'initAnimation: callback object'
+                content: 'callback object'
               }
             },
             box5: {
@@ -91,7 +91,7 @@ module.exports = {
               borderWidth: 1,
               label: {
                 display: true,
-                content: 'initAnimation: fallback'
+                content: 'fallback'
               }
             }
           }

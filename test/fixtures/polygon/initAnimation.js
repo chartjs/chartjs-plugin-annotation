@@ -39,7 +39,7 @@ module.exports = {
               xMax: 'July',
               yMin: 11,
               yMax: 15,
-              initAnimation: false,
+              initAnimation: () => undefined,
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 1,
