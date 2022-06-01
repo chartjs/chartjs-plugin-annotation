@@ -39,7 +39,7 @@ export default class PointAnnotation extends Element {
 
   resolveElementProperties(chart, options) {
     const properties = resolvePointProperties(chart, options);
-    properties.initProperties = initAnimationProperties(chart, properties, options, 'center');
+    properties.initProperties = initAnimationProperties(chart, properties, options, true);
     return properties;
   }
 }

@@ -40,7 +40,7 @@ export default class EllipseAnnotation extends Element {
 
   resolveElementProperties(chart, options) {
     const properties = resolveBoxProperties(chart, options);
-    properties.initProperties = initAnimationProperties(chart, properties, options, 'center');
+    properties.initProperties = initAnimationProperties(chart, properties, options, true);
     return properties;
   }
 

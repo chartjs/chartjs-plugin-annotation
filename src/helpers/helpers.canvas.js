@@ -3,10 +3,12 @@ import {clampAll} from './helpers.core';
 import {calculateTextAlignment, getSize} from './helpers.options';
 
 const widthCache = new Map();
+const notRadius = (radius) => isNaN(radius) || radius <= 0;
 
 /**
  * @typedef { import('chart.js').Point } Point
  * @typedef { import('../../types/label').CoreLabelOptions } CoreLabelOptions
+ * @typedef { import('../../types/options').PointAnnotationOptions } PointAnnotationOptions
  */
 
 /**
@@ -161,24 +163,27 @@ function setTextStrokeStyle(ctx, options) {
   }
 }
 
+/**
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {{radius: number, options: PointAnnotationOptions}} element
+ * @param {number} x
+ * @param {number} y
+ */
 export function drawPoint(ctx, element, x, y) {
   const {radius, options} = element;
   const style = options.pointStyle;
   const rotation = options.rotation;
   let rad = (rotation || 0) * RAD_PER_DEG;
 
-  if (style && typeof style === 'object') {
-    const type = style.toString();
-    if (type === '[object HTMLImageElement]' || type === '[object HTMLCanvasElement]') {
-      ctx.save();
-      ctx.translate(x, y);
-      ctx.rotate(rad);
-      ctx.drawImage(style, -style.width / 2, -style.height / 2, style.width, style.height);
-      ctx.restore();
-      return;
-    }
+  if (isImageOrCanvas(style)) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rad);
+    ctx.drawImage(style, -style.width / 2, -style.height / 2, style.width, style.height);
+    ctx.restore();
+    return;
   }
-  if (isNaN(radius) || radius <= 0) {
+  if (notRadius(radius)) {
     return;
   }
   drawPointStyle(ctx, {x, y, radius, rotation, style, rad});

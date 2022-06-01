@@ -1,11 +1,6 @@
 import {isObject, valueOrDefault, defined, callback} from 'chart.js/helpers';
 import {clamp} from './helpers.core';
 
-const animationTypes = {
-  xy: (area, {centerX, centerY}) => ({x: centerX, y: centerY, x2: centerX, y2: centerY, width: 0, height: 0}),
-  center: (area, {centerX, centerY}) => ({centerX, centerY, radius: 0, width: 0, height: 0}),
-};
-
 const isPercentString = (s) => typeof s === 'string' && s.endsWith('%');
 const toPercent = (s) => clamp(parseFloat(s) / 100, 0, 1);
 
@@ -97,27 +92,29 @@ export function isBoundToPoint(options) {
  * @param {Chart} chart
  * @param {AnnotationBoxModel} properties
  * @param {CoreAnnotationOptions} options
- * @param {string} [type='xy']
+ * @param {boolean} [centerBased=false]
  * @returns {AnnotationBoxModel}
  */
-export function initAnimationProperties(chart, properties, options, type = 'xy') {
+export function initAnimationProperties(chart, properties, options, centerBased = false) {
   const initAnim = options.initAnimation;
   if (!initAnim) {
     return;
   } else if (initAnim === true) {
-    return applyDefault(chart, properties, type);
+    return applyDefault(properties, centerBased);
   }
-  return checkCallbackResult(chart, properties, type, callback(initAnim, [{chart, properties, options}]));
+  return checkCallbackResult(properties, centerBased, callback(initAnim, [{chart, properties, options}]));
 }
 
-function applyDefault(chart, properties, type) {
-  const typeImpl = animationTypes[type];
-  return typeImpl(chart.chartArea, properties);
+function applyDefault({centerX, centerY}, centerBased) {
+  if (centerBased) {
+    return {centerX, centerY, radius: 0, width: 0, height: 0};
+  }
+  return {x: centerX, y: centerY, x2: centerX, y2: centerY, width: 0, height: 0};
 }
 
-function checkCallbackResult(chart, properties, type, result) {
+function checkCallbackResult(properties, centerBased, result) {
   if (result === true) {
-    return applyDefault(chart, properties, type);
+    return applyDefault(properties, centerBased);
   } else if (isObject(result)) {
     return result;
   }
