@@ -1,6 +1,5 @@
 import {Element} from 'chart.js';
-import {drawPoint} from 'chart.js/helpers';
-import {inPointRange, getElementCenterPoint, resolvePointProperties, setBorderStyle, setShadowStyle, isImageOrCanvas, initAnimationProperties} from '../helpers';
+import {inPointRange, getElementCenterPoint, resolvePointProperties, setBorderStyle, setShadowStyle, isImageOrCanvas, initAnimationProperties, drawPoint} from '../helpers';
 
 export default class PointAnnotation extends Element {
 
@@ -29,11 +28,7 @@ export default class PointAnnotation extends Element {
     ctx.fillStyle = options.backgroundColor;
     setShadowStyle(ctx, options);
     const stroke = setBorderStyle(ctx, options);
-    // REMINDER: Sets to 0 in order to avoid that Chart.js function will perform stroking
-    options.borderWidth = 0;
-    // for animation on radius, the element property must be used
-    options.radius = this.radius;
-    drawPoint(ctx, options, this.centerX, this.centerY);
+    drawPoint(ctx, this, this.centerX, this.centerY);
     if (stroke && !isImageOrCanvas(options.pointStyle)) {
       ctx.shadowColor = options.borderShadowColor;
       ctx.stroke();
@@ -44,7 +39,7 @@ export default class PointAnnotation extends Element {
 
   resolveElementProperties(chart, options) {
     const properties = resolvePointProperties(chart, options);
-    properties.initProperties = initAnimationProperties(chart, properties, options, {centerBased: true, useRadius: true});
+    properties.initProperties = initAnimationProperties(chart, properties, options, 'center');
     return properties;
   }
 }

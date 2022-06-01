@@ -73,7 +73,7 @@ PolygonAnnotation.defaults = {
   borderShadowColor: 'transparent',
   borderWidth: 1,
   display: true,
-  initAnimation: 'fade',
+  initAnimation: undefined,
   point: {
     radius: 0
   },

@@ -1,28 +1,9 @@
-import {isObject, valueOrDefault, defined} from 'chart.js/helpers';
+import {isObject, valueOrDefault, defined, callback} from 'chart.js/helpers';
 import {clamp} from './helpers.core';
 
-const animationModes = {
-  fade: (area, {centerX, centerY}) => ({x: centerX, y: centerY, x2: centerX, y2: centerY, width: 0, height: 0}),
-  left: () => ({x: 0, x2: 0}),
-  top: () => ({y: 0, y2: 0}),
-  right: (area) => ({x: area.right, x2: area.right}),
-  bottom: (area) => ({y: area.bottom, y2: area.bottom}),
-  topLeft: () => ({x: 0, x2: 0, y: 0, y2: 0}),
-  topRight: (area) => ({x: area.right, x2: area.right, y: 0, y2: 0}),
-  bottomLeft: (area) => ({x: 0, x2: 0, y: area.bottom, y2: area.bottom}),
-  bottomRight: (area) => ({x: area.right, x2: area.right, y: area.bottom, y2: area.bottom}),
-};
-
-const pointAnimationModes = {
-  fade: (area, {centerX, centerY}) => ({centerX, centerY, radius: 0, width: 0, height: 0}),
-  left: () => ({centerX: 0}),
-  top: () => ({centerY: 0}),
-  right: (area) => ({centerX: area.right}),
-  bottom: (area) => ({centerY: area.bottom}),
-  topLeft: () => ({centerX: 0, centerY: 0}),
-  topRight: (area) => ({centerX: area.right, centerY: 0}),
-  bottomLeft: (area) => ({centerX: 0, centerY: area.bottom}),
-  bottomRight: (area) => ({centerX: area.right, centerY: area.bottom}),
+const animationTypes = {
+  xy: (area, {centerX, centerY}) => ({x: centerX, y: centerY, x2: centerX, y2: centerY, width: 0, height: 0}),
+  center: (area, {centerX, centerY}) => ({centerX, centerY, radius: 0, width: 0, height: 0}),
 };
 
 const isPercentString = (s) => typeof s === 'string' && s.endsWith('%');
@@ -116,43 +97,30 @@ export function isBoundToPoint(options) {
  * @param {Chart} chart
  * @param {AnnotationBoxModel} properties
  * @param {CoreAnnotationOptions} options
- * @param {{centerBased: boolean, useRadius: boolean}} [animOpts={centerBased: false, useRadius: false}]
+ * @param {string} [type='xy']
  * @returns {AnnotationBoxModel}
  */
-export function initAnimationProperties(chart, properties, options, animOpts = {centerBased: false, useRadius: false}) {
-  if (!options.initAnimation) {
+export function initAnimationProperties(chart, properties, options, type = 'xy') {
+  const initAnim = options.initAnimation;
+  if (!initAnim) {
     return;
+  } else if (initAnim === true) {
+    return applyDefault(chart, properties, type);
   }
-  const {centerBased, useRadius} = animOpts;
-  const {mode, fade} = toAnimationMode(options.initAnimation);
-  const modes = centerBased ? pointAnimationModes : animationModes;
-  const modeImpl = modes[mode];
-  if (modeImpl) {
-    const animProps = modeImpl(chart.chartArea, properties);
-    applyFading(animProps, fade, useRadius);
-    return animProps;
+  return checkCallbackResult(chart, properties, type, callback(initAnim, [{chart, properties, options}]));
+}
+
+function applyDefault(chart, properties, type) {
+  const typeImpl = animationTypes[type];
+  if (typeImpl) {
+    return typeImpl(chart.chartArea, properties);
   }
 }
 
-function toAnimationMode(value) {
-  if (isObject(value)) {
-    return {
-      mode: value.mode,
-      fade: value.fade === true,
-    };
-  }
-  return {
-    mode: value
-  };
-}
-
-function applyFading(properties, fade, useRadius) {
-  if (fade) {
-    if (useRadius) {
-      properties.radius = 0;
-    } else {
-      properties.width = 0;
-      properties.height = 0;
-    }
+function checkCallbackResult(chart, properties, type, result) {
+  if (result === true) {
+    return applyDefault(chart, properties, type);
+  } else if (isObject(result)) {
+    return result;
   }
 }
