@@ -54,7 +54,7 @@ const options = {
 
 | Name | Option | Value
 | ---- | ---- | ----
-| `numbers` | `properties` | `['x', 'y', 'x2', 'y2', 'width', 'height', 'centerX', 'centerY', 'pointX', 'pointY', 'labelX', 'labelY', 'labelWidth', 'labelHeight', 'radius']`
+| `numbers` | `properties` | `['x', 'y', 'x2', 'y2', 'width', 'height', 'centerX', 'centerY', 'pointX', 'pointY', 'radius']`
 | `numbers` | `type` | `number`
 
 ## Common
@@ -64,6 +64,35 @@ The following options apply to all annotations unless they are overwritten on a 
 | Name | Type | [Scriptable](options#scriptable-options) | Default | Notes
 | ---- | ---- | :----: | ---- | ----
 | `drawTime` | `string` | Yes | `'afterDatasetsDraw'` | See [drawTime](options#draw-time).
+| `initAnimation` | `boolean`  | [See initial animation](#initial-animation) | `false` | Enable the animation to the annotations when they are drawing at chart initialization
+
+### Initial animation
+
+The `initAnimation` option is scriptable but it doesn't get the [options context](./options#option-context) as argument but a specific context because the element has not been initialized yet, when the callback is invoked.
+
+This is the signature of the scriptable option:
+
+```javascript
+({chart, properties, options}) => void | boolean | AnnotationBoxModel
+```
+
+where the properties is the element model
+
+```javascript
+{
+  x: number,
+  y: number,
+  x2: number,
+  y2: number,
+  centerX: number,
+  centerY: number,
+  width: number,
+  height: number,
+  radius?: number
+}
+```
+
+which can be used in the callback to return an object with the initial values of the element, to provide own initial animation. 
 
 ## Events
 
