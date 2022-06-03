@@ -10,45 +10,46 @@ describe('Initial animation', function() {
   };
 
   for (const type of Object.keys(types)) {
-    const chartConfig = {
-      type: 'scatter',
-      options: {
-        animation: {
-          duration: 500
-        },
-        scales: {
-          x: {
-            display: false,
-            min: 0,
-            max: 10
+
+    it(`should reach the final position once in ${type} annotation`, function(done) {
+
+      const chartConfig = {
+        type: 'scatter',
+        options: {
+          animation: {
+            duration: 500
           },
-          y: {
-            display: false,
-            min: 0,
-            max: 10
-          }
-        },
-        plugins: {
-          legend: false,
-          annotation: {
-            common: {
+          scales: {
+            x: {
+              display: false,
+              min: 0,
+              max: 10
+            },
+            y: {
+              display: false,
+              min: 0,
+              max: 10
+            }
+          },
+          plugins: {
+            legend: false,
+            annotation: {
+              common: {
+              }
             }
           }
         }
-      }
-    };
+      };
 
-    const options = {
-      type,
-      xMin: 4,
-      yMin: 4,
-      xMax: 6,
-      yMax: 6,
-      radius: 40,
-      borderWidth: 0
-    };
-
-    it(`should reach the final position once in ${type} annotation`, function(done) {
+      const options = {
+        type,
+        xMin: 4,
+        yMin: 4,
+        xMax: 6,
+        yMax: 6,
+        radius: 40,
+        borderWidth: 0
+      };
 
       const pluginOpts = chartConfig.options.plugins.annotation;
       const commonOpts = pluginOpts.common;
@@ -94,6 +95,44 @@ describe('Initial animation', function() {
 
     it(`should not update the position in ${type} annotation`, function(done) {
 
+      const chartConfig = {
+        type: 'scatter',
+        options: {
+          animation: {
+            duration: 500
+          },
+          scales: {
+            x: {
+              display: false,
+              min: 0,
+              max: 10
+            },
+            y: {
+              display: false,
+              min: 0,
+              max: 10
+            }
+          },
+          plugins: {
+            legend: false,
+            annotation: {
+              common: {
+              }
+            }
+          }
+        }
+      };
+
+      const options = {
+        type,
+        xMin: 4,
+        yMin: 4,
+        xMax: 6,
+        yMax: 6,
+        radius: 40,
+        borderWidth: 0
+      };
+
       const pluginOpts = chartConfig.options.plugins.annotation;
       const commonOpts = pluginOpts.common;
       const property = types[type];
@@ -137,6 +176,44 @@ describe('Initial animation', function() {
     });
 
     it(` callback should not receive the element properties in ${type} annotation`, function(done) {
+
+      const chartConfig = {
+        type: 'scatter',
+        options: {
+          animation: {
+            duration: 500
+          },
+          scales: {
+            x: {
+              display: false,
+              min: 0,
+              max: 10
+            },
+            y: {
+              display: false,
+              min: 0,
+              max: 10
+            }
+          },
+          plugins: {
+            legend: false,
+            annotation: {
+              common: {
+              }
+            }
+          }
+        }
+      };
+
+      const options = {
+        type,
+        xMin: 4,
+        yMin: 4,
+        xMax: 6,
+        yMax: 6,
+        radius: 40,
+        borderWidth: 0
+      };
 
       const pluginOpts = chartConfig.options.plugins.annotation;
       const commonOpts = pluginOpts.common;
