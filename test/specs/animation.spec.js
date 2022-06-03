@@ -141,11 +141,11 @@ describe('Initial animation', function() {
       const pluginOpts = chartConfig.options.plugins.annotation;
       const commonOpts = pluginOpts.common;
       let cycles = 0;
-      
+
       [commonOpts, options].forEach(function(targetOptions) {
         delete commonOpts.initAnimation;
         delete options.initAnimation;
-        targetOptions.initAnimation = function({chart, properties, options}) {
+        targetOptions.initAnimation = function({properties}) {
           expect(typeof properties === 'object').toEqual(true);
           cycles++;
           if (cycles === 2) {
