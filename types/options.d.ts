@@ -1,6 +1,7 @@
-import { Color, PointStyle, BorderRadius, CoreInteractionOptions } from 'chart.js';
+import { Chart, Color, PointStyle, BorderRadius, CoreInteractionOptions } from 'chart.js';
 import { AnnotationEvents, PartialEventContext } from './events';
 import { LabelOptions, BoxLabelOptions, LabelTypeOptions } from './label';
+import { AnnotationBoxModel } from './element';
 
 export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw';
 
@@ -36,6 +37,7 @@ export interface CoreAnnotationOptions extends AnnotationEvents, ShadowOptions {
   borderDashOffset?: Scriptable<number, PartialEventContext>,
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
   endValue?: Scriptable<number|string, PartialEventContext>,
+  initAnimation: boolean | ((chart: Chart, properties: AnnotationBoxModel, options: AnnotationOptions) => void | boolean | AnnotationBoxModel),
   scaleID?: Scriptable<string, PartialEventContext>,
   value?: Scriptable<number|string, PartialEventContext>,
   xScaleID?: Scriptable<string, PartialEventContext>,
@@ -154,7 +156,8 @@ interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationPoin
 }
 
 export interface AnnotationPluginCommonOptions {
-  drawTime?: Scriptable<DrawTime, PartialEventContext>
+  drawTime?: Scriptable<DrawTime, PartialEventContext>,
+  initAnimation: boolean | ((chart: Chart, properties: AnnotationBoxModel, options: AnnotationOptions) => void | boolean | AnnotationBoxModel)
 }
 
 export interface AnnotationPluginOptions extends AnnotationEvents {
