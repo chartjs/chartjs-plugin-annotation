@@ -91,3 +91,9 @@ If one of the axes does not match an axis in the chart, the ellipse will take th
 | `shadowBlur` | The amount of blur applied to shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
 | `shadowOffsetX` | The distance that shadow will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
 | `shadowOffsetY` | The distance that shadow will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
+
+## Element
+
+The following diagram is showing the element properties about a `'ellipse'` annotation:
+
+![ellipse](../../img/elementEllipseProps.png)

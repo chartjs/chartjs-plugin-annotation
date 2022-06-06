@@ -217,3 +217,9 @@ All of these options can be [Scriptable](../options#scriptable-options).
 | `position` | `string` | `'auto'` | The position of callout, with respect to the label. Could be `left`, `top`, `right`, `bottom` or `auto`.
 | `side` | `number` | `5` | Width of the starter line of callout pointer.
 | `start` | `number`\|`string` | `'50%'` | The percentage of the separator dimension to use as starting point for callout pointer. Could be set in pixel by a number, or in percentage of the separator dimension by a string.
+
+## Element
+
+The following diagram is showing the element properties about a `'label'` annotation:
+
+![label](../../img/elementLabelProps.png)

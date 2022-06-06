@@ -138,3 +138,11 @@ A position can be set in 2 different values types:
 If this value is a string (possible options are `'start'`, `'center'`, `'end'` or a string in percentage format), it is applied to vertical and horizontal position in the box.
 
 If this value is an object, the `x` property defines the horizontal alignment in the box. Similarly, the `y` property defines the vertical alignment in the box. Possible options for both properties are `'start'`, `'center'`, `'end'`, a string in percentage format. Omitted property have value of the default, `'center'`.
+
+## Element
+
+The following diagram is showing the element properties about a `'box'` annotation:
+
+![box](../../img/elementBoxProps.png)
+
+The label of a box annotation is described as a [label annotation](./label#element) and accessible by `element.label`.
