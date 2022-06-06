@@ -2,6 +2,25 @@ import { Color, FontSpec, BorderRadius } from 'chart.js';
 import { PartialEventContext } from './events';
 import { DrawTime, Scriptable, ShadowOptions } from './options';
 
+type percentString = string;
+export type LabelPosition = 'start' | 'center' | 'end' | percentString;
+
+export type LabelTextAlign = 'left' | 'start' | 'center' | 'right' | 'end';
+
+export interface LabelPositionObject {
+  x?: LabelPosition,
+  y?: LabelPosition
+}
+
+export interface LabelPadding {
+  top?: number,
+  left?: number,
+  right?: number,
+  bottom?: number,
+  x?: number,
+  y?: number
+}
+
 export interface CoreLabelOptions {
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
   font?: FontSpec
@@ -106,23 +125,4 @@ export interface BoxLabelOptions extends CoreLabelOptions {
 
 export interface LabelTypeOptions extends ContainedLabelOptions {
   position?: Scriptable<LabelPosition | LabelPositionObject, PartialEventContext>,
-}
-
-type percentString = string;
-export type LabelPosition = 'start' | 'center' | 'end' | percentString;
-
-export type LabelTextAlign = 'left' | 'start' | 'center' | 'right' | 'end';
-
-interface LabelPositionObject {
-  x?: LabelPosition,
-  y?: LabelPosition
-}
-
-interface LabelPadding {
-  top?: number,
-  left?: number,
-  right?: number,
-  bottom?: number,
-  x?: number,
-  y?: number
 }
