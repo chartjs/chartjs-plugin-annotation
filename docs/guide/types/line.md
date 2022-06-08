@@ -184,3 +184,11 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `shadowOffsetX` | `number` | `lineAnnotation.shadowOffsetX` | The distance that shadow, of the arrow head, will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
 | `shadowOffsetY` | `number` | `lineAnnotation.shadowOffsetY` | The distance that shadow, of the arrow head, will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
 | `width` | `number` | `6` | The width of the arrow head in pixels.
+
+## Element
+
+The following diagram is showing the element properties about a `'line'` annotation:
+
+![line](../../img/elementLineProps.png)
+
+The label of a box annotation is described as a [label annotation](./label#element) and accessible by `element.label`.

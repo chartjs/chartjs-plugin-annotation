@@ -165,3 +165,9 @@ module.exports = {
   config
 };
 ```
+
+## Element
+
+The following diagram is showing the element properties about a `'polygon'` annotation:
+
+![polygon](../../img/elementPolygonProps.png)
