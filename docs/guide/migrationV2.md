@@ -102,3 +102,7 @@ The following diagram is showing the element properties about a `'polygon'` anno
  * When [scatter charts](https://www.chartjs.org/docs/latest/charts/scatter.html) are used, the interaction default `mode` in Chart.js is `point`, while, in the previous plugin version, the default was `nearest`.
 
 The `dblclick` event hook was removed from annotations options because, being executed asynchronously, it can not enable the chart re-rendering, automatically after processing the event completely. This is important when the user requires re-draws. It gets slow and messy if every event hook does the draw (or update!).
+
+## Types
+
+`chartjs-plugin-annotation` plugin version 2 removes the compatibility with TypeScript versions less than 4.1 which is the minimum supported one.
