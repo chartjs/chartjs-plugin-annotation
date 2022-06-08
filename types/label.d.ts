@@ -2,7 +2,7 @@ import { Color, FontSpec, BorderRadius } from 'chart.js';
 import { PartialEventContext } from './events';
 import { DrawTime, Scriptable, ShadowOptions } from './options';
 
-type percentString = string;
+type percentString = `${number}%`;
 export type LabelPosition = 'start' | 'center' | 'end' | percentString;
 
 export type LabelTextAlign = 'left' | 'start' | 'center' | 'right' | 'end';
