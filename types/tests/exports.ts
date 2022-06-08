@@ -22,7 +22,11 @@ const chart = new Chart('id', {
           intersect: true
         },
         common: {
-          drawTime: 'afterDraw'
+          drawTime: 'afterDraw',
+          borderColor: 'red',
+          label: {
+            display: true
+          }
         },
         annotations: [{
           type: 'line',
