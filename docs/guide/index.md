@@ -2,7 +2,7 @@
 
 :::danger
 
-This plugin needs to be registered. It does not function as inline plugin.
+This plugin needs to be registered. It does not function as inline plugin (see below).
 
 :::
 
@@ -24,3 +24,71 @@ For Chart.js 2.4.0 to 2.9.x support, use [version 0.5.7 of this plugin](https://
 Documentation for v0.5.7 can be found on [GitHub](https://github.com/chartjs/chartjs-plugin-annotation/blob/1ab782afce943456f958cac33f67edc5d6eab278/README.md).
 
 :::
+
+
+## Usage
+
+In order to use the plugin, you need to import an register it:
+
+### In React
+
+```
+import { Chart } from 'chart.js';
+import annotationPlugin from 'chartjs-plugin-annotation';
+
+Chart.register(annotationPlugin);
+```
+
+### Examples
+
+#### In React + Typescript
+
+Below is a fully functional example of a bar graph showing a horizontal line.
+
+```
+import React from 'react';
+import { Bar } from 'react-chartjs-2';
+import { Chart } from 'chart.js';
+import annotationPlugin from 'chartjs-plugin-annotation';
+
+Chart.register(annotationPlugin);
+
+export const MyChart: React.FC = () => {
+  const options2 = {
+    scales: {
+      y: {} // <- "y" will be used as "scaleID" in annotations
+    }
+    plugins: {
+      legend: {
+        display: false,
+      },
+      annotation: {
+        annotations: [
+          {
+            id: 'a-line-1',
+            type: 'line' as const, // important, otherwise typescript complains
+            mode: 'horizontal',
+            scaleID: 'y',
+            value: 1.0,
+            borderColor: 'red',
+            borderWidth: 4,
+            label: {
+              enabled: true,
+              content: 'Test label',
+            },
+          },
+        ],
+      },
+    },
+  };
+
+   const data2 = {
+    labels:   [ 'a', 'b'],
+    datasets: [ { data: [1, 2] } ],
+   };
+
+   return (<Bar options={options2} data={data2} height={150} />
+   );
+};
+```
+
