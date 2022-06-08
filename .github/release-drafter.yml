@@ -42,6 +42,9 @@ template: |
   # Essential Links
 
   * [npm](https://www.npmjs.com/package/chartjs-plugin-annotation)
+  * [Docs](https://www.chartjs.org/chartjs-plugin-annotation/)
+  * [Migration guide](https://www.chartjs.org/chartjs-plugin-annotation/latest/guide/migrationV2.html)
+  * [Samples](https://www.chartjs.org/chartjs-plugin-annotation/latest/samples/intro.html)
 
   $CHANGES
 
