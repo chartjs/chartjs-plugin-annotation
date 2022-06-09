@@ -61,6 +61,8 @@ The following diagram is showing the element properties about a `'box'` annotati
 
 ![box](../img/elementBoxProps.png)
 
+The label of a box annotation is described as a [label annotation](#label-annotation) and accessible by `element.label`.
+
 #### Ellipse annotation
 
 The following diagram is showing the element properties about a `'ellipse'` annotation:
@@ -75,9 +77,11 @@ The following diagram is showing the element properties about a `'label'` annota
 
 #### Line annotation
 
-The following diagram is showing the element properties about a `'line'` annotation and the inner label:
+The following diagram is showing the element properties about a `'line'` annotation:
 
 ![line](../img/elementLineProps.png)
+
+The label of a line annotation is described as a [label annotation](#label-annotation) and accessible by `element.label`.
 
 #### Point annotation
 
@@ -98,3 +102,7 @@ The following diagram is showing the element properties about a `'polygon'` anno
  * When [scatter charts](https://www.chartjs.org/docs/latest/charts/scatter.html) are used, the interaction default `mode` in Chart.js is `point`, while, in the previous plugin version, the default was `nearest`.
 
 The `dblclick` event hook was removed from annotations options because, being executed asynchronously, it can not enable the chart re-rendering, automatically after processing the event completely. This is important when the user requires re-draws. It gets slow and messy if every event hook does the draw (or update!).
+
+## Types
+
+`chartjs-plugin-annotation` plugin version 2 removes the compatibility with TypeScript versions less than 4.1 which is the minimum supported one.

@@ -94,3 +94,9 @@ If one of the axes does not match an axis in the chart, the ellipse will take th
 | `shadowOffsetY` | The distance that shadow will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
 
 !!!include(./guide/types/_commonInnerLabel.md)!!!
+
+## Element
+
+The following diagram is showing the element properties about a `'ellipse'` annotation:
+
+![ellipse](../../img/elementEllipseProps.png)

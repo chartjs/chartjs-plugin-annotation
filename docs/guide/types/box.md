@@ -104,3 +104,11 @@ If one of the axes does not match an axis in the chart, the box will take the en
 If this value is a number, it is applied to all corners of the rectangle (topLeft, topRight, bottomLeft, bottomRight). If this value is an object, the `topLeft` property defines the top-left corners border radius. Similarly, the `topRight`, `bottomLeft`, and `bottomRight` properties can also be specified. Omitted corners have radius of 0.
 
 !!!include(./guide/types/_commonInnerLabel.md)!!!
+
+## Element
+
+The following diagram is showing the element properties about a `'box'` annotation:
+
+![box](../../img/elementBoxProps.png)
+
+The label of a box annotation is described as a [label annotation](./label#element) and accessible by `element.label`.
