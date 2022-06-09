@@ -161,8 +161,7 @@ describe('Annotation plugin', function() {
           }
         }
       });
-      const state = window['chartjs-plugin-annotation']._getState(chart);
-      const element = state.elements[0];
+      const element = window.getAnnotationElements(chart)[0];
       expect(element.options.drawTime).toBe('fallback');
     });
 
@@ -186,8 +185,7 @@ describe('Annotation plugin', function() {
           }
         }
       });
-      const state = window['chartjs-plugin-annotation']._getState(chart);
-      const element = state.elements[0];
+      const element = window.getAnnotationElements(chart)[0];
       expect(element.options.drawTime).toBe('afterDatasetsDraw');
     });
 
@@ -209,8 +207,7 @@ describe('Annotation plugin', function() {
           }
         }
       });
-      const state = window['chartjs-plugin-annotation']._getState(chart);
-      const element = state.elements[0];
+      const element = window.getAnnotationElements(chart)[0];
       expect(element.options.drawTime).toBe(chart.options.plugins.annotation.annotations.label.drawTime);
     });
   });

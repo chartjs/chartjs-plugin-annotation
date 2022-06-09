@@ -47,35 +47,21 @@ module.exports = {
 
 ## Configuration
 
+### Box annotation specific options
+
 The following options are available for box annotations.
 
 | Name | Type | [Scriptable](../options#scriptable-options) | Default
 | ---- | ---- | :----: | ----
-| [`adjustScaleRange`](#general) | `boolean` | Yes | `true`
-| [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
 | [`backgroundShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
 | [`borderCapStyle`](#styling) | `string` | Yes | `'butt'`
-| [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
-| [`borderDash`](#styling) | `number[]` | Yes | `[]`
-| [`borderDashOffset`](#styling) | `number` | Yes | `0`
 | [`borderJoinStyle`](#styling) | `string` | Yes | `'miter'`
 | [`borderRadius`](#styling) | `number` \| `object` | Yes | `0`
-| [`borderShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
 | [`borderWidth`](#styling) | `number`| Yes | `1`
-| [`display`](#general) | `boolean` | Yes | `true`
-| [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
 | [`label`](#label) | `object` | Yes |
 | [`rotation`](#general) | `number`| Yes | `0`
-| [`shadowBlur`](#styling) | `number` | Yes | `0`
-| [`shadowOffsetX`](#styling) | `number` | Yes | `0`
-| [`shadowOffsetY`](#styling) | `number` | Yes | `0`
-| [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
-| [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`xScaleID`](#general) | `string` | Yes | `undefined`
-| [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yScaleID`](#general) | `string` | Yes | `undefined`
-| [`z`](#general) | `number` | Yes | `0`
+
+!!!include(./guide/types/_commonOptions.md)!!!
 
 ### General
 
@@ -152,3 +138,11 @@ A position can be set in 2 different values types:
 If this value is a string (possible options are `'start'`, `'center'`, `'end'` or a string in percentage format), it is applied to vertical and horizontal position in the box.
 
 If this value is an object, the `x` property defines the horizontal alignment in the box. Similarly, the `y` property defines the vertical alignment in the box. Possible options for both properties are `'start'`, `'center'`, `'end'`, a string in percentage format. Omitted property have value of the default, `'center'`.
+
+## Element
+
+The following diagram is showing the element properties about a `'box'` annotation:
+
+![box](../../img/elementBoxProps.png)
+
+The label of a box annotation is described as a [label annotation](./label#element) and accessible by `element.label`.

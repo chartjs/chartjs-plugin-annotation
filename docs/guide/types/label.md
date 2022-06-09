@@ -49,49 +49,35 @@ module.exports = {
 
 ## Configuration
 
+### Label annotation specific options
+
 The following options are available for label annotations.
 
 | Name | Type | [Scriptable](../options#scriptable-options) | Default
 | ---- | ---- | :----: | ----
-| [`adjustScaleRange`](#general) | `boolean` | Yes | `true`
-| [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `transparent`
 | [`backgroundShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
 | [`borderCapStyle`](#styling) | `string` | Yes | `'butt'`
-| [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
-| [`borderDash`](#styling) | `number[]` | Yes | `[]`
-| [`borderDashOffset`](#styling) | `number` | Yes | `0`
 | [`borderJoinStyle`](#styling) | `string` | Yes | `'miter'`
 | [`borderRadius`](#borderradius) | `number` \| `object` | Yes | `0`
-| [`borderShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
 | [`borderWidth`](#styling) | `number`| Yes | `0`
 | [`callout`](#callout) | `object` | Yes |
 | [`color`](#styling) | [`Color`](../options#color) | Yes | `'black'`
 | [`content`](#general) | `string`\|`string[]`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image)\|[`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) | Yes | `null`
-| [`display`](#general) | `boolean` | Yes | `true`
-| [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
 | [`font`](#styling) | [`Font`](../options#font) | Yes | `{}`
 | [`height`](#general) | `number`\|`string` | Yes | `undefined`
 | [`padding`](#general) | [`Padding`](../options#padding) | Yes | `6`
 | [`position`](#position) | `string`\|`{x: string, y: string}` | Yes | `'center'`
 | [`rotation`](#general) | `number`| Yes | `0`
-| [`shadowBlur`](#styling) | `number` | Yes | `0`
-| [`shadowOffsetX`](#styling) | `number` | Yes | `0`
-| [`shadowOffsetY`](#styling) | `number` | Yes | `0`
 | [`textAlign`](#general) | `string` | Yes | `'center'`
 | [`textStrokeColor`](#styling) | [`Color`](../options#color) | Yes | `undefined`
 | [`textStrokeWidth`](#styling) | `number` | Yes | `0`
 | [`width`](#general) | `number`\|`string` | Yes | `undefined`
 | [`xAdjust`](#general) | `number` | Yes | `0`
-| [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
-| [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`xScaleID`](#general) | `string` | Yes | `undefined`
 | [`xValue`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yAdjust`](#general) | `number` | Yes | `0`
-| [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yScaleID`](#general) | `string` | Yes | `undefined`
 | [`yValue`](#general) | `number` \| `string` | Yes | `undefined`
-| [`z`](#general) | `number` | Yes | `0`
+
+!!!include(./guide/types/_commonOptions.md)!!!
 
 ### General
 
@@ -231,3 +217,9 @@ All of these options can be [Scriptable](../options#scriptable-options).
 | `position` | `string` | `'auto'` | The position of callout, with respect to the label. Could be `left`, `top`, `right`, `bottom` or `auto`.
 | `side` | `number` | `5` | Width of the starter line of callout pointer.
 | `start` | `number`\|`string` | `'50%'` | The percentage of the separator dimension to use as starting point for callout pointer. Could be set in pixel by a number, or in percentage of the separator dimension by a string.
+
+## Element
+
+The following diagram is showing the element properties about a `'label'` annotation:
+
+![label](../../img/elementLabelProps.png)

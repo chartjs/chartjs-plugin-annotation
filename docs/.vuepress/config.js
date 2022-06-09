@@ -1,3 +1,4 @@
+const path = require('path');
 const docsVersion = "VERSION";
 const base = process.env.NODE_ENV === "development" ? '/chartjs-plugin-annotation/master/' : `/chartjs-plugin-annotation/${docsVersion}/`;
 
@@ -60,6 +61,11 @@ module.exports = {
       },
     }],
   ],
+  markdown: {
+    extendMarkdown: md => {
+      md.use(require('markdown-it-include'), path.resolve(__dirname, '../'));
+    }
+  },
   themeConfig: {
     repo: 'chartjs/chartjs-plugin-annotation',
     logo: '/favicon.png',
@@ -179,6 +185,7 @@ module.exports = {
           children: [
             'interaction/interaction',
             'interaction/dragging',
+            'interaction/selection',
           ],
         },
         'utils',

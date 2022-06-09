@@ -47,40 +47,26 @@ module.exports = {
 
 ## Configuration
 
+### Polygon annotation specific options
+
 The following options are available for polygon annotations.
 
 | Name | Type | [Scriptable](../options#scriptable-options) | Default
 | ---- | ---- | :----: | ----
-| [`adjustScaleRange`](#general) | `boolean` | Yes | `true`
-| [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
 | [`backgroundShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
 | [`borderCapStyle`](#styling) | `string` | Yes | `'butt'`
-| [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
-| [`borderDash`](#styling) | `number[]`| Yes | `[]`
-| [`borderDashOffset`](#styling) | `number`| Yes | `0`
 | [`borderJoinStyle`](#styling) | `string` | Yes | `'miter'`
-| [`borderShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
 | [`borderWidth`](#styling) | `number`| Yes | `1`
-| [`display`](#general) | `boolean` | Yes | `true`
-| [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
 | [`point`](#point) | `object` | Yes | `{radius: 0}`
 | [`radius`](#general) | `number` | Yes | `10`
 | [`rotation`](#general) | `number` | Yes | `0`
-| [`shadowBlur`](#styling) | `number` | Yes | `0`
-| [`shadowOffsetX`](#styling) | `number` | Yes | `0`
-| [`shadowOffsetY`](#styling) | `number` | Yes | `0`
 | [`sides`](#general) | `number` | Yes | `3`
 | [`xAdjust`](#general) | `number` | Yes | `0`
-| [`xMax`](#general) | `number` \| `string` | Yes | `undefined`
-| [`xMin`](#general) | `number` \| `string` | Yes | `undefined`
-| [`xScaleID`](#general) | `string` | Yes | `'x'`
 | [`xValue`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yAdjust`](#general) | `number` | Yes | `0`
-| [`yScaleID`](#general) | `string` | Yes | `'y'`
-| [`yMax`](#general) | `number` \| `string` | Yes | `undefined`
-| [`yMin`](#general) | `number` \| `string` | Yes | `undefined`
 | [`yValue`](#general) | `number` \| `string` | Yes | `undefined`
-| [`z`](#general) | `number` | Yes | `0`
+
+!!!include(./guide/types/_commonOptions.md)!!!
 
 ### General
 
@@ -179,3 +165,9 @@ module.exports = {
   config
 };
 ```
+
+## Element
+
+The following diagram is showing the element properties about a `'polygon'` annotation:
+
+![polygon](../../img/elementPolygonProps.png)

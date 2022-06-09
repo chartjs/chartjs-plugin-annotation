@@ -130,7 +130,7 @@ const handleDrag = function(event) {
     }
   }
 };
-// </block:dragger>
+// </block:utils>
 
 // <block:dragger:5>
 const dragger = {
