@@ -4,6 +4,8 @@ import { LabelOptions, BoxLabelOptions, LabelTypeOptions } from './label';
 
 export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw';
 
+export type CalloutPosition = 'left' | 'top' | 'bottom' | 'right' | 'auto';
+
 export interface AnnotationTypeRegistry {
   box: BoxAnnotationOptions
   ellipse: EllipseAnnotationOptions
@@ -14,7 +16,6 @@ export interface AnnotationTypeRegistry {
 }
 
 export type AnnotationType = keyof AnnotationTypeRegistry;
-
 export type AnnotationOptions<TYPE extends AnnotationType = AnnotationType> =
 	{ [key in TYPE]: { type: key } & AnnotationTypeRegistry[key] }[TYPE]
 
@@ -22,6 +23,9 @@ interface AnnotationHooks {
   beforeDraw?(context: EventContext): void,
   afterDraw?(context: EventContext): void
 }
+
+export type Scriptable<T, TContext> = T | ((ctx: TContext, options: AnnotationOptions) => T);
+export type ScaleValue = number | string;
 
 interface ShadowOptions {
   backgroundShadowColor?: Scriptable<Color, PartialEventContext>,
@@ -32,32 +36,24 @@ interface ShadowOptions {
 }
 
 export interface CoreAnnotationOptions extends AnnotationEvents, ShadowOptions, AnnotationHooks {
-  id?: string,
-  display?: Scriptable<boolean, PartialEventContext>,
   adjustScaleRange?: Scriptable<boolean, PartialEventContext>,
   borderColor?: Scriptable<Color, PartialEventContext>,
-  borderWidth?: Scriptable<number, PartialEventContext>,
   borderDash?: Scriptable<number[], PartialEventContext>,
   borderDashOffset?: Scriptable<number, PartialEventContext>,
+  borderWidth?: Scriptable<number, PartialEventContext>,
+  display?: Scriptable<boolean, PartialEventContext>,
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
-  endValue?: Scriptable<number|string, PartialEventContext>,
-  scaleID?: Scriptable<string, PartialEventContext>,
-  value?: Scriptable<number|string, PartialEventContext>,
+  id?: string,
+  xMax?: Scriptable<ScaleValue, PartialEventContext>,
+  xMin?: Scriptable<ScaleValue, PartialEventContext>,
   xScaleID?: Scriptable<string, PartialEventContext>,
+  yMax?: Scriptable<ScaleValue, PartialEventContext>,
+  yMin?: Scriptable<ScaleValue, PartialEventContext>,
   yScaleID?: Scriptable<string, PartialEventContext>,
   z?: Scriptable<number, PartialEventContext>
 }
 
-export type Scriptable<T, TContext> = T | ((ctx: TContext, options: AnnotationOptions) => T);
-export type ScaleValue = number | string;
-interface AnnotationCoordinates {
-  xMax?: Scriptable<ScaleValue, PartialEventContext>,
-  xMin?: Scriptable<ScaleValue, PartialEventContext>,
-  yMax?: Scriptable<ScaleValue, PartialEventContext>,
-  yMin?: Scriptable<ScaleValue, PartialEventContext>,
-}
-
-interface AnnotationPointCoordinates extends AnnotationCoordinates {
+interface AnnotationPointCoordinates {
   xValue?: Scriptable<ScaleValue, PartialEventContext>,
   yValue?: Scriptable<ScaleValue, PartialEventContext>,
 }
@@ -79,12 +75,15 @@ export interface ArrowHeadsOptions extends ArrowHeadOptions{
   start?: ArrowHeadOptions,
 }
 
-export interface LineAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
+export interface LineAnnotationOptions extends CoreAnnotationOptions {
   arrowHeads?: ArrowHeadsOptions,
-  label?: LabelOptions
+  endValue?: Scriptable<number|string, PartialEventContext>,
+  label?: LabelOptions,
+  scaleID?: Scriptable<string, PartialEventContext>,
+  value?: Scriptable<number|string, PartialEventContext>
 }
 
-export interface BoxAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
+export interface BoxAnnotationOptions extends CoreAnnotationOptions {
   backgroundColor?: Scriptable<Color, PartialEventContext>,
   /**
    * Border line cap style. See MDN.
@@ -111,7 +110,7 @@ export interface BoxAnnotationOptions extends CoreAnnotationOptions, AnnotationC
   rotation?: Scriptable<number, PartialEventContext>
 }
 
-export interface EllipseAnnotationOptions extends CoreAnnotationOptions, AnnotationCoordinates {
+export interface EllipseAnnotationOptions extends CoreAnnotationOptions {
   backgroundColor?: Scriptable<Color, PartialEventContext>,
   rotation?: Scriptable<number, PartialEventContext>
 }
@@ -124,8 +123,6 @@ export interface PointAnnotationOptions extends CoreAnnotationOptions, Annotatio
   xAdjust?: Scriptable<number, PartialEventContext>,
   yAdjust?: Scriptable<number, PartialEventContext>,
 }
-
-export type CalloutPosition = 'left' | 'top' | 'bottom' | 'right' | 'auto';
 
 export interface CalloutOptions {
   borderCapStyle?: Scriptable<CanvasLineCap, PartialEventContext>,
@@ -158,14 +155,10 @@ interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationPoin
   yAdjust?: Scriptable<number, PartialEventContext>,
 }
 
-export interface AnnotationPluginCommonOptions {
-  drawTime?: Scriptable<DrawTime, PartialEventContext>
-}
-
 export interface AnnotationPluginOptions extends AnnotationEvents, AnnotationHooks {
   animations?: Record<string, unknown>,
   annotations: AnnotationOptions[] | Record<string, AnnotationOptions>,
   clip?: boolean,
-  common?: AnnotationPluginCommonOptions,
+  common?: BoxAnnotationOptions | EllipseAnnotationOptions | LabelAnnotationOptions | LineAnnotationOptions | PointAnnotationOptions | PolygonAnnotationOptions,
   interaction?: CoreInteractionOptions
 }

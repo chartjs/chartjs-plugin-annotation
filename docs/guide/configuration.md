@@ -54,7 +54,7 @@ const options = {
 
 | Name | Option | Value
 | ---- | ---- | ----
-| `numbers` | `properties` | `['x', 'y', 'x2', 'y2', 'width', 'height', 'centerX', 'centerY', 'pointX', 'pointY', 'labelX', 'labelY', 'labelWidth', 'labelHeight', 'radius']`
+| `numbers` | `properties` | `['x', 'y', 'x2', 'y2', 'width', 'height', 'centerX', 'centerY', 'pointX', 'pointY', 'radius']`
 | `numbers` | `type` | `number`
 
 ## Common
