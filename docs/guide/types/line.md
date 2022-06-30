@@ -127,7 +127,7 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `borderWidth` | `number` | `0` | The border line width (in pixels).
 | `color` | [`Color`](../options#color) | `'#fff'` | Text color.
 | `content` | `string`\|`string[]`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image)\|[`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) | `null` | The content to show in the label.
-| `display` | `boolean` | `false` | Whether or not the label is shown.
+| `enabled` | `boolean` | `false` | Whether or not the label is shown.
 | `drawTime` | `string` | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the line annotation draw time if unset.
 | `font` | [`Font`](../options#font) | `{ weight: 'bold' }` | Label font.
 | `height` | `number`\|`string` | `undefined` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
