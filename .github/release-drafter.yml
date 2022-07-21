@@ -44,6 +44,7 @@ template: |
   * [npm](https://www.npmjs.com/package/chartjs-plugin-annotation)
   * [Migration guide](https://www.chartjs.org/chartjs-plugin-annotation/latest/guide/migrationV2.html)
   * [Docs](https://www.chartjs.org/chartjs-plugin-annotation/)
+  * [API](https://www.chartjs.org/chartjs-plugin-annotation/latest/api/)
   * [Samples](https://www.chartjs.org/chartjs-plugin-annotation/latest/samples/intro.html)
 
   $CHANGES
