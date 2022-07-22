@@ -48,6 +48,8 @@ leave: function({element}) {
 },
 ```
 
+`chartjs-plugin-annotation` plugin version 2 removes the clipping of the label to the box annotation size.
+
 `chartjs-plugin-annotation` plugin version 2 hides the following methods in the `line` annotation element because they should be used only internally:
 
  * `intersects`
