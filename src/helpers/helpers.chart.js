@@ -185,6 +185,26 @@ function getChartDimensionByScale(scale, options) {
   };
 }
 
+function calculateX({properties, options}, labelSize, position, padding) {
+  const {x: start, x2: end, width: size} = properties;
+  return calculatePosition({start, end, size, borderWidth: options.borderWidth}, {
+    position: position.x,
+    padding: {start: padding.left, end: padding.right},
+    adjust: options.label.xAdjust,
+    size: labelSize.width
+  });
+}
+
+function calculateY({properties, options}, labelSize, position, padding) {
+  const {y: start, y2: end, height: size} = properties;
+  return calculatePosition({start, end, size, borderWidth: options.borderWidth}, {
+    position: position.y,
+    padding: {start: padding.top, end: padding.bottom},
+    adjust: options.label.yAdjust,
+    size: labelSize.height
+  });
+}
+
 function calculatePosition(boxOpts, labelOpts) {
   const {start, end, borderWidth} = boxOpts;
   const {position, padding: {start: padStart, end: padEnd}, adjust} = labelOpts;
@@ -199,18 +219,8 @@ function resolveLabelElementProperties(chart, properties, options) {
   const position = toPosition(label.position);
   const padding = toPadding(label.padding);
   const labelSize = measureLabelSize(chart.ctx, label);
-  const x = calculatePosition({start: properties.x, end: properties.x2, size: properties.width, borderWidth: options.borderWidth}, {
-    position: position.x,
-    padding: {start: padding.left, end: padding.right},
-    adjust: options.label.xAdjust,
-    size: labelSize.width
-  });
-  const y = calculatePosition({start: properties.y, end: properties.y2, size: properties.height, borderWidth: options.borderWidth}, {
-    position: position.y,
-    padding: {start: padding.top, end: padding.bottom},
-    adjust: options.label.yAdjust,
-    size: labelSize.height
-  });
+  const x = calculateX({properties, options}, labelSize, position, padding);
+  const y = calculateY({properties, options}, labelSize, position, padding);
   const width = labelSize.width + padding.width;
   const height = labelSize.height + padding.height;
   return {
