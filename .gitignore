@@ -5,6 +5,8 @@
 /dist
 /gh-pages
 /docs/.docusaurus
+# generated typedocs
+docs/api
 
 # Node.js
 node_modules/

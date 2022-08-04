@@ -19,6 +19,18 @@ module.exports = {
         {base: '/samples', alternative: ['intro']},
       ],
     }],
+    [
+      'vuepress-plugin-typedoc',
+      {
+        entryPoints: ['../../types/index.d.ts'],
+        hideInPageTOC: true,
+        tsconfig: 'tsconfig.json',
+        sidebar: {
+          fullNames: true,
+          parentCategory: 'API',
+        },
+      },
+    ],
     ['@simonbrunel/vuepress-plugin-versions', {
       filters: {
         suffix: (tag) => tag ? ` (${tag})` : '',
@@ -82,10 +94,14 @@ module.exports = {
     },
     nav: [
       {text: 'Home', link: '/'},
+      {text: 'API', link: '/api/'},
       {text: 'Guide', link: '/guide/'},
       {text: 'Samples', link: '/samples/'},
     ],
     sidebar: {
+      '/api/': {
+        title: 'API'
+      },
       '/guide/': [
         '',
         'integration',
