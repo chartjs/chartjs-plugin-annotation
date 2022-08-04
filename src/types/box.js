@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {toPadding, toRadians} from 'chart.js/helpers';
+import {toRadians} from 'chart.js/helpers';
 import {drawBox, resolveBoxAndLabelProperties, inBoxRange, rotated, translate, getElementCenterPoint} from '../helpers';
 
 export default class BoxAnnotation extends Element {
