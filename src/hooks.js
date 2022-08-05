@@ -34,14 +34,14 @@ export function updateHooks(chart, state, options) {
 /**
  * @param {Chart} chart
  * @param {Object} state
- * @param {{element: AnnotationElement, area: {top: number, left: number, width: number, height: number}, main?: AnnotationElement}} options
+ * @param {{element: AnnotationElement, main?: AnnotationElement}} options
  */
 export function drawElement(chart, state, item) {
-  const {element, area, main} = item;
+  const {element, main} = item;
   const el = main || element;
   el._drawnElements += 1;
   beforeDraw(state, el);
-  element.draw(chart.ctx, area);
+  element.draw(chart.ctx);
   afterDraw(state, el);
 }
 

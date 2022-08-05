@@ -147,17 +147,14 @@ export default {
 };
 
 function draw(chart, caller, clip) {
-  const {ctx, canvas, chartArea} = chart;
-  let area = {left: 0, top: 0, width: canvas.width, height: canvas.height};
+  const {ctx, chartArea} = chart;
   const state = chartStates.get(chart);
 
   if (clip) {
     clipArea(ctx, chartArea);
-    area = chartArea;
   }
 
-  const drawableElements = getDrawableElements(state.visibleElements, caller, area).sort((a, b) => a.element.options.z - b.element.options.z);
-
+  const drawableElements = getDrawableElements(state.visibleElements, caller).sort((a, b) => a.element.options.z - b.element.options.z);
   for (const item of drawableElements) {
     drawElement(chart, state, item);
   }
@@ -167,17 +164,16 @@ function draw(chart, caller, clip) {
   }
 }
 
-function getDrawableElements(elements, caller, area) {
+function getDrawableElements(elements, caller) {
   const drawableElements = [];
   for (const el of elements) {
     if (el.options.drawTime === caller) {
-      drawableElements.push({element: el, area});
+      drawableElements.push({element: el});
     }
     if (el.elements && el.elements.length) {
-      const box = 'getBoundingBox' in el ? el.getBoundingBox() : area;
       for (const sub of el.elements) {
         if (sub.options.display && sub.options.drawTime === caller) {
-          drawableElements.push({element: sub, area: box, main: el});
+          drawableElements.push({element: sub, main: el});
         }
       }
     }

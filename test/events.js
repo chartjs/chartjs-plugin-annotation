@@ -84,7 +84,7 @@ export function testEvents(options) {
         });
       });
 
-      it('shuold detect click event', function(done) {
+      it('should detect click event', function(done) {
         const clickSpy = jasmine.createSpy('click');
 
         targetOptions.click = clickSpy;
