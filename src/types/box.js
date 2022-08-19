@@ -20,20 +20,6 @@ export default class BoxAnnotation extends Element {
     ctx.restore();
   }
 
-  getBoundingBox() {
-    const {x, y, width, height} = this.getProps(['x', 'y', 'width', 'height']);
-    const label = this.options.label;
-    const padding = toPadding(label.padding);
-    const borderWidth = this.options.borderWidth;
-    const halfBorder = borderWidth / 2;
-    return {
-      left: x + halfBorder + padding.left,
-      top: y + halfBorder + padding.top,
-      width: width - borderWidth - padding.width,
-      height: height - borderWidth - padding.height
-    };
-  }
-
   get label() {
     return this.elements && this.elements[0];
   }

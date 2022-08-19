@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {drawBox, drawLabel, measureLabelSize, getChartPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, resolveBoxProperties, getRelativePosition, translate, rotated, getElementCenterPoint, initAnimationProperties} from '../helpers';
-import {toPadding, toRadians, distanceBetweenPoints} from 'chart.js/helpers';
+import {toPadding, toRadians, distanceBetweenPoints, defined} from 'chart.js/helpers';
 
 const positions = ['left', 'bottom', 'top', 'right'];
 
@@ -15,21 +15,16 @@ export default class LabelAnnotation extends Element {
     return getElementCenterPoint(this, useFinalPosition);
   }
 
-  draw(ctx, area) {
+  draw(ctx) {
     const options = this.options;
-    if (!options.display || !options.content) {
+    const visible = !defined(this._visible) || this._visible;
+    if (!options.display || !options.content || !visible) {
       return;
     }
     ctx.save();
     translate(ctx, this.getCenterPoint(), this.rotation);
     drawCallout(ctx, this);
     drawBox(ctx, this, options);
-    if (area) {
-      // clip
-      ctx.beginPath();
-      ctx.rect(area.left, area.top, area.width, area.height);
-      ctx.clip();
-    }
     drawLabel(ctx, getLabelSize(this), options);
     ctx.restore();
   }
