@@ -89,13 +89,14 @@ export default class LineAnnotation extends Element {
       : {x, y, x2, y2, width: Math.abs(x2 - x), height: Math.abs(y2 - y)};
     properties.centerX = (x2 + x) / 2;
     properties.centerY = (y2 + y) / 2;
-    if (!inside) {
-      options.label.display = false;
-    }
+    const labelProperties = resolveLabelElementProperties(chart, properties, options.label);
+    // additonal prop to manage zoom/pan
+    labelProperties._visible = inside;
+
     properties.elements = [{
       type: 'label',
       optionScope: 'label',
-      properties: resolveLabelElementProperties(chart, properties, options.label)
+      properties: labelProperties
     }];
     return properties;
   }
