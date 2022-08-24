@@ -72,6 +72,8 @@ If one of the axes does not match an axis in the chart then the line behaviors a
 The 2 coordinates, start, end, are optional. If not specified, the line is expanded out to the edges in the respective direction.
 The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the line is expanded out to the edges in the respective direction.
 
+The `id` identifies a unique id  for the annotation and it will be stored in the element context. When the annotations are defined by an object, the id is automatically set using the key used to store the annotations in the object. When the annotations are configured by an array, the id, passed by this option in the annotation, will be used. 
+
 #### Positioning
 
 The line can be positioned in two different ways. If `scaleID` is set, then `value` and `endValue` must also be set to indicate the endpoints of the line. The line will be perpendicular to the axis identified by `scaleID`.
