@@ -12,6 +12,7 @@ The following options are available for all annotations.
 | [`borderShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
 | [`display`](#general) | `boolean` | Yes | `true`
 | [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
+| [`id`](#general) | `string` | No | `undefined`
 | [`shadowBlur`](#styling) | `number` | Yes | `0`
 | [`shadowOffsetX`](#styling) | `number` | Yes | `0`
 | [`shadowOffsetY`](#styling) | `number` | Yes | `0`
