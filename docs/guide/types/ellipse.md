@@ -55,6 +55,7 @@ The following options are available for ellipse annotations.
 | ---- | ---- | :----: | ----
 | [`backgroundShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
 | [`borderWidth`](#styling) | `number`| Yes | `1`
+| [`label`](#label) | `object` | Yes |
 | [`rotation`](#general) | `number`| Yes | `0`
 
 !!!include(./guide/types/_commonOptions.md)!!!
@@ -92,6 +93,8 @@ If one of the axes does not match an axis in the chart, the ellipse will take th
 | `shadowBlur` | The amount of blur applied to shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
 | `shadowOffsetX` | The distance that shadow will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
 | `shadowOffsetY` | The distance that shadow will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
+
+!!!include(./guide/types/_commonInnerLabel.md)!!!
 
 ## Element
 

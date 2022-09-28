@@ -140,6 +140,8 @@ module.exports = {
           children: [
             'ellipse/basic',
             'ellipse/rotation',
+            'ellipse/label',
+            'ellipse/image',
           ]
         },
         {

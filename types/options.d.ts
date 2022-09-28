@@ -105,6 +105,7 @@ export interface BoxAnnotationOptions extends CoreAnnotationOptions {
 
 export interface EllipseAnnotationOptions extends CoreAnnotationOptions {
   backgroundColor?: Scriptable<Color, PartialEventContext>,
+  label?: BoxLabelOptions,
   rotation?: Scriptable<number, PartialEventContext>
 }
 
