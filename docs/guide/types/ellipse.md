@@ -55,6 +55,7 @@ The following options are available for ellipse annotations.
 | ---- | ---- | :----: | ----
 | [`backgroundShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
 | [`borderWidth`](#styling) | `number`| Yes | `1`
+| [`label`](#label) | `object` | Yes |
 | [`rotation`](#general) | `number`| Yes | `0`
 
 !!!include(./guide/types/_commonOptions.md)!!!
@@ -68,6 +69,7 @@ If one of the axes does not match an axis in the chart, the ellipse will take th
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
 | `display` | Whether or not this annotation is visible.
 | `drawTime` | See [drawTime](../options#draw-time).
+| `id` | Identifies a unique id  for the annotation and it will be stored in the element context. When the annotations are defined by an object, the id is automatically set using the key used to store the annotations in the object. When the annotations are configured by an array, the id, passed by this option in the annotation, will be used. 
 | `rotation` | Rotation of the ellipse in degrees, default is 0.
 | `xMax` | Right edge of the ellipse in units along the x axis.
 | `xMin` | Left edge of the ellipse in units along the x axis.
@@ -91,6 +93,8 @@ If one of the axes does not match an axis in the chart, the ellipse will take th
 | `shadowBlur` | The amount of blur applied to shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
 | `shadowOffsetX` | The distance that shadow will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
 | `shadowOffsetY` | The distance that shadow will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
+
+!!!include(./guide/types/_commonInnerLabel.md)!!!
 
 ## Element
 

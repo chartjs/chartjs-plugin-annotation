@@ -1,6 +1,7 @@
 import {Element} from 'chart.js';
 import {PI, toRadians, toDegrees, toPadding} from 'chart.js/helpers';
 import {EPSILON, clamp, scaleValue, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, getElementCenterPoint, retrieveScaleID, getDimensionByScale, initAnimationProperties} from '../helpers';
+import LabelAnnotation from './label';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
@@ -151,9 +152,7 @@ LineAnnotation.defaults = {
     borderRadius: 6,
     borderShadowColor: 'transparent',
     borderWidth: 0,
-    callout: {
-      display: false
-    },
+    callout: Object.assign({}, LabelAnnotation.defaults.callout),
     color: '#fff',
     content: null,
     display: false,
@@ -278,8 +277,6 @@ function applyScaleValueToDimension(area, scale, options) {
 }
 
 function resolveLabelElementProperties(chart, properties, options) {
-  // TODO to remove by another PR to enable callout for line label
-  options.callout.display = false;
   const borderWidth = options.borderWidth;
   const padding = toPadding(options.padding);
   const textSize = measureLabelSize(chart.ctx, options);
@@ -315,6 +312,8 @@ function calculateLabelPosition(properties, label, sizes, chartArea) {
     y2: centerY + (height / 2),
     centerX,
     centerY,
+    pointX: pt.x,
+    pointY: pt.y,
     width,
     height,
     rotation: toDegrees(rotation)

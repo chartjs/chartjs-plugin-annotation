@@ -5,8 +5,6 @@ import { AnnotationBoxModel } from './element';
 
 export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw';
 
-export type CalloutPosition = 'left' | 'top' | 'bottom' | 'right' | 'auto';
-
 export interface AnnotationTypeRegistry {
   box: BoxAnnotationOptions
   ellipse: EllipseAnnotationOptions
@@ -109,6 +107,7 @@ export interface BoxAnnotationOptions extends CoreAnnotationOptions {
 
 export interface EllipseAnnotationOptions extends CoreAnnotationOptions {
   backgroundColor?: Scriptable<Color, PartialEventContext>,
+  label?: BoxLabelOptions,
   rotation?: Scriptable<number, PartialEventContext>
 }
 
@@ -121,22 +120,7 @@ export interface PointAnnotationOptions extends CoreAnnotationOptions, Annotatio
   yAdjust?: Scriptable<number, PartialEventContext>,
 }
 
-export interface CalloutOptions {
-  borderCapStyle?: Scriptable<CanvasLineCap, PartialEventContext>,
-  borderColor?: Scriptable<Color, PartialEventContext>,
-  borderDash?: Scriptable<number[], PartialEventContext>,
-  borderDashOffset?: Scriptable<number, PartialEventContext>,
-  borderJoinStyle?: Scriptable<CanvasLineJoin, PartialEventContext>,
-  borderWidth?: Scriptable<number, PartialEventContext>,
-  display?: Scriptable<boolean, PartialEventContext>,
-  margin?: Scriptable<number, PartialEventContext>,
-  position?: Scriptable<CalloutPosition, PartialEventContext>,
-  side?: Scriptable<number, PartialEventContext>,
-  start?: Scriptable<number | string, PartialEventContext>,
-}
-
 export interface LabelAnnotationOptions extends CoreAnnotationOptions, LabelTypeOptions, AnnotationPointCoordinates {
-  callout?: CalloutOptions,
   rotation?: Scriptable<number, PartialEventContext>
 }
 

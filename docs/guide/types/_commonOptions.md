@@ -13,6 +13,7 @@ The following options are available for all annotations.
 | [`display`](#general) | `boolean` | Yes | `true`
 | [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
 | [`initAnimation`](../configuration.html#common) | `boolean`  | [See initial animation](../configuration.html#initial-animation) | `undefined`
+| [`id`](#general) | `string` | No | `undefined`
 | [`shadowBlur`](#styling) | `number` | Yes | `0`
 | [`shadowOffsetX`](#styling) | `number` | Yes | `0`
 | [`shadowOffsetY`](#styling) | `number` | Yes | `0`

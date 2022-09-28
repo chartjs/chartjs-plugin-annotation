@@ -141,6 +141,8 @@ module.exports = {
           children: [
             'ellipse/basic',
             'ellipse/rotation',
+            'ellipse/label',
+            'ellipse/image',
           ]
         },
         {
@@ -163,6 +165,7 @@ module.exports = {
             'line/limited',
             'line/average',
             'line/standardDeviation',
+            'line/callout',
             'line/visibility',
             'line/labelVisibility',
             'line/canvas',
