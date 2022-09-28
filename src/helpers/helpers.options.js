@@ -65,7 +65,7 @@ export function calculateTextAlignment(size, options) {
  * @param {string|number} defaultValue
  * @returns {{x: number|string, y: number|string}}
  */
-export function toPointOption(value, defaultValue) {
+export function toPosition(value, defaultValue = 'center') {
   if (isObject(value)) {
     return {
       x: valueOrDefault(value.x, defaultValue),
