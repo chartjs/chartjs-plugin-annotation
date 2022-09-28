@@ -74,6 +74,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
 | `display` | Whether or not this annotation is visible.
 | `drawTime` | See [drawTime](../options#draw-time).
+| `id` | Identifies a unique id  for the annotation and it will be stored in the element context. When the annotations are defined by an object, the id is automatically set using the key used to store the annotations in the object. When the annotations are configured by an array, the id, passed by this option in the annotation, will be used. 
 | `radius` | Size of the point in pixels.
 | `rotation` | Rotation of point, in degrees.
 | `xAdjust` | Adjustment along x-axis (left-right) of point relative to computed position. Negative values move the point left, positive right.

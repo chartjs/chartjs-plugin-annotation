@@ -7,6 +7,8 @@ export type LabelPosition = 'start' | 'center' | 'end' | percentString;
 
 export type LabelTextAlign = 'left' | 'start' | 'center' | 'right' | 'end';
 
+export type CalloutPosition = 'left' | 'top' | 'bottom' | 'right' | 'auto';
+
 export interface LabelPositionObject {
   x?: LabelPosition,
   y?: LabelPosition
@@ -19,6 +21,20 @@ export interface LabelPadding {
   bottom?: number,
   x?: number,
   y?: number
+}
+
+export interface CalloutOptions {
+  borderCapStyle?: Scriptable<CanvasLineCap, PartialEventContext>,
+  borderColor?: Scriptable<Color, PartialEventContext>,
+  borderDash?: Scriptable<number[], PartialEventContext>,
+  borderDashOffset?: Scriptable<number, PartialEventContext>,
+  borderJoinStyle?: Scriptable<CanvasLineJoin, PartialEventContext>,
+  borderWidth?: Scriptable<number, PartialEventContext>,
+  display?: Scriptable<boolean, PartialEventContext>,
+  margin?: Scriptable<number, PartialEventContext>,
+  position?: Scriptable<CalloutPosition, PartialEventContext>,
+  side?: Scriptable<number, PartialEventContext>,
+  start?: Scriptable<number | string, PartialEventContext>,
 }
 
 export interface CoreLabelOptions {
@@ -96,7 +112,8 @@ export interface ContainedLabelOptions extends CoreLabelOptions {
    * Border radius of the label rectangle
    * @default 6
    */
-  borderRadius?: Scriptable<number | BorderRadius, PartialEventContext>
+  borderRadius?: Scriptable<number | BorderRadius, PartialEventContext>,
+  callout?: CalloutOptions,
 }
 
 export interface LabelOptions extends ContainedLabelOptions, ShadowOptions {

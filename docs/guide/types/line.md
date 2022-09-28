@@ -74,6 +74,8 @@ If one of the axes does not match an axis in the chart then the line behaviors a
 The 2 coordinates, start, end, are optional. If not specified, the line is expanded out to the edges in the respective direction.
 The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the line is expanded out to the edges in the respective direction.
 
+The `id` identifies a unique id  for the annotation and it will be stored in the element context. When the annotations are defined by an object, the id is automatically set using the key used to store the annotations in the object. When the annotations are configured by an array, the id, passed by this option in the annotation, will be used. 
+
 #### Positioning
 
 The line can be positioned in two different ways. If `scaleID` is set, then `value` and `endValue` must also be set to indicate the endpoints of the line. The line will be perpendicular to the axis identified by `scaleID`.
@@ -129,6 +131,7 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | [`borderRadius`](#borderradius) | `number` \| `object` | `6` | Radius of label box corners in pixels.
 | `borderShadowColor` | [`Color`](../options#color) | `'transparent'` | The color of border shadow of the box where the label is located. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderWidth` | `number` | `0` | The border line width (in pixels).
+| [`callout`](#callout) | `object` | | Can connect the label to the line. See [callout](#callout).
 | `color` | [`Color`](../options#color) | `'#fff'` | Text color.
 | `content` | `string`\|`string[]`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image)\|[`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) | `null` | The content to show in the label.
 | `display` | `boolean` | `false` | Whether or not the label is shown.
@@ -152,6 +155,28 @@ All of these options can be [Scriptable](../options#scriptable-options)
 ### borderRadius
 
 If this value is a number, it is applied to all corners of the rectangle (topLeft, topRight, bottomLeft, bottomRight). If this value is an object, the `topLeft` property defines the top-left corners border radius. Similarly, the `topRight`, `bottomLeft`, and `bottomRight` properties can also be specified. Omitted corners have radius of 0.
+
+### Callout
+
+A callout can connect the label to the line when the label is arbitrarily (by `xAdjust` and `yAdjust` options) moved from its original position.
+
+Namespace: `options.annotations[annotationID].label.callout`, it defines options for the callout on the label of the line annotation.
+
+All of these options can be [Scriptable](../options#scriptable-options).
+
+| Name | Type | Default | Notes
+| ---- | ---- | :----: | ----
+| `borderCapStyle` | `string` | `'butt'` | Cap style of the border line of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap).
+| `borderColor` | [`Color`](../options#color) | `undefined` | Stroke color of the pointer of the callout.
+| `borderDash` | `number[]` | `[]` | Length and spacing of dashes of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
+| `borderDashOffset` | `number` | `0` | Offset for line dashes of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
+| `borderJoinStyle` | `string` | `'miter'` | Border line join style of the callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
+| `borderWidth` | `number` | `1` | Stroke width of the pointer of the callout.
+| `display` | `boolean` | `false` | If true, the callout is drawn.
+| `margin` | `number` | `5` | Amount of pixels between the label and the callout separator.
+| `position` | `string` | `'auto'` | The position of callout, with respect to the label. Could be `left`, `top`, `right`, `bottom` or `auto`.
+| `side` | `number` | `5` | Width of the starter line of callout pointer.
+| `start` | `number`\|`string` | `'50%'` | The percentage of the separator dimension to use as starting point for callout pointer. Could be set in pixel by a number, or in percentage of the separator dimension by a string.
 
 ## Arrow heads
 
