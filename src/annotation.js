@@ -1,7 +1,7 @@
 import {Chart} from 'chart.js';
 import {clipArea, unclipArea, isObject, isArray} from 'chart.js/helpers';
 import {handleEvent, eventHooks, updateListeners} from './events';
-import {drawElement, elementHooks, updateHooks, resetCounters} from './hooks';
+import {invokeHook, elementHooks, updateHooks} from './hooks';
 import {adjustScaleRange, verifyScaleOptions} from './scale';
 import {updateElements, resolveType} from './elements';
 import {annotationTypes} from './types';
@@ -83,7 +83,6 @@ export default {
   },
 
   beforeDraw(chart, _args, options) {
-    resetCounters(chartStates.get(chart));
     draw(chart, 'beforeDraw', options.clip);
   },
 
@@ -156,7 +155,14 @@ function draw(chart, caller, clip) {
 
   const drawableElements = getDrawableElements(state.visibleElements, caller).sort((a, b) => a.element.options.z - b.element.options.z);
   for (const item of drawableElements) {
-    drawElement(chart, state, item);
+    const el = item.element;
+    if (item.main) {
+      invokeHook(state, el, 'beforeDraw');
+      el.draw(ctx, chartArea);
+      invokeHook(state, el, 'afterDraw');
+    } else {
+      el.draw(ctx, chartArea);
+    }
   }
 
   if (clip) {
@@ -168,12 +174,12 @@ function getDrawableElements(elements, caller) {
   const drawableElements = [];
   for (const el of elements) {
     if (el.options.drawTime === caller) {
-      drawableElements.push({element: el});
+      drawableElements.push({element: el, main: true});
     }
     if (el.elements && el.elements.length) {
       for (const sub of el.elements) {
         if (sub.options.display && sub.options.drawTime === caller) {
-          drawableElements.push({element: sub, main: el});
+          drawableElements.push({element: sub});
         }
       }
     }

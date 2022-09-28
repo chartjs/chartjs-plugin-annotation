@@ -32,43 +32,13 @@ export function updateHooks(chart, state, options) {
 }
 
 /**
- * @param {Chart} chart
  * @param {Object} state
- * @param {{element: AnnotationElement, main?: AnnotationElement}} options
+ * @param {AnnotationElement} element
+ * @param {string} hook
  */
-export function drawElement(chart, state, item) {
-  const {element, main} = item;
-  const el = main || element;
-  el._drawnElements += 1;
-  beforeDraw(state, el);
-  element.draw(chart.ctx);
-  afterDraw(state, el);
-}
-
-/**
- * @param {Object} state
- */
-export function resetCounters(state) {
-  state.visibleElements.forEach(function(el) {
-    el._drawnElements = 0;
-    const subElements = (el.elements || []).filter(item => item.options.display);
-    el._drawCount = subElements.length + 1;
-  });
-}
-
-function beforeDraw(state, el) {
-  if (state.hooked && el._drawnElements === 1) {
-    invokeHook(state, el, 'beforeDraw');
+export function invokeHook(state, element, hook) {
+  if (state.hooked) {
+    const callbackHook = element.options[hook] || state.hooks[hook];
+    return callback(callbackHook, [element.$context]);
   }
-}
-
-function afterDraw(state, el) {
-  if (state.hooked && el._drawnElements === el._drawCount) {
-    invokeHook(state, el, 'afterDraw');
-  }
-}
-
-function invokeHook(state, el, hook) {
-  const callbackHook = el.options[hook] || state.hooks[hook];
-  callback(callbackHook, [el.$context]);
 }
