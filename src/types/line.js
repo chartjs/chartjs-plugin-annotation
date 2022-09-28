@@ -206,7 +206,7 @@ LineAnnotation.defaultRoutes = {
   borderColor: 'color'
 };
 
-function inYorXAxisRange(element, {mouseX, mouseY}, axis, {hBorderWidth, useFinalPosition}) {
+function inAxisRange(element, {mouseX, mouseY}, axis, {hBorderWidth, useFinalPosition}) {
   const limit = rangeLimit(mouseX, mouseY, element.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis);
   return (limit.value >= limit.start - hBorderWidth && limit.value <= limit.end + hBorderWidth) || isOnLabel(element, {mouseX, mouseY}, useFinalPosition, axis);
 }
