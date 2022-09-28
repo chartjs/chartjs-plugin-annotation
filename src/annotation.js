@@ -155,14 +155,7 @@ function draw(chart, caller, clip) {
 
   const drawableElements = getDrawableElements(state.visibleElements, caller).sort((a, b) => a.element.options.z - b.element.options.z);
   for (const item of drawableElements) {
-    const el = item.element;
-    if (item.main) {
-      invokeHook(state, el, 'beforeDraw');
-      el.draw(ctx, chartArea);
-      invokeHook(state, el, 'afterDraw');
-    } else {
-      el.draw(ctx, chartArea);
-    }
+    drawElement(ctx, chartArea, state, item);
   }
 
   if (clip) {
@@ -185,4 +178,15 @@ function getDrawableElements(elements, caller) {
     }
   }
   return drawableElements;
+}
+
+function drawElement(ctx, chartArea, state, item) {
+  const el = item.element;
+  if (item.main) {
+    invokeHook(state, el, 'beforeDraw');
+    el.draw(ctx, chartArea);
+    invokeHook(state, el, 'afterDraw');
+  } else {
+    el.draw(ctx, chartArea);
+  }
 }
