@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, toRadians, toDegrees, toPadding, distanceBetweenPoints} from 'chart.js/helpers';
-import {EPSILON, clamp, rotated, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, getElementCenterPoint, toPointOption, getSize, resolveLineProperties} from '../helpers';
+import {EPSILON, clamp, rotated, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, getElementCenterPoint, toPosition, getSize, resolveLineProperties} from '../helpers';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
@@ -29,7 +29,7 @@ export default class LineAnnotation extends Element {
       const epsilon = sqr(hBorderWidth);
       return intersects(this, point, epsilon, useFinalPosition) || isOnLabel(this, point, useFinalPosition);
     }
-    return inYorXAxisRange(this, {mouseX, mouseY}, axis, {hBorderWidth, useFinalPosition});
+    return inAxisRange(this, {mouseX, mouseY}, axis, {hBorderWidth, useFinalPosition});
   }
 
   getCenterPoint(useFinalPosition) {
@@ -426,7 +426,7 @@ function drawArrowHead(ctx, offset, adjust, arrowOpts) {
 function getControlPoint(properties, options, distance) {
   const {x, y, x2, y2, centerX, centerY} = properties;
   const angle = Math.atan2(y2 - y, x2 - x);
-  const cp = toPointOption(options.controlPoint, 0);
+  const cp = toPosition(options.controlPoint, 0);
   const point = {
     x: centerX + getSize(distance, cp.x, false),
     y: centerY + getSize(distance, cp.y, false)

@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {drawBox, drawLabel, measureLabelSize, getChartPoint, toPointOption, setBorderStyle, getSize, inBoxRange, isBoundToPoint, resolveBoxProperties, getRelativePosition, translate, rotated, getElementCenterPoint} from '../helpers';
+import {drawBox, drawLabel, measureLabelSize, getChartPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, resolveBoxProperties, getRelativePosition, translate, rotated, getElementCenterPoint} from '../helpers';
 import {toPadding, toRadians, distanceBetweenPoints, defined} from 'chart.js/helpers';
 
 const positions = ['left', 'bottom', 'top', 'right'];
@@ -116,7 +116,7 @@ LabelAnnotation.defaultRoutes = {
 function measureRect(point, size, options, padding) {
   const width = size.width + padding.width + options.borderWidth;
   const height = size.height + padding.height + options.borderWidth;
-  const position = toPointOption(options.position, 'center');
+  const position = toPosition(options.position, 'center');
   const x = calculatePosition(point.x, width, options.xAdjust, position.x);
   const y = calculatePosition(point.y, height, options.yAdjust, position.y);
 

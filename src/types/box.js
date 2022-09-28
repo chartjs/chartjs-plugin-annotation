@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {toPadding, toRadians} from 'chart.js/helpers';
-import {drawBox, getRelativePosition, measureLabelSize, resolveBoxProperties, toPointOption, inBoxRange, rotated, translate, getElementCenterPoint} from '../helpers';
+import {drawBox, getRelativePosition, measureLabelSize, resolveBoxProperties, toPosition, inBoxRange, rotated, translate, getElementCenterPoint} from '../helpers';
 
 export default class BoxAnnotation extends Element {
 
@@ -134,7 +134,7 @@ function resolveLabelElementProperties(chart, properties, options) {
   const label = options.label;
   label.backgroundColor = 'transparent';
   label.callout.display = false;
-  const position = toPointOption(label.position, 'center');
+  const position = toPosition(label.position, 'center');
   const padding = toPadding(label.padding);
   const labelSize = measureLabelSize(chart.ctx, label);
   const x = calculateX({properties, options}, labelSize, position, padding);
