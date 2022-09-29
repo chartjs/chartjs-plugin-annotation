@@ -3,6 +3,10 @@ import {clampAll} from './helpers.core';
 import {calculateTextAlignment, getSize} from './helpers.options';
 
 const widthCache = new Map();
+const fontsKey = (fonts) => fonts.reduce(function(prev, item) {
+  prev += item.string;
+  return prev;
+}, '');
 
 /**
  * @typedef { import('chart.js').Point } Point
@@ -79,27 +83,11 @@ export function measureLabelSize(ctx, options) {
   }
   const optFont = options.font;
   const fonts = isArray(optFont) ? optFont.map(f => toFont(f)) : [toFont(optFont)];
-  const fontsKey = fonts.reduce(function(prev, item) {
-    prev += item.string;
-    return prev;
-  }, '');
   const strokeWidth = options.textStrokeWidth;
   const lines = isArray(content) ? content : [content];
-  const mapKey = lines.join() + fontsKey + strokeWidth + (ctx._measureText ? '-spriting' : '');
+  const mapKey = lines.join() + fontsKey(fonts) + strokeWidth + (ctx._measureText ? '-spriting' : '');
   if (!widthCache.has(mapKey)) {
-    ctx.save();
-    const count = lines.length;
-    let width = 0;
-    let height = strokeWidth;
-    for (let i = 0; i < count; i++) {
-      const font = fonts[Math.min(i, fonts.length - 1)];
-      ctx.font = font.string;
-      const text = lines[i];
-      width = Math.max(width, ctx.measureText(text).width + strokeWidth);
-      height += font.lineHeight;
-    }
-    ctx.restore();
-    widthCache.set(mapKey, {width, height});
+    widthCache.set(mapKey, calculateLabelSize(ctx, lines, fonts, strokeWidth));
   }
   return widthCache.get(mapKey);
 }
@@ -142,8 +130,6 @@ export function drawLabel(ctx, rect, options) {
   }
   const labels = isArray(content) ? content : [content];
   const optFont = options.font;
-
-
   const fonts = isArray(optFont) ? optFont.map(f => toFont(f)) : [toFont(optFont)];
   const optColor = options.color;
   const colors = isArray(optColor) ? optColor : [optColor];
@@ -153,29 +139,9 @@ export function drawLabel(ctx, rect, options) {
   ctx.textBaseline = 'middle';
   ctx.textAlign = options.textAlign;
   if (setTextStrokeStyle(ctx, options)) {
-    ctx.beginPath();
-    let lhs = 0;
-    labels.forEach(function(l, i) {
-      const f = fonts[Math.min(i, fonts.length - 1)];
-      const lh = f.lineHeight;
-      ctx.font = f.string;
-      ctx.strokeText(l, x, y + lh / 2 + lhs);
-      lhs += lh;
-    });
-    ctx.stroke();
+    applyLabelDecoration(ctx, {x, y}, labels, fonts);
   }
-  let lhs = 0;
-  labels.forEach(function(l, i) {
-    const c = colors[Math.min(i, colors.length - 1)];
-    const f = fonts[Math.min(i, fonts.length - 1)];
-    const lh = f.lineHeight;
-    ctx.beginPath();
-    ctx.font = f.string;
-    ctx.fillStyle = c;
-    ctx.fillText(l, x, y + lh / 2 + lhs);
-    lhs += lh;
-    ctx.fill();
-  });
+  applyLabelContent(ctx, {x, y}, labels, {fonts, colors});
   ctx.restore();
 }
 
@@ -188,4 +154,48 @@ function setTextStrokeStyle(ctx, options) {
     ctx.strokeStyle = options.textStrokeColor;
     return true;
   }
+}
+
+function calculateLabelSize(ctx, lines, fonts, strokeWidth) {
+  ctx.save();
+  const count = lines.length;
+  let width = 0;
+  let height = strokeWidth;
+  for (let i = 0; i < count; i++) {
+    const font = fonts[Math.min(i, fonts.length - 1)];
+    ctx.font = font.string;
+    const text = lines[i];
+    width = Math.max(width, ctx.measureText(text).width + strokeWidth);
+    height += font.lineHeight;
+  }
+  ctx.restore();
+  return {width, height};
+}
+
+function applyLabelDecoration(ctx, {x, y}, labels, fonts) {
+  ctx.beginPath();
+  let lhs = 0;
+  labels.forEach(function(l, i) {
+    const f = fonts[Math.min(i, fonts.length - 1)];
+    const lh = f.lineHeight;
+    ctx.font = f.string;
+    ctx.strokeText(l, x, y + lh / 2 + lhs);
+    lhs += lh;
+  });
+  ctx.stroke();
+}
+
+function applyLabelContent(ctx, {x, y}, labels, {fonts, colors}) {
+  let lhs = 0;
+  labels.forEach(function(l, i) {
+    const c = colors[Math.min(i, colors.length - 1)];
+    const f = fonts[Math.min(i, fonts.length - 1)];
+    const lh = f.lineHeight;
+    ctx.beginPath();
+    ctx.font = f.string;
+    ctx.fillStyle = c;
+    ctx.fillText(l, x, y + lh / 2 + lhs);
+    lhs += lh;
+    ctx.fill();
+  });
 }
