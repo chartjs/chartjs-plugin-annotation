@@ -23,7 +23,9 @@ export default class LineAnnotation extends Element {
       const {path, ctx} = this;
       if (path) {
         setBorderStyle(ctx, this.options);
-        const result = ctx.isPointInStroke(path, mouseX, mouseY) || isOnLabel(this, point, useFinalPosition);
+        const mx = mouseX * window.devicePixelRatio;
+        const my = mouseY * window.devicePixelRatio;
+        const result = ctx.isPointInStroke(path, mx, my) || isOnLabel(this, point, useFinalPosition);
         ctx.restore();
         return result;
       }
