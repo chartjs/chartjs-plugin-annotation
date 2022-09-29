@@ -61,9 +61,9 @@ The following options are available for label annotations.
 | [`borderRadius`](#borderradius) | `number` \| `object` | Yes | `0`
 | [`borderWidth`](#styling) | `number`| Yes | `0`
 | [`callout`](#callout) | `object` | Yes |
-| [`color`](#styling) | [`Color`](../options#color) | Yes | `'black'`
+| [`color`](#styling) | [`Color`\|`Color[]`](../options#color) | Yes | `'black'`
 | [`content`](#general) | `string`\|`string[]`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image)\|[`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) | Yes | `null`
-| [`font`](#styling) | [`Font`](../options#font) | Yes | `{}`
+| [`font`](#styling) | [`Font`\|`Font[]`](../options#font) | Yes | `{}`
 | [`height`](#general) | `number`\|`string` | Yes | `undefined`
 | [`padding`](#general) | [`Padding`](../options#padding) | Yes | `6`
 | [`position`](#position) | `string`\|`{x: string, y: string}` | Yes | `'center'`
@@ -122,8 +122,8 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | `borderJoinStyle` | Border line join style. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
 | `borderShadowColor` | The color of the border shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderWidth` | Stroke width (in pixels).
-| `color` | Text color.
-| `font` | Text font.
+| `color` | Text color. When the label to draw has multiple lines, you can use different color for each row of the label. This is enabled configuring an array of colors. When the lines are more than the configured colors, the last configuration of this option is used for all remaining lines.
+| `font` | Text font. When the label to draw has multiple lines, you can use different font for each row of the label. This is enabled configuring an array of fonts. When the lines are more than the configured fonts, the last configuration of this option is used for all remaining lines.
 | `shadowBlur` | The amount of blur applied to shadow of the box where the label is located. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
 | `shadowOffsetX` | The distance that shadow, of the box where the label is located, will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
 | `shadowOffsetY` | The distance that shadow, of the box where the label is located, will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
