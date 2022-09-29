@@ -1,5 +1,5 @@
 import {Animations} from 'chart.js';
-import {isObject, defined} from 'chart.js/helpers';
+import {isObject, isArray, defined} from 'chart.js/helpers';
 import {hooks} from './events';
 import {annotationTypes} from './types';
 
@@ -123,7 +123,7 @@ function resolveObj(resolver, defs) {
   for (const prop of Object.keys(defs)) {
     const optDefs = defs[prop];
     const value = resolver[prop];
-    result[prop] = isObject(optDefs) ? resolveObj(value, optDefs) : value;
+    result[prop] = isObject(optDefs) && !isArray(value) ? resolveObj(value, optDefs) : value;
   }
   return result;
 }
