@@ -6,6 +6,9 @@ import {annotationTypes} from './types';
 const directUpdater = {
   update: Object.assign
 };
+// https://github.com/chartjs/chartjs-plugin-annotation/pull/801
+// font can be set as object or array, the only exception
+const inspect = (prop, value, optDefs) => isObject(optDefs) && (prop !== 'font' || !isArray(value));
 
 /**
  * @typedef { import("chart.js").Chart } Chart
@@ -123,9 +126,7 @@ function resolveObj(resolver, defs) {
   for (const prop of Object.keys(defs)) {
     const optDefs = defs[prop];
     const value = resolver[prop];
-    // https://github.com/chartjs/chartjs-plugin-annotation/pull/801
-    // font can be set as object or array, the only exception
-    result[prop] = isObject(optDefs) && (prop !== 'font' || !isArray(value)) ? resolveObj(value, optDefs) : value;
+    result[prop] = inspect(prop, value, optDefs) ? resolveObj(value, optDefs) : value;
   }
   return result;
 }
