@@ -98,11 +98,11 @@ const config = {
         common: {
           drawTime: 'beforeDraw'
         },
-        annotations: {
+        annotations: [
           annotation1,
           annotation2,
           annotation3
-        }
+        ]
       }
     }
   }
