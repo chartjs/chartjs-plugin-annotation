@@ -3,17 +3,20 @@ module.exports = {
     type: 'bar',
     data: {
       datasets: [{
-        data: [0, 5, 10, 15, 20, 22]
+        data: [0, 5, 10, 15, 20, 22],
+        yAxisID: 'y1'
       }]
     },
     options: {
       scales: {
         x1: {
           display: false,
+          axis: 'x',
           labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
         },
         y1: {
-          display: true
+          display: true,
+          axis: 'y'
         }
       },
       plugins: {
