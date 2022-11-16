@@ -11,12 +11,10 @@ module.exports = {
       scales: {
         x1: {
           display: false,
-          axis: 'x',
           labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
         },
         y1: {
-          display: true,
-          axis: 'y'
+          display: true
         }
       },
       plugins: {
