@@ -1,6 +1,6 @@
 const json = require('@rollup/plugin-json');
 const resolve = require('@rollup/plugin-node-resolve').default;
-const terser = require('rollup-plugin-terser').terser;
+const terser = require('@rollup/plugin-terser').default;
 const {name, version, homepage, main, module: _module} = require('./package.json');
 
 const banner = `/*!

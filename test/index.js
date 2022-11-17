@@ -19,6 +19,11 @@ window.interactionData = interactionData;
 
 jasmine.fixtures = specsFromFixtures;
 
+beforeAll(() => {
+  // Disable colors plugin for tests.
+  window.Chart.defaults.plugins.colors.enabled = false;
+});
+
 beforeEach(function() {
   addMatchers();
 });
