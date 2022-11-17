@@ -23,8 +23,27 @@ describe('helpers', function() {
   });
 
   describe('retrieveScaleID', function() {
+    const chart = acquireChart({
+      type: 'bar',
+      data: {
+        datasets: [{
+          data: [0, 5, 10, 15, 20, 22]
+        }]
+      },
+      options: {
+        scales: {
+          x1: {
+            display: false,
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+          },
+          y1: {
+            display: true
+          }
+        },
+      }
+    });
     const retrieveScaleID = window.helpers.retrieveScaleID;
-    const scales = {x1: {id: 'x1', axis: 'x'}, x: {id: 'x', axis: 'x'}, y1: {id: 'y1', axis: 'y'}, y: {id: 'y', axis: 'y'}};
+    const scales = chart.scales;
 
     it('should return x1 as scale id', function() {
       expect(retrieveScaleID(scales, {}, 'xScaleID')).toBe('x1');
