@@ -22,4 +22,26 @@ describe('helpers', function() {
     });
   });
 
+  describe('retrieveScaleID', function() {
+    const retrieveScaleID = window.helpers.retrieveScaleID;
+    const scales = {x1: {id: 'x1', axis: 'x'}, x: {id: 'x', axis: 'x'}, y1: {id: 'y1', axis: 'y'}, y: {id: 'y', axis: 'y'}};
+
+    it('should return x1 as scale id', function() {
+      expect(retrieveScaleID(scales, {}, 'xScaleID')).toBe('x1');
+    });
+
+    it('should return y1 as scale id', function() {
+      expect(retrieveScaleID(scales, {}, 'yScaleID')).toBe('y1');
+    });
+
+    it('should return foo as scale id', function() {
+      expect(retrieveScaleID(scales, {scaleID: 'foo'}, 'scaleID')).toBe('foo');
+    });
+
+    it('should return r as scale id', function() {
+      expect(retrieveScaleID(scales, {}, 'rScaleID')).toBe('r');
+    });
+
+  });
+
 });
