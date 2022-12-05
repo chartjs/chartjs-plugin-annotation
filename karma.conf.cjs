@@ -1,12 +1,13 @@
-const jasmineSeedReporter = require('./test/seed-reporter');
 const istanbul = require('rollup-plugin-istanbul');
 const json = require('@rollup/plugin-json');
 const resolve = require('@rollup/plugin-node-resolve').default;
-const builds = require('./rollup.config');
 const yargs = require('yargs');
 const env = process.env.NODE_ENV;
 
-module.exports = function(karma) {
+module.exports = async function(karma) {
+  const builds = (await import('./rollup.config.js')).default;
+  const jasmineSeedReporter = (await import('./test/seed-reporter.js')).default;
+
   const args = yargs
     .option('verbose', {default: false})
     .argv;
@@ -15,7 +16,7 @@ module.exports = function(karma) {
   // we will prefer the unminified build which is easier to browse and works
   // better with source mapping. In other cases, pick the minified build to
   // make sure that the minification process (terser) doesn't break anything.
-  const regex = karma.autoWatch ? /chartjs-plugin-annotation\.js$/ : /chartjs-plugin-annotation\.min\.js$/;
+  const regex = karma.autoWatch ? /chartjs-plugin-annotation\.umd\.js$/ : /chartjs-plugin-annotation\.umd\.min\.js$/;
   const build = builds.filter(v => v.output.file && v.output.file.match(regex))[0];
 
   if (env === 'test') {
