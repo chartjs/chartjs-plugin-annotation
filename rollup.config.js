@@ -53,7 +53,7 @@ export default [
     ],
     output: {
       name,
-      file: 'dist/chartjs-plugin-annotation.umd.js',
+      file: 'dist/chartjs-plugin-annotation.umd.min.js',
       format: 'umd',
       indent: false,
       globals
