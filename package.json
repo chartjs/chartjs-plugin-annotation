@@ -7,10 +7,12 @@
   "license": "MIT",
   "type": "module",
   "main": "dist/chartjs-plugin-annotation.esm.js",
-  "jsdelivr": "dist/chartjs-plugin-annotation.umd.min.js",
-  "unpkg": "dist/chartjs-plugin-annotation.umd.min.js",
+  "jsdelivr": "dist/chartjs-plugin-annotation.min.js",
+  "unpkg": "dist/chartjs-plugin-annotation.min.js",
   "exports": {
-    ".": "./dist/chartjs-plugin-annotation.esm.js"
+    "types": "./types/index.d.ts",
+    "import": "./dist/chartjs-plugin-annotation.esm.js",
+    "require": "./dist/chartjs-plugin-annotation.min.js"
   },
   "types": "types/index.d.ts",
   "repository": {

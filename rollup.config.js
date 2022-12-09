@@ -32,7 +32,7 @@ export default [
     ],
     output: {
       name,
-      file: 'dist/chartjs-plugin-annotation.umd.js',
+      file: 'dist/chartjs-plugin-annotation.js',
       banner,
       format: 'umd',
       indent: false,
@@ -53,7 +53,7 @@ export default [
     ],
     output: {
       name,
-      file: 'dist/chartjs-plugin-annotation.umd.min.js',
+      file: 'dist/chartjs-plugin-annotation.min.js',
       format: 'umd',
       indent: false,
       globals
