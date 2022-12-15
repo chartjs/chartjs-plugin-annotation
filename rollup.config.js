@@ -3,13 +3,13 @@ import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 
-const {name, version, homepage, license} = JSON.parse(readFileSync('./package.json'));
+const {name, version, homepage, main, module, jsdelivr, license} = JSON.parse(readFileSync('./package.json'));
 
 const banner = `/*!
 * ${name} v${version}
 * ${homepage}
  * (c) ${(new Date(process.env.SOURCE_DATE_EPOCH ? (process.env.SOURCE_DATE_EPOCH * 1000) : new Date().getTime())).getFullYear()} chartjs-plugin-annotation Contributors
- * Released under the MIT License
+ * Released under the ${license} license
  */`;
 
 const input = 'src/index.js';
@@ -24,6 +24,7 @@ const globals = {
 };
 
 export default [
+  // UMD
   {
     input,
     plugins: [
@@ -32,7 +33,7 @@ export default [
     ],
     output: {
       name,
-      file: 'dist/chartjs-plugin-annotation.js',
+      file: main,
       banner,
       format: 'umd',
       indent: false,
@@ -40,6 +41,7 @@ export default [
     },
     external
   },
+  // UMD min
   {
     input,
     plugins: [
@@ -53,13 +55,14 @@ export default [
     ],
     output: {
       name,
-      file: 'dist/chartjs-plugin-annotation.min.js',
+      file: jsdelivr,
       format: 'umd',
       indent: false,
       globals
     },
     external
   },
+  // ESM
   {
     input: inputESM,
     plugins: [
@@ -68,7 +71,7 @@ export default [
     ],
     output: {
       name,
-      file: 'dist/chartjs-plugin-annotation.esm.js',
+      file: module,
       banner,
       format: 'esm',
       indent: false
