@@ -1,8 +1,7 @@
 import Chart from 'chart.js/auto';
-import autocolors from 'chartjs-plugin-autocolors';
 import plugin from '../../dist/chartjs-plugin-annotation.esm.js';
 
-Chart.register(plugin, autocolors);
+Chart.register(plugin);
 
 Chart.register({
   id: 'version',
