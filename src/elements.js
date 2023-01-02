@@ -1,11 +1,14 @@
 import {Animations} from 'chart.js';
-import {isObject, defined} from 'chart.js/helpers';
+import {isObject, isArray, defined} from 'chart.js/helpers';
 import {hooks} from './events';
 import {annotationTypes} from './types';
 
 const directUpdater = {
   update: Object.assign
 };
+// https://github.com/chartjs/chartjs-plugin-annotation/pull/801
+// font can be set as object or array, the only exception
+const inspect = (prop, value, optDefs) => isObject(optDefs) && (prop !== 'font' || !isArray(value));
 
 /**
  * @typedef { import("chart.js").Chart } Chart
@@ -123,7 +126,7 @@ function resolveObj(resolver, defs) {
   for (const prop of Object.keys(defs)) {
     const optDefs = defs[prop];
     const value = resolver[prop];
-    result[prop] = isObject(optDefs) ? resolveObj(value, optDefs) : value;
+    result[prop] = inspect(prop, value, optDefs) ? resolveObj(value, optDefs) : value;
   }
   return result;
 }
@@ -148,3 +151,4 @@ function resyncElements(elements, annotations) {
   }
   return elements;
 }
+

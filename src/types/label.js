@@ -6,6 +6,11 @@ const positions = ['left', 'bottom', 'top', 'right'];
 
 export default class LabelAnnotation extends Element {
 
+  constructor() {
+    super();
+    this._fitRatio = undefined;
+  }
+
   inRange(mouseX, mouseY, axis, useFinalPosition) {
     const {x, y} = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.rotation));
     return inBoxRange({x, y}, this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis, this.options.borderWidth);
@@ -25,20 +30,23 @@ export default class LabelAnnotation extends Element {
     translate(ctx, this.getCenterPoint(), this.rotation);
     drawCallout(ctx, this);
     drawBox(ctx, this, options);
-    drawLabel(ctx, getLabelSize(this), options);
+    drawLabel(ctx, getLabelSize(this), options, this._fitRatio);
     ctx.restore();
   }
 
   resolveElementProperties(chart, options) {
     let point;
-    if (!isBoundToPoint(options)) {
+    if (isInnerLabel(options)) {
+      point = options.center;
+    } else if (!isBoundToPoint(options)) {
       const {centerX, centerY} = resolveBoxProperties(chart, options);
       point = {x: centerX, y: centerY};
     } else {
       point = getChartPoint(chart, options);
     }
+
     const padding = toPadding(options.padding);
-    const labelSize = measureLabelSize(chart.ctx, options);
+    const labelSize = measureLabelSize(chart.ctx, options, this._fitRatio);
     const boxSize = measureRect(point, labelSize, options, padding);
     return {
       pointX: point.x,
@@ -267,4 +275,8 @@ function isPointInRange(element, callout, position) {
     y -= margin;
   }
   return element.inRange(x, y);
+}
+
+function isInnerLabel(options) {
+  return options.center && defined(options.center.x) && defined(options.center.y);
 }
