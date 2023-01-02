@@ -28,7 +28,7 @@ export default {
     });
   },
 
-  beforeUpdate(chart, args, options) {
+  afterUpdate(chart, args, options) {
     const state = chartStates.get(chart);
     const controller = state.controller = getController(chart);
     if (!controller) {
@@ -37,10 +37,6 @@ export default {
     options.type = 'label';
     options.center = getControllerCenter(chart, controller);
     state.annotations = [options];
-  },
-
-  afterUpdate(chart, args, options) {
-    const state = chartStates.get(chart);
     updateElements(chart, state, options, args.mode);
     fit(chart, state, options);
     state.visibleElements = state.elements.filter(el => !el.skip && el.options.display);
