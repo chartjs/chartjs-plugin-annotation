@@ -135,7 +135,7 @@ function getContext(chart, element, annotation) {
   return element.$context || (element.$context = Object.assign(Object.create(chart.getContext()), {
     element,
     id: annotation.id,
-    type: 'annotation'
+    type: annotation.center ? 'innerlabel' : 'annotation'
   }));
 }
 
