@@ -6,6 +6,7 @@ import {updateElements, resolveType} from './elements';
 import {annotationTypes} from './types';
 import {requireVersion} from './helpers';
 import {version} from '../package.json';
+import innerLabel from './innerLabel';
 
 const chartStates = new Map();
 
@@ -13,6 +14,8 @@ export default {
   id: 'annotation',
 
   version,
+
+  innerLabel,
 
   beforeRegister() {
     requireVersion('chart.js', '3.7', Chart.version);

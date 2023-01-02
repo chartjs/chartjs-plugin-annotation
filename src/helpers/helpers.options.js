@@ -1,4 +1,4 @@
-import {isObject, valueOrDefault, defined} from 'chart.js/helpers';
+import {isObject, isArray, toFont, valueOrDefault, defined} from 'chart.js/helpers';
 import {clamp} from './helpers.core';
 
 const isPercentString = (s) => typeof s === 'string' && s.endsWith('%');
@@ -76,6 +76,19 @@ export function toPosition(value) {
     x: value,
     y: value
   };
+}
+
+export function toFonts(options, fitRatio) {
+  const optFont = options.font;
+  let fonts = isArray(optFont) ? optFont.map(f => toFont(f)) : [toFont(optFont)];
+  if (fitRatio < 1) {
+    fonts = fonts.map(function(f) {
+      f.size = Math.floor(f.size * fitRatio);
+      f.lineHeight = undefined;
+      return toFont(f);
+    });
+  }
+  return fonts;
 }
 
 /**
