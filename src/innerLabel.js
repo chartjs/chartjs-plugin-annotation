@@ -1,5 +1,6 @@
 import {Chart, DoughnutController} from 'chart.js';
 import {clipArea, unclipArea} from 'chart.js/helpers';
+import {handleEvent, updateListeners} from './events';
 import {LabelAnnotation} from './types';
 import {updateElements} from './elements';
 import {version} from '../package.json';
@@ -37,6 +38,7 @@ export default {
     options.type = 'label';
     options.center = getControllerCenter(chart, controller);
     state.annotations = [options];
+    updateListeners(chart, state, options);
     updateElements(chart, state, options, args.mode);
     fit(chart, state, options);
     state.visibleElements = state.elements.filter(el => !el.skip && el.options.display);
@@ -58,6 +60,13 @@ export default {
     draw(chart, 'afterDraw', options);
   },
 
+  beforeEvent(chart, args, options) {
+    const state = chartStates.get(chart);
+    if (handleEvent(state, args.event, options)) {
+      args.changed = true;
+    }
+  },
+
   afterDestroy(chart) {
     chartStates.delete(chart);
   },
@@ -70,13 +79,9 @@ export default {
       },
     },
     clip: true,
+    click: undefined,
     drawTime: 'afterDatasetsDraw',
     ...LabelAnnotation.defaults
-  },
-
-  descriptors: {
-    _indexable: false,
-    _scriptable: true,
   },
 
   additionalOptionScopes: [`elements.${LabelAnnotation.id}`, '']

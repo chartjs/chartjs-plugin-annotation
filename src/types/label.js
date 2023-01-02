@@ -1,6 +1,7 @@
 import {Element} from 'chart.js';
 import {drawBox, drawLabel, measureLabelSize, getChartPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, resolveBoxProperties, getRelativePosition, translate, rotated, getElementCenterPoint} from '../helpers';
 import {toPadding, toRadians, distanceBetweenPoints, defined} from 'chart.js/helpers';
+import {hooks} from '../events';
 
 const positions = ['left', 'bottom', 'top', 'right'];
 
@@ -119,6 +120,10 @@ LabelAnnotation.defaults = {
 
 LabelAnnotation.defaultRoutes = {
   borderColor: 'color'
+};
+
+LabelAnnotation.descriptors = {
+  _scriptable: (prop) => !hooks.includes(prop),
 };
 
 function measureRect(point, size, options, padding) {
