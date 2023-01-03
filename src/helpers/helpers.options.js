@@ -5,6 +5,7 @@ const isPercentString = (s) => typeof s === 'string' && s.endsWith('%');
 const toPercent = (s) => clamp(parseFloat(s) / 100, 0, 1);
 
 /**
+ * @typedef { import('chart.js').FontSpec } FontSpec
  * @typedef { import('../../types/options').AnnotationPointCoordinates } AnnotationPointCoordinates
  * @typedef { import('../../types/label').CoreLabelOptions } CoreLabelOptions
  * @typedef { import('../../types/label').LabelPositionObject } LabelPositionObject
@@ -78,10 +79,22 @@ export function toPosition(value) {
   };
 }
 
+/**
+ * @param {CoreLabelOptions} options
+ * @param {number} fitRatio
+ * @returns {boolean}
+ */
+export const shouldFit = (options, fitRatio) => options && options.autoFit && fitRatio < 1;
+
+/**
+ * @param {CoreLabelOptions} options
+ * @param {number} fitRatio
+ * @returns {FontSpec[]}
+ */
 export function toFonts(options, fitRatio) {
   const optFont = options.font;
   let fonts = isArray(optFont) ? optFont.map(f => toFont(f)) : [toFont(optFont)];
-  if (fitRatio < 1) {
+  if (shouldFit(options, fitRatio)) {
     fonts = fonts.map(function(f) {
       f.size = Math.floor(f.size * fitRatio);
       f.lineHeight = undefined;

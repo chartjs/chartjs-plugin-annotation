@@ -1,6 +1,6 @@
 import {addRoundedRectPath, isArray, toTRBLCorners, toRadians} from 'chart.js/helpers';
 import {clampAll} from './helpers.core';
-import {calculateTextAlignment, getSize, toFonts} from './helpers.options';
+import {calculateTextAlignment, getSize, toFonts, shouldFit} from './helpers.options';
 
 const widthCache = new Map();
 const fontsKey = (fonts) => fonts.reduce(function(prev, item) {
@@ -71,6 +71,7 @@ export function setShadowStyle(ctx, options) {
 /**
  * @param {CanvasRenderingContext2D} ctx
  * @param {CoreLabelOptions} options
+ * @param {number} fitRatio
  * @returns {{width: number, height: number}}
  */
 export function measureLabelSize(ctx, options, fitRatio) {
@@ -80,7 +81,7 @@ export function measureLabelSize(ctx, options, fitRatio) {
       width: getSize(content.width, options.width),
       height: getSize(content.height, options.height)
     };
-    if (fitRatio < 1) {
+    if (shouldFit(options, fitRatio)) {
       size.width = Math.floor(size.width * fitRatio);
       size.height = Math.floor(size.height * fitRatio);
     }
@@ -125,6 +126,7 @@ export function drawBox(ctx, rect, options) {
  * @param {CanvasRenderingContext2D} ctx
  * @param {{x: number, y: number, width: number, height: number}} rect
  * @param {CoreLabelOptions} options
+ * @param {number} fitRatio
  */
 export function drawLabel(ctx, rect, options, fitRatio) {
   const content = options.content;

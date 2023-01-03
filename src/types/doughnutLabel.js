@@ -1,7 +1,7 @@
 import LabelAnnotation from './label';
 import {DoughnutController} from 'chart.js';
 import {toPadding} from 'chart.js/helpers';
-import {drawBox, drawLabel, measureLabelSize, translate} from '../helpers';
+import {drawBox, drawLabel, measureLabelSize, translate, shouldFit} from '../helpers';
 
 export default class DoughnutLabelAnnotation extends LabelAnnotation {
 
@@ -25,8 +25,8 @@ export default class DoughnutLabelAnnotation extends LabelAnnotation {
     const point = getControllerCenter(chart, controller);
     let labelSize = measureLabelSize(chart.ctx, options);
     const padding = toPadding(options.padding);
-    const fitRatio = getFitRatio(chart, options, labelSize, padding, controller);
-    if (fitRatio < 1) {
+    const fitRatio = getFitRatio(controller, options, padding, labelSize);
+    if (shouldFit(options, fitRatio)) {
       labelSize = measureLabelSize(chart.ctx, options, fitRatio);
     }
     const boxSize = super._measureRect(point, labelSize, options, padding);
@@ -43,6 +43,7 @@ export default class DoughnutLabelAnnotation extends LabelAnnotation {
 DoughnutLabelAnnotation.id = 'doughnutLabelAnnotation';
 
 DoughnutLabelAnnotation.defaults = {
+  autoFit: true,
   backgroundColor: 'transparent',
   backgroundShadowColor: 'transparent',
   borderCapStyle: 'butt',
@@ -97,7 +98,7 @@ function getControllerCenter({chartArea}, controller) {
   };
 }
 
-function getFitRatio(chart, options, {width, height}, padding, controller) {
+function getFitRatio(controller, options, padding, {width, height}) {
   const w = width + padding.width + options.borderWidth;
   const h = height + padding.height + options.borderWidth;
   const innerRadius = controller.innerRadius;
