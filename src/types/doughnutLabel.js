@@ -83,10 +83,21 @@ DoughnutLabelAnnotation.defaultRoutes = {
 };
 
 function getController(chart) {
-  for (let i = 0; i < chart.data.datasets.length; i++) {
-    const controller = chart.getDatasetMeta(i).controller;
-    if (controller instanceof DoughnutController) {
+  return chart.getSortedVisibleDatasetMetas().reduce(function(result, value) {
+    const controller = value.controller;
+    if (controller instanceof DoughnutController &&
+      isControllerVisible(chart, value.data.length) &&
+      (!result || controller.innerRadius < result.innerRadius)) {
       return controller;
+    }
+    return result;
+  }, undefined);
+}
+
+function isControllerVisible(chart, elementsCount) {
+  for (let i = 0; i < elementsCount; i++) {
+    if (chart.getDataVisibility(i)) {
+      return true;
     }
   }
 }
