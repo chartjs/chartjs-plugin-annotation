@@ -21,7 +21,7 @@ export default class DoughnutLabelAnnotation extends LabelAnnotation {
   resolveElementProperties(chart, options) {
     const controller = getController(chart);
     if (!controller) {
-      return;
+      return {};
     }
     const point = getControllerCenter(chart, controller);
     let labelSize = measureLabelSize(chart.ctx, options);
