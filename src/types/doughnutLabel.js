@@ -2,7 +2,6 @@ import LabelAnnotation from './label';
 import {DoughnutController} from 'chart.js';
 import {toPadding} from 'chart.js/helpers';
 import {drawBox, drawLabel, measureLabelSize, translate} from '../helpers';
-import {hooks} from '../events';
 
 export default class DoughnutLabelAnnotation extends LabelAnnotation {
 
@@ -80,10 +79,6 @@ DoughnutLabelAnnotation.defaults = {
 
 DoughnutLabelAnnotation.defaultRoutes = {
   borderColor: 'color'
-};
-
-DoughnutLabelAnnotation.descriptors = {
-  _scriptable: (prop) => !hooks.includes(prop),
 };
 
 function getController(chart) {

@@ -3,31 +3,28 @@ import {clipArea, unclipArea, isObject, isArray} from 'chart.js/helpers';
 import {handleEvent, hooks, updateListeners} from './events';
 import {adjustScaleRange, verifyScaleOptions} from './scale';
 import {updateElements, resolveType} from './elements';
-import {annotationTypes, filterTypes} from './types';
+import {annotationTypes} from './types';
 import {requireVersion} from './helpers';
 import {version} from '../package.json';
-import innerLabel from './innerLabel';
 
 const chartStates = new Map();
-const registrableTypes = Object.values(annotationTypes).filter(filterTypes);
+const isNotDoughnutLabel = key => (isObject(key) ? key.type : key) !== 'doughnutLabel';
 
 export default {
   id: 'annotation',
 
   version,
 
-  innerLabel,
-
   beforeRegister() {
     requireVersion('chart.js', '3.7', Chart.version);
   },
 
   afterRegister() {
-    Chart.register(registrableTypes);
+    Chart.register(annotationTypes);
   },
 
   afterUnregister() {
-    Chart.unregister(registrableTypes);
+    Chart.unregister(annotationTypes);
   },
 
   beforeInit(chart) {
@@ -50,20 +47,20 @@ export default {
     if (isObject(annotationOptions)) {
       Object.keys(annotationOptions).forEach(key => {
         const value = annotationOptions[key];
-        if (isObject(value) && filterTypes(value)) {
+        if (isObject(value)) {
           value.id = key;
           annotations.push(value);
         }
       });
     } else if (isArray(annotationOptions)) {
-      annotations.push(...annotationOptions.filter(filterTypes));
+      annotations.push(...annotationOptions);
     }
-    verifyScaleOptions(annotations, chart.scales);
+    verifyScaleOptions(annotations.filter(isNotDoughnutLabel), chart.scales);
   },
 
   afterDataLimits(chart, args) {
     const state = chartStates.get(chart);
-    adjustScaleRange(chart, args.scale, state.annotations.filter(a => a.display && a.adjustScaleRange));
+    adjustScaleRange(chart, args.scale, state.annotations.filter(isNotDoughnutLabel).filter(a => a.display && a.adjustScaleRange));
   },
 
   afterUpdate(chart, args, options) {
