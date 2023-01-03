@@ -1,7 +1,6 @@
-import {Chart, DoughnutController} from 'chart.js';
 import {clipArea, unclipArea} from 'chart.js/helpers';
 import {handleEvent, updateListeners} from './events';
-import {LabelAnnotation} from './types';
+import {DoughnutLabelAnnotation} from './types';
 import {updateElements} from './elements';
 import {version} from '../package.json';
 
@@ -12,13 +11,8 @@ export default {
 
   version,
 
-  start() {
-    Chart.register(LabelAnnotation);
-  },
-
   beforeInit(chart) {
     chartStates.set(chart, {
-      controller: undefined,
       annotations: [],
       elements: [],
       visibleElements: [],
@@ -29,18 +23,16 @@ export default {
     });
   },
 
+  beforeUpdate(chart, args, options) {
+    const state = chartStates.get(chart);
+    options.type = 'doughnutLabel';
+    state.annotations = [options];
+  },
+
   afterUpdate(chart, args, options) {
     const state = chartStates.get(chart);
-    const controller = state.controller = getController(chart);
-    if (!controller) {
-      return;
-    }
-    options.type = 'label';
-    options.center = getControllerCenter(chart, controller);
-    state.annotations = [options];
     updateListeners(chart, state, options);
     updateElements(chart, state, options, args.mode);
-    fit(chart, state, options);
     state.visibleElements = state.elements.filter(el => !el.skip && el.options.display);
   },
 
@@ -79,45 +71,17 @@ export default {
       },
     },
     clip: true,
-    click: undefined,
     drawTime: 'afterDatasetsDraw',
-    ...LabelAnnotation.defaults
+    interaction: {
+      mode: undefined,
+      axis: undefined,
+      intersect: undefined
+    }
   },
 
-  additionalOptionScopes: [`elements.${LabelAnnotation.id}`, '']
+  additionalOptionScopes: [`elements.${DoughnutLabelAnnotation.id}`, '']
 
 };
-
-function getController(chart) {
-  for (let i = 0; i < chart.data.datasets.length; i++) {
-    const controller = chart.getDatasetMeta(i).controller;
-    if (controller instanceof DoughnutController) {
-      return controller;
-    }
-  }
-}
-
-function getControllerCenter({chartArea}, controller) {
-  return {
-    x: (chartArea.left + chartArea.right) / 2 + controller.offsetX,
-    y: (chartArea.top + chartArea.bottom) / 2 + controller.offsetY
-  };
-}
-
-function fit(chart, state, options, mode) {
-  const {controller, elements} = state;
-  if (!controller || !elements.length) {
-    return;
-  }
-  const element = elements[0];
-  const innerRadius = controller.innerRadius;
-  const hypotenuse = Math.sqrt(Math.pow(element.width, 2) + Math.pow(element.height, 2));
-  const innerDiameter = innerRadius * 2;
-  const fitRatio = element._fitRatio = innerDiameter / hypotenuse;
-  if (fitRatio < 1) {
-    updateElements(chart, state, options, mode);
-  }
-}
 
 function draw(chart, caller, options) {
   const state = chartStates.get(chart);
@@ -130,7 +94,9 @@ function draw(chart, caller, options) {
   }
 
   for (const element of visibleElements) {
-    element.draw(chart.ctx, chartArea);
+    if (element.options.drawTime === caller) {
+      element.draw(chart.ctx, chartArea);
+    }
   }
 
   if (clip) {

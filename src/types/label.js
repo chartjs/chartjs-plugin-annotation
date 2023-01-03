@@ -1,16 +1,10 @@
 import {Element} from 'chart.js';
 import {drawBox, drawLabel, measureLabelSize, getChartPoint, toPosition, setBorderStyle, getSize, inBoxRange, isBoundToPoint, resolveBoxProperties, getRelativePosition, translate, rotated, getElementCenterPoint} from '../helpers';
 import {toPadding, toRadians, distanceBetweenPoints, defined} from 'chart.js/helpers';
-import {hooks} from '../events';
 
 const positions = ['left', 'bottom', 'top', 'right'];
 
 export default class LabelAnnotation extends Element {
-
-  constructor() {
-    super();
-    this._fitRatio = undefined;
-  }
 
   inRange(mouseX, mouseY, axis, useFinalPosition) {
     const {x, y} = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.rotation));
@@ -31,30 +25,41 @@ export default class LabelAnnotation extends Element {
     translate(ctx, this.getCenterPoint(), this.rotation);
     drawCallout(ctx, this);
     drawBox(ctx, this, options);
-    drawLabel(ctx, getLabelSize(this), options, this._fitRatio);
+    drawLabel(ctx, this._getLabelSize(), options);
     ctx.restore();
   }
 
   resolveElementProperties(chart, options) {
     let point;
-    if (isInnerLabel(options)) {
-      point = options.center;
-    } else if (!isBoundToPoint(options)) {
+    if (!isBoundToPoint(options)) {
       const {centerX, centerY} = resolveBoxProperties(chart, options);
       point = {x: centerX, y: centerY};
     } else {
       point = getChartPoint(chart, options);
     }
-
     const padding = toPadding(options.padding);
-    const labelSize = measureLabelSize(chart.ctx, options, this._fitRatio);
-    const boxSize = measureRect(point, labelSize, options, padding);
+    const labelSize = measureLabelSize(chart.ctx, options);
+    const boxSize = this._measureRect(point, labelSize, options, padding);
     return {
       pointX: point.x,
       pointY: point.y,
       ...boxSize,
       rotation: options.rotation
     };
+  }
+
+  /**
+   * @protected
+   */
+  _measureRect(point, labelSize, options, padding) {
+    return measureRect(point, labelSize, options, padding);
+  }
+
+  /**
+   * @protected
+   */
+  _getLabelSize() {
+    return getLabelSize(this);
   }
 }
 
@@ -120,10 +125,6 @@ LabelAnnotation.defaults = {
 
 LabelAnnotation.defaultRoutes = {
   borderColor: 'color'
-};
-
-LabelAnnotation.descriptors = {
-  _scriptable: (prop) => !hooks.includes(prop),
 };
 
 function measureRect(point, size, options, padding) {
@@ -280,8 +281,4 @@ function isPointInRange(element, callout, position) {
     y -= margin;
   }
   return element.inRange(x, y);
-}
-
-function isInnerLabel(options) {
-  return options.center && defined(options.center.x) && defined(options.center.y);
 }

@@ -1,13 +1,18 @@
 import {defaults} from 'chart.js';
+import {isObject} from 'chart.js/helpers';
 import BoxAnnotation from './box';
+import DoughnutLabelAnnotation from './doughnutLabel';
 import LineAnnotation from './line';
 import EllipseAnnotation from './ellipse';
 import LabelAnnotation from './label';
 import PointAnnotation from './point';
 import PolygonAnnotation from './polygon';
 
+export const filterTypes = key => (isObject(key) ? key.type : key) !== 'doughnutLabel';
+
 export const annotationTypes = {
   box: BoxAnnotation,
+  doughnutLabel: DoughnutLabelAnnotation,
   ellipse: EllipseAnnotation,
   label: LabelAnnotation,
   line: LineAnnotation,
@@ -17,9 +22,10 @@ export const annotationTypes = {
 
 export {
   BoxAnnotation,
-  LineAnnotation,
+  DoughnutLabelAnnotation,
   EllipseAnnotation,
   LabelAnnotation,
+  LineAnnotation,
   PointAnnotation,
   PolygonAnnotation
 };
@@ -32,7 +38,7 @@ export {
  * - element defaults (defaults.elements.lineAnnotation)
  * - annotation plugin defaults (defaults.plugins.annotation, this is what we are registering here)
  */
-Object.keys(annotationTypes).forEach(key => {
+Object.keys(annotationTypes).filter(filterTypes).forEach(key => {
   defaults.describe(`elements.${annotationTypes[key].id}`, {
     _fallback: 'plugins.annotation.common'
   });

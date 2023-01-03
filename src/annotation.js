@@ -3,12 +3,13 @@ import {clipArea, unclipArea, isObject, isArray} from 'chart.js/helpers';
 import {handleEvent, hooks, updateListeners} from './events';
 import {adjustScaleRange, verifyScaleOptions} from './scale';
 import {updateElements, resolveType} from './elements';
-import {annotationTypes} from './types';
+import {annotationTypes, filterTypes} from './types';
 import {requireVersion} from './helpers';
 import {version} from '../package.json';
 import innerLabel from './innerLabel';
 
 const chartStates = new Map();
+const registrableTypes = Object.values(annotationTypes).filter(filterTypes);
 
 export default {
   id: 'annotation',
@@ -22,11 +23,11 @@ export default {
   },
 
   afterRegister() {
-    Chart.register(annotationTypes);
+    Chart.register(registrableTypes);
   },
 
   afterUnregister() {
-    Chart.unregister(annotationTypes);
+    Chart.unregister(registrableTypes);
   },
 
   beforeInit(chart) {
@@ -49,13 +50,13 @@ export default {
     if (isObject(annotationOptions)) {
       Object.keys(annotationOptions).forEach(key => {
         const value = annotationOptions[key];
-        if (isObject(value)) {
+        if (isObject(value) && filterTypes(value)) {
           value.id = key;
           annotations.push(value);
         }
       });
     } else if (isArray(annotationOptions)) {
-      annotations.push(...annotationOptions);
+      annotations.push(...annotationOptions.filter(filterTypes));
     }
     verifyScaleOptions(annotations, chart.scales);
   },
