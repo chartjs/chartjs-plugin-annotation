@@ -18,18 +18,18 @@ export default class DoughnutLabelAnnotation extends LabelAnnotation {
   }
 
   resolveElementProperties(chart, options) {
-    const controller = getController(chart);
+    const controller = getController(chart, options);
     if (!controller) {
       return {};
     }
-    const point = getControllerCenter(chart, controller);
+    const {point, radius} = getControllerCenter(chart, controller);
     let labelSize = measureLabelSize(chart.ctx, options);
     const padding = toPadding(options.padding);
-    const fitRatio = getFitRatio(controller, options, padding, labelSize);
+    const fitRatio = getFitRatio(chart, {borderWidth: options.borderWidth, padding}, labelSize, radius);
     if (shouldFit(options, fitRatio)) {
       labelSize = measureLabelSize(chart.ctx, options, fitRatio);
     }
-    const boxSize = super._measureRect(point, labelSize, options, padding);
+    const boxSize = this._measureRect(point, labelSize, options, padding);
     return {
       pointX: point.x,
       pointY: point.y,
@@ -44,6 +44,7 @@ DoughnutLabelAnnotation.id = 'doughnutLabelAnnotation';
 
 DoughnutLabelAnnotation.defaults = {
   autoFit: true,
+  autoHide: true,
   backgroundColor: 'transparent',
   backgroundShadowColor: 'transparent',
   borderCapStyle: 'butt',
@@ -64,7 +65,7 @@ DoughnutLabelAnnotation.defaults = {
     weight: undefined
   },
   height: undefined,
-  padding: 6,
+  padding: 0,
   position: 'center',
   rotation: 0,
   shadowBlur: 0,
@@ -82,11 +83,11 @@ DoughnutLabelAnnotation.defaultRoutes = {
   borderColor: 'color'
 };
 
-function getController(chart) {
+function getController(chart, options) {
   return chart.getSortedVisibleDatasetMetas().reduce(function(result, value) {
     const controller = value.controller;
     if (controller instanceof DoughnutController &&
-      isControllerVisible(chart, value.data.length) &&
+      isControllerVisible(chart, options, value.data.length) &&
       (!result || controller.innerRadius < result.innerRadius)) {
       return controller;
     }
@@ -94,7 +95,10 @@ function getController(chart) {
   }, undefined);
 }
 
-function isControllerVisible(chart, elementsCount) {
+function isControllerVisible(chart, options, elementsCount) {
+  if (!options.autoHide) {
+    return true;
+  }
   for (let i = 0; i < elementsCount; i++) {
     if (chart.getDataVisibility(i)) {
       return true;
@@ -102,18 +106,29 @@ function isControllerVisible(chart, elementsCount) {
   }
 }
 
-function getControllerCenter({chartArea}, controller) {
+function getControllerCenter({chartArea}, {innerRadius, offsetX, offsetY}) {
+  const {left, top, right, bottom} = chartArea;
+  const x = (left + right) / 2 + offsetX;
+  const y = (top + bottom) / 2 + offsetY;
+  const square = {
+    left: Math.max(x - innerRadius, left),
+    right: Math.min(x + innerRadius, right),
+    top: Math.max(y - innerRadius, top),
+    bottom: Math.min(y + innerRadius, bottom)
+  };
+  const point = {
+    x: (square.left + square.right) / 2,
+    y: (square.top + square.bottom) / 2
+  };
   return {
-    x: (chartArea.left + chartArea.right) / 2 + controller.offsetX,
-    y: (chartArea.top + chartArea.bottom) / 2 + controller.offsetY
+    point,
+    radius: Math.min(innerRadius, Math.min(square.right - square.left, square.bottom - square.top) / 2)
   };
 }
 
-function getFitRatio(controller, options, padding, {width, height}) {
-  const w = width + padding.width + options.borderWidth;
-  const h = height + padding.height + options.borderWidth;
-  const innerRadius = controller.innerRadius;
-  const hypotenuse = Math.sqrt(Math.pow(w, 2) + Math.pow(h, 2));
-  const innerDiameter = innerRadius * 2;
-  return innerDiameter / hypotenuse;
+function getFitRatio(chart, {borderWidth, padding}, {width, height}, radius) {
+  const w = width + padding.width + borderWidth;
+  const h = height + padding.height + borderWidth;
+  const hypo = Math.sqrt(Math.pow(w, 2) + Math.pow(h, 2));
+  return (radius * 2) / hypo;
 }
