@@ -128,7 +128,8 @@ module.exports = {
             'types/label',
             'types/line',
             'types/point',
-            'types/polygon'
+            'types/polygon',
+            'types/doughnutLabel'
           ]
         },
         'migrationV1',

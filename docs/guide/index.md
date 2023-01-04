@@ -6,9 +6,13 @@ This plugin needs to be registered. It does not function as inline plugin.
 
 :::
 
-An annotation plugin for Chart.js >= 3.0.0
+An annotation plugin for Chart.js >= 3.7.0
 
-This plugin draws lines, boxes, labels, points, polygons and ellipses on the chart area. Annotations work with line, bar, scatter and bubble charts that use linear, logarithmic, time, or category scales. Annotations will not work on any chart that does not have exactly two axes, including pie, radar, and polar area charts.
+This plugin draws lines, boxes, labels, points, polygons and ellipses on the chart area. Annotations work with line, bar, scatter and bubble charts that use linear, logarithmic, time, or category scales.
+
+Furthermore you can use a doughnut label annotation which can be used to add contents (text, image, canvas) in the middle area of the doughnut charts.
+
+Annotations will not work on any chart that does not have exactly two axes, including pie, radar, and polar area charts.
 
 ![Banner](./banner.png)
 
