@@ -6,7 +6,6 @@ Polygon annotations are used to mark whatever polygon (for instance triangle, sq
 /* <block:options:0> */
 const options = {
   plugins: {
-    autocolors: false,
     annotation: {
       annotations: {
         pentagon: {
@@ -122,7 +121,6 @@ Namespace: `options.annotations[annotationID].point`, it defines options for the
 /* <block:options:0> */
 const options = {
   plugins: {
-    autocolors: false,
     annotation: {
       annotations: {
         pentagon: {

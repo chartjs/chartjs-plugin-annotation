@@ -6,7 +6,6 @@ Ellipse annotations are used to draw circles on the chart area. This can be usef
 /* <block:options:0> */
 const options = {
   plugins: {
-    autocolors: false,
     annotation: {
       annotations: {
         ellipse1: {

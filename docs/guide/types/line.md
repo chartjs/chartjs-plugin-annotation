@@ -6,7 +6,6 @@ Line annotations are used to draw lines on the chart area. This can be useful fo
 /* <block:options:0> */
 const options = {
   plugins: {
-    autocolors: false,
     annotation: {
       annotations: {
         line1: {

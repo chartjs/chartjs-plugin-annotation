@@ -6,7 +6,6 @@ Label annotations are used to add contents on the chart area. This can be useful
 /* <block:options:0> */
 const options = {
   plugins: {
-    autocolors: false,
     annotation: {
       annotations: {
         label1: {
@@ -155,7 +154,6 @@ Namespace: `options.annotations[annotationID].callout`, it defines options for t
 /* <block:options:0> */
 const options = {
   plugins: {
-    autocolors: false,
     annotation: {
       annotations: {
         label1: {

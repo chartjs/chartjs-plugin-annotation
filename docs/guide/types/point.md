@@ -6,7 +6,6 @@ Point annotations are used to mark points on the chart area. This can be useful 
 /* <block:options:0> */
 const options = {
   plugins: {
-    autocolors: false,
     annotation: {
       annotations: {
         point1: {
