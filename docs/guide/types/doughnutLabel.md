@@ -10,11 +10,11 @@ const options = {
       annotations: {
         dLabel: {
           type: 'doughnutLabel',
-          content: ({chart}) => ['Total', 
-            chart.getDatasetMeta(0).total, 
+          content: ({chart}) => ['Total',
+            chart.getDatasetMeta(0).total,
             'last 7 months'
           ],
-          font: [{size: 60},{size: 50},{size: 30}],
+          font: [{size: 60}, {size: 50}, {size: 30}],
           color: ['black', 'red', 'grey']
         }
       }
