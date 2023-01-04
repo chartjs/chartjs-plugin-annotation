@@ -8,7 +8,7 @@ import {requireVersion} from './helpers';
 import {version} from '../package.json';
 
 const chartStates = new Map();
-const isNotDoughnutLabel = key => (isObject(key) ? key.type : key) !== 'doughnutLabel';
+const isNotDoughnutLabel = annotation => annotation.type !== 'doughnutLabel';
 
 export default {
   id: 'annotation',
