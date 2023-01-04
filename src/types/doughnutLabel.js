@@ -87,7 +87,7 @@ function getController(chart, options) {
   return chart.getSortedVisibleDatasetMetas().reduce(function(result, value) {
     const controller = value.controller;
     if (controller instanceof DoughnutController &&
-      isControllerVisible(chart, options, value.data.length) &&
+      isControllerVisible(chart, options, value.data) &&
       (!result || controller.innerRadius < result.innerRadius)) {
       return controller;
     }
@@ -95,12 +95,12 @@ function getController(chart, options) {
   }, undefined);
 }
 
-function isControllerVisible(chart, options, elementsCount) {
+function isControllerVisible(chart, options, elements) {
   if (!options.autoHide) {
     return true;
   }
-  for (let i = 0; i < elementsCount; i++) {
-    if (chart.getDataVisibility(i)) {
+  for (let i = 0; i < elements.length; i++) {
+    if (!elements[i].hidden && chart.getDataVisibility(i)) {
       return true;
     }
   }
