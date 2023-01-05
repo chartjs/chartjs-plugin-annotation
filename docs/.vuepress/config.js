@@ -204,6 +204,15 @@ module.exports = {
             ]
         },
         {
+          title: 'Doughnut label annotations',
+          children: [
+            'doughnutLabel/basic',
+            'doughnutLabel/canvas',
+            'doughnutLabel/image',
+            'doughnutLabel/gauge'
+          ]
+        },
+        {
           title: 'Charts',
           children: [
             'charts/bar',
