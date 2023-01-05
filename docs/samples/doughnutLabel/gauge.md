@@ -36,7 +36,7 @@ const annotation = {
     y: '-50%'
   },
   font: [{size: 50, weight: 'bold'}, {size: 20}],
-  color: ['grey', 'lightGrey']
+  color: ({chart}) => [COLORS[index(chart.data.datasets[0].data[0])], 'grey']
 };
 // </block:annotation>
 
