@@ -33,10 +33,12 @@ function getChartJsVersions(projectPath) {
 describe('Integration Tests', () => {
   const distDir = path.resolve('./');
   const chartjsVersions = getChartJsVersions(distDir);
+  const baseTmpDir = path.join(os.tmpdir(), 'chartjs-plugin-annotation-tmp');
+  fs.rmSync(baseTmpDir, {recursive: true, force: true});
+  fs.mkdirSync(baseTmpDir);
+
   chartjsVersions.forEach(function(chartjs) {
-    const baseTmpDir = path.join(os.tmpdir(), 'chartjs-plugin-annotation-tmp');
     const tmpDir = path.join(baseTmpDir, chartjs);
-    fs.rmSync(tmpDir, {recursive: true, force: true});
     fs.mkdirSync(tmpDir);
 
     const archiveName = exec(`npm --quiet pack ${distDir}`, {cwd: tmpDir});
