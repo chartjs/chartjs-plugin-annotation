@@ -6,6 +6,8 @@ const toPercent = (s) => clamp(parseFloat(s) / 100, 0, 1);
 
 /**
  * @typedef { import('chart.js').FontSpec } FontSpec
+ * @typedef { import('chart.js').Point } Point
+ * @typedef { import('chart.js').Padding } Padding
  * @typedef { import('../../types/options').AnnotationPointCoordinates } AnnotationPointCoordinates
  * @typedef { import('../../types/label').CoreLabelOptions } CoreLabelOptions
  * @typedef { import('../../types/label').LabelPositionObject } LabelPositionObject
@@ -62,6 +64,34 @@ export function calculateTextAlignment(size, options) {
 }
 
 /**
+ * @param {Point} point
+ * @param {{height: number, width: number}} labelSize
+ * @param {{borderWidth: number, position: {LabelPositionObject|string}, xAdjust: number, yAdjust: number}} options
+ * @param {Padding|undefined} padding
+ * @returns {{x: number, y: number, x2: number, y2: number, height: number, width: number, centerX: number, centerY: number}}
+
+ */
+export function measureLabelRectangle(point, labelSize, {borderWidth, position, xAdjust, yAdjust}, padding) {
+  const hasPadding = isObject(padding);
+  const width = labelSize.width + (hasPadding ? padding.width : 0) + borderWidth;
+  const height = labelSize.height + (hasPadding ? padding.height : 0) + borderWidth;
+  const positionObj = toPosition(position);
+  const x = calculateLabelPosition(point.x, width, xAdjust, positionObj.x);
+  const y = calculateLabelPosition(point.y, height, yAdjust, positionObj.y);
+
+  return {
+    x,
+    y,
+    x2: x + width,
+    y2: y + height,
+    width,
+    height,
+    centerX: x + width / 2,
+    centerY: y + height / 2
+  };
+}
+
+/**
  * @param {LabelPositionObject|string} value
  * @returns {LabelPositionObject}
  */
@@ -110,4 +140,8 @@ export function toFonts(options, fitRatio) {
  */
 export function isBoundToPoint(options) {
   return options && (defined(options.xValue) || defined(options.yValue));
+}
+
+function calculateLabelPosition(start, size, adjust = 0, position) {
+  return start - getRelativePosition(size, position) + adjust;
 }

@@ -17,7 +17,7 @@ describe('Doughnut label annotation', function() {
         data: {
           labels: ['Data1', 'Data2', 'Data3', 'Data4'],
           datasets: [{
-            data: [102, 200, 80, -55],
+            data: [102, 200, 80, 55],
           }],
         },
         options: {
@@ -36,34 +36,25 @@ describe('Doughnut label annotation', function() {
       const center = element.getCenterPoint();
 
       it('should return true inside element', function() {
-        for (const borderWidth of [0, 10]) {
-          const halfBorder = borderWidth / 2;
-          element.options.borderWidth = borderWidth;
-          for (const x of [element.x - halfBorder, element.x + element.width / 2, element.x2 + halfBorder]) {
-            for (const y of [element.y - halfBorder, element.y + element.height / 2, element.y2 + halfBorder]) {
-              const point = rotated({x, y}, center, rotation / 180 * Math.PI);
-              expect(element.inRange(point.x, point.y)).toEqual(true);
-            }
+        for (const x of [element.x, element.x + element.width / 2, element.x2]) {
+          for (const y of [element.y, element.y + element.height / 2, element.y2]) {
+            const point = rotated({x, y}, center, rotation / 180 * Math.PI);
+            expect(element.inRange(point.x, point.y)).toEqual(true);
           }
         }
       });
 
       it('should return false outside element', function() {
-        for (const borderWidth of [0, 10]) {
-          const halfBorder = borderWidth / 2;
-          element.options.borderWidth = borderWidth;
-
-          for (const x of [element.x - halfBorder - 1, element.x2 + halfBorder + 1]) {
-            for (const y of [element.y, element.y + element.height / 2, element.y2]) {
-              const point = rotated({x, y}, center, rotation / 180 * Math.PI);
-              expect(element.inRange(point.x, point.y)).toEqual(false);
-            }
+        for (const x of [element.x - 1, element.x2 + 1]) {
+          for (const y of [element.y, element.y + element.height / 2, element.y2]) {
+            const point = rotated({x, y}, center, rotation / 180 * Math.PI);
+            expect(element.inRange(point.x, point.y)).toEqual(false);
           }
-          for (const x of [element.x, element.x + element.width / 2, element.x2]) {
-            for (const y of [element.y - halfBorder - 1, element.y2 + halfBorder + 1]) {
-              const point = rotated({x, y}, center, rotation / 180 * Math.PI);
-              expect(element.inRange(point.x, point.y)).toEqual(false);
-            }
+        }
+        for (const x of [element.x, element.x + element.width / 2, element.x2]) {
+          for (const y of [element.y - 1, element.y2 + 1]) {
+            const point = rotated({x, y}, center, rotation / 180 * Math.PI);
+            expect(element.inRange(point.x, point.y)).toEqual(false);
           }
         }
       });

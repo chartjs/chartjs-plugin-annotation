@@ -1,41 +1,52 @@
-import LabelAnnotation from './label';
-import {DoughnutController} from 'chart.js';
-import {toPadding} from 'chart.js/helpers';
-import {drawBox, drawLabel, measureLabelSize, translate, shouldFit} from '../helpers';
+import {Element, DoughnutController} from 'chart.js';
+import {drawLabel, measureLabelSize, translate, shouldFit, inLabelRange, getElementCenterPoint, measureLabelRectangle, setBorderStyle} from '../helpers';
+import {TAU, getAngleFromPoint} from 'chart.js/helpers';
 
-export default class DoughnutLabelAnnotation extends LabelAnnotation {
+export default class DoughnutLabelAnnotation extends Element {
+
+  inRange(mouseX, mouseY, axis, useFinalPosition) {
+    return inLabelRange(
+      {x: mouseX, y: mouseY},
+      {rect: this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), center: this.getCenterPoint(useFinalPosition)},
+      axis,
+      this.rotation
+    );
+  }
+
+  getCenterPoint(useFinalPosition) {
+    return getElementCenterPoint(this, useFinalPosition);
+  }
 
   draw(ctx) {
     const options = this.options;
     if (!options.display || !options.content) {
       return;
     }
+    drawBackground(ctx, this);
     ctx.save();
     translate(ctx, this.getCenterPoint(), this.rotation);
-    drawBox(ctx, this, options);
-    drawLabel(ctx, this._getLabelSize(), options, this.fitRatio);
+    drawLabel(ctx, this, options, this._fitRatio);
     ctx.restore();
   }
 
   resolveElementProperties(chart, options) {
-    const controller = getController(chart, options);
-    if (!controller) {
+    const meta = getDatasetMeta(chart, options);
+    if (!meta) {
       return {};
     }
-    const {point, radius} = getControllerCenter(chart, controller);
+    const {controllerMeta, point, radius} = getControllerMeta(chart, options, meta);
     let labelSize = measureLabelSize(chart.ctx, options);
-    const padding = toPadding(options.padding);
-    const fitRatio = getFitRatio(chart, {borderWidth: options.borderWidth, padding}, labelSize, radius);
-    if (shouldFit(options, fitRatio)) {
-      labelSize = measureLabelSize(chart.ctx, options, fitRatio);
+    const _fitRatio = getFitRatio(labelSize, radius);
+    if (shouldFit(options, _fitRatio)) {
+      labelSize = measureLabelSize(chart.ctx, options, _fitRatio);
     }
-    const boxSize = this._measureRect(point, labelSize, options, padding);
+    const {position, xAdjust, yAdjust} = options;
+    const boxSize = measureLabelRectangle(point, labelSize, {borderWidth: 0, position, xAdjust, yAdjust});
     return {
-      pointX: point.x,
-      pointY: point.y,
       ...boxSize,
-      fitRatio,
-      rotation: options.rotation
+      ...controllerMeta,
+      rotation: options.rotation,
+      _fitRatio
     };
   }
 }
@@ -47,13 +58,12 @@ DoughnutLabelAnnotation.defaults = {
   autoHide: true,
   backgroundColor: 'transparent',
   backgroundShadowColor: 'transparent',
-  borderCapStyle: 'butt',
+  borderColor: 'transparent',
   borderDash: [],
   borderDashOffset: 0,
   borderJoinStyle: 'miter',
-  borderRadius: 0,
   borderShadowColor: 'transparent',
-  borderWidth: 0,
+  borderWidth: 2, // like arc element
   color: 'black',
   content: null,
   display: true,
@@ -64,8 +74,8 @@ DoughnutLabelAnnotation.defaults = {
     style: undefined,
     weight: undefined
   },
+  forceRadius: false,
   height: undefined,
-  padding: 0,
   position: 'center',
   rotation: 0,
   shadowBlur: 0,
@@ -80,16 +90,15 @@ DoughnutLabelAnnotation.defaults = {
 };
 
 DoughnutLabelAnnotation.defaultRoutes = {
-  borderColor: 'color'
 };
 
-function getController(chart, options) {
+function getDatasetMeta(chart, options) {
   return chart.getSortedVisibleDatasetMetas().reduce(function(result, value) {
     const controller = value.controller;
     if (controller instanceof DoughnutController &&
       isControllerVisible(chart, options, value.data) &&
-      (!result || controller.innerRadius < result.innerRadius)) {
-      return controller;
+      (!result || controller.innerRadius < result.controller.innerRadius)) {
+      return value;
     }
     return result;
   }, undefined);
@@ -106,8 +115,9 @@ function isControllerVisible(chart, options, elements) {
   }
 }
 
-function getControllerCenter({chartArea}, {innerRadius, offsetX, offsetY}) {
+function getControllerMeta({chartArea}, options, meta) {
   const {left, top, right, bottom} = chartArea;
+  const {innerRadius, offsetX, offsetY} = meta.controller;
   const x = (left + right) / 2 + offsetX;
   const y = (top + bottom) / 2 + offsetY;
   const square = {
@@ -120,15 +130,61 @@ function getControllerCenter({chartArea}, {innerRadius, offsetX, offsetY}) {
     x: (square.left + square.right) / 2,
     y: (square.top + square.bottom) / 2
   };
+  const hBorderWidth = options.borderWidth / 2;
+  const _radius = innerRadius - hBorderWidth;
+  const _counterclockwise = point.y > y;
+  const side = _counterclockwise ? top + hBorderWidth : bottom - hBorderWidth;
+  const angles = getAngles(side, x, y, _radius);
+  const controllerMeta = {
+    _centerX: x,
+    _centerY: y,
+    _radius,
+    _counterclockwise,
+    ...angles
+  };
   return {
+    controllerMeta,
     point,
     radius: Math.min(innerRadius, Math.min(square.right - square.left, square.bottom - square.top) / 2)
   };
 }
 
-function getFitRatio(chart, {borderWidth, padding}, {width, height}, radius) {
-  const w = width + padding.width + borderWidth;
-  const h = height + padding.height + borderWidth;
-  const hypo = Math.sqrt(Math.pow(w, 2) + Math.pow(h, 2));
+function getFitRatio({width, height}, radius) {
+  const hypo = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
   return (radius * 2) / hypo;
+}
+
+function getAngles(y, centerX, centerY, radius) {
+  const yk2 = Math.pow(centerY - y, 2);
+  const r2 = Math.pow(radius, 2);
+  const b = centerX * -2;
+  const c = Math.pow(centerX, 2) + yk2 - r2;
+  const delta = Math.pow(b, 2) - (4 * c);
+  if (delta <= 0) {
+    return {
+      _startAngle: 0,
+      _endAngle: TAU
+    };
+  }
+  const start = (-b - Math.sqrt(delta)) / 2;
+  const end = (-b + Math.sqrt(delta)) / 2;
+  return {
+    _startAngle: getAngleFromPoint({x: centerX, y: centerY}, {x: start, y}).angle,
+    _endAngle: getAngleFromPoint({x: centerX, y: centerY}, {x: end, y}).angle
+  };
+}
+
+function drawBackground(ctx, element) {
+  const {_centerX, _centerY, _radius, _startAngle, _endAngle, _counterclockwise, options} = element;
+  ctx.save();
+  const stroke = setBorderStyle(ctx, options);
+  ctx.fillStyle = options.backgroundColor;
+  ctx.beginPath();
+  ctx.arc(_centerX, _centerY, _radius, _startAngle, _endAngle, _counterclockwise);
+  ctx.closePath();
+  ctx.fill();
+  if (stroke) {
+    ctx.stroke();
+  }
+  ctx.restore();
 }

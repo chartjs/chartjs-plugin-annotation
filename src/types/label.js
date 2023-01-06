@@ -1,12 +1,17 @@
 import {Element} from 'chart.js';
-import {drawBox, drawCallout, drawLabel, measureLabelSize, getChartPoint, toPosition, inBoxRange, isBoundToPoint, resolveBoxProperties, getRelativePosition, translate, rotated, getElementCenterPoint} from '../helpers';
-import {toPadding, toRadians, defined} from 'chart.js/helpers';
+import {drawBox, drawCallout, drawLabel, measureLabelSize, getChartPoint, isBoundToPoint, resolveBoxProperties, translate, getElementCenterPoint, inLabelRange, measureLabelRectangle} from '../helpers';
+import {toPadding, defined} from 'chart.js/helpers';
 
 export default class LabelAnnotation extends Element {
 
   inRange(mouseX, mouseY, axis, useFinalPosition) {
-    const {x, y} = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.rotation));
-    return inBoxRange({x, y}, this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis, this.options.borderWidth);
+    return inLabelRange(
+      {x: mouseX, y: mouseY},
+      {rect: this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), center: this.getCenterPoint(useFinalPosition)},
+      axis,
+      this.rotation,
+      this.options.borderWidth
+    );
   }
 
   getCenterPoint(useFinalPosition) {
@@ -23,7 +28,7 @@ export default class LabelAnnotation extends Element {
     translate(ctx, this.getCenterPoint(), this.rotation);
     drawCallout(ctx, this);
     drawBox(ctx, this, options);
-    drawLabel(ctx, this._getLabelSize(), options);
+    drawLabel(ctx, getLabelSize(this), options);
     ctx.restore();
   }
 
@@ -37,27 +42,13 @@ export default class LabelAnnotation extends Element {
     }
     const padding = toPadding(options.padding);
     const labelSize = measureLabelSize(chart.ctx, options);
-    const boxSize = this._measureRect(point, labelSize, options, padding);
+    const boxSize = measureLabelRectangle(point, labelSize, options, padding);
     return {
       pointX: point.x,
       pointY: point.y,
       ...boxSize,
       rotation: options.rotation
     };
-  }
-
-  /**
-   * @protected
-   */
-  _measureRect(point, labelSize, options, padding) {
-    return measureRect(point, labelSize, options, padding);
-  }
-
-  /**
-   * @protected
-   */
-  _getLabelSize() {
-    return getLabelSize(this);
   }
 }
 
@@ -124,30 +115,6 @@ LabelAnnotation.defaults = {
 LabelAnnotation.defaultRoutes = {
   borderColor: 'color'
 };
-
-function measureRect(point, size, options, padding) {
-  const width = size.width + padding.width + options.borderWidth;
-  const height = size.height + padding.height + options.borderWidth;
-  const position = toPosition(options.position);
-  const x = calculatePosition(point.x, width, options.xAdjust, position.x);
-  const y = calculatePosition(point.y, height, options.yAdjust, position.y);
-
-  return {
-    x,
-    y,
-    x2: x + width,
-    y2: y + height,
-    width,
-    height,
-    centerX: x + width / 2,
-    centerY: y + height / 2
-  };
-}
-
-function calculatePosition(start, size, adjust = 0, position) {
-  return start - getRelativePosition(size, position) + adjust;
-}
-
 
 function getLabelSize({x, y, width, height, options}) {
   const hBorderWidth = options.borderWidth / 2;
