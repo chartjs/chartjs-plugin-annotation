@@ -108,9 +108,8 @@ export default {
         type: 'number'
       },
       colors: {
-        properties: ['color'],
-        type: 'color',
-        duration: 0
+        properties: ['backgroundColor', 'borderColor'],
+        type: 'color'
       }
     },
     clip: true,
