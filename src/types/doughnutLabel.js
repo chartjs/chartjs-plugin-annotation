@@ -25,7 +25,6 @@ export default class DoughnutLabelAnnotation extends Element {
     drawBackground(ctx, this);
     ctx.save();
     translate(ctx, this.getCenterPoint(), this.rotation);
-    console.log(this._fitRatio);
     drawLabel(ctx, this, options, this._fitRatio);
     ctx.restore();
   }
@@ -39,7 +38,7 @@ export default class DoughnutLabelAnnotation extends Element {
     let labelSize = measureLabelSize(chart.ctx, options);
     const _fitRatio = getFitRatio(labelSize, radius);
     if (shouldFit(options, _fitRatio)) {
-      labelSize = {width: labelSize.width * _fitRatio, height: labelSize.height * _fitRatio}; 
+      labelSize = {width: labelSize.width * _fitRatio, height: labelSize.height * _fitRatio};
     }
     const {position, xAdjust, yAdjust} = options;
     const boxSize = measureLabelRectangle(point, labelSize, {borderWidth: 0, position, xAdjust, yAdjust});

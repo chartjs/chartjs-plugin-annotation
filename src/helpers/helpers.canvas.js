@@ -1,6 +1,6 @@
 import {addRoundedRectPath, isArray, toTRBLCorners, toRadians} from 'chart.js/helpers';
 import {clampAll} from './helpers.core';
-import {calculateTextAlignment, getSize, toFonts, shouldFit} from './helpers.options';
+import {calculateTextAlignment, getSize, toFonts} from './helpers.options';
 
 const widthCache = new Map();
 const fontsKey = (fonts) => fonts.reduce(function(prev, item) {
