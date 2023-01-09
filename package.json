@@ -8,6 +8,14 @@
   "main": "dist/chartjs-plugin-annotation.js",
   "module": "dist/chartjs-plugin-annotation.esm.js",
   "types": "types/index.d.ts",
+  "jsdelivr": "dist/chartjs-plugin-annotation.min.js",
+  "unpkg": "dist/chartjs-plugin-annotation.min.js",
+  "exports": {
+    "types": "./types/index.d.ts",
+    "import": "./dist/chartjs-plugin-annotation.esm.js",
+    "require": "./dist/chartjs-plugin-annotation.min.js",
+    "script": "./dist/chartjs-plugin-annotation.min.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/chartjs/chartjs-plugin-annotation.git"
