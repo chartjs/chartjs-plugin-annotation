@@ -1,11 +1,12 @@
 import {Chart} from 'chart.js';
-import {clipArea, unclipArea, isObject, isArray} from 'chart.js/helpers';
-import {handleEvent, hooks, updateListeners} from './events';
-import {adjustScaleRange, verifyScaleOptions} from './scale';
-import {updateElements, resolveType} from './elements';
-import {annotationTypes} from './types';
-import {requireVersion} from './helpers';
+import {clipArea, isArray, isObject, unclipArea} from 'chart.js/helpers';
 import {version} from '../package.json';
+import {commonDefaults} from './commonDefaults';
+import {resolveType, updateElements} from './elements';
+import {handleEvent, hooks, updateListeners} from './events';
+import {requireVersion} from './helpers';
+import {adjustScaleRange, verifyScaleOptions} from './scale';
+import {annotationTypes} from './types';
 
 const chartStates = new Map();
 
@@ -113,11 +114,7 @@ export default {
       axis: undefined,
       intersect: undefined
     },
-    common: {
-      drawTime: 'afterDatasetsDraw',
-      label: {
-      }
-    }
+    common: commonDefaults
   },
 
   descriptors: {

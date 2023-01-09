@@ -1,6 +1,5 @@
 import {Animations} from 'chart.js';
-import {isObject, defined} from 'chart.js/helpers';
-import {hooks} from './events';
+import {defined, isObject} from 'chart.js/helpers';
 import {annotationTypes} from './types';
 
 const directUpdater = {
@@ -61,7 +60,7 @@ export function updateElements(chart, state, options, mode) {
       Object.assign(element, properties);
     }
 
-    properties.options = resolveAnnotationOptions(resolver);
+    properties.options = resolveOptions(resolver);
 
     animations.update(element, properties);
   }
@@ -86,7 +85,7 @@ function updateSubElements(mainElement, {elements, initProperties}, resolver, an
     const properties = definition.properties;
     const subElement = getOrCreateElement(subElements, i, definition.type, initProperties);
     const subResolver = resolver[definition.optionScope].override(definition);
-    properties.options = resolveAnnotationOptions(subResolver);
+    properties.options = resolveOptions(subResolver);
     animations.update(subElement, properties);
   }
 }
@@ -103,27 +102,15 @@ function getOrCreateElement(elements, index, type, initProperties) {
   return element;
 }
 
-function resolveAnnotationOptions(resolver) {
-  const elementClass = annotationTypes[resolveType(resolver.type)];
+function resolveOptions(resolver, path = []) {
   const result = {};
-  result.id = resolver.id;
-  result.type = resolver.type;
-  result.drawTime = resolver.drawTime;
-  Object.assign(result,
-    resolveObj(resolver, elementClass.defaults),
-    resolveObj(resolver, elementClass.defaultRoutes));
-  for (const hook of hooks) {
-    result[hook] = resolver[hook];
-  }
-  return result;
-}
-
-function resolveObj(resolver, defs) {
-  const result = {};
-  for (const prop of Object.keys(defs)) {
-    const optDefs = defs[prop];
-    const value = resolver[prop];
-    result[prop] = isObject(optDefs) ? resolveObj(value, optDefs) : value;
+  for (const key of Object.getOwnPropertyNames(resolver)) {
+    if (path.includes(key)) {
+      // TODO: this is slow, should figure out why the keys start looping instead.
+      continue;
+    }
+    const value = resolver[key];
+    result[key] = isObject(value) ? resolveOptions(value, [...path, key]) : value;
   }
   return result;
 }
