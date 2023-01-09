@@ -97,7 +97,8 @@ function getDatasetMeta(chart, options) {
     const controller = value.controller;
     if (controller instanceof DoughnutController &&
       isControllerVisible(chart, options, value.data) &&
-      (!result || controller.innerRadius < result.controller.innerRadius)) {
+      (!result || controller.innerRadius < result.controller.innerRadius) &&
+      controller.options.circumference >= 90) {
       return value;
     }
     return result;
