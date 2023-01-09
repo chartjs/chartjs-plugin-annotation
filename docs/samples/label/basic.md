@@ -70,11 +70,6 @@ const config = {
   data,
   options: {
     scales: {
-      x: {
-        beginAtZero: true,
-        max: 120,
-        min: 0
-      },
       y: {
         beginAtZero: true,
         max: 120,

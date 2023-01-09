@@ -73,6 +73,17 @@ module.exports = {
       },
     }],
   ],
+  chainWebpack(config) {
+    config.module
+      .rule('chart.js')
+      .include.add(path.resolve('node_modules/chart.js')).end()
+      .use('babel-loader')
+      .loader('babel-loader')
+      .options({
+        presets: ['@babel/preset-env']
+      })
+      .end();
+  },
   markdown: {
     extendMarkdown: md => {
       md.use(require('markdown-it-include'), path.resolve(__dirname, '../'));
