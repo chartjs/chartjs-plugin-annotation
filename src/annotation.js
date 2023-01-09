@@ -107,6 +107,11 @@ export default {
         properties: ['x', 'y', 'x2', 'y2', 'width', 'height', 'centerX', 'centerY', 'pointX', 'pointY', 'radius'],
         type: 'number'
       },
+      colors: {
+        properties: ['color'],
+        type: 'color',
+        duration: 0
+      }
     },
     clip: true,
     interaction: {
