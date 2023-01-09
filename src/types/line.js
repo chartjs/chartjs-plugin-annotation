@@ -1,6 +1,7 @@
 import {Element} from 'chart.js';
 import {PI, toRadians, toDegrees, toPadding} from 'chart.js/helpers';
 import {EPSILON, clamp, scaleValue, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, getElementCenterPoint, retrieveScaleID, getDimensionByScale} from '../helpers';
+import LabelAnnotation from './label';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
 const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p2.y - p1.y))).x;
@@ -89,13 +90,14 @@ export default class LineAnnotation extends Element {
       : {x, y, x2, y2, width: Math.abs(x2 - x), height: Math.abs(y2 - y)};
     properties.centerX = (x2 + x) / 2;
     properties.centerY = (y2 + y) / 2;
-    if (!inside) {
-      options.label.display = false;
-    }
+    const labelProperties = resolveLabelElementProperties(chart, properties, options.label);
+    // additonal prop to manage zoom/pan
+    labelProperties._visible = inside;
+
     properties.elements = [{
       type: 'label',
       optionScope: 'label',
-      properties: resolveLabelElementProperties(chart, properties, options.label)
+      properties: labelProperties
     }];
     return properties;
   }
@@ -147,9 +149,7 @@ LineAnnotation.defaults = {
     borderRadius: 6,
     borderShadowColor: 'transparent',
     borderWidth: 0,
-    callout: {
-      display: false
-    },
+    callout: Object.assign({}, LabelAnnotation.defaults.callout),
     color: '#fff',
     content: null,
     display: false,
@@ -274,8 +274,6 @@ function applyScaleValueToDimension(area, scale, options) {
 }
 
 function resolveLabelElementProperties(chart, properties, options) {
-  // TODO to remove by another PR to enable callout for line label
-  options.callout.display = false;
   const borderWidth = options.borderWidth;
   const padding = toPadding(options.padding);
   const textSize = measureLabelSize(chart.ctx, options);
@@ -311,6 +309,8 @@ function calculateLabelPosition(properties, label, sizes, chartArea) {
     y2: centerY + (height / 2),
     centerX,
     centerY,
+    pointX: pt.x,
+    pointY: pt.y,
     width,
     height,
     rotation: toDegrees(rotation)

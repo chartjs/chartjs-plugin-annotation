@@ -83,7 +83,7 @@ The following options are available for label annotations.
 
 If one of the axes does not match an axis in the chart, the content will be rendered in the center of the chart. The 2 coordinates, xValue, yValue are optional. If not specified, the content will be rendered in the center of the scale dimension.
 
-The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges in the respective direction and the box size is used to calculated the center of the point. To enable to use the box positioning, the `radius` must be set to `0` or `NaN`.
+The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges in the respective direction and the box size is used to calculated the center of the point.
 
 | Name | Description
 | ---- | ----
@@ -92,6 +92,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | `display` | Whether or not this annotation is visible.
 | `drawTime` | See [drawTime](../options#draw-time).
 | `height` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
+| `id` | Identifies a unique id  for the annotation and it will be stored in the element context. When the annotations are defined by an object, the id is automatically set using the key used to store the annotations in the object. When the annotations are configured by an array, the id, passed by this option in the annotation, will be used. 
 | `padding` | The padding to add around the text label.
 | `rotation` | Rotation of the label in degrees.
 | `textAlign` | Text alignment of label content when there's more than one line. Possible options are: `'left'`, `'start'`, `'center'`, `'end'`, `'right'`.

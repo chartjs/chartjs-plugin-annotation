@@ -73,6 +73,17 @@ module.exports = {
       },
     }],
   ],
+  chainWebpack(config) {
+    config.module
+      .rule('chart.js')
+      .include.add(path.resolve('node_modules/chart.js')).end()
+      .use('babel-loader')
+      .loader('babel-loader')
+      .options({
+        presets: ['@babel/preset-env']
+      })
+      .end();
+  },
   markdown: {
     extendMarkdown: md => {
       md.use(require('markdown-it-include'), path.resolve(__dirname, '../'));
@@ -140,6 +151,8 @@ module.exports = {
           children: [
             'ellipse/basic',
             'ellipse/rotation',
+            'ellipse/label',
+            'ellipse/image',
           ]
         },
         {
@@ -162,6 +175,7 @@ module.exports = {
             'line/limited',
             'line/average',
             'line/standardDeviation',
+            'line/callout',
             'line/visibility',
             'line/labelVisibility',
             'line/canvas',
