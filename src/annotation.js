@@ -92,7 +92,7 @@ export default {
     }
   },
 
-  destroy(chart) {
+  afterDestroy(chart) {
     chartStates.delete(chart);
   },
 
