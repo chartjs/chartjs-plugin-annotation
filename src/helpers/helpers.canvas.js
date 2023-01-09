@@ -71,25 +71,20 @@ export function setShadowStyle(ctx, options) {
 /**
  * @param {CanvasRenderingContext2D} ctx
  * @param {CoreLabelOptions} options
- * @param {number} fitRatio
  * @returns {{width: number, height: number}}
  */
-export function measureLabelSize(ctx, options, fitRatio) {
+export function measureLabelSize(ctx, options) {
   const content = options.content;
   if (isImageOrCanvas(content)) {
     const size = {
       width: getSize(content.width, options.width),
       height: getSize(content.height, options.height)
     };
-    if (shouldFit(options, fitRatio)) {
-      size.width = Math.floor(size.width * fitRatio);
-      size.height = Math.floor(size.height * fitRatio);
-    }
     return size;
   }
   const strokeWidth = options.textStrokeWidth;
   const lines = isArray(content) ? content : [content];
-  const fonts = toFonts(options, fitRatio);
+  const fonts = toFonts(options);
   const mapKey = lines.join() + fontsKey(fonts) + strokeWidth + (ctx._measureText ? '-spriting' : '');
   if (!widthCache.has(mapKey)) {
     widthCache.set(mapKey, calculateLabelSize(ctx, lines, fonts, strokeWidth));

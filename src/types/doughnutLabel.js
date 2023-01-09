@@ -25,6 +25,7 @@ export default class DoughnutLabelAnnotation extends Element {
     drawBackground(ctx, this);
     ctx.save();
     translate(ctx, this.getCenterPoint(), this.rotation);
+    console.log(this._fitRatio);
     drawLabel(ctx, this, options, this._fitRatio);
     ctx.restore();
   }
@@ -38,7 +39,7 @@ export default class DoughnutLabelAnnotation extends Element {
     let labelSize = measureLabelSize(chart.ctx, options);
     const _fitRatio = getFitRatio(labelSize, radius);
     if (shouldFit(options, _fitRatio)) {
-      labelSize = measureLabelSize(chart.ctx, options, _fitRatio);
+      labelSize = {width: labelSize.width * _fitRatio, height: labelSize.height * _fitRatio}; 
     }
     const {position, xAdjust, yAdjust} = options;
     const boxSize = measureLabelRectangle(point, labelSize, {borderWidth: 0, position, xAdjust, yAdjust});
@@ -63,7 +64,7 @@ DoughnutLabelAnnotation.defaults = {
   borderDashOffset: 0,
   borderJoinStyle: 'miter',
   borderShadowColor: 'transparent',
-  borderWidth: 2, // like arc element
+  borderWidth: 0,
   color: 'black',
   content: null,
   display: true,
@@ -74,13 +75,13 @@ DoughnutLabelAnnotation.defaults = {
     style: undefined,
     weight: undefined
   },
-  forceRadius: false,
   height: undefined,
   position: 'center',
   rotation: 0,
   shadowBlur: 0,
   shadowOffsetX: 0,
   shadowOffsetY: 0,
+  spacing: 1,
   textAlign: 'center',
   textStrokeColor: undefined,
   textStrokeWidth: 0,
@@ -130,10 +131,10 @@ function getControllerMeta({chartArea}, options, meta) {
     x: (square.left + square.right) / 2,
     y: (square.top + square.bottom) / 2
   };
-  const hBorderWidth = options.borderWidth / 2;
-  const _radius = innerRadius - hBorderWidth;
+  const space = options.spacing + options.borderWidth / 2;
+  const _radius = innerRadius - space;
   const _counterclockwise = point.y > y;
-  const side = _counterclockwise ? top + hBorderWidth : bottom - hBorderWidth;
+  const side = _counterclockwise ? top + space : bottom - space;
   const angles = getAngles(side, x, y, _radius);
   const controllerMeta = {
     _centerX: x,

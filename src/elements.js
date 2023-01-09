@@ -64,9 +64,9 @@ export function updateElements(chart, state, options, mode) {
       Object.assign(element, properties);
     }
 
-    animations.update(element, properties);
+    properties.options = resolveAnnotationOptions(resolver);
 
-    element.options = resolveAnnotationOptions(resolver);
+    animations.update(element, properties);
   }
 }
 
@@ -89,8 +89,8 @@ function updateSubElements(mainElement, {elements, initProperties}, resolver, an
     const properties = definition.properties;
     const subElement = getOrCreateElement(subElements, i, definition.type, initProperties);
     const subResolver = resolver[definition.optionScope].override(definition);
+    properties.options = resolveAnnotationOptions(subResolver);
     animations.update(subElement, properties);
-    subElement.options = resolveAnnotationOptions(subResolver);
   }
 }
 
@@ -151,4 +151,3 @@ function resyncElements(elements, annotations) {
   }
   return elements;
 }
-
