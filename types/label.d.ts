@@ -147,7 +147,7 @@ export interface LabelTypeOptions extends ContainedLabelOptions {
   callout?: CalloutOptions,
 }
 
-export interface DoughnutLabelOptions extends ContainedLabelOptions {
+export interface DoughnutLabelOptions extends Omit<ContainedLabelOptions, 'borderCapStyle' | 'borderRadius' | 'padding'> {
   position?: Scriptable<LabelPosition | LabelPositionObject, PartialEventContext>,
   /**
    * Whether the label should be displayed

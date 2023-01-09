@@ -126,6 +126,7 @@ export interface DoughnutLabelAnnotationOptions extends AnnotationEvents, Doughn
   autoFit?: Scriptable<boolean, PartialEventContext>,
   autoHide?: Scriptable<boolean, PartialEventContext>,
   id?: string,
+  spacing?: Scriptable<number, PartialEventContext>
 }
 
 interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationPointCoordinates {
