@@ -209,7 +209,8 @@ module.exports = {
             'doughnutLabel/basic',
             'doughnutLabel/canvas',
             'doughnutLabel/image',
-            'doughnutLabel/gauge'
+            'doughnutLabel/gauge',
+            'doughnutLabel/background',
           ]
         },
         {

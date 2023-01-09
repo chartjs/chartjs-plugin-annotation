@@ -54,27 +54,25 @@ The following options are available for label annotations.
 | [`autoFit`](#general) | `boolean` | Yes | `true`
 | [`backgroundColor`](#styling) | [`Color`](../options.md#color) | Yes | `'transparent'`
 | [`backgroundShadowColor`](#styling) | [`Color`](../options.md#color) | Yes | `'transparent'`
-| [`borderColor`](#styling) | [`Color`](../options.md#color) | Yes | `options.color`
+| [`borderColor`](#styling) | [`Color`](../options.md#color) | Yes | `'transparent'`
 | [`borderDash`](#styling) | `number[]` | Yes | `[]`
 | [`borderDashOffset`](#styling) | `number` | Yes | `0`
 | [`borderShadowColor`](#styling) | [`Color`](../options.md#color) | Yes | `'transparent'`
 | [`display`](#general) | `boolean` | Yes | `true`
 | [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
-| [`borderCapStyle`](#styling) | `string` | Yes | `'butt'`
 | [`borderJoinStyle`](#styling) | `string` | Yes | `'miter'`
-| [`borderRadius`](#borderradius) | `number` \| `object` | Yes | `0`
 | [`borderWidth`](#styling) | `number`| Yes | `0`
 | [`color`](#styling) | [`Color`\|`Color[]`](../options.md#color) | Yes | `'black'`
 | [`content`](#general) | `string`\|`string[]`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image)\|[`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) | Yes | `null`
 | [`font`](#styling) | [`Font`\|`Font[]`](../options.md#font) | Yes | `{}`
 | [`height`](#general) | `number`\|`string` | Yes | `undefined`
 | [`id`](#general) | `string` | No | `undefined`
-| [`padding`](#general) | [`Padding`](../options.md#padding) | Yes | `0`
 | [`position`](#position) | `string`\|`{x: string, y: string}` | Yes | `'center'`
 | [`rotation`](#general) | `number`| Yes | `0`
 | [`shadowBlur`](#styling) | `number` | Yes | `0`
 | [`shadowOffsetX`](#styling) | `number` | Yes | `0`
 | [`shadowOffsetY`](#styling) | `number` | Yes | `0`
+| [`spacing`](#general) | `number`| Yes | `1`
 | [`textAlign`](#general) | `string` | Yes | `'center'`
 | [`textStrokeColor`](#styling) | [`Color`](../options.md#color) | Yes | `undefined`
 | [`textStrokeWidth`](#styling) | `number` | Yes | `0`
@@ -95,8 +93,8 @@ The content will be rendered in the center of the chart.
 | `drawTime` | See [drawTime](../options.md#draw-time).
 | `height` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
 | `id` | Identifies a unique id  for the annotation and it will be stored in the element context. When the annotations are defined by an object, the id is automatically set using the key used to store the annotations in the object. When the annotations are configured by an array, the id, passed by this option in the annotation, will be used. 
-| `padding` | The padding to add around the label.
 | `rotation` | Rotation of the label in degrees.
+| `spacing` | The space in pixels between the inner radius of the chart and the background of the label.
 | `textAlign` | Text alignment of label content when there's more than one line. Possible options are: `'left'`, `'start'`, `'center'`, `'end'`, `'right'`.
 | `width` | Overrides the width of the image or canvas element. Could be set in pixel by a number, or in percentage of current width of image or canvas element by a string. If undefined, uses the width of the image or canvas element. It is used only when the content is an image or canvas element.
 | `xAdjust` | Adjustment of label relative to computed position. Negative values move the label left, positive right.
@@ -108,7 +106,6 @@ The content will be rendered in the center of the chart.
 | ---- | ----
 | `backgroundColor` | Fill color.
 | `backgroundShadowColor` | The color of shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
-| `borderCapStyle` | Cap style of the border line. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap).
 | `borderColor` | Stroke color.
 | `borderDash` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | Offset for border line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
