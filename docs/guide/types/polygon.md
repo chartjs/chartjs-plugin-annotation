@@ -6,7 +6,6 @@ Polygon annotations are used to mark whatever polygon (for instance triangle, sq
 /* <block:options:0> */
 const options = {
   plugins: {
-    autocolors: false,
     annotation: {
       annotations: {
         pentagon: {
@@ -51,9 +50,9 @@ module.exports = {
 
 The following options are available for polygon annotations.
 
-| Name | Type | [Scriptable](../options#scriptable-options) | Default
+| Name | Type | [Scriptable](../options.md#scriptable-options) | Default
 | ---- | ---- | :----: | ----
-| [`backgroundShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
+| [`backgroundShadowColor`](#styling) | [`Color`](../options.md#color) | Yes | `'transparent'`
 | [`borderCapStyle`](#styling) | `string` | Yes | `'butt'`
 | [`borderJoinStyle`](#styling) | `string` | Yes | `'miter'`
 | [`borderWidth`](#styling) | `number`| Yes | `1`
@@ -78,7 +77,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | ---- | ----
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
 | `display` | Whether or not this annotation is visible.
-| `drawTime` | See [drawTime](../options#draw-time).
+| `drawTime` | See [drawTime](../options.md#draw-time).
 | `id` | Identifies a unique id  for the annotation and it will be stored in the element context. When the annotations are defined by an object, the id is automatically set using the key used to store the annotations in the object. When the annotations are configured by an array, the id, passed by this option in the annotation, will be used. 
 | `radius` | Size of the polygon in pixels.
 | `rotation` | Rotation of polygon, in degrees.
@@ -114,7 +113,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 
 ### Point
 
-Polygon consists of points. These points are actually [Point Annotations](point) and all of the [styling options](point#styling) can be configured. General options affecting the location of the point are ignored.
+Polygon consists of points. These points are actually [Point Annotations](point) and all of the [styling options](point.md#styling) can be configured. General options affecting the location of the point are ignored.
 
 Namespace: `options.annotations[annotationID].point`, it defines options for the callout on the annotation label.
 
@@ -122,7 +121,6 @@ Namespace: `options.annotations[annotationID].point`, it defines options for the
 /* <block:options:0> */
 const options = {
   plugins: {
-    autocolors: false,
     annotation: {
       annotations: {
         pentagon: {

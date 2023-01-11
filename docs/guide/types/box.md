@@ -6,7 +6,6 @@ Box annotations are used to draw rectangles on the chart area. This can be usefu
 /* <block:options:0> */
 const options = {
   plugins: {
-    autocolors: false,
     annotation: {
       annotations: {
         box1: {
@@ -51,9 +50,9 @@ module.exports = {
 
 The following options are available for box annotations.
 
-| Name | Type | [Scriptable](../options#scriptable-options) | Default
+| Name | Type | [Scriptable](../options.md#scriptable-options) | Default
 | ---- | ---- | :----: | ----
-| [`backgroundShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
+| [`backgroundShadowColor`](#styling) | [`Color`](../options.md#color) | Yes | `'transparent'`
 | [`borderCapStyle`](#styling) | `string` | Yes | `'butt'`
 | [`borderJoinStyle`](#styling) | `string` | Yes | `'miter'`
 | [`borderRadius`](#styling) | `number` \| `object` | Yes | `0`
@@ -71,7 +70,7 @@ If one of the axes does not match an axis in the chart, the box will take the en
 | ---- | ----
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
 | `display` | Whether or not this annotation is visible.
-| `drawTime` | See [drawTime](../options#draw-time).
+| `drawTime` | See [drawTime](../options.md#draw-time).
 | `id` | Identifies a unique id  for the annotation and it will be stored in the element context. When the annotations are defined by an object, the id is automatically set using the key used to store the annotations in the object. When the annotations are configured by an array, the id, passed by this option in the annotation, will be used. 
 | `rotation` | Rotation of the box in degrees.
 | `xMax` | Right edge of the box in units along the x axis.
@@ -112,4 +111,4 @@ The following diagram is showing the element properties about a `'box'` annotati
 
 ![box](../../img/elementBoxProps.png)
 
-The label of a box annotation is described as a [label annotation](./label#element) and accessible by `element.label`.
+The label of a box annotation is described as a [label annotation](./label.md#element) and accessible by `element.label`.

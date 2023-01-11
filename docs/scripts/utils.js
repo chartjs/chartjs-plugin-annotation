@@ -119,7 +119,6 @@ function createChart(canvas) {
       responsive: false,
       animation: false,
       plugins: {
-        autocolors: false,
         version: false,
         legend: false,
         title: false,

@@ -2,14 +2,14 @@
 
 The following options are available for all annotations.
 
-| Name | Type | [Scriptable](../options#scriptable-options) | Default
+| Name | Type | [Scriptable](../options.md#scriptable-options) | Default
 | ---- | ---- | :----: | ----
 | [`adjustScaleRange`](#general) | `boolean` | Yes | `true`
-| [`backgroundColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
-| [`borderColor`](#styling) | [`Color`](../options#color) | Yes | `options.color`
+| [`backgroundColor`](#styling) | [`Color`](../options.md#color) | Yes | `options.color`
+| [`borderColor`](#styling) | [`Color`](../options.md#color) | Yes | `options.color`
 | [`borderDash`](#styling) | `number[]` | Yes | `[]`
 | [`borderDashOffset`](#styling) | `number` | Yes | `0`
-| [`borderShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
+| [`borderShadowColor`](#styling) | [`Color`](../options.md#color) | Yes | `'transparent'`
 | [`display`](#general) | `boolean` | Yes | `true`
 | [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
 | [`id`](#general) | `string` | No | `undefined`
