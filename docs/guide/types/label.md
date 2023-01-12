@@ -6,7 +6,6 @@ Label annotations are used to add contents on the chart area. This can be useful
 /* <block:options:0> */
 const options = {
   plugins: {
-    autocolors: false,
     annotation: {
       annotations: {
         label1: {
@@ -53,23 +52,23 @@ module.exports = {
 
 The following options are available for label annotations.
 
-| Name | Type | [Scriptable](../options#scriptable-options) | Default
+| Name | Type | [Scriptable](../options.md#scriptable-options) | Default
 | ---- | ---- | :----: | ----
-| [`backgroundShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
+| [`backgroundShadowColor`](#styling) | [`Color`](../options.md#color) | Yes | `'transparent'`
 | [`borderCapStyle`](#styling) | `string` | Yes | `'butt'`
 | [`borderJoinStyle`](#styling) | `string` | Yes | `'miter'`
 | [`borderRadius`](#borderradius) | `number` \| `object` | Yes | `0`
 | [`borderWidth`](#styling) | `number`| Yes | `0`
 | [`callout`](#callout) | `object` | Yes |
-| [`color`](#styling) | [`Color`](../options#color) | Yes | `'black'`
+| [`color`](#styling) | [`Color`](../options.md#color) | Yes | `'black'`
 | [`content`](#general) | `string`\|`string[]`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image)\|[`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) | Yes | `null`
-| [`font`](#styling) | [`Font`](../options#font) | Yes | `{}`
+| [`font`](#styling) | [`Font`](../options.md#font) | Yes | `{}`
 | [`height`](#general) | `number`\|`string` | Yes | `undefined`
-| [`padding`](#general) | [`Padding`](../options#padding) | Yes | `6`
+| [`padding`](#general) | [`Padding`](../options.md#padding) | Yes | `6`
 | [`position`](#position) | `string`\|`{x: string, y: string}` | Yes | `'center'`
 | [`rotation`](#general) | `number`| Yes | `0`
 | [`textAlign`](#general) | `string` | Yes | `'center'`
-| [`textStrokeColor`](#styling) | [`Color`](../options#color) | Yes | `undefined`
+| [`textStrokeColor`](#styling) | [`Color`](../options.md#color) | Yes | `undefined`
 | [`textStrokeWidth`](#styling) | `number` | Yes | `0`
 | [`width`](#general) | `number`\|`string` | Yes | `undefined`
 | [`xAdjust`](#general) | `number` | Yes | `0`
@@ -83,14 +82,14 @@ The following options are available for label annotations.
 
 If one of the axes does not match an axis in the chart, the content will be rendered in the center of the chart. The 2 coordinates, xValue, yValue are optional. If not specified, the content will be rendered in the center of the scale dimension.
 
-The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges in the respective direction and the box size is used to calculated the center of the point. To enable to use the box positioning, the `radius` must be set to `0` or `NaN`.
+The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the box is expanded out to the edges in the respective direction and the box size is used to calculated the center of the point.
 
 | Name | Description
 | ---- | ----
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
 | `content` | The content to show in the text annotation.
 | `display` | Whether or not this annotation is visible.
-| `drawTime` | See [drawTime](../options#draw-time).
+| `drawTime` | See [drawTime](../options.md#draw-time).
 | `height` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
 | `id` | Identifies a unique id  for the annotation and it will be stored in the element context. When the annotations are defined by an object, the id is automatically set using the key used to store the annotations in the object. When the annotations are configured by an array, the id, passed by this option in the annotation, will be used. 
 | `padding` | The padding to add around the text label.
@@ -155,7 +154,6 @@ Namespace: `options.annotations[annotationID].callout`, it defines options for t
 /* <block:options:0> */
 const options = {
   plugins: {
-    autocolors: false,
     annotation: {
       annotations: {
         label1: {
@@ -203,12 +201,12 @@ module.exports = {
 };
 ```
 
-All of these options can be [Scriptable](../options#scriptable-options).
+All of these options can be [Scriptable](../options.md#scriptable-options).
 
 | Name | Type | Default | Notes
 | ---- | ---- | :----: | ----
 | `borderCapStyle` | `string` | `'butt'` | Cap style of the border line of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap).
-| `borderColor` | [`Color`](../options#color) | `undefined` | Stroke color of the pointer of the callout.
+| `borderColor` | [`Color`](../options.md#color) | `undefined` | Stroke color of the pointer of the callout.
 | `borderDash` | `number[]` | `[]` | Length and spacing of dashes of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | `number` | `0` | Offset for line dashes of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
 | `borderJoinStyle` | `string` | `'miter'` | Border line join style of the callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
