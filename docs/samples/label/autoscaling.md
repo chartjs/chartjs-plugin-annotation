@@ -3,7 +3,7 @@
 <input id="update" type="range" min="45" max="100" value="100" step="5" style="width:100%"/>
 
 ```js chart-editor
-// <block:setup:3>
+// <block:setup:4>
 const uniqueId = new Date().getTime();
 
 const DATA_COUNT = 12;
@@ -26,10 +26,11 @@ const annotation = {
   backgroundColor: 'whiteSmoke',
   borderColor: 'lightGray',
   borderRadius: 6,
-  borderWidth: 2,
   content: ['Annotation', 'to resize'],
   drawTime: 'afterDraw',
-  font: (ctx) => autoScaling(ctx)
+  borderWidth: (ctx) => autoScaling(ctx, 'borderWidth', 2),
+  font: (ctx) => autoScaling(ctx, 'font', {size: 48}),
+  padding: (ctx) => autoScaling(ctx, 'padding', 6),
 };
 // </block:annotation>
 
@@ -50,7 +51,30 @@ const config = {
 };
 /* </block:config> */
 
-// <block:utils:2>
+// <block:autoScaling:2>
+function autoScaling(ctx, option, origValue) {
+  const {chart, original} = ctx;
+  const {width, height} = chart.chartArea;
+  const hypo = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
+  if (!original) {
+    ctx.original = {size: hypo};
+    ctx.original[option] = origValue;
+    return origValue;
+  } else if (!original[option]) {
+    original[option] = origValue;
+    return origValue;
+  }
+  const size = original.size;
+  const value = original[option];
+  const newValue = hypo / size * (option === 'font' ? value.size : value);
+  if (option === 'font') {
+    return {size: newValue};
+  }
+  return newValue;
+}
+// </block:autoScaling>
+
+// <block:utils:3>
 let originalArea;
 document.getElementById('update').addEventListener('input', update);
 
@@ -63,22 +87,6 @@ function update() {
   const w = originalArea.width * ratio;
   const h = originalArea.height * ratio;
   chart.resize(w, h);
-}
-
-function autoScaling(ctx) {
-  const {chart, original} = ctx;
-  const {width, height} = chart.chartArea;
-  const hypo = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
-  if (!original) {
-    ctx.original = {
-      fontSize: 48,
-      size: hypo
-    };
-    return {size: 48};
-  }
-  const {fontSize, size} = original;
-  const newFontSize = hypo / size * fontSize;
-  return {size: newFontSize};
 }
 // </block:utils>
 
