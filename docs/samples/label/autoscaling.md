@@ -1,6 +1,6 @@
 # Auto scaling
 
-<input id="update" type="range" min="45" max="100" value="100" step="5" style="width:100%"/>
+<input id="update" type="range" min="46" max="100" value="100" step="2" style="width:100%"/>
 
 ```js chart-editor
 // <block:setup:4>
@@ -29,7 +29,7 @@ const annotation = {
   content: ['Annotation', 'to resize'],
   drawTime: 'afterDraw',
   borderWidth: (ctx) => autoScaling(ctx, 'borderWidth', 2),
-  font: (ctx) => autoScaling(ctx, 'font', {size: 48}),
+  font: (ctx) => autoScaling(ctx, 'font', 48),
   padding: (ctx) => autoScaling(ctx, 'padding', 6),
 };
 // </block:annotation>
@@ -53,24 +53,21 @@ const config = {
 
 // <block:autoScaling:2>
 function autoScaling(ctx, option, origValue) {
-  const {chart, original} = ctx;
+  const {chart} = ctx;
   const {width, height} = chart.chartArea;
   const hypo = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
-  if (!original) {
-    ctx.original = {size: hypo};
-    ctx.original[option] = origValue;
-    return origValue;
-  } else if (!original[option]) {
-    original[option] = origValue;
-    return origValue;
+  let size, value;
+  if (!ctx.size) {
+    ctx.size = size = hypo;
+    value = origValue;
+  } else {
+    size = ctx.size;
+    value = hypo / size * origValue;
   }
-  const size = original.size;
-  const value = original[option];
-  const newValue = hypo / size * (option === 'font' ? value.size : value);
   if (option === 'font') {
-    return {size: newValue};
+    return {size: value};
   }
-  return newValue;
+  return value;
 }
 // </block:autoScaling>
 
