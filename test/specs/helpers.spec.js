@@ -7,9 +7,17 @@ describe('helpers', function() {
       expect(() => requireVersion('test', '3.7', '2.9.3')).toThrowError();
       expect(() => requireVersion('test', '3.7', '3.6.99-alpha3')).toThrowError();
       expect(() => requireVersion('test', '16.13.2.8', '16.13.2.8-beta')).toThrowError();
+      expect(() => requireVersion('test', '3.1.0-beta.1', '3.1.0-beta.0')).toThrowError();
     });
 
     it('should not throw error for new enough version', function() {
+      expect(() => requireVersion('test', '3', '3')).not.toThrowError();
+      expect(() => requireVersion('test', '3', '3.1')).not.toThrowError();
+      expect(() => requireVersion('test', '3', '3.1.9')).not.toThrowError();
+      expect(() => requireVersion('test', '3.1', '3.1')).not.toThrowError();
+      expect(() => requireVersion('test', '3.1.0-beta.1', '3.1.0-beta.1')).not.toThrowError();
+      expect(() => requireVersion('test', '3.7.0', '4')).not.toThrowError();
+      expect(() => requireVersion('test', '3.7.0', '3.7.0')).not.toThrowError();
       expect(() => requireVersion('test', '3.7', '3.7.0-beta.1')).not.toThrowError();
       expect(() => requireVersion('test', '3.7.1', '3.7.19')).not.toThrowError();
       expect(() => requireVersion('test', '3.7', '4.0.0')).not.toThrowError();
