@@ -12,6 +12,7 @@
   "unpkg": "dist/chartjs-plugin-annotation.min.js",
   "exports": {
     "types": "./types/index.d.ts",
+    "node": "./dist/chartjs-plugin-annotation.min.js",
     "import": "./dist/chartjs-plugin-annotation.esm.js",
     "require": "./dist/chartjs-plugin-annotation.min.js",
     "script": "./dist/chartjs-plugin-annotation.min.js"
