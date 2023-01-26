@@ -5,14 +5,13 @@
   "version": "2.1.2",
   "author": "Evert Timberg <evert.timberg@gmail.com>",
   "license": "MIT",
-  "main": "dist/chartjs-plugin-annotation.js",
-  "module": "dist/chartjs-plugin-annotation.esm.js",
+  "type": "module",
+  "main": "dist/chartjs-plugin-annotation.esm.js",
   "types": "types/index.d.ts",
   "jsdelivr": "dist/chartjs-plugin-annotation.min.js",
   "unpkg": "dist/chartjs-plugin-annotation.min.js",
   "exports": {
     "types": "./types/index.d.ts",
-    "node": "./dist/chartjs-plugin-annotation.min.js",
     "import": "./dist/chartjs-plugin-annotation.esm.js",
     "require": "./dist/chartjs-plugin-annotation.min.js",
     "script": "./dist/chartjs-plugin-annotation.min.js"
@@ -27,8 +26,8 @@
   ],
   "scripts": {
     "build": "rollup -c",
-    "dev": "karma start --auto-watch --no-single-run --browsers chrome",
-    "dev:ff": "karma start --auto-watch --no-single-run --browsers firefox",
+    "dev": "karma start ./karma.conf.cjs --auto-watch --no-single-run --browsers chrome",
+    "dev:ff": "karma start ./karma.conf.cjs --auto-watch --no-single-run --browsers firefox",
     "docs": "npm run build && vuepress build docs --no-cache",
     "docs:dev": "npm run build && vuepress dev docs --no-cache",
     "lint": "concurrently --group \"npm:lint-*\"",
@@ -36,7 +35,7 @@
     "lint-md": "eslint \"**/*.md\"",
     "lint-types": "eslint \"types/**/*.ts\" && tsc -p types/tests/",
     "test": "cross-env NODE_ENV=test concurrently --group \"npm:test-*\"",
-    "test-karma": "karma start --auto-watch --single-run",
+    "test-karma": "karma start ./karma.conf.cjs --auto-watch --single-run",
     "test-lint": "npm run lint",
     "test-types": "tsc -p types/tests/",
     "test-types-integration": "mocha --full-trace test/integration/*-test.js"

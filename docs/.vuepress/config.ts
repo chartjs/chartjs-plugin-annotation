@@ -1,8 +1,11 @@
-const path = require('path');
+import * as path from 'path';
+import markdownItInclude from 'markdown-it-include';
+import { DefaultThemeConfig, defineConfig, PluginTuple } from 'vuepress/config';
+
 const docsVersion = "VERSION";
 const base = process.env.NODE_ENV === "development" ? '/chartjs-plugin-annotation/master/' : `/chartjs-plugin-annotation/${docsVersion}/`;
 
-module.exports = {
+export default defineConfig({
   dest: 'dist/docs',
   title: 'chartjs-plugin-annotation',
   description: 'Annotations for Chart.js',
@@ -72,7 +75,7 @@ module.exports = {
         ]
       },
     }],
-  ],
+  ] as PluginTuple[],
   chainWebpack(config) {
     config.module
       .rule('chart.js')
@@ -86,7 +89,7 @@ module.exports = {
   },
   markdown: {
     extendMarkdown: md => {
-      md.use(require('markdown-it-include'), path.resolve(__dirname, '../'));
+      md.use(markdownItInclude, path.resolve(__dirname, '../'));
     }
   },
   themeConfig: {
@@ -220,5 +223,5 @@ module.exports = {
         'utils',
       ]
     }
-  }
-};
+ } as DefaultThemeConfig
+});
