@@ -6,7 +6,6 @@ Label annotations are used to add contents on the chart area. This can be useful
 /* <block:options:0> */
 const options = {
   plugins: {
-    autocolors: false,
     annotation: {
       annotations: {
         label1: {
@@ -53,9 +52,9 @@ module.exports = {
 
 The following options are available for label annotations.
 
-| Name | Type | [Scriptable](../options#scriptable-options) | Default
+| Name | Type | [Scriptable](../options.md#scriptable-options) | Default
 | ---- | ---- | :----: | ----
-| [`backgroundShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
+| [`backgroundShadowColor`](#styling) | [`Color`](../options.md#color) | Yes | `'transparent'`
 | [`borderCapStyle`](#styling) | `string` | Yes | `'butt'`
 | [`borderJoinStyle`](#styling) | `string` | Yes | `'miter'`
 | [`borderRadius`](#borderradius) | `number` \| `object` | Yes | `0`
@@ -65,11 +64,11 @@ The following options are available for label annotations.
 | [`content`](#general) | `string`\|`string[]`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image)\|[`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) | Yes | `null`
 | [`font`](#styling) | [`Font`\|`Font[]`](../options#font) | Yes | `{}`
 | [`height`](#general) | `number`\|`string` | Yes | `undefined`
-| [`padding`](#general) | [`Padding`](../options#padding) | Yes | `6`
+| [`padding`](#general) | [`Padding`](../options.md#padding) | Yes | `6`
 | [`position`](#position) | `string`\|`{x: string, y: string}` | Yes | `'center'`
 | [`rotation`](#general) | `number`| Yes | `0`
 | [`textAlign`](#general) | `string` | Yes | `'center'`
-| [`textStrokeColor`](#styling) | [`Color`](../options#color) | Yes | `undefined`
+| [`textStrokeColor`](#styling) | [`Color`](../options.md#color) | Yes | `undefined`
 | [`textStrokeWidth`](#styling) | `number` | Yes | `0`
 | [`width`](#general) | `number`\|`string` | Yes | `undefined`
 | [`xAdjust`](#general) | `number` | Yes | `0`
@@ -90,7 +89,7 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
 | `content` | The content to show in the text annotation.
 | `display` | Whether or not this annotation is visible.
-| `drawTime` | See [drawTime](../options#draw-time).
+| `drawTime` | See [drawTime](../options.md#draw-time).
 | `height` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
 | `id` | Identifies a unique id  for the annotation and it will be stored in the element context. When the annotations are defined by an object, the id is automatically set using the key used to store the annotations in the object. When the annotations are configured by an array, the id, passed by this option in the annotation, will be used. 
 | `padding` | The padding to add around the text label.
@@ -122,8 +121,8 @@ The 4 coordinates, xMin, xMax, yMin, yMax are optional. If not specified, the bo
 | `borderJoinStyle` | Border line join style. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
 | `borderShadowColor` | The color of the border shadow. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderWidth` | Stroke width (in pixels).
-| `color` | Text color. When the label to draw has multiple lines, you can use different color for each row of the label. This is enabled configuring an array of colors. When the lines are more than the configured colors, the last configuration of this option is used for all remaining lines.
-| `font` | Text font. When the label to draw has multiple lines, you can use different font for each row of the label. This is enabled configuring an array of fonts. When the lines are more than the configured fonts, the last configuration of this option is used for all remaining lines.
+| `color` | Text color. When the label to draw has multiple lines, you can use different color for each line of the label. This is enabled configuring an array of colors. When the lines are more than the configured colors, the last configuration of this option is used for all remaining lines.
+| `font` | Text font. When the label to draw has multiple lines, you can use different font for each line of the label. This is enabled configuring an array of fonts. When the lines are more than the configured fonts, the last configuration of this option is used for all remaining lines.
 | `shadowBlur` | The amount of blur applied to shadow of the box where the label is located. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
 | `shadowOffsetX` | The distance that shadow, of the box where the label is located, will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
 | `shadowOffsetY` | The distance that shadow, of the box where the label is located, will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
@@ -155,7 +154,6 @@ Namespace: `options.annotations[annotationID].callout`, it defines options for t
 /* <block:options:0> */
 const options = {
   plugins: {
-    autocolors: false,
     annotation: {
       annotations: {
         label1: {
@@ -203,12 +201,12 @@ module.exports = {
 };
 ```
 
-All of these options can be [Scriptable](../options#scriptable-options).
+All of these options can be [Scriptable](../options.md#scriptable-options).
 
 | Name | Type | Default | Notes
 | ---- | ---- | :----: | ----
 | `borderCapStyle` | `string` | `'butt'` | Cap style of the border line of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap).
-| `borderColor` | [`Color`](../options#color) | `undefined` | Stroke color of the pointer of the callout.
+| `borderColor` | [`Color`](../options.md#color) | `undefined` | Stroke color of the pointer of the callout.
 | `borderDash` | `number[]` | `[]` | Length and spacing of dashes of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | `number` | `0` | Offset for line dashes of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
 | `borderJoinStyle` | `string` | `'miter'` | Border line join style of the callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).

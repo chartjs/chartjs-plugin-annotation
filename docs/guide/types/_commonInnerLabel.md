@@ -2,7 +2,7 @@
 
 Namespace: `options.annotations[annotationID].label`, it defines options for the the label of annotation.
 
-All of these options can be [Scriptable](../options#scriptable-options)
+All of these options can be [Scriptable](../options.md#scriptable-options)
 
 | Name | Type | Default | Notes
 | ---- | ---- | :----: | ----
@@ -12,11 +12,11 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `drawTime` | `string` | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the annotation draw time if unset
 | [`font`](#fonts-and-colors) | [`Font`\|`Font[]`](../options#font) | `{ weight: 'bold' }` | Label font
 | `height` | `number`\|`string` | `undefined` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
-| `padding` | [`Padding`](../options#padding) | `6` | The padding to add around the text label.
+| `padding` | [`Padding`](../options.md#padding) | `6` | The padding to add around the text label.
 | [`position`](#position) | `string`\|`{x: string, y: string}` | `'center'` | Anchor position of label in the annotation.
 | `rotation` | `number` | `undefined` | Rotation of label, in degrees. If `undefined`, the annotation rotation is used.
 | `textAlign` | `string` | `'start'` | Text alignment of label content when there's more than one line. Possible options are: `'left'`, `'start'`, `'center'`, `'end'`, `'right'`.
-| `textStrokeColor` | [`Color`](../options#color) | `undefined` | The color of the stroke around the text.
+| `textStrokeColor` | [`Color`](../options.md#color) | `undefined` | The color of the stroke around the text.
 | `textStrokeWidth` | `number` | `0` | Stroke width around the text.
 | `width` | `number`\|`string` | `undefined` | Overrides the width of the image or canvas element. Could be set in pixel by a number, or in percentage of current width of image or canvas element by a string. If undefined, uses the width of the image or canvas element. It is used only when the content is an image or canvas element.
 | `xAdjust` | `number` | `0` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
@@ -36,4 +36,4 @@ If this value is an object, the `x` property defines the horizontal alignment in
 
 ### Fonts and colors
 
-When the label to draw has multiple lines, you can use different font and color for each row of the label. This is enabled configuring an array of fonts or colors for those options. When the lines are more than the configured fonts of colors, the last configuration of those options is used for all remaining lines.
+When the label to draw has multiple lines, you can use different font and color for each line of the label. This is enabled configuring an array of fonts or colors for those options. When the lines are more than the configured fonts of colors, the last configuration of those options is used for all remaining lines.

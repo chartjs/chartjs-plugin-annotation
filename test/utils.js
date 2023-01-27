@@ -1,3 +1,16 @@
+export function getQuadraticXY(t, sx, sy, cp1x, cp1y, ex, ey) {
+  return {
+    x: (1 - t) * (1 - t) * sx + 2 * (1 - t) * t * cp1x + t * t * ex,
+    y: (1 - t) * (1 - t) * sy + 2 * (1 - t) * t * cp1y + t * t * ey
+  };
+}
+
+export function getQuadraticAngle(t, sx, sy, cp1x, cp1y, ex, ey) {
+  var dx = 2 * (1 - t) * (cp1x - sx) + 2 * t * (ex - cp1x);
+  var dy = 2 * (1 - t) * (cp1y - sy) + 2 * t * (ey - cp1y);
+  return -Math.atan2(dx, dy) + 0.5 * Math.PI;
+}
+
 export function createCanvas() {
   const canvas = document.createElement('canvas');
   canvas.width = 230;
@@ -13,6 +26,23 @@ export function createCanvas() {
   ctx.closePath();
   ctx.stroke();
   return canvas;
+}
+
+// https://stackoverflow.com/questions/25837158/how-to-draw-a-star-by-using-canvas-html5
+export function drawStar(ctx, x, y, radius, spikes, inset) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.translate(x, y);
+  ctx.moveTo(0, 0 - radius);
+  for (let i = 0; i < spikes; i++) {
+    ctx.rotate(Math.PI / spikes);
+    ctx.lineTo(0, 0 - (radius * inset));
+    ctx.rotate(Math.PI / spikes);
+    ctx.lineTo(0, 0 - radius);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
 }
 
 export function getAnnotationElements(chart) {

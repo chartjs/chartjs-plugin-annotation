@@ -6,7 +6,6 @@ Ellipse annotations are used to draw circles on the chart area. This can be usef
 /* <block:options:0> */
 const options = {
   plugins: {
-    autocolors: false,
     annotation: {
       annotations: {
         ellipse1: {
@@ -51,9 +50,9 @@ module.exports = {
 
 The following options are available for ellipse annotations.
 
-| Name | Type | [Scriptable](../options#scriptable-options) | Default
+| Name | Type | [Scriptable](../options.md#scriptable-options) | Default
 | ---- | ---- | :----: | ----
-| [`backgroundShadowColor`](#styling) | [`Color`](../options#color) | Yes | `'transparent'`
+| [`backgroundShadowColor`](#styling) | [`Color`](../options.md#color) | Yes | `'transparent'`
 | [`borderWidth`](#styling) | `number`| Yes | `1`
 | [`label`](#label) | `object` | Yes |
 | [`rotation`](#general) | `number`| Yes | `0`
@@ -68,7 +67,7 @@ If one of the axes does not match an axis in the chart, the ellipse will take th
 | ---- | ----
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
 | `display` | Whether or not this annotation is visible.
-| `drawTime` | See [drawTime](../options#draw-time).
+| `drawTime` | See [drawTime](../options.md#draw-time).
 | `id` | Identifies a unique id  for the annotation and it will be stored in the element context. When the annotations are defined by an object, the id is automatically set using the key used to store the annotations in the object. When the annotations are configured by an array, the id, passed by this option in the annotation, will be used. 
 | `rotation` | Rotation of the ellipse in degrees, default is 0.
 | `xMax` | Right edge of the ellipse in units along the x axis.

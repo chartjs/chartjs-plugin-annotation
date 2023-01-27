@@ -6,7 +6,6 @@ Line annotations are used to draw lines on the chart area. This can be useful fo
 /* <block:options:0> */
 const options = {
   plugins: {
-    autocolors: false,
     annotation: {
       annotations: {
         line1: {
@@ -50,10 +49,12 @@ module.exports = {
 
 The following options are available for line annotations.
 
-| Name | Type | [Scriptable](../options#scriptable-options) | Default
+| Name | Type | [Scriptable](../options.md#scriptable-options) | Default
 | ---- | ---- | :----: | ----
 | [`arrowHeads`](#arrow-heads) | `{start: object, end:object}` | Yes |
 | [`borderWidth`](#styling) | `number` | Yes | `2`
+| [`controlPoint`](#general) | `number` \| `string` \| `{x: number | string, y: number | string}` | Yes | `{y:'-50%'}`
+| [`curve`](#general) | `boolean` | Yes | `false`
 | [`endValue`](#positioning) | `number` | Yes | `undefined`
 | [`label`](#label) | `object` | Yes |
 | [`scaleID`](#positioning) | `string` | Yes | `undefined`
@@ -83,8 +84,10 @@ If `scaleID` is unset, then `xScaleID` and `yScaleID` are used to draw a line fr
 | Name | Description
 | ---- | ----
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
+| `controlPoint` | if `curve` is enabled, it configures the control point to drawn the curve, calculated in pixels. It can be set by a string in percentage format `'number%'` which are representing the percentage of the distance between the start and end point from the center.
+| `curve` | Whether or not a quadratic [Bézier curve](https://developer.mozilla.org/en-US/docs/Glossary/Bezier_curve) is drawn.
 | `display` | Whether or not this annotation is visible.
-| `drawTime` | See [drawTime](../options#draw-time).
+| `drawTime` | See [drawTime](../options.md#draw-time).
 | `endValue` | End two of the line when a single scale is specified.
 | `scaleID` | ID of the scale in single scale mode. If unset, `xScaleID` and `yScaleID` are used.
 | `value` | End one of the line when a single scale is specified.
@@ -113,19 +116,19 @@ If `scaleID` is unset, then `xScaleID` and `yScaleID` are used to draw a line fr
 
 Namespace: `options.annotations[annotationID].label`, it defines options for the line annotation label.
 
-All of these options can be [Scriptable](../options#scriptable-options)
+All of these options can be [Scriptable](../options.md#scriptable-options)
 
 | Name | Type | Default | Notes
 | ---- | ---- | :----: | ----
-| `backgroundColor` | [`Color`](../options#color) | `'rgba(0,0,0,0.8)'` | Background color of the label container.
-| `backgroundShadowColor` | [`Color`](../options#color) | `'transparent'` | The color of shadow of the box where the label is located. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
+| `backgroundColor` | [`Color`](../options.md#color) | `'rgba(0,0,0,0.8)'` | Background color of the label container.
+| `backgroundShadowColor` | [`Color`](../options.md#color) | `'transparent'` | The color of shadow of the box where the label is located. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderCapStyle` | `string` | `'butt'` | Cap style of the border line. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap).
-| `borderColor` | [`Color`](../options#color) | `black` | The border line color.
+| `borderColor` | [`Color`](../options.md#color) | `black` | The border line color.
 | `borderDash` | `number[]` | `[]` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | `number` | `0` | Offset for border line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
 | `borderJoinStyle` | `string` | `'miter'` | Border line join style. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
 | [`borderRadius`](#borderradius) | `number` \| `object` | `6` | Radius of label box corners in pixels.
-| `borderShadowColor` | [`Color`](../options#color) | `'transparent'` | The color of border shadow of the box where the label is located. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
+| `borderShadowColor` | [`Color`](../options.md#color) | `'transparent'` | The color of border shadow of the box where the label is located. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderWidth` | `number` | `0` | The border line width (in pixels).
 | [`callout`](#callout) | `object` | | Can connect the label to the line. See [callout](#callout).
 | [`color`](#fonts-and-colors) | [`Color`\|`Color[]`](../options#color) | `'#fff'` | Text color.
@@ -134,14 +137,14 @@ All of these options can be [Scriptable](../options#scriptable-options)
 | `drawTime` | `string` | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the line annotation draw time if unset.
 | [`font`](#fonts-and-colors) | [`Font`\|`Font[]`](../options#font) | `{ weight: 'bold' }` | Label font.
 | `height` | `number`\|`string` | `undefined` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
-| `padding` | [`Padding`](../options#padding) | `6` | The padding to add around the text label.
+| `padding` | [`Padding`](../options.md#padding) | `6` | The padding to add around the text label.
 | `position` | `string` | `'center'` | Anchor position of label on line. Possible options are: `'start'`, `'center'`, `'end'`. It can be set by a string in percentage format `'number%'` which are representing the percentage on the width of the line where the label will be located.
 | `rotation` | `number`\|`'auto'` | `0` | Rotation of label, in degrees, or 'auto' to use the degrees of the line.
 | `shadowBlur` | `number` | `0` | The amount of blur applied to shadow of the box where the label is located. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
 | `shadowOffsetX` | `number` | `0` | The distance that shadow, of the box where the label is located, will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
 | `shadowOffsetY` | `number` | `0` | The distance that shadow, of the box where the label is located, will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).
 | `textAlign` | `string` | `'center'` | Text alignment of label content when there's more than one line. Possible options are: `'start'`, `'center'`, `'end'`.
-| `textStrokeColor` | [`Color`](../options#color) | `undefined` | The color of the stroke around the text.
+| `textStrokeColor` | [`Color`](../options.md#color) | `undefined` | The color of the stroke around the text.
 | `textStrokeWidth` | `number` | `0` | Stroke width around the text.
 | `width` | `number`\|`string` | `undefined` | Overrides the width of the image or canvas element. Could be set in pixel by a number, or in percentage of current width of image or canvas element by a string. If undefined, uses the width of the image or canvas element. It is used only when the content is an image or canvas element.
 | `xAdjust` | `number` | `0` | Adjustment along x-axis (left-right) of label relative to computed position. Negative values move the label left, positive right.
@@ -154,7 +157,7 @@ If this value is a number, it is applied to all corners of the rectangle (topLef
 
 ### Fonts and colors
 
-When the label to draw has multiple lines, you can use different font and color for each row of the label. This is enabled configuring an array of fonts or colors for those options. When the lines are more than the configured fonts of colors, the last configuration of those options is used for all remaining lines.
+When the label to draw has multiple lines, you can use different font and color for each line of the label. This is enabled configuring an array of fonts or colors for those options. When the lines are more than the configured fonts of colors, the last configuration of those options is used for all remaining lines.
 
 ### Callout
 
@@ -162,12 +165,12 @@ A callout can connect the label to the line when the label is arbitrarily (by `x
 
 Namespace: `options.annotations[annotationID].label.callout`, it defines options for the callout on the label of the line annotation.
 
-All of these options can be [Scriptable](../options#scriptable-options).
+All of these options can be [Scriptable](../options.md#scriptable-options).
 
 | Name | Type | Default | Notes
 | ---- | ---- | :----: | ----
 | `borderCapStyle` | `string` | `'butt'` | Cap style of the border line of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineCap).
-| `borderColor` | [`Color`](../options#color) | `undefined` | Stroke color of the pointer of the callout.
+| `borderColor` | [`Color`](../options.md#color) | `undefined` | Stroke color of the pointer of the callout.
 | `borderDash` | `number[]` | `[]` | Length and spacing of dashes of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | `number` | `0` | Offset for line dashes of callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
 | `borderJoinStyle` | `string` | `'miter'` | Border line join style of the callout. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
@@ -182,7 +185,7 @@ All of these options can be [Scriptable](../options#scriptable-options).
 
 Namespace: `options.annotations[annotationID].arrowHeads`, it defines options for the line annotation arrow heads.
 
-All of these options can be [Scriptable](../options#scriptable-options)
+All of these options can be [Scriptable](../options.md#scriptable-options)
 
 | Name | Type | Notes
 | ---- | ---- | ----
@@ -195,16 +198,16 @@ Enabling it, you can add arrow heads at start and/or end of a line. It uses the 
 
 The following options can be specified per (`start` and/or `end`) arrow head, or at the top level (`arrowHeads`) which apply to all arrow heads.
 
-All of these options can be [Scriptable](../options#scriptable-options)
+All of these options can be [Scriptable](../options.md#scriptable-options)
 
 | Name | Type | Default | Notes
 | ---- | ---- | :----: | ---- 
-| `backgroundColor` | [`Color`](../options#color) | `lineAnnotation.borderColor` | Background color of the arrow head.
-| `backgroundShadowColor` | [`Color`](../options#color) | `'transparent'` | The color of shadow of the arrow head. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
-| `borderColor` | [`Color`](../options#color) | `lineAnnotation.borderColor` | The border arrow head color.
+| `backgroundColor` | [`Color`](../options.md#color) | `lineAnnotation.borderColor` | Background color of the arrow head.
+| `backgroundShadowColor` | [`Color`](../options.md#color) | `'transparent'` | The color of shadow of the arrow head. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
+| `borderColor` | [`Color`](../options.md#color) | `lineAnnotation.borderColor` | The border arrow head color.
 | `borderDash` | `number[]` | `lineAnnotation.borderDash` | Length and spacing of dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash).
 | `borderDashOffset` | `number` | `lineAnnotation.borderDashOffset` | Offset for border arrow head dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
-| `borderShadowColor` | [`Color`](../options#color) | `lineAnnotation.borderShadowColor` | The color of border shadow of the arrow head. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
+| `borderShadowColor` | [`Color`](../options.md#color) | `lineAnnotation.borderShadowColor` | The color of border shadow of the arrow head. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderWidth` | `number` | `lineAnnotation.borderWidth` | The border line width (in pixels).
 | `display` | `boolean` | `false` | Whether or not the arrow head is shown.
 | `fill` | `boolean` | `false` | Whether or not the arrow head is filled.
@@ -220,4 +223,4 @@ The following diagram is showing the element properties about a `'line'` annotat
 
 ![line](../../img/elementLineProps.png)
 
-The label of a box annotation is described as a [label annotation](./label#element) and accessible by `element.label`.
+The label of a box annotation is described as a [label annotation](./label.md#element) and accessible by `element.label`.
