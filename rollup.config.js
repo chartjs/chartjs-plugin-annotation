@@ -3,7 +3,7 @@ import terser from '@rollup/plugin-terser';
 import json from '@rollup/plugin-json';
 import {readFileSync} from 'fs';
 
-const {name, version, homepage, main, license, jsdelivr} = JSON.parse(readFileSync('./package.json'));
+const {name, version, homepage, main, module, license, jsdelivr} = JSON.parse(readFileSync('./package.json'));
 
 const banner = `/*!
 * ${name} v${version}
@@ -32,7 +32,7 @@ export default [
     ],
     output: {
       name,
-      file: main.replace('.esm.js', '.js'),
+      file: main,
       banner,
       format: 'umd',
       indent: false,
@@ -68,7 +68,7 @@ export default [
     ],
     output: {
       name,
-      file: main,
+      file: module,
       banner,
       format: 'esm',
       indent: false

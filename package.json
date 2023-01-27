@@ -6,22 +6,28 @@
   "author": "Evert Timberg <evert.timberg@gmail.com>",
   "license": "MIT",
   "type": "module",
-  "main": "dist/chartjs-plugin-annotation.esm.js",
+  "main": "dist/chartjs-plugin-annotation.cjs",
+  "module": "dist/chartjs-plugin-annotation.esm.js",
   "types": "types/index.d.ts",
   "jsdelivr": "dist/chartjs-plugin-annotation.min.js",
   "unpkg": "dist/chartjs-plugin-annotation.min.js",
   "exports": {
     "types": "./types/index.d.ts",
     "import": "./dist/chartjs-plugin-annotation.esm.js",
-    "require": "./dist/chartjs-plugin-annotation.min.js",
+    "require": "./dist/chartjs-plugin-annotation.cjs",
     "script": "./dist/chartjs-plugin-annotation.min.js"
   },
+  "sideEffects": [
+    "dist/chartjs-plugin-annotation.cjs",
+    "dist/chartjs-plugin-annotation-min.js"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/chartjs/chartjs-plugin-annotation.git"
   },
   "files": [
-    "dist/*.js",
+    "dist/*",
+    "!dist/docs/**",
     "types/*.d.ts"
   ],
   "scripts": {

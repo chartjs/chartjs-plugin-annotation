@@ -15,7 +15,7 @@ module.exports = async function(karma) {
   // make sure that the minification process (terser) doesn't break anything.
   const builds = (await import('./rollup.config.js')).default;
   const jasmineSeedReporter = (await import('./test/seed-reporter.js')).default;
-  const regex = karma.autoWatch ? /chartjs-plugin-annotation\.js$/ : /chartjs-plugin-annotation\.min\.js$/;
+  const regex = karma.autoWatch ? /chartjs-plugin-annotation\.cjs$/ : /chartjs-plugin-annotation\.min\.js$/;
   const build = builds.filter(v => v.output.file && v.output.file.match(regex))[0];
 
   if (env === 'test') {
