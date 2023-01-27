@@ -1,5 +1,6 @@
-import {defined, callback} from 'chart.js/helpers';
+import {callback} from 'chart.js/helpers';
 import {getElements} from './interaction';
+import {loadHooks} from './helpers';
 
 const moveHooks = ['enter', 'leave'];
 
@@ -8,7 +9,7 @@ const moveHooks = ['enter', 'leave'];
  * @typedef { import('../../types/options').AnnotationPluginOptions } AnnotationPluginOptions
  */
 
-export const hooks = moveHooks.concat('click');
+export const eventHooks = moveHooks.concat('click');
 
 /**
  * @param {Chart} chart
@@ -16,18 +17,10 @@ export const hooks = moveHooks.concat('click');
  * @param {AnnotationPluginOptions} options
  */
 export function updateListeners(chart, state, options) {
-  state.listened = false;
+  state.listened = loadHooks(options, eventHooks, state.listeners);
   state.moveListened = false;
   state._getElements = getElements; // for testing
 
-  hooks.forEach(hook => {
-    if (typeof options[hook] === 'function') {
-      state.listened = true;
-      state.listeners[hook] = options[hook];
-    } else if (defined(state.listeners[hook])) {
-      delete state.listeners[hook];
-    }
-  });
   moveHooks.forEach(hook => {
     if (typeof options[hook] === 'function') {
       state.moveListened = true;

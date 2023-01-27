@@ -80,3 +80,14 @@ The following options are available for all annotation types. These options can 
 :::
 
 If the event callbacks explicitly returns `true`, the chart will re-render automatically after processing the event completely. This is important when there are the annotations that require re-draws (for instance, after a change of a rendering options).
+
+## Hooks
+
+The following hooks are available for all annotation types. These hooks can be specified per annotation, or at the top level which apply to all annotations.
+
+These hooks enable some user customizations on the annotations.
+
+| Name | Type | Notes
+| ---- | ---- | ----
+| `beforeDraw` | `(context) => void ` | Called before that the annotation is being drawn.
+| `afterDraw` | `(context) => void` | Called after the annotation has been drawn.
