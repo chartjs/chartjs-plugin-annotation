@@ -1,11 +1,14 @@
 import {Animations} from 'chart.js';
 import {isObject, defined} from 'chart.js/helpers';
-import {hooks} from './events';
+import {eventHooks} from './events';
+import {elementHooks} from './hooks';
 import {annotationTypes} from './types';
 
 const directUpdater = {
   update: Object.assign
 };
+
+const hooks = eventHooks.concat(elementHooks);
 
 /**
  * @typedef { import("chart.js").Chart } Chart
