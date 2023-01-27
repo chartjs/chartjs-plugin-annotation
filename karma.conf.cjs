@@ -64,7 +64,7 @@ module.exports = async function(karma) {
       {pattern: 'test/fixtures/**/*.js', included: false},
       {pattern: 'test/fixtures/**/*.png', included: false},
       {pattern: 'node_modules/chart.js/dist/chart.umd.js'},
-      {pattern: 'src/index.js', watched: false},
+      {pattern: 'src/index.js', watched: false, type: 'js'},
       {pattern: 'test/index.js'},
       {pattern: 'test/specs/**/**.js'}
     ],

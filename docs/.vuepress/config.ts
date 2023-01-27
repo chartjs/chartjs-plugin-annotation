@@ -146,7 +146,7 @@ export default defineConfig({
             'box/quarters',
             'box/disclosure',
             'box/canvas',
-            'box/image',
+            'box/image'
           ]
         },
         {
@@ -155,7 +155,7 @@ export default defineConfig({
             'ellipse/basic',
             'ellipse/rotation',
             'ellipse/label',
-            'ellipse/image',
+            'ellipse/image'
           ]
         },
         {
@@ -168,6 +168,7 @@ export default defineConfig({
             'label/image',
             'label/innerChart',
             'label/lowerUpper',
+            'label/autoscaling'
           ]
         },
         {
@@ -185,6 +186,7 @@ export default defineConfig({
             'line/image',
             'line/datasetBars',
             'line/animation',
+            'line/hook'
           ]
         },
         {
@@ -193,7 +195,7 @@ export default defineConfig({
             'point/basic',
             'point/combined',
             'point/outsideChartArea',
-            'point/shadow',
+            'point/shadow'
           ]
         },
         {
@@ -202,14 +204,14 @@ export default defineConfig({
             'polygon/basic',
             'polygon/stop',
             'polygon/outsideChartArea',
-            'polygon/shadow',
+            'polygon/shadow'
             ]
         },
         {
           title: 'Charts',
           children: [
             'charts/bar',
-            'charts/line',
+            'charts/line'
           ],
         },
         {
@@ -217,10 +219,10 @@ export default defineConfig({
           children: [
             'interaction/interaction',
             'interaction/dragging',
-            'interaction/selection',
+            'interaction/selection'
           ],
         },
-        'utils',
+        'utils'
       ]
     }
  } as DefaultThemeConfig
