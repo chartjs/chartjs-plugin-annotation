@@ -85,3 +85,22 @@ export function toPosition(value) {
 export function isBoundToPoint(options) {
   return options && (defined(options.xValue) || defined(options.yValue));
 }
+
+/**
+ * @param {Object} options
+ * @param {Array} hooks
+ * @param {Object} hooksContainer
+ * @returns {boolean}
+ */
+export function loadHooks(options, hooks, hooksContainer) {
+  let activated = false;
+  hooks.forEach(hook => {
+    if (typeof options[hook] === 'function') {
+      activated = true;
+      hooksContainer[hook] = options[hook];
+    } else if (defined(hooksContainer[hook])) {
+      delete hooksContainer[hook];
+    }
+  });
+  return activated;
+}

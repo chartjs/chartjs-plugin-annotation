@@ -6,12 +6,12 @@ title: Configuration
 
 The following options are available at the top level. They apply to all annotations unless they are overwritten on a per-annotation basis.
 
-| Name | Type | [Scriptable](options#scriptable-options) | Default | Notes
+| Name | Type | [Scriptable](options.md#scriptable-options) | Default | Notes
 | ---- | ---- | :----: | ---- | ----
 | [`animations`](#animations) | `object` | No | [see here](#default-animations) | To configure which element properties are animated and how.
 | `clip` | `boolean` | No | `true` | Are the annotations clipped to the chartArea.
 | [`common`](#common) | `Object` | No | | To configure common options apply to all annotations
-| [`interaction`](options#interaction) | `Object` | No | `options.interaction` | To configure which events trigger plugin interactions
+| [`interaction`](options.md#interaction) | `Object` | No | `options.interaction` | To configure which events trigger plugin interactions
 
 :::warning
 
@@ -61,9 +61,9 @@ const options = {
 
 The following options apply to all annotations unless they are overwritten on a per-annotation basis.
 
-| Name | Type | [Scriptable](options#scriptable-options) | Default | Notes
+| Name | Type | [Scriptable](options.md#scriptable-options) | Default | Notes
 | ---- | ---- | :----: | ---- | ----
-| `drawTime` | `string` | Yes | `'afterDatasetsDraw'` | See [drawTime](options#draw-time).
+| `drawTime` | `string` | Yes | `'afterDatasetsDraw'` | See [drawTime](options.md#draw-time).
 
 ## Events
 
@@ -80,3 +80,14 @@ The following options are available for all annotation types. These options can 
 :::
 
 If the event callbacks explicitly returns `true`, the chart will re-render automatically after processing the event completely. This is important when there are the annotations that require re-draws (for instance, after a change of a rendering options).
+
+## Hooks
+
+The following hooks are available for all annotation types. These hooks can be specified per annotation, or at the top level which apply to all annotations.
+
+These hooks enable some user customizations on the annotations.
+
+| Name | Type | Notes
+| ---- | ---- | ----
+| `beforeDraw` | `(context) => void ` | Called before that the annotation is being drawn.
+| `afterDraw` | `(context) => void` | Called after the annotation has been drawn.
