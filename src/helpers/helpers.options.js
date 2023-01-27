@@ -2,7 +2,8 @@ import {isObject, valueOrDefault, defined} from 'chart.js/helpers';
 import {clamp} from './helpers.core';
 
 const isPercentString = (s) => typeof s === 'string' && s.endsWith('%');
-const toPercent = (s) => clamp(parseFloat(s) / 100, 0, 1);
+const toPercent = (s) => parseFloat(s) / 100;
+const toPositivePercent = (s) => clamp(toPercent(s), 0, 1);
 
 /**
  * @typedef { import('../../types/options').AnnotationPointCoordinates } AnnotationPointCoordinates
@@ -13,7 +14,6 @@ const toPercent = (s) => clamp(parseFloat(s) / 100, 0, 1);
 /**
  * @param {number} size
  * @param {number|string} position
- * @param {number} to
  * @returns {number}
  */
 export function getRelativePosition(size, position) {
@@ -24,7 +24,7 @@ export function getRelativePosition(size, position) {
     return size;
   }
   if (isPercentString(position)) {
-    return toPercent(position) * size;
+    return toPositivePercent(position) * size;
   }
   return size / 2;
 }
@@ -32,14 +32,14 @@ export function getRelativePosition(size, position) {
 /**
  * @param {number} size
  * @param {number|string} value
- * @param {number} to
+ * @param {boolean} [positivePercent=true]
  * @returns {number}
  */
-export function getSize(size, value) {
+export function getSize(size, value, positivePercent = true) {
   if (typeof value === 'number') {
     return value;
   } else if (isPercentString(value)) {
-    return toPercent(value) * size;
+    return (positivePercent ? toPositivePercent(value) : toPercent(value)) * size;
   }
   return size;
 }
@@ -61,17 +61,18 @@ export function calculateTextAlignment(size, options) {
 }
 
 /**
- * @param {LabelPositionObject|string} value
- * @returns {LabelPositionObject}
+ * @param {{x: number|string, y: number|string}|string|number} value
+ * @param {string|number} defaultValue
+ * @returns {{x: number|string, y: number|string}}
  */
-export function toPosition(value) {
+export function toPosition(value, defaultValue = 'center') {
   if (isObject(value)) {
     return {
-      x: valueOrDefault(value.x, 'center'),
-      y: valueOrDefault(value.y, 'center'),
+      x: valueOrDefault(value.x, defaultValue),
+      y: valueOrDefault(value.y, defaultValue),
     };
   }
-  value = valueOrDefault(value, 'center');
+  value = valueOrDefault(value, defaultValue);
   return {
     x: value,
     y: value

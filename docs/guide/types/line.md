@@ -53,6 +53,8 @@ The following options are available for line annotations.
 | ---- | ---- | :----: | ----
 | [`arrowHeads`](#arrow-heads) | `{start: object, end:object}` | Yes |
 | [`borderWidth`](#styling) | `number` | Yes | `2`
+| [`controlPoint`](#general) | `number` \| `string` \| `{x: number | string, y: number | string}` | Yes | `{y:'-50%'}`
+| [`curve`](#general) | `boolean` | Yes | `false`
 | [`endValue`](#positioning) | `number` | Yes | `undefined`
 | [`label`](#label) | `object` | Yes |
 | [`scaleID`](#positioning) | `string` | Yes | `undefined`
@@ -82,6 +84,8 @@ If `scaleID` is unset, then `xScaleID` and `yScaleID` are used to draw a line fr
 | Name | Description
 | ---- | ----
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
+| `controlPoint` | if `curve` is enabled, it configures the control point to drawn the curve, calculated in pixels. It can be set by a string in percentage format `'number%'` which are representing the percentage of the distance between the start and end point from the center.
+| `curve` | Whether or not a quadratic [Bézier curve](https://developer.mozilla.org/en-US/docs/Glossary/Bezier_curve) is drawn.
 | `display` | Whether or not this annotation is visible.
 | `drawTime` | See [drawTime](../options.md#draw-time).
 | `endValue` | End two of the line when a single scale is specified.
