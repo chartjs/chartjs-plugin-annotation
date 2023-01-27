@@ -64,11 +64,11 @@ The following options apply to all annotations unless they are overwritten on a 
 | Name | Type | [Scriptable](options#scriptable-options) | Default | Notes
 | ---- | ---- | :----: | ---- | ----
 | `drawTime` | `string` | Yes | `'afterDatasetsDraw'` | See [drawTime](options#draw-time).
-| `initAnimation` | `boolean`  | [See initial animation](#initial-animation) | `false` | Enable the animation to the annotations when they are drawing at chart initialization
+| `init` | `boolean`  | [See initial animation](#initial-animation) | `false` | Enable the animation to the annotations when they are drawing at chart initialization
 
 ### Initial animation
 
-The `initAnimation` option is scriptable but it doesn't get the [options context](./options#option-context) as argument but a specific context because the element has not been initialized yet, when the callback is invoked.
+The `init` option is scriptable but it doesn't get the [options context](./options#option-context) as argument but a specific context because the element has not been initialized yet, when the callback is invoked.
 
 This is the signature of the scriptable option:
 

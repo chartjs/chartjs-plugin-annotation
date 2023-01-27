@@ -63,7 +63,7 @@ describe('Initial animation', function() {
         },
         afterDraw(chart) {
           let element = window.getAnnotationElements(chart)[0];
-          chart.initAnimation = element.options.initAnimation;
+          chart.init = element.options.init;
           if (type === 'polygon') {
             element = element.elements[0];
           }
@@ -77,16 +77,16 @@ describe('Initial animation', function() {
         afterRender(chart) {
           cycles++;
           if (cycles === 2) {
-            expect(chart.annotationCount <= 1 && chart.initAnimation).withContext(`with count ${chart.annotationCount}, initAnimation ${chart.initAnimation}`).toEqual(true);
+            expect(chart.annotationCount <= 1 && chart.init).withContext(`with count ${chart.annotationCount}, init ${chart.init}`).toEqual(true);
             done();
           }
         }
       }];
 
       [commonOpts, options].forEach(function(targetOptions) {
-        delete commonOpts.initAnimation;
-        delete options.initAnimation;
-        targetOptions.initAnimation = true;
+        delete commonOpts.init;
+        delete options.init;
+        targetOptions.init = true;
         pluginOpts.annotations = [options];
         window.acquireChart(chartConfig);
       });
@@ -145,7 +145,7 @@ describe('Initial animation', function() {
         },
         afterDraw(chart) {
           let element = window.getAnnotationElements(chart)[0];
-          chart.initAnimation = element.options.initAnimation;
+          chart.init = element.options.init;
           if (type === 'polygon') {
             element = element.elements[0];
           }
@@ -157,7 +157,7 @@ describe('Initial animation', function() {
           }
         },
         afterRender(chart) {
-          expect(chart.annotationCount === 0 && !chart.initAnimation).withContext(`with count ${chart.annotationCount}, initAnimation ${chart.initAnimation}`).toEqual(true);
+          expect(chart.annotationCount === 0 && !chart.init).withContext(`with count ${chart.annotationCount}, init ${chart.init}`).toEqual(true);
           cycles++;
           if (cycles === 2) {
             done();
@@ -166,9 +166,9 @@ describe('Initial animation', function() {
       }];
 
       [commonOpts, options].forEach(function(targetOptions) {
-        delete commonOpts.initAnimation;
-        delete options.initAnimation;
-        targetOptions.initAnimation = false;
+        delete commonOpts.init;
+        delete options.init;
+        targetOptions.init = false;
         pluginOpts.annotations = [options];
         window.acquireChart(chartConfig);
       });
@@ -220,9 +220,9 @@ describe('Initial animation', function() {
       let cycles = 0;
 
       [commonOpts, options].forEach(function(targetOptions) {
-        delete commonOpts.initAnimation;
-        delete options.initAnimation;
-        targetOptions.initAnimation = function({properties}) {
+        delete commonOpts.init;
+        delete options.init;
+        targetOptions.init = function({properties}) {
           expect(typeof properties === 'object').toEqual(true);
           cycles++;
           if (cycles === 2) {

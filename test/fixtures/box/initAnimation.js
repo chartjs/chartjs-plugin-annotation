@@ -17,12 +17,12 @@ module.exports = {
       plugins: {
         annotation: {
           common: {
-            initAnimation: () => true,
+            init: () => true,
           },
           annotations: {
             box1: {
               type: 'box',
-              initAnimation: true,
+              init: true,
               xMin: 0.5,
               xMax: 2.5,
               yMin: 8,
@@ -41,7 +41,7 @@ module.exports = {
               xMax: 'July',
               yMin: 11,
               yMax: 15,
-              initAnimation: () => undefined,
+              init: () => undefined,
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 1,
@@ -56,7 +56,7 @@ module.exports = {
               xMax: 'May',
               yMin: 16,
               yMax: 20,
-              initAnimation: () => true,
+              init: () => true,
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 1,
@@ -71,7 +71,7 @@ module.exports = {
               xMax: 'May',
               yMin: 0.5,
               yMax: 4,
-              initAnimation: () => ({y: 0, y2: 0}),
+              init: () => ({y: 0, y2: 0}),
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
               borderColor: 'rgba(255, 99, 132)',
               borderWidth: 1,

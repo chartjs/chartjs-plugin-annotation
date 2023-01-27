@@ -23,7 +23,7 @@ const annotation1 = {
   borderColor: 'rgba(0, 150, 0)',
   borderRadius: 4,
   borderWidth: 1,
-  initAnimation: true,
+  init: true,
   label: {
     display: true,
     content: 'Fade',
@@ -37,7 +37,7 @@ const annotation1 = {
 };
 const labelAnnotation1 = {
   type: 'label',
-  initAnimation: true,
+  init: true,
   content: 'Fade',
   xMax: 6.5,
   xMin: 4.5,
@@ -53,7 +53,7 @@ const annotation2 = {
   borderColor: 'rgba(0, 150, 0)',
   borderRadius: 4,
   borderWidth: 1,
-  initAnimation: () => ({centerY: 0}),
+  init: () => ({centerY: 0}),
   label: {
     display: true,
     content: 'Flyin from top',
@@ -67,7 +67,7 @@ const annotation2 = {
 };
 const labelAnnotation2 = {
   type: 'label',
-  initAnimation: () => ({y: 0, y2: 0, width: 0, height: 0}),
+  init: () => ({y: 0, y2: 0, width: 0, height: 0}),
   content: 'Flyin from top',
   xMax: 2.5,
   xMin: 0.5,
@@ -83,7 +83,7 @@ const annotation3 = {
   borderColor: 'rgba(0, 150, 0)',
   borderRadius: 4,
   borderWidth: 1,
-  initAnimation: () => ({centerX: 0}),
+  init: () => ({centerX: 0}),
   label: {
     display: true,
     content: 'Flyin from left',
@@ -97,7 +97,7 @@ const annotation3 = {
 };
 const labelAnnotation3 = {
   type: 'label',
-  initAnimation: () => ({x: 0, x2: 0, width: 0, height: 0}),
+  init: () => ({x: 0, x2: 0, width: 0, height: 0}),
   content: 'Flyin from left',
   xMax: 10.5,
   xMin: 8.5,

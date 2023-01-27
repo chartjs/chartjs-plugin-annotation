@@ -37,7 +37,7 @@ export interface CoreAnnotationOptions extends AnnotationEvents, ShadowOptions{
   borderWidth?: Scriptable<number, PartialEventContext>,
   display?: Scriptable<boolean, PartialEventContext>,
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
-  initAnimation: boolean | ((chart: Chart, properties: AnnotationBoxModel, options: AnnotationOptions) => void | boolean | AnnotationBoxModel),
+  init: boolean | ((chart: Chart, properties: AnnotationBoxModel, options: AnnotationOptions) => void | boolean | AnnotationBoxModel),
   id?: string,
   xMax?: Scriptable<ScaleValue, PartialEventContext>,
   xMin?: Scriptable<ScaleValue, PartialEventContext>,

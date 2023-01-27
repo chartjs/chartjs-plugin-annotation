@@ -59,7 +59,7 @@ EllipseAnnotation.defaults = {
   borderShadowColor: 'transparent',
   borderWidth: 1,
   display: true,
-  initAnimation: undefined,
+  init: undefined,
   label: Object.assign({}, BoxAnnotation.defaults.label),
   rotation: 0,
   shadowBlur: 0,

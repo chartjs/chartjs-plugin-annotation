@@ -54,7 +54,7 @@ PointAnnotation.defaults = {
   borderShadowColor: 'transparent',
   borderWidth: 1,
   display: true,
-  initAnimation: undefined,
+  init: undefined,
   pointStyle: 'circle',
   radius: 10,
   rotation: 0,

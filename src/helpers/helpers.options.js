@@ -96,7 +96,7 @@ export function isBoundToPoint(options) {
  * @returns {AnnotationBoxModel}
  */
 export function initAnimationProperties(chart, properties, options, centerBased = false) {
-  const initAnim = options.initAnimation;
+  const initAnim = options.init;
   if (!initAnim) {
     return;
   } else if (initAnim === true) {

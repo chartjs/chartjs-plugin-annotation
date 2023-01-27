@@ -23,7 +23,7 @@ const annotation1 = {
   borderColor: 'rgba(0, 150, 0)',
   borderRadius: 4,
   borderWidth: 1,
-  initAnimation: true,
+  init: true,
   label: {
     display: true,
     content: 'Fade'
@@ -42,7 +42,7 @@ const annotation2 = {
   borderColor: 'rgba(0, 150, 0)',
   borderRadius: 4,
   borderWidth: 1,
-  initAnimation: () => ({y: 0, y2: 0}),
+  init: () => ({y: 0, y2: 0}),
   label: {
     display: true,
     content: 'Flyin from top'
@@ -61,7 +61,7 @@ const annotation3 = {
   borderColor: 'rgba(0, 150, 0)',
   borderRadius: 4,
   borderWidth: 1,
-  initAnimation: () => ({x: 0, x2: 0}),
+  init: () => ({x: 0, x2: 0}),
   label: {
     display: true,
     content: 'Flyin from left'

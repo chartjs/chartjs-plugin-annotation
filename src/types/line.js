@@ -140,7 +140,7 @@ LineAnnotation.defaults = {
   borderWidth: 2,
   display: true,
   endValue: undefined,
-  initAnimation: undefined,
+  init: undefined,
   label: {
     backgroundColor: 'rgba(0,0,0,0.8)',
     backgroundShadowColor: 'transparent',
