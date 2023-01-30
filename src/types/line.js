@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
-import {PI, toRadians, toDegrees, toPadding} from 'chart.js/helpers';
-import {EPSILON, clamp, scaleValue, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, getElementCenterPoint, retrieveScaleID, getDimensionByScale, initAnimationProperties} from '../helpers';
+import {PI, toRadians, toDegrees, toPadding, distanceBetweenPoints} from 'chart.js/helpers';
+import {EPSILON, clamp, rotated, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, getElementCenterPoint, toPosition, getSize, resolveLineProperties, initAnimationProperties} from '../helpers';
 import LabelAnnotation from './label';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
@@ -8,18 +8,32 @@ const interpolateX = (y, p1, p2) => pointInLine(p1, p2, Math.abs((y - p1.y) / (p
 const interpolateY = (x, p1, p2) => pointInLine(p1, p2, Math.abs((x - p1.x) / (p2.x - p1.x))).y;
 const sqr = v => v * v;
 const rangeLimit = (mouseX, mouseY, {x, y, x2, y2}, axis) => axis === 'y' ? {start: Math.min(y, y2), end: Math.max(y, y2), value: mouseY} : {start: Math.min(x, x2), end: Math.max(x, x2), value: mouseX};
+// http://www.independent-software.com/determining-coordinates-on-a-html-canvas-bezier-curve.html
+const coordInCurve = (start, cp, end, t) => (1 - t) * (1 - t) * start + 2 * (1 - t) * t * cp + t * t * end;
+const pointInCurve = (start, cp, end, t) => ({x: coordInCurve(start.x, cp.x, end.x, t), y: coordInCurve(start.y, cp.y, end.y, t)});
+const coordAngleInCurve = (start, cp, end, t) => 2 * (1 - t) * (cp - start) + 2 * t * (end - cp);
+const angleInCurve = (start, cp, end, t) => -Math.atan2(coordAngleInCurve(start.x, cp.x, end.x, t), coordAngleInCurve(start.y, cp.y, end.y, t)) + 0.5 * PI;
 
 export default class LineAnnotation extends Element {
 
   inRange(mouseX, mouseY, axis, useFinalPosition) {
     const hBorderWidth = this.options.borderWidth / 2;
     if (axis !== 'x' && axis !== 'y') {
-      const epsilon = sqr(hBorderWidth);
       const point = {mouseX, mouseY};
+      const {path, ctx} = this;
+      if (path) {
+        setBorderStyle(ctx, this.options);
+        const {chart} = this.$context;
+        const mx = mouseX * chart.currentDevicePixelRatio;
+        const my = mouseY * chart.currentDevicePixelRatio;
+        const result = ctx.isPointInStroke(path, mx, my) || isOnLabel(this, point, useFinalPosition);
+        ctx.restore();
+        return result;
+      }
+      const epsilon = sqr(hBorderWidth);
       return intersects(this, point, epsilon, useFinalPosition) || isOnLabel(this, point, useFinalPosition);
     }
-    const limit = rangeLimit(mouseX, mouseY, this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis);
-    return (limit.value >= limit.start - hBorderWidth && limit.value <= limit.end + hBorderWidth) || isOnLabel(this, {mouseX, mouseY}, useFinalPosition, axis);
+    return inAxisRange(this, {mouseX, mouseY}, axis, {hBorderWidth, useFinalPosition});
   }
 
   getCenterPoint(useFinalPosition) {
@@ -27,7 +41,7 @@ export default class LineAnnotation extends Element {
   }
 
   draw(ctx) {
-    const {x, y, x2, y2, options} = this;
+    const {x, y, x2, y2, cp, options} = this;
 
     ctx.save();
     if (!setBorderStyle(ctx, options)) {
@@ -35,10 +49,14 @@ export default class LineAnnotation extends Element {
       return ctx.restore();
     }
     setShadowStyle(ctx, options);
-    const angle = Math.atan2(y2 - y, x2 - x);
-    const length = Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2));
-    const {startOpts, endOpts, startAdjust, endAdjust} = getArrowHeads(this);
 
+    const length = Math.sqrt(Math.pow(x2 - x, 2) + Math.pow(y2 - y, 2));
+    if (options.curve && cp) {
+      drawCurve(ctx, this, cp, length);
+      return ctx.restore();
+    }
+    const {startOpts, endOpts, startAdjust, endAdjust} = getArrowHeads(this);
+    const angle = Math.atan2(y2 - y, x2 - x);
     ctx.translate(x, y);
     ctx.rotate(angle);
     ctx.beginPath();
@@ -56,33 +74,7 @@ export default class LineAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    const {scales, chartArea} = chart;
-    const scale = scales[options.scaleID];
-    const area = {x: chartArea.left, y: chartArea.top, x2: chartArea.right, y2: chartArea.bottom};
-    let min, max;
-
-    if (scale) {
-      min = scaleValue(scale, options.value, NaN);
-      max = scaleValue(scale, options.endValue, min);
-      if (scale.isHorizontal()) {
-        area.x = min;
-        area.x2 = max;
-      } else {
-        area.y = min;
-        area.y2 = max;
-      }
-    } else {
-      const xScale = scales[retrieveScaleID(scales, options, 'xScaleID')];
-      const yScale = scales[retrieveScaleID(scales, options, 'yScaleID')];
-
-      if (xScale) {
-        applyScaleValueToDimension(area, xScale, {min: options.xMin, max: options.xMax, start: xScale.left, end: xScale.right, startProp: 'x', endProp: 'x2'});
-      }
-
-      if (yScale) {
-        applyScaleValueToDimension(area, yScale, {min: options.yMin, max: options.yMax, start: yScale.bottom, end: yScale.top, startProp: 'y', endProp: 'y2'});
-      }
-    }
+    const area = resolveLineProperties(chart, options);
     const {x, y, x2, y2} = area;
     const inside = isLineInArea(area, chart.chartArea);
     const properties = inside
@@ -91,6 +83,11 @@ export default class LineAnnotation extends Element {
     properties.centerX = (x2 + x) / 2;
     properties.centerY = (y2 + y) / 2;
     properties.initProperties = initAnimationProperties(chart, properties, options);
+    if (options.curve) {
+      const p1 = {x: properties.x, y: properties.y};
+      const p2 = {x: properties.x2, y: properties.y2};
+      properties.cp = getControlPoint(properties, options, distanceBetweenPoints(p1, p2));
+    }
     const labelProperties = resolveLabelElementProperties(chart, properties, options.label);
     // additonal prop to manage zoom/pan
     labelProperties._visible = inside;
@@ -138,6 +135,10 @@ LineAnnotation.defaults = {
   borderDashOffset: 0,
   borderShadowColor: 'transparent',
   borderWidth: 2,
+  curve: false,
+  controlPoint: {
+    y: '-50%'
+  },
   display: true,
   endValue: undefined,
   init: undefined,
@@ -209,6 +210,11 @@ LineAnnotation.defaultRoutes = {
   borderColor: 'color'
 };
 
+function inAxisRange(element, {mouseX, mouseY}, axis, {hBorderWidth, useFinalPosition}) {
+  const limit = rangeLimit(mouseX, mouseY, element.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis);
+  return (limit.value >= limit.start - hBorderWidth && limit.value <= limit.end + hBorderWidth) || isOnLabel(element, {mouseX, mouseY}, useFinalPosition, axis);
+}
+
 function isLineInArea({x, y, x2, y2}, {top, right, bottom, left}) {
   return !(
     (x < left && x2 < left) ||
@@ -270,12 +276,6 @@ function isOnLabel(element, {mouseX, mouseY}, useFinalPosition, axis) {
   return label.options.display && label.inRange(mouseX, mouseY, axis, useFinalPosition);
 }
 
-function applyScaleValueToDimension(area, scale, options) {
-  const dim = getDimensionByScale(scale, options);
-  area[options.startProp] = dim.start;
-  area[options.endProp] = dim.end;
-}
-
 function resolveLabelElementProperties(chart, properties, options) {
   const borderWidth = options.borderWidth;
   const padding = toPadding(options.padding);
@@ -300,7 +300,7 @@ function calculateLabelPosition(properties, label, sizes, chartArea) {
   const rotation = label.rotation === 'auto' ? calculateAutoRotation(properties) : toRadians(label.rotation);
   const size = rotatedSize(width, height, rotation);
   const t = calculateT(properties, label, {labelSize: size, padding}, chartArea);
-  const pt = pointInLine(p1, p2, t);
+  const pt = properties.cp ? pointInCurve(p1, properties.cp, p2, t) : pointInLine(p1, p2, t);
   const xCoordinateSizes = {size: size.w, min: chartArea.left, max: chartArea.right, padding: padding.left};
   const yCoordinateSizes = {size: size.h, min: chartArea.top, max: chartArea.bottom, padding: padding.top};
   const centerX = adjustLabelCoordinate(pt.x, xCoordinateSizes) + xAdjust;
@@ -425,4 +425,48 @@ function drawArrowHead(ctx, offset, adjust, arrowOpts) {
     ctx.shadowColor = arrowOpts.borderShadowColor;
   }
   ctx.stroke();
+}
+
+function getControlPoint(properties, options, distance) {
+  const {x, y, x2, y2, centerX, centerY} = properties;
+  const angle = Math.atan2(y2 - y, x2 - x);
+  const cp = toPosition(options.controlPoint, 0);
+  const point = {
+    x: centerX + getSize(distance, cp.x, false),
+    y: centerY + getSize(distance, cp.y, false)
+  };
+  return rotated(point, {x: centerX, y: centerY}, angle);
+}
+
+function drawArrowHeadOnCurve(ctx, {x, y}, {angle, adjust}, arrowOpts) {
+  if (!arrowOpts || !arrowOpts.display) {
+    return;
+  }
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(angle);
+  drawArrowHead(ctx, 0, -adjust, arrowOpts);
+  ctx.restore();
+}
+
+function drawCurve(ctx, element, cp, length) {
+  const {x, y, x2, y2, options} = element;
+  const {startOpts, endOpts, startAdjust, endAdjust} = getArrowHeads(element);
+  const p1 = {x, y};
+  const p2 = {x: x2, y: y2};
+  const startAngle = angleInCurve(p1, cp, p2, 0);
+  const endAngle = angleInCurve(p1, cp, p2, 1) - PI;
+  const ps = pointInCurve(p1, cp, p2, startAdjust / length);
+  const pe = pointInCurve(p1, cp, p2, 1 - endAdjust / length);
+
+  const path = new Path2D();
+  ctx.beginPath();
+  path.moveTo(ps.x, ps.y);
+  path.quadraticCurveTo(cp.x, cp.y, pe.x, pe.y);
+  ctx.shadowColor = options.borderShadowColor;
+  ctx.stroke(path);
+  element.path = path;
+  element.ctx = ctx;
+  drawArrowHeadOnCurve(ctx, ps, {angle: startAngle, adjust: startAdjust}, startOpts);
+  drawArrowHeadOnCurve(ctx, pe, {angle: endAngle, adjust: endAdjust}, endOpts);
 }

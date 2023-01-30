@@ -220,4 +220,75 @@ describe('Line annotation', function() {
     });
   });
 
+  describe('curve inRange', function() {
+    const rotated = window.helpers.rotated;
+    const getQuadraticXY = window.getQuadraticXY;
+    const getQuadraticAngle = window.getQuadraticAngle;
+
+    const annotation1 = {
+      type: 'line',
+      scaleID: 'y',
+      value: 2,
+      curve: true,
+      borderWidth: 10
+    };
+    const annotation2 = {
+      type: 'line',
+      scaleID: 'x',
+      value: 8,
+      curve: true,
+      borderWidth: 5
+    };
+    const annotation3 = {
+      type: 'line',
+      scaleID: 'x',
+      value: 8,
+      curve: true,
+      borderWidth: 1
+    };
+    const annotation4 = {
+      type: 'line',
+      scaleID: 'x',
+      value: 8,
+      curve: true,
+      borderWidth: 0.5
+    };
+
+    const chart = window.scatterChart(10, 10, {annotation1, annotation2, annotation3, annotation4});
+    const elems = window.getAnnotationElements(chart);
+    const EPSILON = 0.05;
+
+    elems.forEach(function(element) {
+      const cp = element.cp;
+      it('should return true inside element', function() {
+        const halfBorder = element.options.borderWidth / 2;
+        for (let t = 0.1; t <= 0.9; t += 0.1) {
+          const point = getQuadraticXY(t, element.x, element.y, cp.x, cp.y, element.x2, element.y2);
+          const angle = getQuadraticAngle(t, element.x, element.y, cp.x, cp.y, element.x2, element.y2);
+          for (const bw of [-halfBorder + EPSILON, halfBorder - EPSILON]) {
+            const x = point.x + bw;
+            const y = point.y + bw;
+            const rotP = rotated({x, y}, point, angle);
+            expect(element.inRange(rotP.x, rotP.y)).withContext(`scaleID: ${element.options.scaleID}, value: ${element.options.value}, tension: ${t}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
+          }
+        }
+      });
+
+      it('should return false outside element', function() {
+        const halfBorder = element.options.borderWidth / 2 + 1;
+        for (let t = 0.1; t <= 0.9; t += 0.1) {
+          const point = getQuadraticXY(t, element.x, element.y, cp.x, cp.y, element.x2, element.y2);
+          const angle = getQuadraticAngle(t, element.x, element.y, cp.x, cp.y, element.x2, element.y2);
+          for (const bw of [-halfBorder + EPSILON, halfBorder - EPSILON]) {
+            const x = point.x + bw;
+            const y = point.y + bw;
+            const rotP = rotated({x, y}, point, angle);
+            expect(element.inRange(rotP.x, rotP.y)).withContext(`scaleID: ${element.options.scaleID}, value: ${element.options.value}, halfBorderWidth: ${bw}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
+          }
+        }
+      });
+
+    });
+  });
+
 });

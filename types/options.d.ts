@@ -1,5 +1,5 @@
 import { Chart, Color, PointStyle, BorderRadius, CoreInteractionOptions } from 'chart.js';
-import { AnnotationEvents, PartialEventContext } from './events';
+import { AnnotationEvents, PartialEventContext, EventContext } from './events';
 import { LabelOptions, BoxLabelOptions, LabelTypeOptions } from './label';
 import { AnnotationBoxModel } from './element';
 
@@ -18,6 +18,11 @@ export type AnnotationType = keyof AnnotationTypeRegistry;
 export type AnnotationOptions<TYPE extends AnnotationType = AnnotationType> =
 	{ [key in TYPE]: { type: key } & AnnotationTypeRegistry[key] }[TYPE]
 
+interface AnnotationHooks {
+  beforeDraw?(context: EventContext): void,
+  afterDraw?(context: EventContext): void
+}
+
 export type Scriptable<T, TContext> = T | ((ctx: TContext, options: AnnotationOptions) => T);
 export type ScaleValue = number | string;
 
@@ -29,7 +34,7 @@ interface ShadowOptions {
   shadowOffsetY?: Scriptable<number, PartialEventContext>
 }
 
-export interface CoreAnnotationOptions extends AnnotationEvents, ShadowOptions{
+export interface CoreAnnotationOptions extends AnnotationEvents, ShadowOptions, AnnotationHooks {
   adjustScaleRange?: Scriptable<boolean, PartialEventContext>,
   borderColor?: Scriptable<Color, PartialEventContext>,
   borderDash?: Scriptable<number[], PartialEventContext>,
@@ -70,8 +75,15 @@ export interface ArrowHeadsOptions extends ArrowHeadOptions{
   start?: ArrowHeadOptions,
 }
 
+export interface ControlPointOptions {
+  x?: Scriptable<number | string, PartialEventContext>,
+  y?: Scriptable<number | string, PartialEventContext>,
+}
+
 export interface LineAnnotationOptions extends CoreAnnotationOptions {
   arrowHeads?: ArrowHeadsOptions,
+  curve?: Scriptable<boolean, PartialEventContext>,
+  controlPoint?: Scriptable<number | string | ControlPointOptions, PartialEventContext>,
   endValue?: Scriptable<number|string, PartialEventContext>,
   label?: LabelOptions,
   scaleID?: Scriptable<string, PartialEventContext>,
@@ -136,7 +148,7 @@ interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationPoin
   yAdjust?: Scriptable<number, PartialEventContext>,
 }
 
-export interface AnnotationPluginOptions extends AnnotationEvents {
+export interface AnnotationPluginOptions extends AnnotationEvents, AnnotationHooks {
   animations?: Record<string, unknown>,
   annotations: AnnotationOptions[] | Record<string, AnnotationOptions>,
   clip?: boolean,

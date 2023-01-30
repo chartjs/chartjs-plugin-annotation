@@ -37,7 +37,6 @@ The function receives 2 arguments, first is the [option context](#option-context
 /* <block:options:0> */
 const options = {
   plugins: {
-    autocolors: false,
     annotation: {
       annotations: {
         box1: {

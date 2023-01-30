@@ -2,12 +2,18 @@ import {isFinite, toPadding} from 'chart.js/helpers';
 import {measureLabelSize} from './helpers.canvas';
 import {isBoundToPoint, getRelativePosition, toPosition, initAnimationProperties} from './helpers.options';
 
+const limitedLineScale = {
+  xScaleID: {min: 'xMin', max: 'xMax', start: 'left', end: 'right', startProp: 'x', endProp: 'x2'},
+  yScaleID: {min: 'yMin', max: 'yMax', start: 'bottom', end: 'top', startProp: 'y', endProp: 'y2'}
+};
+
 /**
  * @typedef { import("chart.js").Chart } Chart
  * @typedef { import("chart.js").Scale } Scale
  * @typedef { import("chart.js").Point } Point
  * @typedef { import('../../types/element').AnnotationBoxModel } AnnotationBoxModel
  * @typedef { import('../../types/options').CoreAnnotationOptions } CoreAnnotationOptions
+ * @typedef { import('../../types/options').LineAnnotationOptions } LineAnnotationOptions
  * @typedef { import('../../types/options').PointAnnotationOptions } PointAnnotationOptions
  * @typedef { import('../../types/options').PolygonAnnotationOptions } PolygonAnnotationOptions
  */
@@ -145,6 +151,23 @@ export function resolvePointProperties(chart, options) {
   }
   return getChartCircle(chart, options);
 }
+/**
+ * @param {Chart} chart
+ * @param {LineAnnotationOptions} options
+ * @returns {AnnotationBoxModel}
+ */
+export function resolveLineProperties(chart, options) {
+  const {scales, chartArea} = chart;
+  const scale = scales[options.scaleID];
+  const area = {x: chartArea.left, y: chartArea.top, x2: chartArea.right, y2: chartArea.bottom};
+
+  if (scale) {
+    resolveFullLineProperties(scale, area, options);
+  } else {
+    resolveLimitedLineProperties(scales, area, options);
+  }
+  return area;
+}
 
 /**
  * @param {Chart} chart
@@ -186,6 +209,30 @@ function getChartDimensionByScale(scale, options) {
     start: Math.min(result.start, result.end),
     end: Math.max(result.start, result.end)
   };
+}
+
+function resolveFullLineProperties(scale, area, options) {
+  const min = scaleValue(scale, options.value, NaN);
+  const max = scaleValue(scale, options.endValue, min);
+  if (scale.isHorizontal()) {
+    area.x = min;
+    area.x2 = max;
+  } else {
+    area.y = min;
+    area.y2 = max;
+  }
+}
+
+function resolveLimitedLineProperties(scales, area, options) {
+  for (const scaleId of Object.keys(limitedLineScale)) {
+    const scale = scales[retrieveScaleID(scales, options, scaleId)];
+    if (scale) {
+      const {min, max, start, end, startProp, endProp} = limitedLineScale[scaleId];
+      const dim = getDimensionByScale(scale, {min: options[min], max: options[max], start: scale[start], end: scale[end]});
+      area[startProp] = dim.start;
+      area[endProp] = dim.end;
+    }
+  }
 }
 
 function calculateX({properties, options}, labelSize, position, padding) {
@@ -237,4 +284,5 @@ function resolveLabelElementProperties(chart, properties, options) {
     centerY: y + height / 2,
     rotation: label.rotation
   };
+
 }
