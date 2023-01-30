@@ -1,5 +1,5 @@
 import {Animations} from 'chart.js';
-import {isObject, defined} from 'chart.js/helpers';
+import {isObject, defined, _capitalize} from 'chart.js/helpers';
 import {eventHooks} from './events';
 import {elementHooks} from './hooks';
 import {annotationTypes} from './types';
@@ -14,6 +14,7 @@ const hooks = eventHooks.concat(elementHooks);
  * @typedef { import("chart.js").Chart } Chart
  * @typedef { import("chart.js").UpdateMode } UpdateMode
  * @typedef { import('../../types/options').AnnotationPluginOptions } AnnotationPluginOptions
+ * @typedef { import('../../types/element').AnnotationElement } AnnotationElement
  */
 
 /**
@@ -44,30 +45,49 @@ export function updateElements(chart, state, options, mode) {
   for (let i = 0; i < annotations.length; i++) {
     const annotationOptions = annotations[i];
     const element = getOrCreateElement(elements, i, annotationOptions.type);
-    const resolver = annotationOptions.setContext(getContext(chart, element, annotationOptions));
-    const properties = element.resolveElementProperties(chart, resolver);
-
-    properties.skip = toSkip(properties);
-
-    if ('elements' in properties) {
-      updateSubElements(element, properties, resolver, animations);
-      // Remove the sub-element definitions from properties, so the actual elements
-      // are not overwritten by their definitions
-      delete properties.elements;
-    }
-
-    if (!defined(element.x)) {
-      // If the element is newly created, assing the properties directly - to
-      // make them readily awailable to any scriptable options. If we do not do this,
-      // the properties retruned by `resolveElementProperties` are available only
-      // after options resolution.
-      Object.assign(element, properties);
-    }
-
-    properties.options = resolveAnnotationOptions(resolver);
-
-    animations.update(element, properties);
+    updateElement(chart, element, annotationOptions, animations);
   }
+}
+
+/**
+ * @param {Chart} chart
+ * @param {Object} state
+ * @param {AnnotationPluginOptions} options
+ * @param {AnnotationElement[]} elements
+ */
+export function hoverElements(chart, state, options, elements) {
+  const animations = resolveAnimations(chart, options.animations, 'active');
+
+  elements.forEach(function(el) {
+    const index = state.elements.indexOf(el);
+    updateElement(chart, el, state.annotations[index], animations);
+  });
+}
+
+function updateElement(chart, element, options, animations) {
+  const resolver = options.setContext(getContext(chart, element, options));
+  const properties = element.resolveElementProperties(chart, resolver);
+
+  properties.skip = toSkip(properties);
+
+  if ('elements' in properties) {
+    updateSubElements(element, properties, resolver, animations);
+    // Remove the sub-element definitions from properties, so the actual elements
+    // are not overwritten by their definitions
+    delete properties.elements;
+  }
+
+  if (!defined(element.x)) {
+    // If the element is newly created, assing the properties directly - to
+    // make them readily awailable to any scriptable options. If we do not do this,
+    // the properties retruned by `resolveElementProperties` are available only
+    // after options resolution.
+    Object.assign(element, properties);
+  }
+
+  properties.options = resolveAnnotationOptions(resolver, element.active);
+
+  animations.update(element, properties);
 }
 
 function toSkip(properties) {
@@ -106,27 +126,28 @@ function getOrCreateElement(elements, index, type, initProperties) {
   return element;
 }
 
-function resolveAnnotationOptions(resolver) {
+function resolveAnnotationOptions(resolver, active) {
   const elementClass = annotationTypes[resolveType(resolver.type)];
   const result = {};
   result.id = resolver.id;
   result.type = resolver.type;
   result.drawTime = resolver.drawTime;
   Object.assign(result,
-    resolveObj(resolver, elementClass.defaults),
-    resolveObj(resolver, elementClass.defaultRoutes));
+    resolveObj(resolver, elementClass.defaults, active),
+    resolveObj(resolver, elementClass.defaultRoutes, active));
   for (const hook of hooks) {
     result[hook] = resolver[hook];
   }
   return result;
 }
 
-function resolveObj(resolver, defs) {
+function resolveObj(resolver, defs, active) {
   const result = {};
   for (const prop of Object.keys(defs)) {
     const optDefs = defs[prop];
-    const value = resolver[prop];
-    result[prop] = isObject(optDefs) ? resolveObj(value, optDefs) : value;
+    const hoverProp = active ? 'hover' + _capitalize(prop) : prop;
+    const value = resolver[hoverProp] || resolver[prop];
+    result[prop] = isObject(optDefs) ? resolveObj(value, optDefs, active) : value;
   }
   return result;
 }

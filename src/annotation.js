@@ -1,6 +1,7 @@
 import {Chart} from 'chart.js';
 import {clipArea, unclipArea, isObject, isArray} from 'chart.js/helpers';
 import {handleEvent, eventHooks, updateListeners} from './events';
+import {handleHoverElements} from './hover';
 import {invokeHook, elementHooks, updateHooks} from './hooks';
 import {adjustScaleRange, verifyScaleOptions} from './scale';
 import {updateElements, resolveType} from './elements';
@@ -38,7 +39,8 @@ export default {
       moveListened: false,
       hooks: {},
       hooked: false,
-      hovered: []
+      hovered: [],
+      highlighted: []
     });
   },
 
@@ -92,7 +94,8 @@ export default {
 
   beforeEvent(chart, args, options) {
     const state = chartStates.get(chart);
-    if (handleEvent(state, args.event, options)) {
+    const hovered = handleHoverElements(chart, state, args.event, options);
+    if (handleEvent(state, args.event, options) || hovered) {
       args.changed = true;
     }
   },
@@ -118,6 +121,12 @@ export default {
       axis: undefined,
       intersect: undefined
     },
+    hover: {
+      enabled: true,
+      mode: undefined,
+      axis: undefined,
+      intersect: undefined
+    },
     common: {
       drawTime: 'afterDatasetsDraw',
       label: {
@@ -133,6 +142,9 @@ export default {
       _fallback: (prop, opts) => `elements.${annotationTypes[resolveType(opts.type)].id}`
     },
     interaction: {
+      _fallback: true
+    },
+    hover: {
       _fallback: true
     },
     common: {
