@@ -109,7 +109,7 @@ function updateSubElements(mainElement, {elements, initProperties}, resolver, an
     const properties = definition.properties;
     const subElement = getOrCreateElement(subElements, i, definition.type, initProperties);
     const subResolver = resolver[definition.optionScope].override(definition);
-    properties.options = resolveAnnotationOptions(subResolver);
+    properties.options = resolveAnnotationOptions(subResolver, mainElement.active);
     animations.update(subElement, properties);
   }
 }
