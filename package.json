@@ -19,7 +19,7 @@
   },
   "sideEffects": [
     "dist/chartjs-plugin-annotation.cjs",
-    "dist/chartjs-plugin-annotation-min.js"
+    "dist/chartjs-plugin-annotation.min.js"
   ],
   "repository": {
     "type": "git",
