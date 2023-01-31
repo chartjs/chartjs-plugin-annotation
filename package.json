@@ -2,12 +2,20 @@
   "name": "chartjs-plugin-annotation",
   "homepage": "https://www.chartjs.org/chartjs-plugin-annotation/index",
   "description": "Annotations for Chart.js",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "author": "Evert Timberg <evert.timberg@gmail.com>",
   "license": "MIT",
   "main": "dist/chartjs-plugin-annotation.js",
   "module": "dist/chartjs-plugin-annotation.esm.js",
   "types": "types/index.d.ts",
+  "jsdelivr": "dist/chartjs-plugin-annotation.min.js",
+  "unpkg": "dist/chartjs-plugin-annotation.min.js",
+  "exports": {
+    "types": "./types/index.d.ts",
+    "import": "./dist/chartjs-plugin-annotation.esm.js",
+    "require": "./dist/chartjs-plugin-annotation.min.js",
+    "script": "./dist/chartjs-plugin-annotation.min.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/chartjs/chartjs-plugin-annotation.git"
@@ -39,7 +47,7 @@
     "@simonbrunel/vuepress-plugin-versions": "^0.2.0",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
-    "chart.js": "^4.1.1",
+    "chart.js": "^4.1.2",
     "chartjs-test-utils": "^0.5.0",
     "concurrently": "^7.0.0",
     "cross-env": "^7.0.3",

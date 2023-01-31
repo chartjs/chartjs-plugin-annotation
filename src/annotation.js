@@ -1,6 +1,7 @@
 import {Chart} from 'chart.js';
 import {clipArea, unclipArea, isObject, isArray} from 'chart.js/helpers';
-import {handleEvent, hooks, updateListeners} from './events';
+import {handleEvent, eventHooks, updateListeners} from './events';
+import {invokeHook, elementHooks, updateHooks} from './hooks';
 import {adjustScaleRange, verifyScaleOptions} from './scale';
 import {updateElements, resolveType, isIndexable} from './elements';
 import {annotationTypes} from './types';
@@ -9,6 +10,7 @@ import {version} from '../package.json';
 
 const chartStates = new Map();
 const isNotDoughnutLabel = annotation => annotation.type !== 'doughnutLabel';
+const hooks = eventHooks.concat(elementHooks);
 
 export default {
   id: 'annotation',
@@ -35,6 +37,8 @@ export default {
       listeners: {},
       listened: false,
       moveListened: false,
+      hooks: {},
+      hooked: false,
       hovered: []
     });
   },
@@ -68,6 +72,7 @@ export default {
     updateListeners(chart, state, options);
     updateElements(chart, state, options, args.mode);
     state.visibleElements = state.elements.filter(el => !el.skip && el.options.display);
+    updateHooks(chart, state, options);
   },
 
   beforeDatasetsDraw(chart, _args, options) {
@@ -149,16 +154,15 @@ export default {
 
 function draw(chart, caller, clip) {
   const {ctx, chartArea} = chart;
-  const {visibleElements} = chartStates.get(chart);
+  const state = chartStates.get(chart);
 
   if (clip) {
     clipArea(ctx, chartArea);
   }
 
-  const drawableElements = getDrawableElements(visibleElements, caller).sort((a, b) => a.options.z - b.options.z);
-
-  for (const element of drawableElements) {
-    element.draw(chart.ctx, chartArea);
+  const drawableElements = getDrawableElements(state.visibleElements, caller).sort((a, b) => a.element.options.z - b.element.options.z);
+  for (const item of drawableElements) {
+    drawElement(ctx, chartArea, state, item);
   }
 
   if (clip) {
@@ -170,15 +174,26 @@ function getDrawableElements(elements, caller) {
   const drawableElements = [];
   for (const el of elements) {
     if (el.options.drawTime === caller) {
-      drawableElements.push(el);
+      drawableElements.push({element: el, main: true});
     }
     if (el.elements && el.elements.length) {
       for (const sub of el.elements) {
         if (sub.options.display && sub.options.drawTime === caller) {
-          drawableElements.push(sub);
+          drawableElements.push({element: sub});
         }
       }
     }
   }
   return drawableElements;
+}
+
+function drawElement(ctx, chartArea, state, item) {
+  const el = item.element;
+  if (item.main) {
+    invokeHook(state, el, 'beforeDraw');
+    el.draw(ctx, chartArea);
+    invokeHook(state, el, 'afterDraw');
+  } else {
+    el.draw(ctx, chartArea);
+  }
 }

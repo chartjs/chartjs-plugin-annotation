@@ -166,12 +166,14 @@ module.exports = {
             'label/image',
             'label/innerChart',
             'label/lowerUpper',
+            'label/autoscaling'
           ]
         },
         {
           title: 'Line annotations',
           children: [
             'line/basic',
+            'line/curve',
             'line/lowerUpper',
             'line/limited',
             'line/average',
@@ -183,6 +185,7 @@ module.exports = {
             'line/image',
             'line/datasetBars',
             'line/animation',
+            'line/hook',
           ]
         },
         {
