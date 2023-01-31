@@ -145,7 +145,7 @@ export default {
       _fallback: true
     },
     hover: {
-      _fallback: true
+      _fallback: 'interaction'
     },
     common: {
       label: {

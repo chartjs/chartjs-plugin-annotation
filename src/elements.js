@@ -37,7 +37,7 @@ export function resolveType(type = 'line') {
  * @param {AnnotationPluginOptions} options
  * @param {AnnotationElement[]} elements
  */
-export function hoverElements(chart, state, options, elements) {
+export function updateActiveElements(chart, state, options, elements) {
   const animations = resolveAnimations(chart, options.animations, 'active');
 
   elements.forEach(function(el) {

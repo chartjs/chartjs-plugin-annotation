@@ -1,5 +1,5 @@
 import {getElements} from './interaction';
-import {hoverElements} from './elements';
+import {updateActiveElements} from './elements';
 
 /**
  * @typedef { import("chart.js").Chart } Chart
@@ -41,7 +41,7 @@ function handleMoveEvents(chart, state, event, options) {
   setActive(unhovered, false);
   state.activeElements = elements;
   setActive(elements, true);
-  hoverElements(chart, state, options, unhovered.concat(elements));
+  updateActiveElements(chart, state, options, unhovered.concat(elements));
   return true;
 }
 
