@@ -1,5 +1,5 @@
 import {Animations} from 'chart.js';
-import {isObject, defined, _capitalize} from 'chart.js/helpers';
+import {isObject, defined} from 'chart.js/helpers';
 import {eventHooks} from './events';
 import {elementHooks} from './hooks';
 import {annotationTypes} from './types';
@@ -9,6 +9,7 @@ const directUpdater = {
 };
 
 const hooks = eventHooks.concat(elementHooks);
+const getPrefixes = (el) => el.active ? ['hover', ''] : [''];
 
 /**
  * @typedef { import("chart.js").Chart } Chart
@@ -34,6 +35,21 @@ export function resolveType(type = 'line') {
  * @param {Chart} chart
  * @param {Object} state
  * @param {AnnotationPluginOptions} options
+ * @param {AnnotationElement[]} elements
+ */
+export function hoverElements(chart, state, options, elements) {
+  const animations = resolveAnimations(chart, options.animations, 'active');
+
+  elements.forEach(function(el) {
+    const index = state.elements.indexOf(el);
+    updateElement(chart, el, state.annotations[index], animations);
+  });
+}
+
+/**
+ * @param {Chart} chart
+ * @param {Object} state
+ * @param {AnnotationPluginOptions} options
  * @param {UpdateMode} mode
  */
 export function updateElements(chart, state, options, mode) {
@@ -49,23 +65,8 @@ export function updateElements(chart, state, options, mode) {
   }
 }
 
-/**
- * @param {Chart} chart
- * @param {Object} state
- * @param {AnnotationPluginOptions} options
- * @param {AnnotationElement[]} elements
- */
-export function hoverElements(chart, state, options, elements) {
-  const animations = resolveAnimations(chart, options.animations, 'active');
-
-  elements.forEach(function(el) {
-    const index = state.elements.indexOf(el);
-    updateElement(chart, el, state.annotations[index], animations);
-  });
-}
-
 function updateElement(chart, element, options, animations) {
-  const resolver = options.setContext(getContext(chart, element, options));
+  const resolver = options.setContext(getContext(chart, element, options), getPrefixes(element));
   const properties = element.resolveElementProperties(chart, resolver);
 
   properties.skip = toSkip(properties);
@@ -85,7 +86,7 @@ function updateElement(chart, element, options, animations) {
     Object.assign(element, properties);
   }
 
-  properties.options = resolveAnnotationOptions(resolver, element.active);
+  properties.options = resolveAnnotationOptions(resolver);
 
   animations.update(element, properties);
 }
@@ -108,8 +109,8 @@ function updateSubElements(mainElement, {elements, initProperties}, resolver, an
     const definition = elements[i];
     const properties = definition.properties;
     const subElement = getOrCreateElement(subElements, i, definition.type, initProperties);
-    const subResolver = resolver[definition.optionScope].override(definition);
-    properties.options = resolveAnnotationOptions(subResolver, mainElement.active);
+    const subResolver = resolver[definition.optionScope].override(definition, getPrefixes(mainElement));
+    properties.options = resolveAnnotationOptions(subResolver);
     animations.update(subElement, properties);
   }
 }
@@ -126,15 +127,15 @@ function getOrCreateElement(elements, index, type, initProperties) {
   return element;
 }
 
-function resolveAnnotationOptions(resolver, active) {
+function resolveAnnotationOptions(resolver) {
   const elementClass = annotationTypes[resolveType(resolver.type)];
   const result = {};
   result.id = resolver.id;
   result.type = resolver.type;
   result.drawTime = resolver.drawTime;
   Object.assign(result,
-    resolveObj(resolver, elementClass.defaults, active),
-    resolveObj(resolver, elementClass.defaultRoutes, active));
+    resolveObj(resolver, elementClass.defaults),
+    resolveObj(resolver, elementClass.defaultRoutes));
   for (const hook of hooks) {
     result[hook] = resolver[hook];
   }
@@ -145,8 +146,7 @@ function resolveObj(resolver, defs, active) {
   const result = {};
   for (const prop of Object.keys(defs)) {
     const optDefs = defs[prop];
-    const hoverProp = active ? 'hover' + _capitalize(prop) : prop;
-    const value = resolver[hoverProp] || resolver[prop];
+    const value = resolver[prop];
     result[prop] = isObject(optDefs) ? resolveObj(value, optDefs, active) : value;
   }
   return result;
