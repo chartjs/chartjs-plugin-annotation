@@ -13,7 +13,7 @@ import {hoverElements} from './elements';
  * @param {AnnotationPluginOptions} options
  * @return {boolean|undefined}
  */
-export function handleHoverElements(chart, state, event, options) {
+export function handleActiveElements(chart, state, event, options) {
   if (options.hover.enabled) {
     switch (event.type) {
     case 'mousemove':
@@ -33,15 +33,15 @@ function handleMoveEvents(chart, state, event, options) {
     elements = [];
   }
 
-  if (!state.highlighted.length && !elements.length) {
+  if (!state.activeElements.length && !elements.length) {
     return false;
   }
 
-  const unhovered = state.highlighted.filter((el) => !elements.includes(el));
+  const unhovered = state.activeElements.filter((el) => !elements.includes(el));
   setActive(unhovered, false);
-  state.highlighted = elements;
-  setActive(state.highlighted, true);
-  hoverElements(chart, state, options, unhovered.concat(state.highlighted));
+  state.activeElements = elements;
+  setActive(elements, true);
+  hoverElements(chart, state, options, unhovered.concat(elements));
   return true;
 }
 
