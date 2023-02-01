@@ -40,13 +40,19 @@ function handleMoveEvents(chart, state, event, options) {
   const unhovered = state.activeElements.filter((el) => !elements.includes(el));
   setActive(unhovered, false);
   state.activeElements = elements;
-  setActive(elements, true);
-  updateActiveElements(chart, state, options, unhovered.concat(elements));
+  const newHovered = elements.filter((el) => !el.active);
+  if (!unhovered.length && !newHovered.length) {
+    return false;
+  }
+  setActive(newHovered, true);
+  updateActiveElements(chart, state, options, unhovered.concat(newHovered));
   return true;
 }
 
 function setActive(elements, active) {
-  elements.forEach(function(el) {
+  const result = active ? elements.filter((el) => !el.active) : elements;
+  result.forEach(function(el) {
     el.active = active;
   });
+  return result;
 }
