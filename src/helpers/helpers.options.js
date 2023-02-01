@@ -1,4 +1,4 @@
-import {isObject, valueOrDefault, defined} from 'chart.js/helpers';
+import {isObject, isFunction, valueOrDefault, defined} from 'chart.js/helpers';
 import {clamp} from './helpers.core';
 
 const isPercentString = (s) => typeof s === 'string' && s.endsWith('%');
@@ -96,7 +96,7 @@ export function isBoundToPoint(options) {
 export function loadHooks(options, hooks, hooksContainer) {
   let activated = false;
   hooks.forEach(hook => {
-    if (typeof options[hook] === 'function') {
+    if (isFunction(options[hook])) {
       activated = true;
       hooksContainer[hook] = options[hook];
     } else if (defined(hooksContainer[hook])) {
