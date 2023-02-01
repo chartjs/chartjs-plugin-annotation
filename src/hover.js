@@ -33,7 +33,7 @@ function handleMoveEvents(chart, state, event, options) {
     elements = [];
   }
 
-  if (!state.activeElements.length && !elements.length) {
+  if (empty(state.activeElements, elements)) {
     return false;
   }
 
@@ -41,12 +41,16 @@ function handleMoveEvents(chart, state, event, options) {
   setActive(unhovered, false);
   state.activeElements = elements;
   const newHovered = elements.filter((el) => !el.active);
-  if (!unhovered.length && !newHovered.length) {
+  if (empty(unhovered, newHovered)) {
     return false;
   }
   setActive(newHovered, true);
   updateActiveElements(chart, state, options, unhovered.concat(newHovered));
   return true;
+}
+
+function empty(arr1, arr2) {
+  return !arr1.length && !arr2.length;
 }
 
 function setActive(elements, active) {
