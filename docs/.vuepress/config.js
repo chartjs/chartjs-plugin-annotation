@@ -218,6 +218,7 @@ module.exports = {
             'interaction/interaction',
             'interaction/dragging',
             'interaction/selection',
+            'interaction/cartesianplane',
           ],
         },
         'utils',
