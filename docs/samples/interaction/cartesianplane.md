@@ -2,7 +2,7 @@
 
 ```js chart-editor
 // <block:setup:5>
-let RECT;
+let rect;
 const MIN = -10;
 const MAX = 10;
 // </block:setup>
@@ -43,14 +43,14 @@ const xAxis = {
 // <block:rectangle:2>
 const box = {
   type: 'box',
-  display: () => !!RECT,
+  display: () => !!rect,
   backgroundColor: 'rgba(255, 174, 201, 0.2)',
   borderColor: 'red',
   borderDash: [4, 4],
-  xMin: () => RECT ? RECT.left : undefined,
-  xMax: () => RECT ? RECT.right : undefined,
-  yMin: () => RECT ? RECT.bottom : undefined,
-  yMax: () => RECT ? RECT.top : undefined,
+  xMin: () => rect ? rect.left : undefined,
+  xMax: () => rect ? rect.right : undefined,
+  yMin: () => rect ? rect.bottom : undefined,
+  yMax: () => rect ? rect.top : undefined,
   z: -1
 };
 const A = {
@@ -60,8 +60,8 @@ const A = {
     x: 'end',
     y: 'end'
   },
-  xValue: () => RECT ? RECT.left : undefined,
-  yValue: () => RECT ? RECT.top : undefined
+  xValue: () => rect ? rect.left : undefined,
+  yValue: () => rect ? rect.top : undefined
 };
 const B = {
   type: 'label',
@@ -70,8 +70,8 @@ const B = {
     x: 'start',
     y: 'end'
   },
-  xValue: () => RECT ? RECT.right : undefined,
-  yValue: () => RECT ? RECT.top : undefined
+  xValue: () => rect ? rect.right : undefined,
+  yValue: () => rect ? rect.top : undefined
 };
 const C = {
   type: 'label',
@@ -80,8 +80,8 @@ const C = {
     x: 'end',
     y: 'start'
   },
-  xValue: () => RECT ? RECT.left : undefined,
-  yValue: () => RECT ? RECT.bottom : undefined
+  xValue: () => rect ? rect.left : undefined,
+  yValue: () => rect ? rect.bottom : undefined
 };
 const D = {
   type: 'label',
@@ -90,29 +90,29 @@ const D = {
     x: 'start',
     y: 'start'
   },
-  xValue: () => RECT ? RECT.right : undefined,
-  yValue: () => RECT ? RECT.bottom : undefined
+  xValue: () => rect ? rect.right : undefined,
+  yValue: () => rect ? rect.bottom : undefined
 };
 // </block:rectangle>
 
 // <block:summary:3>
 const summary = {
   type: 'label',
-  display: () => !!RECT,
+  display: () => !!rect,
   drawTime: 'afterDraw',
   backgroundColor: 'white',
   borderColor: 'silver',
   borderWidth: 1,
   borderRadius: 6,
   content() {
-    if (RECT) {
+    if (rect) {
       const result = [];
-      result.push('A: (' + RECT.left.toFixed(2) + ', ' + RECT.top.toFixed(2) + ')');
-      result.push('B: (' + RECT.right.toFixed(2) + ', ' + RECT.top.toFixed(2) + ')');
-      result.push('C: (' + RECT.left.toFixed(2) + ', ' + RECT.bottom.toFixed(2) + ')');
-      result.push('D: (' + RECT.right.toFixed(2) + ', ' + RECT.bottom.toFixed(2) + ')');
-      const AB = Math.abs(RECT.right - RECT.left);
-      const AC = Math.abs(RECT.bottom - RECT.top);
+      result.push('A: (' + rect.left.toFixed(2) + ', ' + rect.top.toFixed(2) + ')');
+      result.push('B: (' + rect.right.toFixed(2) + ', ' + rect.top.toFixed(2) + ')');
+      result.push('C: (' + rect.left.toFixed(2) + ', ' + rect.bottom.toFixed(2) + ')');
+      result.push('D: (' + rect.right.toFixed(2) + ', ' + rect.bottom.toFixed(2) + ')');
+      const AB = Math.abs(rect.right - rect.left);
+      const AC = Math.abs(rect.bottom - rect.top);
       result.push('AB = CD = ' + AB.toFixed(2));
       result.push('AC = BD = ' + AC.toFixed(2));
       result.push('AD = BC = ' + Math.sqrt(Math.pow(AB, 2) + Math.pow(AC, 2)).toFixed(2));
@@ -127,12 +127,12 @@ const summary = {
   },
   padding: 5,
   position: {
-    x: () => RECT && RECT.left < 0 ? 'end' : 'start',
-    y: () => RECT && RECT.top <= 0 ? 'start' : 'end'
+    x: () => rect && rect.left < 0 ? 'end' : 'start',
+    y: () => rect && rect.top <= 0 ? 'start' : 'end'
   },
-  textAlign: () => RECT && RECT.left < 0 ? 'right' : 'left',
-  xValue: () => RECT && RECT.left < 0 ? MAX : MIN,
-  yValue: () => RECT && RECT.top <= 0 ? MAX : MIN
+  textAlign: () => rect && rect.left < 0 ? 'right' : 'left',
+  xValue: () => rect && rect.left < 0 ? MAX : MIN,
+  yValue: () => rect && rect.top <= 0 ? MAX : MIN
 };
 // </block:box>
 
@@ -180,12 +180,12 @@ const config = {
       }
     },
     onClick(e, elements, chart) {
-      RECT = calculateBox(e, chart);
+      rect = calculateBox(e, chart);
       chart.update();
     },
     elements: {
       labelAnnotation: {
-        display: () => !!RECT,
+        display: () => !!rect,
         borderWidth: 0,
         padding: 0,
         font: {
@@ -250,7 +250,7 @@ const actions = [
   {
     name: 'Reset',
     handler: function(chart) {
-      RECT = undefined;
+      rect = undefined;
       chart.update();
     }
   }
