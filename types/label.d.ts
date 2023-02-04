@@ -81,6 +81,10 @@ export interface CoreLabelOptions {
    * or in percentage of current height of image by a string
    */
   height?: Scriptable<number | percentString, PartialEventContext>,
+  /**
+   * Overrides the opacity of the image.
+   */
+  opacity?: Scriptable<number, PartialEventContext>,
   z?: Scriptable<number, PartialEventContext>
 }
 
