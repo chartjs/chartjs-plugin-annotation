@@ -1,4 +1,4 @@
-import {isObject, valueOrDefault, defined, callback} from 'chart.js/helpers';
+import {isObject, isFunction, valueOrDefault, defined, callback} from 'chart.js/helpers';
 import {clamp} from './helpers.core';
 
 const isPercentString = (s) => typeof s === 'string' && s.endsWith('%');
@@ -115,7 +115,7 @@ export function initAnimationProperties(chart, properties, options, centerBased 
 export function loadHooks(options, hooks, hooksContainer) {
   let activated = false;
   hooks.forEach(hook => {
-    if (typeof options[hook] === 'function') {
+    if (isFunction(options[hook])) {
       activated = true;
       hooksContainer[hook] = options[hook];
     } else if (defined(hooksContainer[hook])) {
