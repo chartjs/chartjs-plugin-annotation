@@ -166,6 +166,7 @@ LineAnnotation.defaults = {
       weight: 'bold'
     },
     height: undefined,
+    opacity: undefined,
     padding: 6,
     position: 'center',
     rotation: 0,
