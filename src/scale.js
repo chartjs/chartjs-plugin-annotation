@@ -1,4 +1,4 @@
-import {isFinite, valueOrDefault, defined} from 'chart.js/helpers';
+import {isFinite, isFunction, valueOrDefault, defined} from 'chart.js/helpers';
 import {retrieveScaleID} from './helpers';
 
 /**
@@ -16,7 +16,7 @@ export function adjustScaleRange(chart, scale, annotations) {
   const range = getScaleLimits(chart.scales, scale, annotations);
   let changed = changeScaleLimit(scale, range, 'min', 'suggestedMin');
   changed = changeScaleLimit(scale, range, 'max', 'suggestedMax') || changed;
-  if (changed && typeof scale.handleTickRangeOptions === 'function') {
+  if (changed && isFunction(scale.handleTickRangeOptions)) {
     scale.handleTickRangeOptions();
   }
 }

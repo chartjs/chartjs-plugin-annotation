@@ -1,5 +1,5 @@
-import {addRoundedRectPath, isArray, toFont, toTRBLCorners, toRadians} from 'chart.js/helpers';
-import {clampAll} from './helpers.core';
+import {addRoundedRectPath, isArray, isNumber, toFont, toTRBLCorners, toRadians} from 'chart.js/helpers';
+import {clampAll, clamp} from './helpers.core';
 import {calculateTextAlignment, getSize} from './helpers.options';
 
 const widthCache = new Map();
@@ -125,7 +125,10 @@ export function drawBox(ctx, rect, options) {
 export function drawLabel(ctx, rect, options) {
   const content = options.content;
   if (isImageOrCanvas(content)) {
+    ctx.save();
+    ctx.globalAlpha = getOpacity(options.opacity, content.style.opacity);
     ctx.drawImage(content, rect.x, rect.y, rect.width, rect.height);
+    ctx.restore();
     return;
   }
   const labels = isArray(content) ? content : [content];
@@ -198,4 +201,9 @@ function applyLabelContent(ctx, {x, y}, labels, {fonts, colors}) {
     lhs += lh;
     ctx.fill();
   });
+}
+
+function getOpacity(value, elementValue) {
+  const opacity = isNumber(value) ? value : elementValue;
+  return isNumber(opacity) ? clamp(opacity, 0, 1) : 1;
 }

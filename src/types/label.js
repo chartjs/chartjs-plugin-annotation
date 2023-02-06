@@ -86,6 +86,7 @@ LabelAnnotation.defaults = {
     weight: undefined
   },
   height: undefined,
+  opacity: undefined,
   padding: 6,
   position: 'center',
   rotation: 0,
