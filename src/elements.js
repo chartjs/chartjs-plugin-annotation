@@ -9,11 +9,13 @@ const directUpdater = {
 };
 
 const hooks = eventHooks.concat(elementHooks);
+const getPrefixes = (el) => el.active ? ['hover', ''] : [''];
 
 /**
  * @typedef { import("chart.js").Chart } Chart
  * @typedef { import("chart.js").UpdateMode } UpdateMode
  * @typedef { import('../../types/options').AnnotationPluginOptions } AnnotationPluginOptions
+ * @typedef { import('../../types/element').AnnotationElement } AnnotationElement
  */
 
 /**
@@ -33,6 +35,21 @@ export function resolveType(type = 'line') {
  * @param {Chart} chart
  * @param {Object} state
  * @param {AnnotationPluginOptions} options
+ * @param {AnnotationElement[]} elements
+ */
+export function updateActiveElements(chart, state, options, elements) {
+  const animations = resolveAnimations(chart, options.animations, 'active');
+
+  elements.forEach(function(el) {
+    const index = state.elements.indexOf(el);
+    updateElement(chart, el, state.annotations[index], animations);
+  });
+}
+
+/**
+ * @param {Chart} chart
+ * @param {Object} state
+ * @param {AnnotationPluginOptions} options
  * @param {UpdateMode} mode
  */
 export function updateElements(chart, state, options, mode) {
@@ -44,30 +61,34 @@ export function updateElements(chart, state, options, mode) {
   for (let i = 0; i < annotations.length; i++) {
     const annotationOptions = annotations[i];
     const element = getOrCreateElement(elements, i, annotationOptions.type);
-    const resolver = annotationOptions.setContext(getContext(chart, element, annotationOptions));
-    const properties = element.resolveElementProperties(chart, resolver);
-
-    properties.skip = toSkip(properties);
-
-    if ('elements' in properties) {
-      updateSubElements(element, properties, resolver, animations);
-      // Remove the sub-element definitions from properties, so the actual elements
-      // are not overwritten by their definitions
-      delete properties.elements;
-    }
-
-    if (!defined(element.x)) {
-      // If the element is newly created, assing the properties directly - to
-      // make them readily awailable to any scriptable options. If we do not do this,
-      // the properties retruned by `resolveElementProperties` are available only
-      // after options resolution.
-      Object.assign(element, properties);
-    }
-
-    properties.options = resolveAnnotationOptions(resolver);
-
-    animations.update(element, properties);
+    updateElement(chart, element, annotationOptions, animations);
   }
+}
+
+function updateElement(chart, element, options, animations) {
+  const resolver = options.setContext(getContext(chart, element, options), getPrefixes(element));
+  const properties = element.resolveElementProperties(chart, resolver);
+
+  properties.skip = toSkip(properties);
+
+  if ('elements' in properties) {
+    updateSubElements(element, properties, resolver, animations);
+    // Remove the sub-element definitions from properties, so the actual elements
+    // are not overwritten by their definitions
+    delete properties.elements;
+  }
+
+  if (!defined(element.x)) {
+    // If the element is newly created, assing the properties directly - to
+    // make them readily awailable to any scriptable options. If we do not do this,
+    // the properties retruned by `resolveElementProperties` are available only
+    // after options resolution.
+    Object.assign(element, properties);
+  }
+
+  properties.options = resolveAnnotationOptions(resolver);
+
+  animations.update(element, properties);
 }
 
 function toSkip(properties) {
@@ -88,7 +109,7 @@ function updateSubElements(mainElement, {elements, initProperties}, resolver, an
     const definition = elements[i];
     const properties = definition.properties;
     const subElement = getOrCreateElement(subElements, i, definition.type, initProperties);
-    const subResolver = resolver[definition.optionScope].override(definition);
+    const subResolver = resolver[definition.optionScope].override(definition, getPrefixes(mainElement));
     properties.options = resolveAnnotationOptions(subResolver);
     animations.update(subElement, properties);
   }
@@ -121,12 +142,12 @@ function resolveAnnotationOptions(resolver) {
   return result;
 }
 
-function resolveObj(resolver, defs) {
+function resolveObj(resolver, defs, active) {
   const result = {};
   for (const prop of Object.keys(defs)) {
     const optDefs = defs[prop];
     const value = resolver[prop];
-    result[prop] = isObject(optDefs) ? resolveObj(value, optDefs) : value;
+    result[prop] = isObject(optDefs) ? resolveObj(value, optDefs, active) : value;
   }
   return result;
 }

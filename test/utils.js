@@ -69,6 +69,9 @@ export function scatterChart(xMax, yMax, annotations) {
       plugins: {
         legend: false,
         annotation: {
+          hover: {
+            enabled: false
+          },
           annotations
         }
       }
