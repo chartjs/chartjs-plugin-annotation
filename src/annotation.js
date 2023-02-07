@@ -108,7 +108,7 @@ export default {
   defaults: {
     animations: {
       numbers: {
-        properties: ['x', 'y', 'x2', 'y2', 'width', 'height', 'centerX', 'centerY', 'pointX', 'pointY', 'radius'],
+        properties: ['x', 'y', 'x2', 'y2', 'width', 'height', 'centerX', 'centerY', 'pointX', 'pointY', 'radius', 'startAngle', 'endAngle', 'circumference'],
         type: 'number'
       },
     },

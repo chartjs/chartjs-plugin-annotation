@@ -1,4 +1,5 @@
 import {defaults} from 'chart.js';
+import ArcAnnotation from './arc';
 import BoxAnnotation from './box';
 import LineAnnotation from './line';
 import EllipseAnnotation from './ellipse';
@@ -7,6 +8,7 @@ import PointAnnotation from './point';
 import PolygonAnnotation from './polygon';
 
 export const annotationTypes = {
+  arc: ArcAnnotation,
   box: BoxAnnotation,
   ellipse: EllipseAnnotation,
   label: LabelAnnotation,
@@ -16,6 +18,7 @@ export const annotationTypes = {
 };
 
 export {
+  ArcAnnotation,
   BoxAnnotation,
   LineAnnotation,
   EllipseAnnotation,
