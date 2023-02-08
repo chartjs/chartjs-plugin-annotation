@@ -67,11 +67,6 @@ export function updateElements(chart, state, options, mode) {
     properties.options = resolveAnnotationOptions(resolver);
 
     animations.update(element, properties);
-
-    if (properties.callback) {
-      properties.callback(element, animations);
-      delete properties.callback;
-    }
   }
 }
 

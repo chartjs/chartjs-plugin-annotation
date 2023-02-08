@@ -187,6 +187,23 @@ export function resolveBoxAndLabelProperties(chart, options) {
   return properties;
 }
 
+/**
+ * @param {Chart} chart
+ * @param {CoreAnnotationOptions} options
+ * @returns {AnnotationBoxModel}
+ */
+export function resolveArcAndLabelProperties(chart, options) {
+  const properties = resolvePointProperties(chart, options);
+  const {x, y} = properties;
+  properties.elements = [{
+    type: 'label',
+    optionScope: 'label',
+    properties: resolveLabelElementProperties(chart, properties, options)
+  }];
+  properties.initProperties = {x, y};
+  return properties;
+}
+
 function getChartCircle(chart, options) {
   const point = getChartPoint(chart, options);
   const size = options.radius * 2;

@@ -1,14 +1,17 @@
 import {Element, ArcElement} from 'chart.js';
 import {toPercentage, toRadians, TAU} from 'chart.js/helpers';
-import {getElementCenterPoint, resolvePointProperties, setBorderStyle, setShadowStyle} from '../helpers';
+import {getElementCenterPoint, resolveArcAndLabelProperties, setBorderStyle, setShadowStyle} from '../helpers';
+import BoxAnnotation from './box';
+
+const arcElementProperties = ['startAngle', 'endAngle', 'innerRadius', 'outerRadius', 'circumference'];
 
 export default class ArcAnnotation extends Element {
 
   inRange(mouseX, mouseY, axis, useFinalPosition) {
-    const {x, y, x2, y2} = this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition);
     if (axis !== 'x' && axis !== 'y') {
-      return this.arc.inRange(mouseX, mouseY, useFinalPosition);
+      return this._arc.inRange(mouseX, mouseY, useFinalPosition);
     }
+    const {x, y, x2, y2} = getArcDimension(this, useFinalPosition);
     const hBorderWidth = this.options.borderWidth / 2;
     const limit = axis === 'y' ? {start: y, end: y2, value: mouseY} : {start: x, end: x2, value: mouseX};
     return limit.value >= limit.start - hBorderWidth && limit.value <= limit.end + hBorderWidth;
@@ -19,22 +22,32 @@ export default class ArcAnnotation extends Element {
   }
 
   draw(ctx) {
-    const arc = this.arc;
-    const {circumference, innerRadius, outerRadius} = arc;
+    const {circumference, innerRadius, outerRadius} = this;
     if (circumference === 0 || innerRadius < 0 || outerRadius < 0) {
       return;
     }
+    updateArcElement(this);
     if (circumference === TAU) {
-      drawFullCircle(ctx, arc);
+      drawFullCircle(ctx, this);
     } else {
-      arc.draw(ctx);
+      this._arc.draw(ctx);
     }
+    ctx.restore();
   }
 
   resolveElementProperties(chart, options) {
-    const props = resolvePointProperties(chart, options);
-    props.callback = initArcElement;
-    return props;
+    const properties = resolveArcAndLabelProperties(chart, options);
+    const cutout = Math.min(toPercentage(options.cutout, properties.width), 1);
+    properties.outerRadius = options.radius;
+    properties.innerRadius = Math.max(properties.outerRadius * cutout, 0);
+    properties.startAngle = toRadians(options.rotation - 90);
+    properties.circumference = toRadians(options.circumference);
+    properties.endAngle = properties.startAngle + properties.circumference;
+    if (!this._arc) {
+      properties._arc = new ArcElement();
+      updateArcElementProperties(properties, properties._arc);
+    }
+    return properties;
   }
 }
 
@@ -50,6 +63,7 @@ ArcAnnotation.defaults = {
   circumference: 360,
   cutout: 0,
   display: true,
+  label: Object.assign({}, BoxAnnotation.defaults.label),
   radius: 10,
   rotation: 0,
   shadowBlur: 0,
@@ -73,27 +87,36 @@ ArcAnnotation.defaultRoutes = {
   backgroundColor: 'color'
 };
 
-function initArcElement(element, animations) {
-  const options = element.options;
-  const properties = {
-    x: element.centerX,
-    y: element.centerY,
-    options: Object.assign({}, {circular: true, spacing: 0, offset: 0}, options)
+/**
+ * Convert (r, 𝜃) to (x, y)
+ */
+function rThetaToXY(r, theta, x, y) {
+  return {
+    x: x + r * Math.cos(theta),
+    y: y + r * Math.sin(theta),
   };
-  const cutout = Math.min(toPercentage(options.cutout, element.width), 1);
-  properties.outerRadius = options.radius;
-  properties.innerRadius = Math.max(properties.outerRadius * cutout, 0);
-  properties.startAngle = toRadians(options.rotation);
-  properties.circumference = toRadians(options.circumference);
-  properties.endAngle = properties.startAngle + properties.circumference;
-  if (!element.arc) {
-    element.arc = new ArcElement();
-  }
-  animations.update(element.arc, properties);
 }
 
-function drawFullCircle(ctx, arc) {
-  const {x, y, innerRadius, outerRadius, startAngle, endAngle, options} = arc;
+function updateArcElement(element) {
+  const arc = element._arc;
+  arc.options = element.options;
+  // overrides
+  arc.options.spacing = 0;
+  arc.options.offset = 0;
+  arc.options.circular = true;
+  updateArcElementProperties(element, arc);
+}
+
+function updateArcElementProperties(element, arc) {
+  arcElementProperties.forEach(function(key) {
+    arc[key] = element[key];
+  });
+  arc.x = element.centerX;
+  arc.y = element.centerY;
+}
+
+function drawFullCircle(ctx, element) {
+  const {centerX: x, centerY: y, innerRadius, outerRadius, startAngle, endAngle, options} = element;
   ctx.save();
   setShadowStyle(ctx, options);
   const stroke = setBorderStyle(ctx, options);
@@ -119,4 +142,31 @@ function drawFullCircle(ctx, arc) {
     ctx.stroke();
   }
   ctx.restore();
+}
+
+function getArcDimension(element, useFinalPosition) {
+  const {centerX, centerY, innerRadius, outerRadius, startAngle, endAngle} = element.getProps(['centerX', 'centerY', 'innerRadius', 'outerRadius', 'startAngle', 'endAngle'], useFinalPosition);
+  const arc = element._arc;
+  const points = [];
+  for (const rot of [0, 90, 180, 270]) {
+    const p = rThetaToXY(outerRadius, toRadians(rot), centerX, centerY);
+    if (arc.inRange(p.x, p.y, true)) {
+      points.push(p);
+    }
+  }
+  for (const r of [outerRadius, innerRadius]) {
+    for (const a of [startAngle, endAngle]) {
+      const p = rThetaToXY(r, a, centerX, centerY);
+      if (arc.inRange(p.x, p.y, true)) {
+        points.push(p);
+      }
+    }
+  }
+  return points.reduce(function(pre, cur) {
+    pre.x = Math.min(cur.x, pre.x || cur.x);
+    pre.y = Math.min(cur.y, pre.y || cur.y);
+    pre.x2 = Math.max(cur.x, pre.x2 || cur.x);
+    pre.y2 = Math.max(cur.y, pre.y2 || cur.y);
+    return pre;
+  }, {});
 }
