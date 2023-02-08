@@ -43,10 +43,8 @@ export default class ArcAnnotation extends Element {
     properties.startAngle = toRadians(options.rotation - 90);
     properties.circumference = toRadians(options.circumference);
     properties.endAngle = properties.startAngle + properties.circumference;
-    if (!this._arc) {
-      properties._arc = new ArcElement();
-      updateArcElementProperties(properties, properties._arc);
-    }
+    properties._arc = this._arc || new ArcElement();
+    updateArcElementProperties(properties, properties._arc);
     return properties;
   }
 }
@@ -59,6 +57,7 @@ ArcAnnotation.defaults = {
   borderDash: [],
   borderDashOffset: 0,
   borderShadowColor: 'transparent',
+  borderRadius: 0,
   borderWidth: 1,
   circumference: 360,
   cutout: 0,
