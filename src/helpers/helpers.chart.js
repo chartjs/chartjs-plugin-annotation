@@ -137,15 +137,13 @@ export function resolvePointProperties(chart, options) {
       options.radius = radius;
     }
     const size = radius * 2;
-    const adjustCenterX = box.centerX + options.xAdjust;
-    const adjustCenterY = box.centerY + options.yAdjust;
     return {
-      x: adjustCenterX - radius,
-      y: adjustCenterY - radius,
-      x2: adjustCenterX + radius,
-      y2: adjustCenterY + radius,
-      centerX: adjustCenterX,
-      centerY: adjustCenterY,
+      x: box.x + options.xAdjust,
+      y: box.y + options.yAdjust,
+      x2: box.x + size + options.xAdjust,
+      y2: box.y + size + options.yAdjust,
+      centerX: box.centerX + options.xAdjust,
+      centerY: box.centerY + options.yAdjust,
       width: size,
       height: size
     };
