@@ -86,6 +86,7 @@ LabelAnnotation.defaults = {
     weight: undefined
   },
   height: undefined,
+  opacity: undefined,
   padding: 6,
   position: 'center',
   rotation: 0,
@@ -116,7 +117,7 @@ LabelAnnotation.defaultRoutes = {
 function measureRect(point, size, options, padding) {
   const width = size.width + padding.width + options.borderWidth;
   const height = size.height + padding.height + options.borderWidth;
-  const position = toPosition(options.position);
+  const position = toPosition(options.position, 'center');
   const x = calculatePosition(point.x, width, options.xAdjust, position.x);
   const y = calculatePosition(point.y, height, options.yAdjust, position.y);
 

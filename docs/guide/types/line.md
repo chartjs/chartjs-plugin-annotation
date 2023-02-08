@@ -53,6 +53,8 @@ The following options are available for line annotations.
 | ---- | ---- | :----: | ----
 | [`arrowHeads`](#arrow-heads) | `{start: object, end:object}` | Yes |
 | [`borderWidth`](#styling) | `number` | Yes | `2`
+| [`controlPoint`](#general) | `number` \| `string` \| `{x: number | string, y: number | string}` | Yes | `{y:'-50%'}`
+| [`curve`](#general) | `boolean` | Yes | `false`
 | [`endValue`](#positioning) | `number` | Yes | `undefined`
 | [`label`](#label) | `object` | Yes |
 | [`scaleID`](#positioning) | `string` | Yes | `undefined`
@@ -82,6 +84,8 @@ If `scaleID` is unset, then `xScaleID` and `yScaleID` are used to draw a line fr
 | Name | Description
 | ---- | ----
 | `adjustScaleRange` | Should the scale range be adjusted if this annotation is out of range.
+| `controlPoint` | if `curve` is enabled, it configures the control point to drawn the curve, calculated in pixels. It can be set by a string in percentage format `'number%'` which are representing the percentage of the distance between the start and end point from the center.
+| `curve` | Whether or not a quadratic [Bézier curve](https://developer.mozilla.org/en-US/docs/Glossary/Bezier_curve) is drawn.
 | `display` | Whether or not this annotation is visible.
 | `drawTime` | See [drawTime](../options.md#draw-time).
 | `endValue` | End two of the line when a single scale is specified.
@@ -133,6 +137,7 @@ All of these options can be [Scriptable](../options.md#scriptable-options)
 | `drawTime` | `string` | `options.drawTime` | See [drawTime](../options.md#draw-time). Defaults to the line annotation draw time if unset.
 | `font` | [`Font`](../options.md#font) | `{ weight: 'bold' }` | Label font.
 | `height` | `number`\|`string` | `undefined` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
+| `opacity` | `number` | `undefined` | Overrides the opacity of the image or canvas element. Could be set a number in the range 0.0 to 1.0, inclusive. If undefined, uses the opacity of the image or canvas element. It is used only when the content is an image or canvas element.
 | `padding` | [`Padding`](../options.md#padding) | `6` | The padding to add around the text label.
 | `position` | `string` | `'center'` | Anchor position of label on line. Possible options are: `'start'`, `'center'`, `'end'`. It can be set by a string in percentage format `'number%'` which are representing the percentage on the width of the line where the label will be located.
 | `rotation` | `number`\|`'auto'` | `0` | Rotation of label, in degrees, or 'auto' to use the degrees of the line.

@@ -1,4 +1,4 @@
-import {callback} from 'chart.js/helpers';
+import {isFunction, callback} from 'chart.js/helpers';
 import {loadHooks} from './helpers';
 
 /**
@@ -22,7 +22,7 @@ export function updateHooks(chart, state, options) {
     visibleElements.forEach(scope => {
       if (!state.hooked) {
         elementHooks.forEach(hook => {
-          if (typeof scope.options[hook] === 'function') {
+          if (isFunction(scope.options[hook])) {
             state.hooked = true;
           }
         });

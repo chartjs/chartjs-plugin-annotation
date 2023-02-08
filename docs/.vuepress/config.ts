@@ -175,6 +175,7 @@ export default defineConfig({
           title: 'Line annotations',
           children: [
             'line/basic',
+            'line/curve',
             'line/lowerUpper',
             'line/limited',
             'line/average',
