@@ -56,7 +56,6 @@ const config = {
         animations: {
           fonts: {
             properties: ['font'],
-            type: 'font',
             fn(from, to, factor) {
               const f = Object.assign({}, to);
               f.size = f.size * factor;
