@@ -25,13 +25,17 @@ const chart = new Chart('id', {
           drawTime: 'afterDraw',
           borderColor: 'red',
           label: {
-            display: true
+            display: true,
+            font: (ctx) => ({ size: 10 })
           }
         },
         annotations: [{
           type: 'line',
           label: {
-            content: ['test', 'multiple']
+            content: ['test', 'multiple'],
+            font: {
+              size: 10
+            }
           }
         }, {
           type: 'box',
