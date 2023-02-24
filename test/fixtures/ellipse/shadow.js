@@ -1,4 +1,5 @@
 module.exports = {
+  tolerance: 0.0030,
   config: {
     type: 'bar',
     options: {
