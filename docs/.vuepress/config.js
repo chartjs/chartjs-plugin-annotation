@@ -144,6 +144,7 @@ module.exports = {
             'box/disclosure',
             'box/canvas',
             'box/image',
+            'box/gradient',
           ]
         },
         {
