@@ -145,6 +145,7 @@ module.exports = {
             'box/canvas',
             'box/image',
             'box/initAnim',
+            'box/gradient',
           ]
         },
         {
@@ -220,6 +221,7 @@ module.exports = {
             'interaction/interaction',
             'interaction/dragging',
             'interaction/selection',
+            'interaction/cartesianplane',
           ],
         },
         'utils',
