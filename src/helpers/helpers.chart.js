@@ -147,7 +147,8 @@ export function resolvePointProperties(chart, options) {
       centerX: adjustCenterX,
       centerY: adjustCenterY,
       width: size,
-      height: size
+      height: size,
+      radius
     };
   }
   return getChartCircle(chart, options);
