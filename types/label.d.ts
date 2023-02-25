@@ -39,8 +39,8 @@ export interface CalloutOptions {
 
 export interface CoreLabelOptions {
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
-  font?: Scriptable<Partial<FontSpec>, PartialEventContext>,
-  color?: Scriptable<Color, PartialEventContext>,
+  font?: Scriptable<Partial<FontSpec> | Partial<FontSpec>[], PartialEventContext>,
+  color?: Scriptable<Color | Color[], PartialEventContext>,
   /**
    * Padding of label
    * @default 6

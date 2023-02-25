@@ -4,6 +4,10 @@ import {calculateTextAlignment, getSize} from './helpers.options';
 
 const widthCache = new Map();
 const notRadius = (radius) => isNaN(radius) || radius <= 0;
+const fontsKey = (fonts) => fonts.reduce(function(prev, item) {
+  prev += item.string;
+  return prev;
+}, '');
 
 /**
  * @typedef { import('chart.js').Point } Point
@@ -79,22 +83,13 @@ export function measureLabelSize(ctx, options) {
       height: getSize(content.height, options.height)
     };
   }
-  const font = toFont(options.font);
+  const optFont = options.font;
+  const fonts = isArray(optFont) ? optFont.map(f => toFont(f)) : [toFont(optFont)];
   const strokeWidth = options.textStrokeWidth;
   const lines = isArray(content) ? content : [content];
-  const mapKey = lines.join() + font.string + strokeWidth + (ctx._measureText ? '-spriting' : '');
+  const mapKey = lines.join() + fontsKey(fonts) + strokeWidth + (ctx._measureText ? '-spriting' : '');
   if (!widthCache.has(mapKey)) {
-    ctx.save();
-    ctx.font = font.string;
-    const count = lines.length;
-    let width = 0;
-    for (let i = 0; i < count; i++) {
-      const text = lines[i];
-      width = Math.max(width, ctx.measureText(text).width + strokeWidth);
-    }
-    ctx.restore();
-    const height = count * font.lineHeight + strokeWidth;
-    widthCache.set(mapKey, {width, height});
+    widthCache.set(mapKey, calculateLabelSize(ctx, lines, fonts, strokeWidth));
   }
   return widthCache.get(mapKey);
 }
@@ -139,19 +134,19 @@ export function drawLabel(ctx, rect, options) {
     return;
   }
   const labels = isArray(content) ? content : [content];
-  const font = toFont(options.font);
-  const lh = font.lineHeight;
+  const optFont = options.font;
+  const fonts = isArray(optFont) ? optFont.map(f => toFont(f)) : [toFont(optFont)];
+  const optColor = options.color;
+  const colors = isArray(optColor) ? optColor : [optColor];
   const x = calculateTextAlignment(rect, options);
-  const y = rect.y + (lh / 2) + options.textStrokeWidth / 2;
+  const y = rect.y + options.textStrokeWidth / 2;
   ctx.save();
-  ctx.font = font.string;
   ctx.textBaseline = 'middle';
   ctx.textAlign = options.textAlign;
   if (setTextStrokeStyle(ctx, options)) {
-    labels.forEach((l, i) => ctx.strokeText(l, x, y + (i * lh), rect.width));
+    applyLabelDecoration(ctx, {x, y}, labels, fonts);
   }
-  ctx.fillStyle = options.color;
-  labels.forEach((l, i) => ctx.fillText(l, x, y + (i * lh), rect.width));
+  applyLabelContent(ctx, {x, y}, labels, {fonts, colors});
   ctx.restore();
 }
 
@@ -284,6 +279,50 @@ function drawPointStyle(ctx, {x, y, radius, rotation, style, rad}) {
   }
 
   ctx.fill();
+}
+
+function calculateLabelSize(ctx, lines, fonts, strokeWidth) {
+  ctx.save();
+  const count = lines.length;
+  let width = 0;
+  let height = strokeWidth;
+  for (let i = 0; i < count; i++) {
+    const font = fonts[Math.min(i, fonts.length - 1)];
+    ctx.font = font.string;
+    const text = lines[i];
+    width = Math.max(width, ctx.measureText(text).width + strokeWidth);
+    height += font.lineHeight;
+  }
+  ctx.restore();
+  return {width, height};
+}
+
+function applyLabelDecoration(ctx, {x, y}, labels, fonts) {
+  ctx.beginPath();
+  let lhs = 0;
+  labels.forEach(function(l, i) {
+    const f = fonts[Math.min(i, fonts.length - 1)];
+    const lh = f.lineHeight;
+    ctx.font = f.string;
+    ctx.strokeText(l, x, y + lh / 2 + lhs);
+    lhs += lh;
+  });
+  ctx.stroke();
+}
+
+function applyLabelContent(ctx, {x, y}, labels, {fonts, colors}) {
+  let lhs = 0;
+  labels.forEach(function(l, i) {
+    const c = colors[Math.min(i, colors.length - 1)];
+    const f = fonts[Math.min(i, fonts.length - 1)];
+    const lh = f.lineHeight;
+    ctx.beginPath();
+    ctx.font = f.string;
+    ctx.fillStyle = c;
+    ctx.fillText(l, x, y + lh / 2 + lhs);
+    lhs += lh;
+    ctx.fill();
+  });
 }
 
 function getOpacity(value, elementValue) {
