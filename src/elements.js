@@ -17,6 +17,12 @@ const hooks = eventHooks.concat(elementHooks);
  */
 
 /**
+ * @param {string} prop
+ * @returns {boolean}
+ */
+export const isIndexable = (prop) => prop === 'color' || prop === 'font';
+
+/**
  * Resolve the annotation type, checking if is supported.
  * @param {string} [type=line] - annotation type
  * @returns {string} resolved annotation type
@@ -126,7 +132,7 @@ function resolveObj(resolver, defs) {
   for (const prop of Object.keys(defs)) {
     const optDefs = defs[prop];
     const value = resolver[prop];
-    result[prop] = isObject(optDefs) ? resolveObj(value, optDefs) : value;
+    result[prop] = isObject(optDefs) && !isIndexable(prop) ? resolveObj(value, optDefs) : value;
   }
   return result;
 }
