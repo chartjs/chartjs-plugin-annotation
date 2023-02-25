@@ -6,12 +6,18 @@ module.exports = {
         x: {
           display: true,
           min: -10,
-          max: 10
+          max: 10,
+          ticks: {
+            display: false
+          }
         },
         y: {
           display: true,
           min: -10,
-          max: 10
+          max: 10,
+          ticks: {
+            display: false
+          }
         }
       },
       plugins: {
