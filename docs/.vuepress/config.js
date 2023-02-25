@@ -166,6 +166,7 @@ module.exports = {
             'label/image',
             'label/innerChart',
             'label/lowerUpper',
+            'label/fontsColors',
             'label/autoscaling'
           ]
         },
