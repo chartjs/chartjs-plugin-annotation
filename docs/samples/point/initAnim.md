@@ -24,11 +24,6 @@ const annotation1 = {
   borderRadius: 4,
   borderWidth: 1,
   init: true,
-  label: {
-    display: true,
-    content: 'Fade',
-    textAlign: 'center'
-  },
   radius: 40,
   xMax: 6.5,
   xMin: 4.5,
@@ -54,11 +49,6 @@ const annotation2 = {
   borderRadius: 4,
   borderWidth: 1,
   init: () => ({centerY: 0}),
-  label: {
-    display: true,
-    content: 'Flyin from top',
-    textAlign: 'center'
-  },
   radius: 40,
   xMax: 2.5,
   xMin: 0.5,
@@ -84,11 +74,6 @@ const annotation3 = {
   borderRadius: 4,
   borderWidth: 1,
   init: () => ({centerX: 0}),
-  label: {
-    display: true,
-    content: 'Flyin from left',
-    textAlign: 'center'
-  },
   radius: 40,
   xMax: 10.5,
   xMin: 8.5,
