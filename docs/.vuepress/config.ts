@@ -146,7 +146,9 @@ export default defineConfig({
             'box/quarters',
             'box/disclosure',
             'box/canvas',
-            'box/image'
+            'box/image',
+            'box/initAnim',
+            'box/gradient'
           ]
         },
         {
@@ -168,6 +170,7 @@ export default defineConfig({
             'label/image',
             'label/innerChart',
             'label/lowerUpper',
+            'label/fontsColors',
             'label/autoscaling'
           ]
         },
@@ -196,7 +199,8 @@ export default defineConfig({
             'point/basic',
             'point/combined',
             'point/outsideChartArea',
-            'point/shadow'
+            'point/shadow',
+            'point/initAnim'
           ]
         },
         {
@@ -220,7 +224,8 @@ export default defineConfig({
           children: [
             'interaction/interaction',
             'interaction/dragging',
-            'interaction/selection'
+            'interaction/selection',
+            'interaction/cartesianplane'
           ],
         },
         'utils'

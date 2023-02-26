@@ -17,6 +17,12 @@ const hooks = eventHooks.concat(elementHooks);
  */
 
 /**
+ * @param {string} prop
+ * @returns {boolean}
+ */
+export const isIndexable = (prop) => prop === 'color' || prop === 'font';
+
+/**
  * Resolve the annotation type, checking if is supported.
  * @param {string} [type=line] - annotation type
  * @returns {string} resolved annotation type
@@ -50,7 +56,7 @@ export function updateElements(chart, state, options, mode) {
     properties.skip = toSkip(properties);
 
     if ('elements' in properties) {
-      updateSubElements(element, properties, resolver, animations);
+      updateSubElements(element, properties.elements, resolver, animations);
       // Remove the sub-element definitions from properties, so the actual elements
       // are not overwritten by their definitions
       delete properties.elements;
@@ -64,6 +70,7 @@ export function updateElements(chart, state, options, mode) {
       Object.assign(element, properties);
     }
 
+    Object.assign(element, properties.initProperties);
     properties.options = resolveAnnotationOptions(resolver);
 
     animations.update(element, properties);
@@ -81,13 +88,13 @@ function resolveAnimations(chart, animOpts, mode) {
   return new Animations(chart, animOpts);
 }
 
-function updateSubElements(mainElement, {elements, initProperties}, resolver, animations) {
+function updateSubElements(mainElement, elements, resolver, animations) {
   const subElements = mainElement.elements || (mainElement.elements = []);
   subElements.length = elements.length;
   for (let i = 0; i < elements.length; i++) {
     const definition = elements[i];
     const properties = definition.properties;
-    const subElement = getOrCreateElement(subElements, i, definition.type, initProperties);
+    const subElement = getOrCreateElement(subElements, i, definition.type, definition.initProperties);
     const subResolver = resolver[definition.optionScope].override(definition);
     properties.options = resolveAnnotationOptions(subResolver);
     animations.update(subElement, properties);
@@ -99,9 +106,7 @@ function getOrCreateElement(elements, index, type, initProperties) {
   let element = elements[index];
   if (!element || !(element instanceof elementClass)) {
     element = elements[index] = new elementClass();
-    if (isObject(initProperties)) {
-      Object.assign(element, initProperties);
-    }
+    Object.assign(element, initProperties);
   }
   return element;
 }
@@ -126,7 +131,7 @@ function resolveObj(resolver, defs) {
   for (const prop of Object.keys(defs)) {
     const optDefs = defs[prop];
     const value = resolver[prop];
-    result[prop] = isObject(optDefs) ? resolveObj(value, optDefs) : value;
+    result[prop] = isObject(optDefs) && !isIndexable(prop) ? resolveObj(value, optDefs) : value;
   }
   return result;
 }

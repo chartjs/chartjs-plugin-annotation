@@ -131,11 +131,11 @@ All of these options can be [Scriptable](../options.md#scriptable-options)
 | `borderShadowColor` | [`Color`](../options.md#color) | `'transparent'` | The color of border shadow of the box where the label is located. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowColor).
 | `borderWidth` | `number` | `0` | The border line width (in pixels).
 | [`callout`](#callout) | `object` | | Can connect the label to the line. See [callout](#callout).
-| `color` | [`Color`](../options.md#color) | `'#fff'` | Text color.
+| [`color`](#fonts-and-colors) | [`Color`\|`Color[]`](../options#color) | `'#fff'` | Text color.
 | `content` | `string`\|`string[]`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image)\|[`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) | `null` | The content to show in the label.
 | `display` | `boolean` | `false` | Whether or not the label is shown.
-| `drawTime` | `string` | `options.drawTime` | See [drawTime](../options.md#draw-time). Defaults to the line annotation draw time if unset.
-| `font` | [`Font`](../options.md#font) | `{ weight: 'bold' }` | Label font.
+| `drawTime` | `string` | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the line annotation draw time if unset.
+| [`font`](#fonts-and-colors) | [`Font`\|`Font[]`](../options#font) | `{ weight: 'bold' }` | Label font.
 | `height` | `number`\|`string` | `undefined` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
 | `opacity` | `number` | `undefined` | Overrides the opacity of the image or canvas element. Could be set a number in the range 0.0 to 1.0, inclusive. If undefined, uses the opacity of the image or canvas element. It is used only when the content is an image or canvas element.
 | `padding` | [`Padding`](../options.md#padding) | `6` | The padding to add around the text label.
@@ -155,6 +155,10 @@ All of these options can be [Scriptable](../options.md#scriptable-options)
 ### borderRadius
 
 If this value is a number, it is applied to all corners of the rectangle (topLeft, topRight, bottomLeft, bottomRight). If this value is an object, the `topLeft` property defines the top-left corners border radius. Similarly, the `topRight`, `bottomLeft`, and `bottomRight` properties can also be specified. Omitted corners have radius of 0.
+
+### Fonts and colors
+
+When the label to draw has multiple lines, you can use different font and color for each line of the label. This is enabled configuring an array of fonts or colors for those options. When the lines are more than the configured fonts of colors, the last configuration of those options is used for all remaining lines.
 
 ### Callout
 

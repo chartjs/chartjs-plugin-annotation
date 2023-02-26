@@ -3,7 +3,7 @@ import {clipArea, unclipArea, isObject, isArray} from 'chart.js/helpers';
 import {handleEvent, eventHooks, updateListeners} from './events';
 import {invokeHook, elementHooks, updateHooks} from './hooks';
 import {adjustScaleRange, verifyScaleOptions} from './scale';
-import {updateElements, resolveType} from './elements';
+import {updateElements, resolveType, isIndexable} from './elements';
 import {annotationTypes} from './types';
 import {requireVersion} from './helpers';
 import {version} from '../package.json';
@@ -120,6 +120,7 @@ export default {
     },
     common: {
       drawTime: 'afterDatasetsDraw',
+      init: false,
       label: {
       }
     }
@@ -127,7 +128,7 @@ export default {
 
   descriptors: {
     _indexable: false,
-    _scriptable: (prop) => !hooks.includes(prop),
+    _scriptable: (prop) => !hooks.includes(prop) && prop !== 'init',
     annotations: {
       _allKeys: false,
       _fallback: (prop, opts) => `elements.${annotationTypes[resolveType(opts.type)].id}`
@@ -137,8 +138,10 @@ export default {
     },
     common: {
       label: {
+        _indexable: isIndexable,
         _fallback: true
-      }
+      },
+      _indexable: isIndexable
     }
   },
 

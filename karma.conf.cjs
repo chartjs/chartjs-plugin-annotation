@@ -42,6 +42,8 @@ module.exports = async function(karma) {
     // Explicitly disable hardware acceleration to make image
     // diff more stable when ran on Travis and dev machine.
     // https://github.com/chartjs/Chart.js/pull/5629
+    // Since FF 110, in FF GPU-accelerated Canvas2D is enabled by default on macOS and Linux.
+    // This is braking fixture test cases, therefore is disabled by setting gfx.canvas.accelerated
     customLaunchers: {
       chrome: {
         base: 'Chrome',
@@ -55,7 +57,8 @@ module.exports = async function(karma) {
       firefox: {
         base: 'Firefox',
         prefs: {
-          'layers.acceleration.disabled': true
+          'layers.acceleration.disabled': true,
+          'gfx.canvas.accelerated': false
         }
       }
     },
