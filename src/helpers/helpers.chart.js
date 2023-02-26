@@ -1,6 +1,6 @@
 import {isFinite, toPadding} from 'chart.js/helpers';
 import {measureLabelSize} from './helpers.canvas';
-import {isBoundToPoint, getRelativePosition, toPosition} from './helpers.options';
+import {isBoundToPoint, getRelativePosition, toPosition, initAnimationProperties} from './helpers.options';
 
 const limitedLineScale = {
   xScaleID: {min: 'xMin', max: 'xMax', start: 'left', end: 'right', startProp: 'x', endProp: 'x2'},
@@ -147,7 +147,8 @@ export function resolvePointProperties(chart, options) {
       centerX: adjustCenterX,
       centerY: adjustCenterY,
       width: size,
-      height: size
+      height: size,
+      radius
     };
   }
   return getChartCircle(chart, options);
@@ -173,17 +174,18 @@ export function resolveLineProperties(chart, options) {
 /**
  * @param {Chart} chart
  * @param {CoreAnnotationOptions} options
+ * @param {boolean} [centerBased=false]
  * @returns {AnnotationBoxModel}
  */
-export function resolveBoxAndLabelProperties(chart, options) {
+export function resolveBoxAndLabelProperties(chart, options, centerBased) {
   const properties = resolveBoxProperties(chart, options);
-  const {x, y} = properties;
+  properties.initProperties = initAnimationProperties(chart, properties, options, centerBased);
   properties.elements = [{
     type: 'label',
     optionScope: 'label',
-    properties: resolveLabelElementProperties(chart, properties, options)
+    properties: resolveLabelElementProperties(chart, properties, options),
+    initProperties: properties.initProperties
   }];
-  properties.initProperties = {x, y};
   return properties;
 }
 
@@ -197,6 +199,7 @@ function getChartCircle(chart, options) {
     y2: point.y + options.radius + options.yAdjust,
     centerX: point.x + options.xAdjust,
     centerY: point.y + options.yAdjust,
+    radius: options.radius,
     width: size,
     height: size
   };

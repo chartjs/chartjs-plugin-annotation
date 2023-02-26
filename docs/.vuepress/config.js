@@ -144,6 +144,7 @@ module.exports = {
             'box/disclosure',
             'box/canvas',
             'box/image',
+            'box/initAnim',
             'box/gradient',
           ]
         },
@@ -196,6 +197,7 @@ module.exports = {
             'point/combined',
             'point/outsideChartArea',
             'point/shadow',
+            'point/initAnim',
           ]
         },
         {

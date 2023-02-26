@@ -8,7 +8,8 @@ export interface AnnotationBoxModel {
   centerX: number,
   centerY: number,
   height: number,
-  width: number
+  width: number,
+  radius?: number
 }
 
 export interface AnnotationElement extends AnnotationBoxModel {
