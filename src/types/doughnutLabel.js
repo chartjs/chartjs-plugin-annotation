@@ -1,5 +1,5 @@
 import {Element, DoughnutController} from 'chart.js';
-import {drawLabel, measureLabelSize, translate, shouldFit, inLabelRange, getElementCenterPoint, measureLabelRectangle, setBorderStyle} from '../helpers';
+import {drawLabel, measureLabelSize, translate, shouldFit, inLabelRange, getElementCenterPoint, measureLabelRectangle, setBorderStyle, initAnimationProperties} from '../helpers';
 import {TAU, getAngleFromPoint} from 'chart.js/helpers';
 
 export default class DoughnutLabelAnnotation extends Element {
@@ -43,6 +43,7 @@ export default class DoughnutLabelAnnotation extends Element {
     const {position, xAdjust, yAdjust} = options;
     const boxSize = measureLabelRectangle(point, labelSize, {borderWidth: 0, position, xAdjust, yAdjust});
     return {
+      initProperties: initAnimationProperties(chart, boxSize, options),
       ...boxSize,
       ...controllerMeta,
       rotation: options.rotation,
@@ -75,6 +76,8 @@ DoughnutLabelAnnotation.defaults = {
     weight: undefined
   },
   height: undefined,
+  init: undefined,
+  opacity: undefined,
   position: 'center',
   rotation: 0,
   shadowBlur: 0,

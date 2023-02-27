@@ -67,6 +67,8 @@ The following options are available for label annotations.
 | [`font`](#styling) | [`Font`\|`Font[]`](../options.md#font) | Yes | `{}`
 | [`height`](#general) | `number`\|`string` | Yes | `undefined`
 | [`id`](#general) | `string` | No | `undefined`
+| [`init`](../configuration.html#common) | `boolean`  | [See initial animation](../configuration.html#initial-animation) | `undefined`
+| [`opacity`](#styling) | `number` | Yes | `undefined`
 | [`position`](#position) | `string`\|`{x: string, y: string}` | Yes | `'center'`
 | [`rotation`](#general) | `number`| Yes | `0`
 | [`shadowBlur`](#styling) | `number` | Yes | `0`
@@ -114,6 +116,7 @@ The content will be rendered in the center of the chart.
 | `borderWidth` | Stroke width (in pixels).
 | `color` | Text color. When the label to draw has multiple lines, you can use different color for each row of the label. This is enabled configuring an array of colors. When the lines are more than the configured colors, the last configuration of this option is used for all remaining lines.
 | `font` | Text font. When the label to draw has multiple lines, you can use different font for each row of the label. This is enabled configuring an array of fonts. When the lines are more than the configured fonts, the last configuration of this option is used for all remaining lines.
+| `opacity` | Overrides the opacity of the image or canvas element. Could be set a number in the range 0.0 to 1.0, inclusive. If undefined, uses the opacity of the image or canvas element. It is used only when the content is an image or canvas element.
 | `shadowBlur` | The amount of blur applied to shadow of the box where the label is located. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowBlur).
 | `shadowOffsetX` | The distance that shadow, of the box where the label is located, will be offset horizontally. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetX).
 | `shadowOffsetY` | The distance that shadow, of the box where the label is located, will be offset vertically. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/shadowOffsetY).

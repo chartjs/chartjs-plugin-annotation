@@ -140,6 +140,7 @@ export interface DoughnutLabelAnnotationOptions extends AnnotationEvents, Doughn
   autoFit?: Scriptable<boolean, PartialEventContext>,
   autoHide?: Scriptable<boolean, PartialEventContext>,
   id?: string,
+  init: boolean | ((chart: Chart, properties: AnnotationBoxModel, options: AnnotationOptions) => void | boolean | AnnotationBoxModel),
   spacing?: Scriptable<number, PartialEventContext>
 }
 
