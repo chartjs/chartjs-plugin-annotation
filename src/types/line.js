@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, toRadians, toDegrees, toPadding, distanceBetweenPoints} from 'chart.js/helpers';
-import {EPSILON, clamp, rotated, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, getElementCenterPoint, toPosition, getSize, resolveLineProperties} from '../helpers';
+import {EPSILON, clamp, rotated, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, getElementCenterPoint, toPosition, getSize, resolveLineProperties, initAnimationProperties} from '../helpers';
 import LabelAnnotation from './label';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
@@ -82,7 +82,7 @@ export default class LineAnnotation extends Element {
       : {x, y, x2, y2, width: Math.abs(x2 - x), height: Math.abs(y2 - y)};
     properties.centerX = (x2 + x) / 2;
     properties.centerY = (y2 + y) / 2;
-
+    properties.initProperties = initAnimationProperties(chart, properties, options);
     if (options.curve) {
       const p1 = {x: properties.x, y: properties.y};
       const p2 = {x: properties.x2, y: properties.y2};
@@ -95,7 +95,8 @@ export default class LineAnnotation extends Element {
     properties.elements = [{
       type: 'label',
       optionScope: 'label',
-      properties: labelProperties
+      properties: labelProperties,
+      initProperties: properties.initProperties
     }];
     return properties;
   }
@@ -140,6 +141,7 @@ LineAnnotation.defaults = {
   },
   display: true,
   endValue: undefined,
+  init: undefined,
   label: {
     backgroundColor: 'rgba(0,0,0,0.8)',
     backgroundShadowColor: 'transparent',
@@ -164,6 +166,7 @@ LineAnnotation.defaults = {
       weight: 'bold'
     },
     height: undefined,
+    opacity: undefined,
     padding: 6,
     position: 'center',
     rotation: 0,

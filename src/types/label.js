@@ -1,5 +1,5 @@
 import {Element} from 'chart.js';
-import {drawBox, drawCallout, drawLabel, measureLabelSize, getChartPoint, isBoundToPoint, resolveBoxProperties, translate, getElementCenterPoint, inLabelRange, measureLabelRectangle} from '../helpers';
+import {drawBox, drawCallout, drawLabel, measureLabelSize, getChartPoint, isBoundToPoint, resolveBoxProperties, translate, getElementCenterPoint, inLabelRange, measureLabelRectangle, initAnimationProperties} from '../helpers';
 import {toPadding, defined} from 'chart.js/helpers';
 
 export default class LabelAnnotation extends Element {
@@ -43,6 +43,7 @@ export default class LabelAnnotation extends Element {
     const labelSize = measureLabelSize(chart.ctx, options);
     const boxSize = measureLabelRectangle(point, labelSize, options, padding);
     return {
+      initProperties: initAnimationProperties(chart, boxSize, options),
       pointX: point.x,
       pointY: point.y,
       ...boxSize,
@@ -88,6 +89,8 @@ LabelAnnotation.defaults = {
     weight: undefined
   },
   height: undefined,
+  init: undefined,
+  opacity: undefined,
   padding: 6,
   position: 'center',
   rotation: 0,

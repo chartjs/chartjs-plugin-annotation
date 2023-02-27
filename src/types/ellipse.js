@@ -24,7 +24,6 @@ export default class EllipseAnnotation extends Element {
 
   draw(ctx) {
     const {width, height, centerX, centerY, options} = this;
-
     ctx.save();
     translate(ctx, this.getCenterPoint(), options.rotation);
     setShadowStyle(ctx, this.options);
@@ -45,7 +44,7 @@ export default class EllipseAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    return resolveBoxAndLabelProperties(chart, options);
+    return resolveBoxAndLabelProperties(chart, options, true);
   }
 
 }
@@ -60,6 +59,7 @@ EllipseAnnotation.defaults = {
   borderShadowColor: 'transparent',
   borderWidth: 1,
   display: true,
+  init: undefined,
   label: Object.assign({}, BoxAnnotation.defaults.label),
   rotation: 0,
   shadowBlur: 0,

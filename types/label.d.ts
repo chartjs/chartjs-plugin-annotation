@@ -39,8 +39,8 @@ export interface CalloutOptions {
 
 export interface CoreLabelOptions {
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
-  font?: FontSpec
-  color?: Scriptable<Color, PartialEventContext>,
+  font?: Scriptable<Partial<FontSpec> | Partial<FontSpec>[], PartialEventContext>,
+  color?: Scriptable<Color | Color[], PartialEventContext>,
   /**
    * Padding of label
    * @default 6
@@ -80,7 +80,12 @@ export interface CoreLabelOptions {
    * Overrides the height of the image. Could be set in pixel by a number,
    * or in percentage of current height of image by a string
    */
-  height?: Scriptable<number | percentString, PartialEventContext>
+  height?: Scriptable<number | percentString, PartialEventContext>,
+  /**
+   * Overrides the opacity of the image.
+   */
+  opacity?: Scriptable<number, PartialEventContext>,
+  z?: Scriptable<number, PartialEventContext>
 }
 
 export interface ContainedLabelOptions extends CoreLabelOptions {

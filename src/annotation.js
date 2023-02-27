@@ -125,6 +125,7 @@ export default {
     },
     common: {
       drawTime: 'afterDatasetsDraw',
+      init: false,
       label: {
       }
     }
@@ -132,7 +133,7 @@ export default {
 
   descriptors: {
     _indexable: false,
-    _scriptable: (prop) => !hooks.includes(prop),
+    _scriptable: (prop) => !hooks.includes(prop) && prop !== 'init',
     annotations: {
       _allKeys: false,
       _fallback: (prop, opts) => `elements.${annotationTypes[resolveType(opts.type)].id}`
@@ -145,7 +146,7 @@ export default {
         _indexable: isIndexable,
         _fallback: true
       },
-      _indexable: isIndexable,
+      _indexable: isIndexable
     }
   },
 

@@ -1,4 +1,4 @@
-import {callback} from 'chart.js/helpers';
+import {isFunction, callback} from 'chart.js/helpers';
 import {getElements} from './interaction';
 import {loadHooks} from './helpers';
 
@@ -22,19 +22,19 @@ export function updateListeners(chart, state, options) {
   state._getElements = getElements; // for testing
 
   moveHooks.forEach(hook => {
-    if (typeof options[hook] === 'function') {
+    if (isFunction(options[hook])) {
       state.moveListened = true;
     }
   });
 
   if (!state.listened || !state.moveListened) {
     state.annotations.forEach(scope => {
-      if (!state.listened && typeof scope.click === 'function') {
+      if (!state.listened && isFunction(scope.click)) {
         state.listened = true;
       }
       if (!state.moveListened) {
         moveHooks.forEach(hook => {
-          if (typeof scope[hook] === 'function') {
+          if (isFunction(scope[hook])) {
             state.listened = true;
             state.moveListened = true;
           }
