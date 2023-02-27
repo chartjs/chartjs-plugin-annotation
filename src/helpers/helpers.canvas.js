@@ -144,9 +144,9 @@ export function drawLabel(ctx, rect, options) {
   ctx.textBaseline = 'middle';
   ctx.textAlign = options.textAlign;
   if (setTextStrokeStyle(ctx, options)) {
-    applyLabelDecoration(ctx, {x, y}, labels, fonts);
+    applyLabelDecoration(ctx, {x, y, maxWidth: rect.width}, labels, fonts);
   }
-  applyLabelContent(ctx, {x, y}, labels, {fonts, colors});
+  applyLabelContent(ctx, {x, y, maxWidth: rect.width}, labels, {fonts, colors});
   ctx.restore();
 }
 
@@ -297,20 +297,20 @@ function calculateLabelSize(ctx, lines, fonts, strokeWidth) {
   return {width, height};
 }
 
-function applyLabelDecoration(ctx, {x, y}, labels, fonts) {
+function applyLabelDecoration(ctx, {x, y, maxWidth}, labels, fonts) {
   ctx.beginPath();
   let lhs = 0;
   labels.forEach(function(l, i) {
     const f = fonts[Math.min(i, fonts.length - 1)];
     const lh = f.lineHeight;
     ctx.font = f.string;
-    ctx.strokeText(l, x, y + lh / 2 + lhs);
+    ctx.strokeText(l, x, y + lh / 2 + lhs, maxWidth);
     lhs += lh;
   });
   ctx.stroke();
 }
 
-function applyLabelContent(ctx, {x, y}, labels, {fonts, colors}) {
+function applyLabelContent(ctx, {x, y, maxWidth}, labels, {fonts, colors}) {
   let lhs = 0;
   labels.forEach(function(l, i) {
     const c = colors[Math.min(i, colors.length - 1)];
@@ -319,7 +319,7 @@ function applyLabelContent(ctx, {x, y}, labels, {fonts, colors}) {
     ctx.beginPath();
     ctx.font = f.string;
     ctx.fillStyle = c;
-    ctx.fillText(l, x, y + lh / 2 + lhs);
+    ctx.fillText(l, x, y + lh / 2 + lhs, maxWidth);
     lhs += lh;
     ctx.fill();
   });
