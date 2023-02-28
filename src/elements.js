@@ -1,5 +1,5 @@
 import {Animations} from 'chart.js';
-import {isObject, defined} from 'chart.js/helpers';
+import {isObject, isArray, defined} from 'chart.js/helpers';
 import {eventHooks} from './events';
 import {elementHooks} from './hooks';
 import {annotationTypes} from './types';
@@ -131,7 +131,11 @@ function resolveObj(resolver, defs) {
   for (const prop of Object.keys(defs)) {
     const optDefs = defs[prop];
     const value = resolver[prop];
-    result[prop] = isObject(optDefs) && !isIndexable(prop) ? resolveObj(value, optDefs) : value;
+    if (isIndexable(prop) && isArray(value)) {
+      result[prop] = value.map((item) => isObject(optDefs) ? resolveObj(item, optDefs) : item);
+    } else {
+      result[prop] = isObject(optDefs) ? resolveObj(value, optDefs) : value;
+    }
   }
   return result;
 }
