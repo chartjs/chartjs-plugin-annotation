@@ -9,6 +9,8 @@ const directUpdater = {
 };
 
 const hooks = eventHooks.concat(elementHooks);
+const resolve = (value, optDefs) => isObject(optDefs) ? resolveObj(value, optDefs) : value;
+
 
 /**
  * @typedef { import("chart.js").Chart } Chart
@@ -132,9 +134,9 @@ function resolveObj(resolver, defs) {
     const optDefs = defs[prop];
     const value = resolver[prop];
     if (isIndexable(prop) && isArray(value)) {
-      result[prop] = value.map((item) => isObject(optDefs) ? resolveObj(item, optDefs) : item);
+      result[prop] = value.map((item) => resolve(item, optDefs));
     } else {
-      result[prop] = isObject(optDefs) ? resolveObj(value, optDefs) : value;
+      result[prop] = resolve(value, optDefs);
     }
   }
   return result;
