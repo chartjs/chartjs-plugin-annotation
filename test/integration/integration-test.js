@@ -42,6 +42,7 @@ describe('Integration Tests', () => {
       exec('npm --quiet test', {cwd, stdio: 'inherit'});
     }).timeout(5 * 60 * 1000);
   }
-
   testOnNodeProject('ts');
+  testOnNodeProject('node-module');
+  testOnNodeProject('node-commonjs');
 });
