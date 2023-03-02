@@ -144,6 +144,8 @@ module.exports = {
             'box/disclosure',
             'box/canvas',
             'box/image',
+            'box/initAnim',
+            'box/gradient',
           ]
         },
         {
@@ -165,6 +167,7 @@ module.exports = {
             'label/image',
             'label/innerChart',
             'label/lowerUpper',
+            'label/fontsColors',
             'label/autoscaling'
           ]
         },
@@ -194,6 +197,7 @@ module.exports = {
             'point/combined',
             'point/outsideChartArea',
             'point/shadow',
+            'point/initAnim',
           ]
         },
         {
@@ -218,6 +222,7 @@ module.exports = {
             'interaction/interaction',
             'interaction/dragging',
             'interaction/selection',
+            'interaction/cartesianplane',
           ],
         },
         'utils',

@@ -42,6 +42,7 @@ BoxAnnotation.defaults = {
   borderShadowColor: 'transparent',
   borderWidth: 1,
   display: true,
+  init: undefined,
   label: {
     backgroundColor: 'transparent',
     borderWidth: 0,

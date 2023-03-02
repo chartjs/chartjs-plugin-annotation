@@ -1,12 +1,18 @@
-import {addRoundedRectPath, isArray, isNumber, toFont, toTRBLCorners, toRadians} from 'chart.js/helpers';
+import {addRoundedRectPath, isArray, isNumber, toFont, toTRBLCorners, toRadians, PI, TAU, HALF_PI, QUARTER_PI, TWO_THIRDS_PI, RAD_PER_DEG} from 'chart.js/helpers';
 import {clampAll, clamp} from './helpers.core';
 import {calculateTextAlignment, getSize} from './helpers.options';
 
 const widthCache = new Map();
+const notRadius = (radius) => isNaN(radius) || radius <= 0;
+const fontsKey = (fonts) => fonts.reduce(function(prev, item) {
+  prev += item.string;
+  return prev;
+}, '');
 
 /**
  * @typedef { import('chart.js').Point } Point
  * @typedef { import('../../types/label').CoreLabelOptions } CoreLabelOptions
+ * @typedef { import('../../types/options').PointAnnotationOptions } PointAnnotationOptions
  */
 
 /**
@@ -77,22 +83,13 @@ export function measureLabelSize(ctx, options) {
       height: getSize(content.height, options.height)
     };
   }
-  const font = toFont(options.font);
+  const optFont = options.font;
+  const fonts = isArray(optFont) ? optFont.map(f => toFont(f)) : [toFont(optFont)];
   const strokeWidth = options.textStrokeWidth;
   const lines = isArray(content) ? content : [content];
-  const mapKey = lines.join() + font.string + strokeWidth + (ctx._measureText ? '-spriting' : '');
+  const mapKey = lines.join() + fontsKey(fonts) + strokeWidth + (ctx._measureText ? '-spriting' : '');
   if (!widthCache.has(mapKey)) {
-    ctx.save();
-    ctx.font = font.string;
-    const count = lines.length;
-    let width = 0;
-    for (let i = 0; i < count; i++) {
-      const text = lines[i];
-      width = Math.max(width, ctx.measureText(text).width + strokeWidth);
-    }
-    ctx.restore();
-    const height = count * font.lineHeight + strokeWidth;
-    widthCache.set(mapKey, {width, height});
+    widthCache.set(mapKey, calculateLabelSize(ctx, lines, fonts, strokeWidth));
   }
   return widthCache.get(mapKey);
 }
@@ -137,19 +134,19 @@ export function drawLabel(ctx, rect, options) {
     return;
   }
   const labels = isArray(content) ? content : [content];
-  const font = toFont(options.font);
-  const lh = font.lineHeight;
+  const optFont = options.font;
+  const fonts = isArray(optFont) ? optFont.map(f => toFont(f)) : [toFont(optFont)];
+  const optColor = options.color;
+  const colors = isArray(optColor) ? optColor : [optColor];
   const x = calculateTextAlignment(rect, options);
-  const y = rect.y + (lh / 2) + options.textStrokeWidth / 2;
+  const y = rect.y + options.textStrokeWidth / 2;
   ctx.save();
-  ctx.font = font.string;
   ctx.textBaseline = 'middle';
   ctx.textAlign = options.textAlign;
   if (setTextStrokeStyle(ctx, options)) {
-    labels.forEach((l, i) => ctx.strokeText(l, x, y + (i * lh)));
+    applyLabelDecoration(ctx, {x, y}, labels, fonts);
   }
-  ctx.fillStyle = options.color;
-  labels.forEach((l, i) => ctx.fillText(l, x, y + (i * lh)));
+  applyLabelContent(ctx, {x, y}, labels, {fonts, colors});
   ctx.restore();
 }
 
@@ -162,6 +159,170 @@ function setTextStrokeStyle(ctx, options) {
     ctx.strokeStyle = options.textStrokeColor;
     return true;
   }
+}
+
+/**
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {{radius: number, options: PointAnnotationOptions}} element
+ * @param {number} x
+ * @param {number} y
+ */
+export function drawPoint(ctx, element, x, y) {
+  const {radius, options} = element;
+  const style = options.pointStyle;
+  const rotation = options.rotation;
+  let rad = (rotation || 0) * RAD_PER_DEG;
+
+  if (isImageOrCanvas(style)) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rad);
+    ctx.drawImage(style, -style.width / 2, -style.height / 2, style.width, style.height);
+    ctx.restore();
+    return;
+  }
+  if (notRadius(radius)) {
+    return;
+  }
+  drawPointStyle(ctx, {x, y, radius, rotation, style, rad});
+}
+
+function drawPointStyle(ctx, {x, y, radius, rotation, style, rad}) {
+  let xOffset, yOffset, size, cornerRadius;
+  ctx.beginPath();
+
+  switch (style) {
+  // Default includes circle
+  default:
+    ctx.arc(x, y, radius, 0, TAU);
+    ctx.closePath();
+    break;
+  case 'triangle':
+    ctx.moveTo(x + Math.sin(rad) * radius, y - Math.cos(rad) * radius);
+    rad += TWO_THIRDS_PI;
+    ctx.lineTo(x + Math.sin(rad) * radius, y - Math.cos(rad) * radius);
+    rad += TWO_THIRDS_PI;
+    ctx.lineTo(x + Math.sin(rad) * radius, y - Math.cos(rad) * radius);
+    ctx.closePath();
+    break;
+  case 'rectRounded':
+    // NOTE: the rounded rect implementation changed to use `arc` instead of
+    // `quadraticCurveTo` since it generates better results when rect is
+    // almost a circle. 0.516 (instead of 0.5) produces results with visually
+    // closer proportion to the previous impl and it is inscribed in the
+    // circle with `radius`. For more details, see the following PRs:
+    // https://github.com/chartjs/Chart.js/issues/5597
+    // https://github.com/chartjs/Chart.js/issues/5858
+    cornerRadius = radius * 0.516;
+    size = radius - cornerRadius;
+    xOffset = Math.cos(rad + QUARTER_PI) * size;
+    yOffset = Math.sin(rad + QUARTER_PI) * size;
+    ctx.arc(x - xOffset, y - yOffset, cornerRadius, rad - PI, rad - HALF_PI);
+    ctx.arc(x + yOffset, y - xOffset, cornerRadius, rad - HALF_PI, rad);
+    ctx.arc(x + xOffset, y + yOffset, cornerRadius, rad, rad + HALF_PI);
+    ctx.arc(x - yOffset, y + xOffset, cornerRadius, rad + HALF_PI, rad + PI);
+    ctx.closePath();
+    break;
+  case 'rect':
+    if (!rotation) {
+      size = Math.SQRT1_2 * radius;
+      ctx.rect(x - size, y - size, 2 * size, 2 * size);
+      break;
+    }
+    rad += QUARTER_PI;
+    /* falls through */
+  case 'rectRot':
+    xOffset = Math.cos(rad) * radius;
+    yOffset = Math.sin(rad) * radius;
+    ctx.moveTo(x - xOffset, y - yOffset);
+    ctx.lineTo(x + yOffset, y - xOffset);
+    ctx.lineTo(x + xOffset, y + yOffset);
+    ctx.lineTo(x - yOffset, y + xOffset);
+    ctx.closePath();
+    break;
+  case 'crossRot':
+    rad += QUARTER_PI;
+    /* falls through */
+  case 'cross':
+    xOffset = Math.cos(rad) * radius;
+    yOffset = Math.sin(rad) * radius;
+    ctx.moveTo(x - xOffset, y - yOffset);
+    ctx.lineTo(x + xOffset, y + yOffset);
+    ctx.moveTo(x + yOffset, y - xOffset);
+    ctx.lineTo(x - yOffset, y + xOffset);
+    break;
+  case 'star':
+    xOffset = Math.cos(rad) * radius;
+    yOffset = Math.sin(rad) * radius;
+    ctx.moveTo(x - xOffset, y - yOffset);
+    ctx.lineTo(x + xOffset, y + yOffset);
+    ctx.moveTo(x + yOffset, y - xOffset);
+    ctx.lineTo(x - yOffset, y + xOffset);
+    rad += QUARTER_PI;
+    xOffset = Math.cos(rad) * radius;
+    yOffset = Math.sin(rad) * radius;
+    ctx.moveTo(x - xOffset, y - yOffset);
+    ctx.lineTo(x + xOffset, y + yOffset);
+    ctx.moveTo(x + yOffset, y - xOffset);
+    ctx.lineTo(x - yOffset, y + xOffset);
+    break;
+  case 'line':
+    xOffset = Math.cos(rad) * radius;
+    yOffset = Math.sin(rad) * radius;
+    ctx.moveTo(x - xOffset, y - yOffset);
+    ctx.lineTo(x + xOffset, y + yOffset);
+    break;
+  case 'dash':
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + Math.cos(rad) * radius, y + Math.sin(rad) * radius);
+    break;
+  }
+
+  ctx.fill();
+}
+
+function calculateLabelSize(ctx, lines, fonts, strokeWidth) {
+  ctx.save();
+  const count = lines.length;
+  let width = 0;
+  let height = strokeWidth;
+  for (let i = 0; i < count; i++) {
+    const font = fonts[Math.min(i, fonts.length - 1)];
+    ctx.font = font.string;
+    const text = lines[i];
+    width = Math.max(width, ctx.measureText(text).width + strokeWidth);
+    height += font.lineHeight;
+  }
+  ctx.restore();
+  return {width, height};
+}
+
+function applyLabelDecoration(ctx, {x, y}, labels, fonts) {
+  ctx.beginPath();
+  let lhs = 0;
+  labels.forEach(function(l, i) {
+    const f = fonts[Math.min(i, fonts.length - 1)];
+    const lh = f.lineHeight;
+    ctx.font = f.string;
+    ctx.strokeText(l, x, y + lh / 2 + lhs);
+    lhs += lh;
+  });
+  ctx.stroke();
+}
+
+function applyLabelContent(ctx, {x, y}, labels, {fonts, colors}) {
+  let lhs = 0;
+  labels.forEach(function(l, i) {
+    const c = colors[Math.min(i, colors.length - 1)];
+    const f = fonts[Math.min(i, fonts.length - 1)];
+    const lh = f.lineHeight;
+    ctx.beginPath();
+    ctx.font = f.string;
+    ctx.fillStyle = c;
+    ctx.fillText(l, x, y + lh / 2 + lhs);
+    lhs += lh;
+    ctx.fill();
+  });
 }
 
 function getOpacity(value, elementValue) {
