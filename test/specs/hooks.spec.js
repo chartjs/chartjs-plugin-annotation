@@ -24,7 +24,7 @@ describe('Hooks', function() {
     },
   };
 
-  ['box', 'ellipse', 'label', 'line', 'point', 'polygon'].forEach(function(type) {
+  ['box', 'ellipse', 'label', 'line', 'point', 'polygon', 'arc'].forEach(function(type) {
     const options = {
       type,
       xMin: 2,
