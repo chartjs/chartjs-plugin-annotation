@@ -24,6 +24,7 @@ const globals = {
 };
 
 export default [
+  // cjs
   {
     input,
     plugins: [
@@ -40,6 +41,24 @@ export default [
     },
     external
   },
+  // js
+  {
+    input,
+    plugins: [
+      json(),
+      resolve(),
+    ],
+    output: {
+      name,
+      file: main.replace('.cjs', '.js'),
+      banner,
+      format: 'umd',
+      indent: false,
+      globals
+    },
+    external
+  },
+  // min.js
   {
     input,
     plugins: [
@@ -60,6 +79,7 @@ export default [
     },
     external
   },
+  // ems.js
   {
     input: inputESM,
     plugins: [
