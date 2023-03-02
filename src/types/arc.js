@@ -22,8 +22,8 @@ export default class ArcAnnotation extends Element {
   }
 
   draw(ctx) {
-    const {circumference, innerRadius, outerRadius} = this;
-    if (circumference === 0 || innerRadius < 0 || outerRadius < 0) {
+    const {circumference, outerRadius} = this;
+    if (circumference === 0 || outerRadius < 0) {
       return;
     }
     updateArcElement(this);
