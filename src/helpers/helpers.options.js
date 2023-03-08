@@ -5,13 +5,14 @@ const isPercentString = (s) => typeof s === 'string' && s.endsWith('%');
 const toPercent = (s) => parseFloat(s) / 100;
 const toPositivePercent = (s) => clamp(toPercent(s), 0, 1);
 
+const boxAppering = (x, y) => ({x, y, x2: x, y2: y, width: 0, height: 0});
 const defaultInitAnimation = {
-  box: (properties) => ({x: properties.centerX, y: properties.centerY, x2: properties.centerX, y2: properties.centerY, width: 0, height: 0}),
+  box: (properties) => boxAppering(properties.centerX, properties.centerY),
   ellipse: (properties) => ({centerX: properties.centerX, centerY: properties.centerX, radius: 0, width: 0, height: 0}),
-  label: (properties) => ({x: properties.centerX, y: properties.centerY, x2: properties.centerX, y2: properties.centerY, width: 0, height: 0}),
-  line: (properties) => ({x: properties.x, y: properties.y, x2: properties.x, y2: properties.y, width: 0, height: 0}),
+  label: (properties) => boxAppering(properties.centerX, properties.centerY),
+  line: (properties) => boxAppering(properties.x, properties.y),
   point: (properties) => ({centerX: properties.centerX, centerY: properties.centerY, radius: 0, width: 0, height: 0}),
-  polygon: (properties) => ({x: properties.centerX, y: properties.centerY, x2: properties.centerX, y2: properties.centerY, width: 0, height: 0})
+  polygon: (properties) => boxAppering(properties.centerX, properties.centerY)
 };
 
 /**
