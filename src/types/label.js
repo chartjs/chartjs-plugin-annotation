@@ -29,6 +29,11 @@ export default class LabelAnnotation extends Element {
     ctx.restore();
   }
 
+  getInitAnimationProperties(chart, properties) {
+    const {centerX, centerY} = properties;
+    return {x: centerX, y: centerY, x2: centerX, y2: centerY, width: 0, height: 0};
+  }
+
   resolveElementProperties(chart, options) {
     let point;
     if (!isBoundToPoint(options)) {
@@ -41,7 +46,7 @@ export default class LabelAnnotation extends Element {
     const labelSize = measureLabelSize(chart.ctx, options);
     const boxSize = measureRect(point, labelSize, options, padding);
     return {
-      initProperties: initAnimationProperties(chart, boxSize, options),
+      initProperties: initAnimationProperties(chart, boxSize, options, this),
       pointX: point.x,
       pointY: point.y,
       ...boxSize,

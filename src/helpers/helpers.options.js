@@ -1,4 +1,4 @@
-import {isObject, isFunction, valueOrDefault, defined, callback} from 'chart.js/helpers';
+import {isObject, isFunction, valueOrDefault, defined, callback as invoke} from 'chart.js/helpers';
 import {clamp} from './helpers.core';
 
 const isPercentString = (s) => typeof s === 'string' && s.endsWith('%');
@@ -8,6 +8,7 @@ const toPositivePercent = (s) => clamp(toPercent(s), 0, 1);
 /**
  * @typedef { import("chart.js").Chart } Chart
  * @typedef { import('../../types/element').AnnotationBoxModel } AnnotationBoxModel
+ * @typedef { import('../../types/element').AnnotationElement } AnnotationElement
  * @typedef { import('../../types/options').AnnotationPointCoordinates } AnnotationPointCoordinates
  * @typedef { import('../../types/label').CoreLabelOptions } CoreLabelOptions
  * @typedef { import('../../types/label').LabelPositionObject } LabelPositionObject
@@ -93,17 +94,17 @@ export function isBoundToPoint(options) {
  * @param {Chart} chart
  * @param {AnnotationBoxModel} properties
  * @param {CoreAnnotationOptions} options
- * @param {boolean} [centerBased=false]
+ * @param {AnnotationElement} element
  * @returns {AnnotationBoxModel}
  */
-export function initAnimationProperties(chart, properties, options, centerBased = false) {
+export function initAnimationProperties(chart, properties, options, element) {
   const initAnim = options.init;
   if (!initAnim) {
     return;
   } else if (initAnim === true) {
-    return applyDefault(properties, centerBased);
+    return applyDefault(chart, properties, options, element);
   }
-  return checkCallbackResult(properties, centerBased, callback(initAnim, [{chart, properties, options}]));
+  return execCallback(chart, properties, options, element);
 }
 
 /**
@@ -125,17 +126,16 @@ export function loadHooks(options, hooks, hooksContainer) {
   return activated;
 }
 
-function applyDefault({centerX, centerY}, centerBased) {
-  if (centerBased) {
-    return {centerX, centerY, radius: 0, width: 0, height: 0};
-  }
-  return {x: centerX, y: centerY, x2: centerX, y2: centerY, width: 0, height: 0};
+function applyDefault(chart, properties, options, element) {
+  return element.getInitAnimationProperties(chart, properties, options);
 }
 
-function checkCallbackResult(properties, centerBased, result) {
+function execCallback(chart, properties, options, element) {
+  const result = invoke(options.init, [{chart, properties, options}]);
   if (result === true) {
-    return applyDefault(properties, centerBased);
+    return applyDefault(chart, properties, options, element);
   } else if (isObject(result)) {
     return result;
   }
+  return;
 }

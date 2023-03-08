@@ -4,7 +4,7 @@ describe('Initial animation', function() {
     box: 'x',
     ellipse: 'width',
     label: 'x',
-    line: 'x',
+    line: 'x2',
     point: 'radius',
     polygon: 'y'
   };
