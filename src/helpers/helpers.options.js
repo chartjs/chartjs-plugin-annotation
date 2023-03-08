@@ -102,7 +102,7 @@ export function isBoundToPoint(options) {
  * @param {Chart} chart
  * @param {AnnotationBoxModel} properties
  * @param {CoreAnnotationOptions} options
- * @param {AnnotationElement} element
+ * @returns {AnnotationBoxModel}
  */
 export function initAnimationProperties(chart, properties, options) {
   const initAnim = options.init;
