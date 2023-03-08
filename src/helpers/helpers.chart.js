@@ -177,9 +177,9 @@ export function resolveLineProperties(chart, options) {
  * @param {boolean} [centerBased=false]
  * @returns {AnnotationBoxModel}
  */
-export function resolveBoxAndLabelProperties(chart, options, element) {
+export function resolveBoxAndLabelProperties(chart, options) {
   const properties = resolveBoxProperties(chart, options);
-  properties.initProperties = initAnimationProperties(chart, properties, options, element);
+  properties.initProperties = initAnimationProperties(chart, properties, options);
   properties.elements = [{
     type: 'label',
     optionScope: 'label',

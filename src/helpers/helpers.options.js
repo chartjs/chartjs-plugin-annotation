@@ -5,10 +5,18 @@ const isPercentString = (s) => typeof s === 'string' && s.endsWith('%');
 const toPercent = (s) => parseFloat(s) / 100;
 const toPositivePercent = (s) => clamp(toPercent(s), 0, 1);
 
+const defaultInitAnimation = {
+  box: (properties) => ({x: properties.centerX, y: properties.centerY, x2: properties.centerX, y2: properties.centerY, width: 0, height: 0}),
+  ellipse: (properties) => ({centerX: properties.centerX, centerY: properties.centerX, radius: 0, width: 0, height: 0}),
+  label: (properties) => ({x: properties.centerX, y: properties.centerY, x2: properties.centerX, y2: properties.centerY, width: 0, height: 0}),
+  line: (properties) => ({x: properties.x, y: properties.y, x2: properties.x, y2: properties.y, width: 0, height: 0}),
+  point: (properties) => ({centerX: properties.centerX, centerY: properties.centerY, radius: 0, width: 0, height: 0}),
+  polygon: (properties) => ({x: properties.centerX, y: properties.centerY, x2: properties.centerX, y2: properties.centerY, width: 0, height: 0})
+};
+
 /**
  * @typedef { import("chart.js").Chart } Chart
  * @typedef { import('../../types/element').AnnotationBoxModel } AnnotationBoxModel
- * @typedef { import('../../types/element').AnnotationElement } AnnotationElement
  * @typedef { import('../../types/options').AnnotationPointCoordinates } AnnotationPointCoordinates
  * @typedef { import('../../types/label').CoreLabelOptions } CoreLabelOptions
  * @typedef { import('../../types/label').LabelPositionObject } LabelPositionObject
@@ -95,16 +103,15 @@ export function isBoundToPoint(options) {
  * @param {AnnotationBoxModel} properties
  * @param {CoreAnnotationOptions} options
  * @param {AnnotationElement} element
- * @returns {AnnotationBoxModel}
  */
-export function initAnimationProperties(chart, properties, options, element) {
+export function initAnimationProperties(chart, properties, options) {
   const initAnim = options.init;
   if (!initAnim) {
     return;
   } else if (initAnim === true) {
-    return applyDefault(chart, properties, options, element);
+    return applyDefault(properties, options);
   }
-  return execCallback(chart, properties, options, element);
+  return execCallback(chart, properties, options);
 }
 
 /**
@@ -126,16 +133,16 @@ export function loadHooks(options, hooks, hooksContainer) {
   return activated;
 }
 
-function applyDefault(chart, properties, options, element) {
-  return element.getInitAnimationProperties(chart, properties, options);
+function applyDefault(properties, options) {
+  const type = options.type || 'line';
+  return defaultInitAnimation[type](properties);
 }
 
-function execCallback(chart, properties, options, element) {
+function execCallback(chart, properties, options) {
   const result = invoke(options.init, [{chart, properties, options}]);
   if (result === true) {
-    return applyDefault(chart, properties, options, element);
+    return applyDefault(properties, options);
   } else if (isObject(result)) {
     return result;
   }
-  return;
 }

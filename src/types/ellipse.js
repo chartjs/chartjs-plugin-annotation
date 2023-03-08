@@ -22,11 +22,6 @@ export default class EllipseAnnotation extends Element {
     return getElementCenterPoint(this, useFinalPosition);
   }
 
-  getInitAnimationProperties(chart, properties) {
-    const {centerX, centerY} = properties;
-    return {centerX, centerY, radius: 0, width: 0, height: 0};
-  }
-
   draw(ctx) {
     const {width, height, centerX, centerY, options} = this;
     ctx.save();

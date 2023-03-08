@@ -19,11 +19,6 @@ export default class PolygonAnnotation extends Element {
     return getElementCenterPoint(this, useFinalPosition);
   }
 
-  getInitAnimationProperties(chart, properties) {
-    const {centerX, centerY} = properties;
-    return {x: centerX, y: centerY, x2: centerX, y2: centerY, width: 0, height: 0};
-  }
-
   draw(ctx) {
     const {elements, options} = this;
     ctx.save();
@@ -58,7 +53,7 @@ export default class PolygonAnnotation extends Element {
     let rad = rotation * RAD_PER_DEG;
     for (let i = 0; i < sides; i++, rad += angle) {
       const elProps = buildPointElement(properties, options, rad);
-      elProps.initProperties = initAnimationProperties(chart, properties, options, this);
+      elProps.initProperties = initAnimationProperties(chart, properties, options);
       elements.push(elProps);
     }
     properties.elements = elements;

@@ -18,11 +18,6 @@ export default class PointAnnotation extends Element {
     return getElementCenterPoint(this, useFinalPosition);
   }
 
-  getInitAnimationProperties(chart, properties) {
-    const {centerX, centerY} = properties;
-    return {centerX, centerY, radius: 0, width: 0, height: 0};
-  }
-
   draw(ctx) {
     const options = this.options;
     const borderWidth = options.borderWidth;
@@ -44,7 +39,7 @@ export default class PointAnnotation extends Element {
 
   resolveElementProperties(chart, options) {
     const properties = resolvePointProperties(chart, options);
-    properties.initProperties = initAnimationProperties(chart, properties, options, this);
+    properties.initProperties = initAnimationProperties(chart, properties, options);
     return properties;
   }
 }

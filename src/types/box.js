@@ -20,11 +20,6 @@ export default class BoxAnnotation extends Element {
     ctx.restore();
   }
 
-  getInitAnimationProperties(chart, properties) {
-    const {centerX, centerY} = properties;
-    return {x: centerX, y: centerY, x2: centerX, y2: centerY, width: 0, height: 0};
-  }
-
   get label() {
     return this.elements && this.elements[0];
   }

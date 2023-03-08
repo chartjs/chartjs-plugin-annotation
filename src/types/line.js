@@ -40,11 +40,6 @@ export default class LineAnnotation extends Element {
     return getElementCenterPoint(this, useFinalPosition);
   }
 
-  getInitAnimationProperties(chart, properties) {
-    const {x, y} = properties;
-    return {x, y, x2: x, y2: y, width: 0, height: 0};
-  }
-
   draw(ctx) {
     const {x, y, x2, y2, cp, options} = this;
 
@@ -87,7 +82,7 @@ export default class LineAnnotation extends Element {
       : {x, y, x2, y2, width: Math.abs(x2 - x), height: Math.abs(y2 - y)};
     properties.centerX = (x2 + x) / 2;
     properties.centerY = (y2 + y) / 2;
-    properties.initProperties = initAnimationProperties(chart, properties, options, this);
+    properties.initProperties = initAnimationProperties(chart, properties, options);
     if (options.curve) {
       const p1 = {x: properties.x, y: properties.y};
       const p2 = {x: properties.x2, y: properties.y2};
