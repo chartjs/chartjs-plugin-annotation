@@ -25,7 +25,7 @@ export default class BoxAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    return resolveBoxAndLabelProperties(chart, options, this);
+    return resolveBoxAndLabelProperties(chart, options);
   }
 }
 
