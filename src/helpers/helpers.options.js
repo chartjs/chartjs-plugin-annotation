@@ -18,6 +18,7 @@ const defaultInitAnimation = {
 /**
  * @typedef { import("chart.js").Chart } Chart
  * @typedef { import('../../types/element').AnnotationBoxModel } AnnotationBoxModel
+ * @typedef { import('../../types/element').AnnotationElement } AnnotationElement
  * @typedef { import('../../types/options').AnnotationPointCoordinates } AnnotationPointCoordinates
  * @typedef { import('../../types/label').CoreLabelOptions } CoreLabelOptions
  * @typedef { import('../../types/label').LabelPositionObject } LabelPositionObject
@@ -103,7 +104,7 @@ export function isBoundToPoint(options) {
  * @param {Chart} chart
  * @param {AnnotationBoxModel} properties
  * @param {CoreAnnotationOptions} options
- * @returns {AnnotationBoxModel}
+ * @returns {AnnotationElement}
  */
 export function initAnimationProperties(chart, properties, options) {
   const initAnim = options.init;
