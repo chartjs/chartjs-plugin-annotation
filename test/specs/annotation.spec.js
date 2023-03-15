@@ -211,4 +211,33 @@ describe('Annotation plugin', function() {
       expect(element.options.drawTime).toBe(chart.options.plugins.annotation.annotations.label.drawTime);
     });
   });
+
+  describe('context', function() {
+    it('should contain the loaded elements', function() {
+      const annCount = 5;
+      const counts = [];
+      const annotations = [];
+      for (let i = 0; i < annCount; i++) {
+        annotations.push({
+          type: 'label',
+          content: 'test',
+          display(context) {
+            expect(context.elements.length).toBe(annCount);
+            counts.push(context.elements.filter((e) => e && e.options).length);
+          }
+        });
+      }
+      acquireChart({
+        type: 'line',
+        options: {
+          plugins: {
+            annotation: {
+              annotations
+            }
+          }
+        }
+      });
+      expect(counts).toEqual([0, 1, 2, 3, 4]);
+    });
+  });
 });

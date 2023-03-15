@@ -52,7 +52,7 @@ export function updateElements(chart, state, options, mode) {
   for (let i = 0; i < annotations.length; i++) {
     const annotationOptions = annotations[i];
     const element = getOrCreateElement(elements, i, annotationOptions.type);
-    const resolver = annotationOptions.setContext(getContext(chart, element, annotationOptions));
+    const resolver = annotationOptions.setContext(getContext(chart, element, elements, annotationOptions));
     const properties = element.resolveElementProperties(chart, resolver);
 
     properties.skip = toSkip(properties);
@@ -142,9 +142,10 @@ function resolveObj(resolver, defs) {
   return result;
 }
 
-function getContext(chart, element, annotation) {
+function getContext(chart, element, elements, annotation) {
   return element.$context || (element.$context = Object.assign(Object.create(chart.getContext()), {
     element,
+    elements,
     id: annotation.id,
     type: 'annotation'
   }));
