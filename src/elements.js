@@ -145,7 +145,9 @@ function resolveObj(resolver, defs) {
 function getContext(chart, element, elements, annotation) {
   return element.$context || (element.$context = Object.assign(Object.create(chart.getContext()), {
     element,
-    elements,
+    get elements() {
+      return elements.filter((el) => el && el.options);
+    },
     id: annotation.id,
     type: 'annotation'
   }));

@@ -214,16 +214,15 @@ describe('Annotation plugin', function() {
 
   describe('context', function() {
     it('should contain the loaded elements', function() {
-      const annCount = 5;
       const counts = [];
       const annotations = [];
-      for (let i = 0; i < annCount; i++) {
+      for (let i = 0; i < 5; i++) {
         annotations.push({
           type: 'label',
           content: 'test',
           display(context) {
-            expect(context.elements.length).toBe(annCount);
-            counts.push(context.elements.filter((e) => e && e.options).length);
+            expect(context.elements.length).toBe(i);
+            counts.push(i);
           }
         });
       }
@@ -239,5 +238,33 @@ describe('Annotation plugin', function() {
       });
       expect(counts).toEqual([0, 1, 2, 3, 4]);
     });
+    it('should contain the loaded elements after update', function() {
+      const counts = [];
+      const annotations = [];
+      for (let i = 0; i < 5; i++) {
+        annotations.push({
+          type: 'label',
+          content: 'test',
+          display(context) {
+            expect(context.elements.length).toBe(i);
+            counts.push(i);
+          }
+        });
+      }
+      const chart = acquireChart({
+        type: 'line',
+        options: {
+          plugins: {
+            annotation: {
+              annotations
+            }
+          }
+        }
+      });
+      counts.splice(0, counts.length);
+      chart.update();
+      expect(counts).toEqual([0, 1, 2, 3, 4]);
+    });
+
   });
 });
