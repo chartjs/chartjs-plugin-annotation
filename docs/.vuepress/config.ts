@@ -134,8 +134,15 @@ export default defineConfig({
             'types/polygon'
           ]
         },
-        'migrationV1',
-        'migrationV2'
+        {
+          title: 'Migration',
+          collapsable: true,
+          children: [
+            'migrationV3',
+            'migrationV2',
+            'migrationV1'
+          ]
+        },
       ],
       '/samples/': [
         'intro',
