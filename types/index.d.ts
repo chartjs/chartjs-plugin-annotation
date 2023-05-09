@@ -3,7 +3,7 @@ import { AnnotationPluginOptions, BoxAnnotationOptions, EllipseAnnotationOptions
 
 declare module 'chart.js' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface PluginOptionsByType<TType extends ChartType> {
+  interface PluginOptionsByType<TType extends ChartType = ChartType> {
     annotation: AnnotationPluginOptions;
   }
 
