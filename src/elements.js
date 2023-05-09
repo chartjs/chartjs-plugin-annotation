@@ -1,5 +1,5 @@
 import {Animations} from 'chart.js';
-import {isObject, defined} from 'chart.js/helpers';
+import {isObject, isArray, defined} from 'chart.js/helpers';
 import {eventHooks} from './events';
 import {elementHooks} from './hooks';
 import {annotationTypes} from './types';
@@ -9,6 +9,8 @@ const directUpdater = {
 };
 
 const hooks = eventHooks.concat(elementHooks);
+const resolve = (value, optDefs) => isObject(optDefs) ? resolveObj(value, optDefs) : value;
+
 
 /**
  * @typedef { import("chart.js").Chart } Chart
@@ -131,7 +133,11 @@ function resolveObj(resolver, defs) {
   for (const prop of Object.keys(defs)) {
     const optDefs = defs[prop];
     const value = resolver[prop];
-    result[prop] = isObject(optDefs) && !isIndexable(prop) ? resolveObj(value, optDefs) : value;
+    if (isIndexable(prop) && isArray(value)) {
+      result[prop] = value.map((item) => resolve(item, optDefs));
+    } else {
+      result[prop] = resolve(value, optDefs);
+    }
   }
   return result;
 }
