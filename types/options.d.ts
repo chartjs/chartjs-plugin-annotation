@@ -1,7 +1,7 @@
 import { Chart, Color, PointStyle, BorderRadius, CoreInteractionOptions } from 'chart.js';
 import { AnnotationEvents, PartialEventContext, EventContext } from './events';
 import { LabelOptions, BoxLabelOptions, LabelTypeOptions } from './label';
-import { AnnotationBoxModel } from './element';
+import { AnnotationBoxModel, AnnotationElement } from './element';
 
 export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw';
 
@@ -42,7 +42,7 @@ export interface CoreAnnotationOptions extends AnnotationEvents, ShadowOptions, 
   borderWidth?: Scriptable<number, PartialEventContext>,
   display?: Scriptable<boolean, PartialEventContext>,
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
-  init?: boolean | ((chart: Chart, properties: AnnotationBoxModel, options: AnnotationOptions) => void | boolean | AnnotationBoxModel),
+  init?: boolean | ((chart: Chart, properties: AnnotationBoxModel, options: AnnotationOptions) => void | boolean | AnnotationElement),
   id?: string,
   xMax?: Scriptable<ScaleValue, PartialEventContext>,
   xMin?: Scriptable<ScaleValue, PartialEventContext>,

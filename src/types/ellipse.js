@@ -44,7 +44,7 @@ export default class EllipseAnnotation extends Element {
   }
 
   resolveElementProperties(chart, options) {
-    return resolveBoxAndLabelProperties(chart, options, true);
+    return resolveBoxAndLabelProperties(chart, options);
   }
 
 }
