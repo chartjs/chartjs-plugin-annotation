@@ -27,6 +27,7 @@ jobs:
     - name: Test
       run: |
         npm ci
+        npm run build
         xvfb-run --auto-servernum npm test
 
   publish-npm:
