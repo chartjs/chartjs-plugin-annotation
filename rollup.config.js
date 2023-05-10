@@ -1,13 +1,15 @@
-const json = require('@rollup/plugin-json');
-const resolve = require('@rollup/plugin-node-resolve').default;
-const terser = require('@rollup/plugin-terser').default;
-const {name, version, homepage, main, module: _module} = require('./package.json');
+import resolve from '@rollup/plugin-node-resolve';
+import terser from '@rollup/plugin-terser';
+import json from '@rollup/plugin-json';
+import {readFileSync} from 'fs';
+
+const {name, version, homepage, main, module, license, jsdelivr} = JSON.parse(readFileSync('./package.json'));
 
 const banner = `/*!
 * ${name} v${version}
 * ${homepage}
  * (c) ${(new Date(process.env.SOURCE_DATE_EPOCH ? (process.env.SOURCE_DATE_EPOCH * 1000) : new Date().getTime())).getFullYear()} chartjs-plugin-annotation Contributors
- * Released under the MIT License
+ * Released under the ${license} License
  */`;
 
 const input = 'src/index.js';
@@ -21,7 +23,8 @@ const globals = {
   'chart.js/helpers': 'Chart.helpers'
 };
 
-module.exports = [
+export default [
+  // cjs
   {
     input,
     plugins: [
@@ -38,6 +41,7 @@ module.exports = [
     },
     external
   },
+  // min.js
   {
     input,
     plugins: [
@@ -51,13 +55,14 @@ module.exports = [
     ],
     output: {
       name,
-      file: main.replace('.js', '.min.js'),
+      file: jsdelivr,
       format: 'umd',
       indent: false,
       globals
     },
     external
   },
+  // ems.js
   {
     input: inputESM,
     plugins: [
@@ -66,7 +71,7 @@ module.exports = [
     ],
     output: {
       name,
-      file: _module,
+      file: module,
       banner,
       format: 'esm',
       indent: false

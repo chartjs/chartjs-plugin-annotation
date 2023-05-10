@@ -8,6 +8,6 @@ const SeedReporter = function(baseReporterDecorator) {
   };
 };
 
-module.exports = {
+export default {
   'reporter:jasmine-seed': ['type', SeedReporter]
 };

@@ -5,7 +5,8 @@
   "version": "2.2.1",
   "author": "Evert Timberg <evert.timberg@gmail.com>",
   "license": "MIT",
-  "main": "dist/chartjs-plugin-annotation.js",
+  "type": "module",
+  "main": "dist/chartjs-plugin-annotation.cjs",
   "module": "dist/chartjs-plugin-annotation.esm.js",
   "types": "types/index.d.ts",
   "jsdelivr": "dist/chartjs-plugin-annotation.min.js",
@@ -13,21 +14,26 @@
   "exports": {
     "types": "./types/index.d.ts",
     "import": "./dist/chartjs-plugin-annotation.esm.js",
-    "require": "./dist/chartjs-plugin-annotation.min.js",
+    "require": "./dist/chartjs-plugin-annotation.cjs",
     "script": "./dist/chartjs-plugin-annotation.min.js"
   },
+  "sideEffects": [
+    "dist/chartjs-plugin-annotation.cjs",
+    "dist/chartjs-plugin-annotation.min.js"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/chartjs/chartjs-plugin-annotation.git"
   },
   "files": [
-    "dist/*.js",
+    "dist/*",
+    "!dist/docs/**",
     "types/*.d.ts"
   ],
   "scripts": {
     "build": "rollup -c",
-    "dev": "karma start --auto-watch --no-single-run --browsers chrome",
-    "dev:ff": "karma start --auto-watch --no-single-run --browsers firefox",
+    "dev": "karma start ./karma.conf.cjs --auto-watch --no-single-run --browsers chrome",
+    "dev:ff": "karma start ./karma.conf.cjs --auto-watch --no-single-run --browsers firefox",
     "docs": "npm run build && vuepress build docs --no-cache",
     "docs:dev": "npm run build && vuepress dev docs --no-cache",
     "lint": "concurrently --group \"npm:lint-*\"",
@@ -35,10 +41,10 @@
     "lint-md": "eslint \"**/*.md\"",
     "lint-types": "eslint \"types/**/*.ts\" && tsc -p types/tests/",
     "test": "cross-env NODE_ENV=test concurrently --group \"npm:test-*\"",
-    "test-karma": "karma start --auto-watch --single-run",
+    "test-karma": "karma start ./karma.conf.cjs --auto-watch --single-run",
     "test-lint": "npm run lint",
     "test-types": "tsc -p types/tests/",
-    "test-types-integration": "mocha --full-trace test/integration/*-test.js"
+    "test-integration": "mocha --full-trace test/integration/*-test.js"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^6.0.0",
@@ -79,6 +85,6 @@
     "vuepress-theme-chartjs": "^0.2.0"
   },
   "peerDependencies": {
-    "chart.js": ">=3.7.0"
+    "chart.js": ">=4.0.0"
   }
 }
