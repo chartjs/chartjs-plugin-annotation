@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.30",
-    "chart.js": "^4.2.1",
+    "chart.js": "^4.3.0",
     "chartjs-plugin-annotation": "file:../plugin.tgz"
   }
 }
