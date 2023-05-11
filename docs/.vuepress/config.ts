@@ -101,8 +101,8 @@ export default defineConfig({
     docsDir: 'docs',
     chart: {
       imports: [
-        ['scripts/register.js'],
-        ['scripts/defaults.js'],
+        ['scripts/register.js', 'Register'],
+        ['scripts/defaults.js', 'Defaults'],
         ['scripts/utils.js', 'Utils'],
       ]
     },
