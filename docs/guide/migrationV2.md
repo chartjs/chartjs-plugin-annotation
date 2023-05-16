@@ -1,6 +1,6 @@
-# 2.x Migration guide
+# 2.x Migration Guide
 
-`chartjs-plugin-annotation` plugin version 2 introduces a number of breaking changes. In order to improve performance, offer new features, and improve maintainability, it was necessary to break backwards compatibility, but we aimed to do so only when worth the benefit.
+**`chartjs-plugin-annotation`** plugin version 2 introduces a number of breaking changes. In order to improve performance, offer new features, and improve maintainability, it was necessary to break backwards compatibility, but we aimed to do so only when worth the benefit.
 
 ## Chart.js version
 

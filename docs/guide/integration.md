@@ -2,7 +2,7 @@
 title: Integration
 ---
 
-chartjs-plugin-annotation can be integrated with plain JavaScript or with different module loaders. The examples below show to load the plugin in different systems.
+**`chartjs-plugin-annotation`** can be integrated with plain JavaScript or with different module loaders. The examples below show to load the plugin in different systems.
 
 ## Script Tag
 
