@@ -1,8 +1,11 @@
-const path = require('path');
+import * as path from 'path';
+import markdownItInclude from 'markdown-it-include';
+import { DefaultThemeConfig, defineConfig, PluginTuple } from 'vuepress/config';
+
 const docsVersion = "VERSION";
 const base = process.env.NODE_ENV === "development" ? '/chartjs-plugin-annotation/master/' : `/chartjs-plugin-annotation/${docsVersion}/`;
 
-module.exports = {
+export default defineConfig({
   dest: 'dist/docs',
   title: 'chartjs-plugin-annotation',
   description: 'Annotations for Chart.js',
@@ -72,7 +75,7 @@ module.exports = {
         ]
       },
     }],
-  ],
+  ] as PluginTuple[],
   chainWebpack(config) {
     config.module
       .rule('chart.js')
@@ -86,7 +89,7 @@ module.exports = {
   },
   markdown: {
     extendMarkdown: md => {
-      md.use(require('markdown-it-include'), path.resolve(__dirname, '../'));
+      md.use(markdownItInclude, path.resolve(__dirname, '../'));
     }
   },
   themeConfig: {
@@ -98,8 +101,8 @@ module.exports = {
     docsDir: 'docs',
     chart: {
       imports: [
-        ['scripts/register.js'],
-        ['scripts/defaults.js'],
+        ['scripts/register.js', 'Register'],
+        ['scripts/defaults.js', 'Defaults'],
         ['scripts/utils.js', 'Utils'],
       ]
     },
@@ -131,8 +134,15 @@ module.exports = {
             'types/polygon'
           ]
         },
-        'migrationV1',
-        'migrationV2'
+        {
+          title: 'Migration',
+          collapsable: true,
+          children: [
+            'migrationV3',
+            'migrationV2',
+            'migrationV1'
+          ]
+        },
       ],
       '/samples/': [
         'intro',
@@ -145,7 +155,7 @@ module.exports = {
             'box/canvas',
             'box/image',
             'box/initAnim',
-            'box/gradient',
+            'box/gradient'
           ]
         },
         {
@@ -154,7 +164,7 @@ module.exports = {
             'ellipse/basic',
             'ellipse/rotation',
             'ellipse/label',
-            'ellipse/image',
+            'ellipse/image'
           ]
         },
         {
@@ -187,7 +197,7 @@ module.exports = {
             'line/image',
             'line/datasetBars',
             'line/animation',
-            'line/hook',
+            'line/hook'
           ]
         },
         {
@@ -197,7 +207,7 @@ module.exports = {
             'point/combined',
             'point/outsideChartArea',
             'point/shadow',
-            'point/initAnim',
+            'point/initAnim'
           ]
         },
         {
@@ -206,14 +216,14 @@ module.exports = {
             'polygon/basic',
             'polygon/stop',
             'polygon/outsideChartArea',
-            'polygon/shadow',
+            'polygon/shadow'
             ]
         },
         {
           title: 'Charts',
           children: [
             'charts/bar',
-            'charts/line',
+            'charts/line'
           ],
         },
         {
@@ -222,11 +232,11 @@ module.exports = {
             'interaction/interaction',
             'interaction/dragging',
             'interaction/selection',
-            'interaction/cartesianplane',
+            'interaction/cartesianplane'
           ],
         },
-        'utils',
+        'utils'
       ]
     }
-  }
-};
+ } as DefaultThemeConfig
+});

@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "description": "chartjs-plugin-annotation should work in Node, using commonjs",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.30",
+    "chart.js": "^4.3.0",
+    "chartjs-plugin-annotation": "file:../plugin.tgz"
+  }
+}

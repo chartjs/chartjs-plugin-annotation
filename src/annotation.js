@@ -17,7 +17,7 @@ export default {
   version,
 
   beforeRegister() {
-    requireVersion('chart.js', '3.7', Chart.version);
+    requireVersion('chart.js', '4.0', Chart.version);
   },
 
   afterRegister() {

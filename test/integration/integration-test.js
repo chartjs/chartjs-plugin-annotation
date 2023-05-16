@@ -1,11 +1,12 @@
 'use strict';
 
-const os = require('os');
-const fs = require('fs-extra');
-const path = require('path');
-const childProcess = require('child_process');
+import os from 'os';
+import fs from 'fs-extra';
+import path from 'path';
+import childProcess from 'child_process';
+import process from 'process';
 
-const {describe, it} = require('mocha');
+import {describe, it} from 'mocha';
 
 function exec(command, options = {}) {
   const output = childProcess.execSync(command, {
@@ -28,7 +29,7 @@ describe('Integration Tests', () => {
   );
 
   function testOnNodeProject(projectName) {
-    const projectPath = path.join(__dirname, projectName);
+    const projectPath = path.join(process.cwd(), 'test', 'integration', projectName);
 
     const packageJSONPath = path.join(projectPath, 'package.json');
     const packageJSON = JSON.parse(fs.readFileSync(packageJSONPath, 'utf-8'));
@@ -41,6 +42,7 @@ describe('Integration Tests', () => {
       exec('npm --quiet test', {cwd, stdio: 'inherit'});
     }).timeout(5 * 60 * 1000);
   }
-
   testOnNodeProject('ts');
+  testOnNodeProject('node-module');
+  testOnNodeProject('node-commonjs');
 });

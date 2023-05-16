@@ -73,7 +73,7 @@ The `init` option is scriptable but it doesn't get the [options context](./optio
 This is the signature of the scriptable option:
 
 ```javascript
-({chart, properties, options}) => void | boolean | AnnotationBoxModel
+({chart, properties, options}) => void | boolean | AnnotationElement
 ```
 
 where the properties is the element model
