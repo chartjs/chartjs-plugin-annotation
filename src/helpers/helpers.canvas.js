@@ -8,6 +8,11 @@ const fontsKey = (fonts) => fonts.reduce(function(prev, item) {
   prev += item.string;
   return prev;
 }, '');
+const getContent = (content, wrappedText) => wrappedText
+  ? wrappedText
+  : isArray(content)
+    ? content
+    : [content];
 
 /**
  * @typedef { import('chart.js').Point } Point
@@ -96,6 +101,26 @@ export function measureLabelSize(ctx, options) {
 
 /**
  * @param {CanvasRenderingContext2D} ctx
+ * @param {{width: number}} properties
+ * @param {CoreLabelOptions} options
+ * @returns {{width: number, height: number}}
+ */
+export function measureWrappedLabelSize(ctx, properties, options) {
+  const {font, textStrokeWidth} = options;
+  const content = wrapLabel(ctx, properties, options);
+  const result = measureLabelSize(ctx, {
+    content,
+    font,
+    textStrokeWidth
+  });
+  if (content !== options.content) {
+    result.content = content;
+  }
+  return result;
+}
+
+/**
+ * @param {CanvasRenderingContext2D} ctx
  * @param {{x: number, y: number, width: number, height: number}} rect
  * @param {Object} options
  */
@@ -121,7 +146,7 @@ export function drawBox(ctx, rect, options) {
 
 /**
  * @param {CanvasRenderingContext2D} ctx
- * @param {{x: number, y: number, width: number, height: number}} rect
+ * @param {{x: number, y: number, width: number, height: number, _wrappedText: string[]|undefined}} rect
  * @param {CoreLabelOptions} options
  */
 export function drawLabel(ctx, rect, options) {
@@ -133,7 +158,7 @@ export function drawLabel(ctx, rect, options) {
     ctx.restore();
     return;
   }
-  const labels = isArray(content) ? content : [content];
+  const labels = getContent(content, rect._wrappedText);
   const optFont = options.font;
   const fonts = isArray(optFont) ? optFont.map(f => toFont(f)) : [toFont(optFont)];
   const optColor = options.color;
@@ -328,4 +353,46 @@ function applyLabelContent(ctx, {x, y}, labels, {fonts, colors}) {
 function getOpacity(value, elementValue) {
   const opacity = isNumber(value) ? value : elementValue;
   return isNumber(opacity) ? clamp(opacity, 0, 1) : 1;
+}
+
+function wrapLabel(ctx, properties, options) {
+  const maxWidth = properties.width;
+  const {content, textWrapSeparator} = options;
+  const text = isArray(content) ? content.join(textWrapSeparator) : content;
+  if (!text.includes(textWrapSeparator)) {
+    return content;
+  }
+  const font = toFont(options.font);
+  ctx.save();
+  ctx.font = font.string;
+  const width = ctx.measureText(text).width;
+  if (maxWidth >= width) {
+    ctx.restore();
+    return content;
+  }
+  return splitLabel(ctx, text, textWrapSeparator, maxWidth);
+}
+
+function splitLabel(ctx, text, separator, maxWidth) {
+  const blankWidth = ctx.measureText(separator).width;
+  const result = [];
+  const words = text.split(separator);
+  let temp = '';
+  let current = 0;
+  for (const w of words) {
+    const wWidth = ctx.measureText(w).width;
+    if ((current + wWidth + blankWidth) <= maxWidth) {
+      temp += w + separator;
+      current += wWidth + blankWidth;
+    } else {
+      result.push(temp.trim());
+      temp = w + separator;
+      current = wWidth + blankWidth;
+    }
+  }
+  if (temp.length) {
+    result.push(temp.trim());
+  }
+  ctx.restore();
+  return result;
 }

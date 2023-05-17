@@ -68,6 +68,8 @@ BoxAnnotation.defaults = {
     textAlign: 'start',
     textStrokeColor: undefined,
     textStrokeWidth: 0,
+    textWrap: false,
+    textWrapSeparator: ' ',
     width: undefined,
     xAdjust: 0,
     yAdjust: 0,
