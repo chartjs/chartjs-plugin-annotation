@@ -1,4 +1,4 @@
-import {addRoundedRectPath, isArray, isNumber, toFont, toTRBLCorners, toRadians, PI, TAU, HALF_PI, QUARTER_PI, TWO_THIRDS_PI, RAD_PER_DEG} from 'chart.js/helpers';
+import {clone, addRoundedRectPath, isArray, isNumber, toFont, toPadding, toTRBLCorners, toRadians, PI, TAU, HALF_PI, QUARTER_PI, TWO_THIRDS_PI, RAD_PER_DEG} from 'chart.js/helpers';
 import {clampAll, clamp} from './helpers.core';
 import {calculateTextAlignment, getSize} from './helpers.options';
 
@@ -106,16 +106,13 @@ export function measureLabelSize(ctx, options) {
  * @returns {{width: number, height: number}}
  */
 export function measureWrappedLabelSize(ctx, properties, options) {
-  const {font, textStrokeWidth} = options;
-  const content = wrapLabel(ctx, properties, options);
+  const wrappedOptions = wrapLabel(ctx, properties, options);
   const result = measureLabelSize(ctx, {
-    content,
-    font,
-    textStrokeWidth
+    content: wrappedOptions.content,
+    font: wrappedOptions.font,
+    textStrokeWidth: options.textStrokeWidth
   });
-  if (content !== options.content) {
-    result.content = content;
-  }
+  result.wrappedOptions = wrappedOptions;
   return result;
 }
 
@@ -158,10 +155,11 @@ export function drawLabel(ctx, rect, options) {
     ctx.restore();
     return;
   }
-  const labels = getContent(content, rect._wrappedText);
-  const optFont = options.font;
+  const wrapOpt = rect._wrappedOptions || {};
+  const labels = getContent(content, wrapOpt.content);
+  const optFont = wrapOpt.font || options.font;
   const fonts = isArray(optFont) ? optFont.map(f => toFont(f)) : [toFont(optFont)];
-  const optColor = options.color;
+  const optColor = wrapOpt.color || options.color;
   const colors = isArray(optColor) ? optColor : [optColor];
   const x = calculateTextAlignment(rect, options);
   const y = rect.y + options.textStrokeWidth / 2;
@@ -356,43 +354,61 @@ function getOpacity(value, elementValue) {
 }
 
 function wrapLabel(ctx, properties, options) {
-  const maxWidth = properties.width;
+  const padding = toPadding(options.padding);
+  const maxWidth = properties.width - padding.left - padding.right - options.borderWidth;
   const {content, textWrapSeparator} = options;
-  const text = isArray(content) ? content.join(textWrapSeparator) : content;
-  if (!text.includes(textWrapSeparator)) {
-    return content;
-  }
-  const font = toFont(options.font);
+  const text = isArray(content) ? content : [content];
+  const optFont = options.font;
+  const fonts = isArray(optFont) ? optFont : [optFont];
+  const optColor = options.color;
+  const colors = isArray(optColor) ? optColor : [optColor];
+  const result = {
+    content: [],
+    font: [],
+    color: []
+  };
   ctx.save();
-  ctx.font = font.string;
-  const width = ctx.measureText(text).width;
-  if (maxWidth >= width) {
-    ctx.restore();
-    return content;
-  }
-  return splitLabel(ctx, text, textWrapSeparator, maxWidth);
+  text.forEach(function(line, index) {
+    const normLine = line + '';
+    const c = colors[Math.min(index, colors.length - 1)];
+    const f = fonts[Math.min(index, fonts.length - 1)];
+    const font = toFont(f);
+    ctx.font = font.string;
+    const width = ctx.measureText(normLine).width;
+    if (maxWidth >= width || !normLine.includes(textWrapSeparator)) {
+      result.content.push(normLine);
+      result.font.push(clone(f));
+      result.color.push(c);
+    } else {
+      const wrappedLine = splitLabel(ctx, normLine, textWrapSeparator, maxWidth);
+      result.content.push(...wrappedLine);
+      result.font.push(...wrappedLine.map(() => clone(f)));
+      result.color.push(...wrappedLine.map(() => c));
+    }
+  });
+  ctx.restore();
+  return result;
 }
 
 function splitLabel(ctx, text, separator, maxWidth) {
-  const blankWidth = ctx.measureText(separator).width;
+  const sepaWidth = ctx.measureText(separator).width;
   const result = [];
   const words = text.split(separator);
   let temp = '';
   let current = 0;
   for (const w of words) {
     const wWidth = ctx.measureText(w).width;
-    if ((current + wWidth + blankWidth) <= maxWidth) {
+    if ((current + wWidth + sepaWidth) <= maxWidth) {
       temp += w + separator;
-      current += wWidth + blankWidth;
+      current += wWidth + sepaWidth;
     } else {
       result.push(temp.trim());
       temp = w + separator;
-      current = wWidth + blankWidth;
+      current = wWidth + sepaWidth;
     }
   }
   if (temp.length) {
     result.push(temp.trim());
   }
-  ctx.restore();
   return result;
 }

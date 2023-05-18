@@ -1,4 +1,4 @@
-import {isArray, isFinite, toPadding} from 'chart.js/helpers';
+import {isFinite, toPadding} from 'chart.js/helpers';
 import {measureLabelSize, measureWrappedLabelSize, isImageOrCanvas} from './helpers.canvas';
 import {isBoundToPoint, getRelativePosition, toPosition, initAnimationProperties} from './helpers.options';
 
@@ -6,7 +6,7 @@ const limitedLineScale = {
   xScaleID: {min: 'xMin', max: 'xMax', start: 'left', end: 'right', startProp: 'x', endProp: 'x2'},
   yScaleID: {min: 'yMin', max: 'yMax', start: 'bottom', end: 'top', startProp: 'y', endProp: 'y2'}
 };
-const isTextToWrap = (options) => options.type === 'box' && options.label.textWrap && !isArray(options.label.font) && !isImageOrCanvas(options.content);
+const isTextToWrap = (options) => options.type === 'box' && options.label.textWrap && !isImageOrCanvas(options.content);
 
 /**
  * @typedef { import("chart.js").Chart } Chart
@@ -286,7 +286,7 @@ function resolveLabelElementProperties(chart, properties, options) {
     centerX: x + width / 2,
     centerY: y + height / 2,
     rotation: label.rotation,
-    _wrappedText: labelSize.content
+    _wrappedOptions: labelSize.wrappedOptions
   };
 
 }
