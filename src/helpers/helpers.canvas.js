@@ -1,7 +1,8 @@
-import {clone, addRoundedRectPath, isArray, isNumber, toFont, toPadding, toTRBLCorners, toRadians, PI, TAU, HALF_PI, QUARTER_PI, TWO_THIRDS_PI, RAD_PER_DEG} from 'chart.js/helpers';
+import {addRoundedRectPath, isArray, isNumber, toFont, toPadding, toTRBLCorners, toRadians, PI, TAU, HALF_PI, QUARTER_PI, TWO_THIRDS_PI, RAD_PER_DEG} from 'chart.js/helpers';
 import {clampAll, clamp} from './helpers.core';
 import {calculateTextAlignment, getSize} from './helpers.options';
 
+const BLANK = ' ';
 const widthCache = new Map();
 const notRadius = (radius) => isNaN(radius) || radius <= 0;
 const fontsKey = (fonts) => fonts.reduce(function(prev, item) {
@@ -143,7 +144,7 @@ export function drawBox(ctx, rect, options) {
 
 /**
  * @param {CanvasRenderingContext2D} ctx
- * @param {{x: number, y: number, width: number, height: number, _wrappedText: string[]|undefined}} rect
+ * @param {{x: number, y: number, width: number, height: number, _wrappedOptions: object|undefined}} rect
  * @param {CoreLabelOptions} options
  */
 export function drawLabel(ctx, rect, options) {
@@ -356,7 +357,7 @@ function getOpacity(value, elementValue) {
 function wrapLabel(ctx, properties, options) {
   const padding = toPadding(options.padding);
   const maxWidth = properties.width - padding.left - padding.right - options.borderWidth;
-  const {content, textWrapSeparator} = options;
+  const content = options.content;
   const text = isArray(content) ? content : [content];
   const optFont = options.font;
   const fonts = isArray(optFont) ? optFont : [optFont];
@@ -375,14 +376,14 @@ function wrapLabel(ctx, properties, options) {
     const font = toFont(f);
     ctx.font = font.string;
     const width = ctx.measureText(normLine).width;
-    if (maxWidth >= width || !normLine.includes(textWrapSeparator)) {
+    if (maxWidth >= width || !normLine.includes(BLANK)) {
       result.content.push(normLine);
-      result.font.push(clone(f));
+      result.font.push(f);
       result.color.push(c);
     } else {
-      const wrappedLine = splitLabel(ctx, normLine, textWrapSeparator, maxWidth);
+      const wrappedLine = splitLabel(ctx, normLine, maxWidth);
       result.content.push(...wrappedLine);
-      result.font.push(...wrappedLine.map(() => clone(f)));
+      result.font.push(...wrappedLine.map(() => f));
       result.color.push(...wrappedLine.map(() => c));
     }
   });
@@ -390,20 +391,20 @@ function wrapLabel(ctx, properties, options) {
   return result;
 }
 
-function splitLabel(ctx, text, separator, maxWidth) {
-  const sepaWidth = ctx.measureText(separator).width;
+function splitLabel(ctx, text, maxWidth) {
+  const sepaWidth = ctx.measureText(BLANK).width;
   const result = [];
-  const words = text.split(separator);
+  const words = text.split(BLANK);
   let temp = '';
   let current = 0;
   for (const w of words) {
     const wWidth = ctx.measureText(w).width;
     if ((current + wWidth + sepaWidth) <= maxWidth) {
-      temp += w + separator;
+      temp += w + BLANK;
       current += wWidth + sepaWidth;
     } else {
       result.push(temp.trim());
-      temp = w + separator;
+      temp = w + BLANK;
       current = wWidth + sepaWidth;
     }
   }
