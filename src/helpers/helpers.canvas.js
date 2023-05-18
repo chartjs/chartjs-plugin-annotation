@@ -363,12 +363,18 @@ function wrapLabel(ctx, properties, options) {
   const fonts = isArray(optFont) ? optFont : [optFont];
   const optColor = options.color;
   const colors = isArray(optColor) ? optColor : [optColor];
+  ctx.save();
+  const result = scanLabelLines(ctx, text, maxWidth, {fonts, colors});
+  ctx.restore();
+  return result;
+}
+
+function scanLabelLines(ctx, text, maxWidth, {fonts, colors}) {
   const result = {
     content: [],
     font: [],
     color: []
   };
-  ctx.save();
   text.forEach(function(line, index) {
     const normLine = line + '';
     const c = colors[Math.min(index, colors.length - 1)];
@@ -387,7 +393,6 @@ function wrapLabel(ctx, properties, options) {
       result.color.push(...wrappedLine.map(() => c));
     }
   });
-  ctx.restore();
   return result;
 }
 
