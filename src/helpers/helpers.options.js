@@ -136,15 +136,16 @@ export const shouldFit = (options, fitRatio) => options && options.autoFit && fi
  */
 export function toFonts(options, fitRatio) {
   const optFont = options.font;
-  let fonts = isArray(optFont) ? optFont.map(f => toFont(f)) : [toFont(optFont)];
+  const fonts = isArray(optFont) ? optFont : [optFont];
   if (shouldFit(options, fitRatio)) {
-    fonts = fonts.map(function(f) {
-      f.size = Math.floor(f.size * fitRatio);
-      f.lineHeight = undefined;
-      return toFont(f);
+    return fonts.map(function(f) {
+      const font = toFont(f);
+      font.size = Math.floor(f.size * fitRatio);
+      font.lineHeight = f.lineHeight;
+      return toFont(font);
     });
   }
-  return fonts;
+  return fonts.map(f => toFont(f));
 }
 
 /**
