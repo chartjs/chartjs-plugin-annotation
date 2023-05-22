@@ -4,6 +4,7 @@ import {handleEvent, eventHooks, updateListeners} from './events';
 import {invokeHook, elementHooks, updateHooks} from './hooks';
 import {adjustScaleRange, verifyScaleOptions} from './scale';
 import {updateElements, resolveType, isIndexable} from './elements';
+import {getElements} from './interaction';
 import {annotationTypes} from './types';
 import {requireVersion} from './helpers';
 import {version} from '../package.json';
@@ -104,6 +105,11 @@ export default {
   getAnnotations(chart) {
     const state = chartStates.get(chart);
     return state ? state.elements : [];
+  },
+
+  // only for testing
+  _getAnnotationElementsAtEventForMode(visibleElements, event, options) {
+    return getElements(visibleElements, event, options);
   },
 
   defaults: {
