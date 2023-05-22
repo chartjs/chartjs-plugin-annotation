@@ -101,8 +101,9 @@ export default {
     chartStates.delete(chart);
   },
 
-  _getState(chart) {
-    return chartStates.get(chart);
+  getAnnotations(chart) {
+    const state = chartStates.get(chart);
+    return state ? state.elements : [];
   },
 
   defaults: {

@@ -1,3 +1,5 @@
+import {getElements} from '../src/interaction';
+
 export function getQuadraticXY(t, sx, sy, cp1x, cp1y, ex, ey) {
   return {
     x: (1 - t) * (1 - t) * sx + 2 * (1 - t) * t * cp1x + t * t * ex,
@@ -46,7 +48,11 @@ export function drawStar(ctx, x, y, radius, spikes, inset) {
 }
 
 export function getAnnotationElements(chart) {
-  return window['chartjs-plugin-annotation']._getState(chart).elements;
+  return window['chartjs-plugin-annotation'].getAnnotations(chart);
+}
+
+export function getAnnotationInteractedElements(visibleElements, event, options) {
+  return getElements(visibleElements, event, options);
 }
 
 export function scatterChart(xMax, yMax, annotations) {

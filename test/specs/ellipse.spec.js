@@ -95,10 +95,11 @@ describe('Ellipse annotation', function() {
       };
 
       const chart = window.scatterChart(10, 10, {outer, inner});
-      const state = window['chartjs-plugin-annotation']._getState(chart);
+      const elements = window.getAnnotationElements(chart);
+      const visible = elements.filter(el => !el.skip && el.options.display);
       const interactionOpts = {};
-      const outerEl = window.getAnnotationElements(chart)[0];
-      const innerEl = window.getAnnotationElements(chart)[1];
+      const outerEl = elements[0];
+      const innerEl = elements[1];
 
       it('should return the right amount of annotation elements', function() {
         for (const interaction of window.interactionData) {
@@ -120,8 +121,8 @@ describe('Ellipse annotation', function() {
                 const point = points[i];
                 const elementsCount = elementsCounts[i];
                 const {x, y} = rotated(point, point.el.getCenterPoint(), rotation / 180 * Math.PI);
-                const elements = state._getElements(state, {x, y}, interactionOpts);
-                expect(elements.length).withContext(`with rotation ${rotation}, interaction mode ${mode}, axis ${axis}, intersect ${intersect}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}`).toEqual(elementsCount);
+                const els = window.getAnnotationInteractedElements(visible, {x, y}, interactionOpts, true);
+                expect(els.length).withContext(`with rotation ${rotation}, interaction mode ${mode}, axis ${axis}, intersect ${intersect}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}`).toEqual(elementsCount);
               }
             });
           }
