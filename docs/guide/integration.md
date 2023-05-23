@@ -10,7 +10,7 @@ title: Integration
 <script src="path/to/chartjs/dist/chart.min.js"></script>
 <script src="path/to/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js"></script>
 <script>
-    var myChart = new Chart(ctx, {...});
+    const myChart = new Chart(ctx, {...});
 </script>
 ```
 
