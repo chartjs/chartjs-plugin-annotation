@@ -27,15 +27,20 @@ describe('Ellipse annotation', function() {
           const halfBorder = borderWidth / 2;
           element.options.borderWidth = borderWidth;
 
-          for (const angle of [0, 45, 90, 135, 180, 225, 270, 315]) {
-            const rad = angle / 180 * Math.PI;
+          for (const hitTolerance of [0, 5, 10, 20]) {
+            const halfTolerance = hitTolerance / 2;
+            element.options.hitTolerance = hitTolerance;
 
-            const {x, y} = rotated({
-              x: center.x + Math.cos(rad) * (xRadius + halfBorder),
-              y: center.y + Math.sin(rad) * (yRadius + halfBorder)
-            }, center, rotation / 180 * Math.PI);
+            for (const angle of [0, 45, 90, 135, 180, 225, 270, 315]) {
+              const rad = angle / 180 * Math.PI;
 
-            expect(element.inRange(x, y)).withContext(`rotation: ${rotation}, angle: ${angle}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
+              const {x, y} = rotated({
+                x: center.x + Math.cos(rad) * (xRadius + halfBorder + halfTolerance),
+                y: center.y + Math.sin(rad) * (yRadius + halfBorder + halfTolerance)
+              }, center, rotation / 180 * Math.PI);
+
+              expect(element.inRange(x, y)).withContext(`rotation: ${rotation}, angle: ${angle}, borderWidth: ${borderWidth}, hitTolerance: ${hitTolerance}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
+            }
           }
         }
       });
@@ -45,15 +50,20 @@ describe('Ellipse annotation', function() {
           const halfBorder = borderWidth / 2;
           element.options.borderWidth = borderWidth;
 
-          for (const angle of [0, 45, 90, 135, 180, 225, 270, 315]) {
-            const rad = angle / 180 * Math.PI;
+          for (const hitTolerance of [0, 5, 10, 20]) {
+            const halfTolerance = hitTolerance / 2;
+            element.options.hitTolerance = hitTolerance;
 
-            const {x, y} = rotated({
-              x: center.x + Math.cos(rad) * (xRadius + halfBorder + 1),
-              y: center.y + Math.sin(rad) * (yRadius + halfBorder + 1)
-            }, center, rotation / 180 * Math.PI);
+            for (const angle of [0, 45, 90, 135, 180, 225, 270, 315]) {
+              const rad = angle / 180 * Math.PI;
 
-            expect(element.inRange(x, y)).withContext(`rotation: ${rotation}, angle: ${angle}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
+              const {x, y} = rotated({
+                x: center.x + Math.cos(rad) * (xRadius + halfBorder + halfTolerance + 1),
+                y: center.y + Math.sin(rad) * (yRadius + halfBorder + halfTolerance + 1)
+              }, center, rotation / 180 * Math.PI);
+
+              expect(element.inRange(x, y)).withContext(`rotation: ${rotation}, angle: ${angle}, borderWidth: ${borderWidth}, hitTolerance: ${hitTolerance}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
+            }
           }
         }
       });

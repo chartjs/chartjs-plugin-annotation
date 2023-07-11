@@ -23,8 +23,8 @@ export default class LineAnnotation extends Element {
       const point = {mouseX, mouseY};
       const {path, ctx} = this;
       if (path) {
-        // TODO hitTolerance to manage
         setBorderStyle(ctx, this.options);
+        ctx.lineWidth += this.options.hitTolerance;
         const {chart} = this.$context;
         const mx = mouseX * chart.currentDevicePixelRatio;
         const my = mouseY * chart.currentDevicePixelRatio;
