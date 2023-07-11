@@ -6,16 +6,16 @@ import BoxAnnotation from './box';
 export default class EllipseAnnotation extends Element {
 
   inRange(mouseX, mouseY, axis, useFinalPosition) {
-    const rotation = this.options.rotation;
-    const borderWidth = this.options.borderWidth;
+    const {rotation, borderWidth, hitTolerance} = this.options;
     if (axis !== 'x' && axis !== 'y') {
-      return pointInEllipse({x: mouseX, y: mouseY}, this.getProps(['width', 'height', 'centerX', 'centerY'], useFinalPosition), rotation, borderWidth);
+      return pointInEllipse({x: mouseX, y: mouseY}, this.getProps(['width', 'height', 'centerX', 'centerY'], useFinalPosition), {rotation, borderWidth, hitTolerance});
     }
     const {x, y, x2, y2} = this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition);
     const hBorderWidth = borderWidth / 2;
+    const tolerance = hitTolerance / 2;
     const limit = axis === 'y' ? {start: y, end: y2} : {start: x, end: x2};
     const rotatedPoint = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-rotation));
-    return rotatedPoint[axis] >= limit.start - hBorderWidth - EPSILON && rotatedPoint[axis] <= limit.end + hBorderWidth + EPSILON;
+    return rotatedPoint[axis] >= limit.start - hBorderWidth - tolerance - EPSILON && rotatedPoint[axis] <= limit.end + hBorderWidth + tolerance + EPSILON;
   }
 
   getCenterPoint(useFinalPosition) {
@@ -59,6 +59,7 @@ EllipseAnnotation.defaults = {
   borderShadowColor: 'transparent',
   borderWidth: 1,
   display: true,
+  hitTolerance: 0,
   init: undefined,
   label: Object.assign({}, BoxAnnotation.defaults.label),
   rotation: 0,
@@ -85,7 +86,7 @@ EllipseAnnotation.descriptors = {
   }
 };
 
-function pointInEllipse(p, ellipse, rotation, borderWidth) {
+function pointInEllipse(p, ellipse, {rotation, borderWidth, hitTolerance}) {
   const {width, height, centerX, centerY} = ellipse;
   const xRadius = width / 2;
   const yRadius = height / 2;
@@ -96,9 +97,10 @@ function pointInEllipse(p, ellipse, rotation, borderWidth) {
   // https://stackoverflow.com/questions/7946187/point-and-ellipse-rotated-position-test-algorithm
   const angle = toRadians(rotation || 0);
   const hBorderWidth = borderWidth / 2 || 0;
+  const tolerance = hitTolerance / 2 || 0;
   const cosAngle = Math.cos(angle);
   const sinAngle = Math.sin(angle);
   const a = Math.pow(cosAngle * (p.x - centerX) + sinAngle * (p.y - centerY), 2);
   const b = Math.pow(sinAngle * (p.x - centerX) - cosAngle * (p.y - centerY), 2);
-  return (a / Math.pow(xRadius + hBorderWidth, 2)) + (b / Math.pow(yRadius + hBorderWidth, 2)) <= 1.0001;
+  return (a / Math.pow(xRadius + hBorderWidth + tolerance, 2)) + (b / Math.pow(yRadius + hBorderWidth + tolerance, 2)) <= 1.0001;
 }

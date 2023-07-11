@@ -6,7 +6,8 @@ export default class BoxAnnotation extends Element {
 
   inRange(mouseX, mouseY, axis, useFinalPosition) {
     const {x, y} = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.options.rotation));
-    return inBoxRange({x, y}, this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis, this.options.borderWidth);
+    const {borderWidth, hitTolerance} = this.options;
+    return inBoxRange({x, y}, this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis, {borderWidth, hitTolerance});
   }
 
   getCenterPoint(useFinalPosition) {
@@ -43,6 +44,7 @@ BoxAnnotation.defaults = {
   borderWidth: 1,
   display: true,
   init: undefined,
+  hitTolerance: 0,
   label: {
     backgroundColor: 'transparent',
     borderWidth: 0,
@@ -61,6 +63,7 @@ BoxAnnotation.defaults = {
       weight: 'bold'
     },
     height: undefined,
+    hitTolerance: undefined,
     opacity: undefined,
     padding: 6,
     position: 'center',

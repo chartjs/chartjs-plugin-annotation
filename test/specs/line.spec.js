@@ -52,6 +52,111 @@ describe('Line annotation', function() {
     });
   });
 
+  describe('inRange with hit tolerance', function() {
+    const annotation1 = {
+      type: 'line',
+      scaleID: 'y',
+      value: 2,
+      borderWidth: 10,
+      hitTolerance: 10
+    };
+    const annotation2 = {
+      type: 'line',
+      scaleID: 'x',
+      value: 8,
+      borderWidth: 5,
+      hitTolerance: 10
+    };
+    const annotation3 = {
+      type: 'line',
+      scaleID: 'x',
+      value: 8,
+      borderWidth: 1,
+      hitTolerance: 10
+    };
+    const annotation4 = {
+      type: 'line',
+      scaleID: 'x',
+      value: 8,
+      borderWidth: 0.5,
+      hitTolerance: 10
+    };
+
+    const chart = window.scatterChart(10, 10, {annotation1, annotation2, annotation3, annotation4});
+    const elems = window.getAnnotationElements(chart);
+
+    elems.forEach(function(element) {
+      const center = element.getCenterPoint();
+      it('should return true inside element', function() {
+        const halfBorder = element.options.borderWidth / 2;
+        const halfTolerance = element.options.hitTolerance / 2;
+        for (const x of [center.x - halfBorder - halfTolerance, center.x + halfBorder + halfTolerance]) {
+          for (const y of [center.y - halfBorder - halfTolerance, center.y + halfBorder + halfTolerance]) {
+            expect(element.inRange(x, y)).withContext(`scaleID: ${element.options.scaleID}, value: ${element.options.value}, center: {x: ${center.x.toFixed(1)}, y: ${center.y.toFixed(1)}}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
+          }
+        }
+      });
+
+      it('should return false outside element', function() {
+        const halfBorder = element.options.borderWidth / 2;
+        const halfTolerance = element.options.hitTolerance / 2;
+        for (const x of [center.x - halfBorder - halfTolerance - 1, center.x + halfBorder + halfTolerance + 1]) {
+          for (const y of [center.y - halfBorder - halfTolerance - 1, center.y + halfBorder + halfTolerance + 1]) {
+            expect(element.inRange(x, y)).withContext(`scaleID: ${element.options.scaleID}, value: ${element.options.value}, center: {x: ${center.x.toFixed(1)}, y: ${center.y.toFixed(1)}}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
+          }
+        }
+      });
+    });
+  });
+
+  describe('inRange with label and hit tolerance', function() {
+    const annotation1 = {
+      type: 'line',
+      scaleID: 'y',
+      value: 2,
+      hitTolerance: 10,
+      label: {
+        display: true,
+        content: 'Label of the element',
+      }
+    };
+    const annotation2 = {
+      type: 'line',
+      scaleID: 'y',
+      value: 2,
+      label: {
+        display: true,
+        content: 'Label of the element',
+        hitTolerance: 10
+      }
+    };
+
+    const chart = window.scatterChart(10, 10, {annotation1, annotation2});
+    const elems = window.getAnnotationElements(chart);
+
+    elems.forEach(function(element) {
+      it('should return true inside label', function() {
+        const halfBorder = element.label.options.borderWidth / 2;
+        const halfTolerance = element.label.options.hitTolerance / 2;
+        for (const x of [element.label.x - halfBorder - halfTolerance, element.label.x2 + halfBorder + halfTolerance]) {
+          for (const y of [element.label.y - halfBorder - halfTolerance, element.label.y2 + halfBorder + halfTolerance]) {
+            expect(element.inRange(x, y)).toEqual(true);
+          }
+        }
+      });
+
+      it('should return false outside label', function() {
+        const halfBorder = element.label.options.borderWidth / 2;
+        const halfTolerance = element.label.options.hitTolerance / 2;
+        for (const x of [element.label.x - halfBorder - halfTolerance - 1, element.label.x2 + halfBorder + halfTolerance + 1]) {
+          for (const y of [element.label.y - halfBorder - halfTolerance - 1, element.label.y2 + halfBorder + halfTolerance + 1]) {
+            expect(element.inRange(x, y)).toEqual(false);
+          }
+        }
+      });
+    });
+  });
+
   describe('inRange with rotation', function() {
     const rotated = window.helpers.rotated;
 

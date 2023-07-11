@@ -18,10 +18,12 @@ export default class LineAnnotation extends Element {
 
   inRange(mouseX, mouseY, axis, useFinalPosition) {
     const hBorderWidth = this.options.borderWidth / 2;
+    const tolerance = this.options.hitTolerance / 2;
     if (axis !== 'x' && axis !== 'y') {
       const point = {mouseX, mouseY};
       const {path, ctx} = this;
       if (path) {
+        // TODO hitTolerance to manage
         setBorderStyle(ctx, this.options);
         const {chart} = this.$context;
         const mx = mouseX * chart.currentDevicePixelRatio;
@@ -30,10 +32,10 @@ export default class LineAnnotation extends Element {
         ctx.restore();
         return result;
       }
-      const epsilon = sqr(hBorderWidth);
+      const epsilon = sqr(hBorderWidth + tolerance);
       return intersects(this, point, epsilon, useFinalPosition) || isOnLabel(this, point, useFinalPosition);
     }
-    return inAxisRange(this, {mouseX, mouseY}, axis, {hBorderWidth, useFinalPosition});
+    return inAxisRange(this, {mouseX, mouseY}, axis, {hBorderWidth, tolerance, useFinalPosition});
   }
 
   getCenterPoint(useFinalPosition) {
@@ -142,6 +144,7 @@ LineAnnotation.defaults = {
   display: true,
   endValue: undefined,
   init: undefined,
+  hitTolerance: 0,
   label: {
     backgroundColor: 'rgba(0,0,0,0.8)',
     backgroundShadowColor: 'transparent',
@@ -166,6 +169,7 @@ LineAnnotation.defaults = {
       weight: 'bold'
     },
     height: undefined,
+    hitTolerance: undefined,
     opacity: undefined,
     padding: 6,
     position: 'center',
@@ -211,9 +215,9 @@ LineAnnotation.defaultRoutes = {
   borderColor: 'color'
 };
 
-function inAxisRange(element, {mouseX, mouseY}, axis, {hBorderWidth, useFinalPosition}) {
+function inAxisRange(element, {mouseX, mouseY}, axis, {hBorderWidth, tolerance, useFinalPosition}) {
   const limit = rangeLimit(mouseX, mouseY, element.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis);
-  return (limit.value >= limit.start - hBorderWidth && limit.value <= limit.end + hBorderWidth) || isOnLabel(element, {mouseX, mouseY}, useFinalPosition, axis);
+  return (limit.value >= limit.start - hBorderWidth - tolerance && limit.value <= limit.end + hBorderWidth + tolerance) || isOnLabel(element, {mouseX, mouseY}, useFinalPosition, axis);
 }
 
 function isLineInArea({x, y, x2, y2}, {top, right, bottom, left}) {
@@ -258,6 +262,7 @@ function intersects(element, {mouseX, mouseY}, epsilon = EPSILON, useFinalPositi
   const dy = y2 - y1;
   const lenSq = sqr(dx) + sqr(dy);
   const t = lenSq === 0 ? -1 : ((mouseX - x1) * dx + (mouseY - y1) * dy) / lenSq;
+
   let xx, yy;
   if (t < 0) {
     xx = x1;
