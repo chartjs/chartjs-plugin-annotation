@@ -103,7 +103,7 @@ PolygonAnnotation.defaultRoutes = {
 };
 
 function buildPointElement({centerX, centerY}, {radius, borderWidth, hitTolerance}, rad) {
-  const hitSize = borderWidth / 2 + hitTolerance / 2;
+  const hitSize = (borderWidth + hitTolerance) / 2;
   const sin = Math.sin(rad);
   const cos = Math.cos(rad);
   const point = {x: centerX + sin * radius, y: centerY - cos * radius};

@@ -1,6 +1,6 @@
 import {Element} from 'chart.js';
 import {PI, toRadians, toDegrees, toPadding, distanceBetweenPoints} from 'chart.js/helpers';
-import {EPSILON, clamp, rotated, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, getElementCenterPoint, toPosition, getSize, resolveLineProperties, initAnimationProperties} from '../helpers';
+import {EPSILON, clamp, rotated, measureLabelSize, getRelativePosition, setBorderStyle, setShadowStyle, getElementCenterPoint, toPosition, getSize, resolveLineProperties, initAnimationProperties, inLimit} from '../helpers';
 import LabelAnnotation from './label';
 
 const pointInLine = (p1, p2, t) => ({x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y)});
@@ -17,8 +17,7 @@ const angleInCurve = (start, cp, end, t) => -Math.atan2(coordAngleInCurve(start.
 export default class LineAnnotation extends Element {
 
   inRange(mouseX, mouseY, axis, useFinalPosition) {
-    const hBorderWidth = this.options.borderWidth / 2;
-    const tolerance = this.options.hitTolerance / 2;
+    const hitSize = (this.options.borderWidth + this.options.hitTolerance) / 2;
     if (axis !== 'x' && axis !== 'y') {
       const point = {mouseX, mouseY};
       const {path, ctx} = this;
@@ -32,10 +31,10 @@ export default class LineAnnotation extends Element {
         ctx.restore();
         return result;
       }
-      const epsilon = sqr(hBorderWidth + tolerance);
+      const epsilon = sqr(hitSize);
       return intersects(this, point, epsilon, useFinalPosition) || isOnLabel(this, point, useFinalPosition);
     }
-    return inAxisRange(this, {mouseX, mouseY}, axis, {hBorderWidth, tolerance, useFinalPosition});
+    return inAxisRange(this, {mouseX, mouseY}, axis, {hitSize, useFinalPosition});
   }
 
   getCenterPoint(useFinalPosition) {
@@ -215,9 +214,9 @@ LineAnnotation.defaultRoutes = {
   borderColor: 'color'
 };
 
-function inAxisRange(element, {mouseX, mouseY}, axis, {hBorderWidth, tolerance, useFinalPosition}) {
+function inAxisRange(element, {mouseX, mouseY}, axis, {hitSize, useFinalPosition}) {
   const limit = rangeLimit(mouseX, mouseY, element.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis);
-  return (limit.value >= limit.start - hBorderWidth - tolerance && limit.value <= limit.end + hBorderWidth + tolerance) || isOnLabel(element, {mouseX, mouseY}, useFinalPosition, axis);
+  return inLimit(limit, hitSize) || isOnLabel(element, {mouseX, mouseY}, useFinalPosition, axis);
 }
 
 function isLineInArea({x, y, x2, y2}, {top, right, bottom, left}) {

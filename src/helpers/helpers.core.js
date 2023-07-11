@@ -10,6 +10,13 @@ export const EPSILON = 0.001;
 export const clamp = (x, from, to) => Math.min(to, Math.max(from, x));
 
 /**
+ * @param {{value: number, start: number, end: number}} limit
+ * @param {number} hitSize
+ * @returns {boolean}
+ */
+export const inLimit = (limit, hitSize) => limit.value >= limit.start - hitSize && limit.value <= limit.end + hitSize;
+
+/**
  * @param {Object} obj
  * @param {number} from
  * @param {number} to
@@ -26,16 +33,14 @@ export function clampAll(obj, from, to) {
  * @param {Point} point
  * @param {Point} center
  * @param {number} radius
- * @param {number} borderWidth
+ * @param {number} hitSize
  * @returns {boolean}
  */
-export function inPointRange(point, center, radius, {borderWidth, hitTolerance}) {
+export function inPointRange(point, center, radius, hitSize) {
   if (!point || !center || radius <= 0) {
     return false;
   }
-  const hBorderWidth = borderWidth / 2;
-  const tolerance = hitTolerance / 2;
-  return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius + hBorderWidth + tolerance, 2);
+  return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius + hitSize, 2);
 }
 
 /**
