@@ -29,12 +29,13 @@ export function clampAll(obj, from, to) {
  * @param {number} borderWidth
  * @returns {boolean}
  */
-export function inPointRange(point, center, radius, borderWidth) {
+export function inPointRange(point, center, radius, {borderWidth, hitTolerance}) {
   if (!point || !center || radius <= 0) {
     return false;
   }
   const hBorderWidth = borderWidth / 2;
-  return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius + hBorderWidth, 2);
+  const tolerance = hitTolerance / 2;
+  return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius + hBorderWidth + tolerance, 2);
 }
 
 /**
