@@ -75,6 +75,86 @@ describe('Point annotation', function() {
     });
   });
 
+  describe('inRange with hit tolerance', function() {
+    const annotation1 = {
+      type: 'point',
+      xValue: 7,
+      yValue: 7,
+      radius: 30,
+      hitTolerance: 5
+    };
+    const annotation2 = {
+      type: 'point',
+      xValue: 3,
+      yValue: 3,
+      radius: 5,
+      hitTolerance: 20
+    };
+    const annotation3 = {
+      type: 'point',
+      xValue: 5,
+      yValue: 5,
+      radius: 0,
+      hitTolerance: 10
+    };
+
+    const chart = window.scatterChart(10, 10, {annotation1, annotation2, annotation3});
+    const elems = window.getAnnotationElements(chart).filter(el => el.options.radius > 0);
+    const elemsNoRad = window.getAnnotationElements(chart).filter(el => el.options.radius === 0);
+
+    elems.forEach(function(element) {
+      it(`should return true inside element '${element.options.id}'`, function() {
+        for (const borderWidth of [0, 10]) {
+          const halfBorder = borderWidth / 2;
+          element.options.borderWidth = borderWidth;
+          const halfTolerance = element.options.hitTolerance / 2;
+          const radius = element.height / 2;
+          for (const angle of [0, 45, 90, 135, 180, 225, 270, 315]) {
+            const rad = angle * (Math.PI / 180);
+            const {x, y} = {
+              x: element.centerX + Math.cos(rad) * (radius + halfBorder + halfTolerance - 1),
+              y: element.centerY + Math.sin(rad) * (radius + halfBorder + halfTolerance - 1)
+            };
+            expect(element.inRange(x, y)).withContext(`angle: ${angle}, radius: ${radius}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
+          }
+        }
+      });
+
+      it(`should return false outside element '${element.options.id}'`, function() {
+        for (const borderWidth of [0, 10]) {
+          const halfBorder = borderWidth / 2;
+          element.options.borderWidth = borderWidth;
+          const halfTolerance = element.options.hitTolerance / 2;
+          const radius = element.height / 2;
+          for (const angle of [0, 45, 90, 135, 180, 225, 270, 315]) {
+            const rad = angle * (Math.PI / 180);
+            const {x, y} = {
+              x: element.centerX + Math.cos(rad) * (radius + halfBorder + halfTolerance + 1),
+              y: element.centerY + Math.sin(rad) * (radius + halfBorder + halfTolerance + 1)
+            };
+            expect(element.inRange(x, y)).withContext(`angle: ${angle}, radius: ${radius}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
+          }
+        }
+      });
+    });
+
+    elemsNoRad.forEach(function(element) {
+      it(`should return false radius is 0 element '${element.options.id}'`, function() {
+        for (const borderWidth of [0, 10]) {
+          const halfBorder = borderWidth / 2;
+          element.options.borderWidth = borderWidth;
+          const halfTolerance = element.options.hitTolerance / 2;
+          for (const x of [element.centerX - halfBorder - halfTolerance, element.centerX + halfBorder + halfTolerance]) {
+            expect(element.inRange(x, element.centerY)).toEqual(false);
+          }
+          for (const y of [element.centerY - halfBorder - halfTolerance, element.centerY + halfBorder + halfTolerance]) {
+            expect(element.inRange(element.centerY, y)).toEqual(false);
+          }
+        }
+      });
+    });
+  });
+
   describe('interaction', function() {
     const outer = {
       type: 'point',
