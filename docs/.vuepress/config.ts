@@ -134,6 +134,7 @@ export default defineConfig({
             'types/polygon'
           ]
         },
+        'developers',
         {
           title: 'Migration',
           collapsable: true,
