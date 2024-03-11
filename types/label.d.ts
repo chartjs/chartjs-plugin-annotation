@@ -141,6 +141,7 @@ export interface BoxLabelOptions extends CoreLabelOptions {
    * @default true
    */
   display?: Scriptable<boolean, PartialEventContext>,
+  textWrap?: Scriptable<boolean, PartialEventContext>,
   rotation?: Scriptable<number, PartialEventContext>
 }
 
