@@ -1,3 +1,6 @@
+import {toRadians} from 'chart.js/helpers';
+import {rotated} from './helpers.geometric';
+
 const isOlderPart = (act, req) => req > act || (act.length > req.length && act.slice(0, req.length) === req);
 
 /**
@@ -54,6 +57,18 @@ export function inBoxRange(point, {x, y, x2, y2}, axis, borderWidth) {
     return inRangeY;
   }
   return inRangeX && inRangeY;
+}
+
+/**
+ * @param {Point} point
+ * @param {rect: {x: number, y: number, x2: number, y2: number}, center: {x: number, y: number}} element
+ * @param {InteractionAxis} axis
+ * @param {{rotation: number, borderWidth: number}}
+ * @returns {boolean}
+ */
+export function inLabelRange(point, {rect, center}, axis, {rotation, borderWidth}) {
+  const rotPoint = rotated(point, center, toRadians(-rotation));
+  return inBoxRange(rotPoint, rect, axis, borderWidth);
 }
 
 /**

@@ -1,5 +1,5 @@
 import { ChartType, Plugin } from 'chart.js';
-import { AnnotationPluginOptions, BoxAnnotationOptions, EllipseAnnotationOptions, LabelAnnotationOptions, LineAnnotationOptions, PointAnnotationOptions, PolygonAnnotationOptions } from './options';
+import { AnnotationPluginOptions, BoxAnnotationOptions, EllipseAnnotationOptions, LabelAnnotationOptions, LineAnnotationOptions, PointAnnotationOptions, PolygonAnnotationOptions, DoughnutLabelAnnotationOptions } from './options';
 
 declare module 'chart.js' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -9,6 +9,7 @@ declare module 'chart.js' {
 
   interface ElementOptionsByType<TType extends ChartType> {
     boxAnnotation: BoxAnnotationOptions;
+    doughnutLabelAnnotation: DoughnutLabelAnnotationOptions;
     ellipseAnnotation: EllipseAnnotationOptions;
     labelAnnotation: LabelAnnotationOptions;
     lineAnnotation: LineAnnotationOptions;
