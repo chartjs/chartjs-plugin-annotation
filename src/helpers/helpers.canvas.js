@@ -1,13 +1,19 @@
-import {addRoundedRectPath, isArray, isNumber, toFont, toTRBLCorners, toRadians, PI, TAU, HALF_PI, QUARTER_PI, TWO_THIRDS_PI, RAD_PER_DEG} from 'chart.js/helpers';
+import {addRoundedRectPath, isArray, isNumber, toFont, toPadding, toTRBLCorners, toRadians, PI, TAU, HALF_PI, QUARTER_PI, TWO_THIRDS_PI, RAD_PER_DEG} from 'chart.js/helpers';
 import {clampAll, clamp} from './helpers.core';
 import {calculateTextAlignment, getSize} from './helpers.options';
 
+const BLANK = ' ';
 const widthCache = new Map();
 const notRadius = (radius) => isNaN(radius) || radius <= 0;
 const fontsKey = (fonts) => fonts.reduce(function(prev, item) {
   prev += item.string;
   return prev;
 }, '');
+const getContent = (content, wrappedText) => wrappedText
+  ? wrappedText
+  : isArray(content)
+    ? content
+    : [content];
 
 /**
  * @typedef { import('chart.js').Point } Point
@@ -96,6 +102,23 @@ export function measureLabelSize(ctx, options) {
 
 /**
  * @param {CanvasRenderingContext2D} ctx
+ * @param {{width: number}} properties
+ * @param {CoreLabelOptions} options
+ * @returns {{width: number, height: number}}
+ */
+export function measureWrappedLabelSize(ctx, properties, options) {
+  const wrappedOptions = wrapLabel(ctx, properties, options);
+  const result = measureLabelSize(ctx, {
+    content: wrappedOptions.content,
+    font: wrappedOptions.font,
+    textStrokeWidth: options.textStrokeWidth
+  });
+  result.wrappedOptions = wrappedOptions;
+  return result;
+}
+
+/**
+ * @param {CanvasRenderingContext2D} ctx
  * @param {{x: number, y: number, width: number, height: number}} rect
  * @param {Object} options
  */
@@ -121,7 +144,7 @@ export function drawBox(ctx, rect, options) {
 
 /**
  * @param {CanvasRenderingContext2D} ctx
- * @param {{x: number, y: number, width: number, height: number}} rect
+ * @param {{x: number, y: number, width: number, height: number, _wrappedOptions: object|undefined}} rect
  * @param {CoreLabelOptions} options
  */
 export function drawLabel(ctx, rect, options) {
@@ -133,10 +156,11 @@ export function drawLabel(ctx, rect, options) {
     ctx.restore();
     return;
   }
-  const labels = isArray(content) ? content : [content];
-  const optFont = options.font;
+  const wrapOpt = rect._wrappedOptions || {};
+  const labels = getContent(content, wrapOpt.content);
+  const optFont = wrapOpt.font || options.font;
   const fonts = isArray(optFont) ? optFont.map(f => toFont(f)) : [toFont(optFont)];
-  const optColor = options.color;
+  const optColor = wrapOpt.color || options.color;
   const colors = isArray(optColor) ? optColor : [optColor];
   const x = calculateTextAlignment(rect, options);
   const y = rect.y + options.textStrokeWidth / 2;
@@ -328,4 +352,69 @@ function applyLabelContent(ctx, {x, y}, labels, {fonts, colors}) {
 function getOpacity(value, elementValue) {
   const opacity = isNumber(value) ? value : elementValue;
   return isNumber(opacity) ? clamp(opacity, 0, 1) : 1;
+}
+
+function wrapLabel(ctx, properties, options) {
+  const padding = toPadding(options.padding);
+  const maxWidth = properties.width - padding.left - padding.right - options.borderWidth;
+  const content = options.content;
+  const text = isArray(content) ? content : [content];
+  const optFont = options.font;
+  const fonts = isArray(optFont) ? optFont : [optFont];
+  const optColor = options.color;
+  const colors = isArray(optColor) ? optColor : [optColor];
+  ctx.save();
+  const result = scanLabelLines(ctx, text, maxWidth, {fonts, colors});
+  ctx.restore();
+  return result;
+}
+
+function scanLabelLines(ctx, text, maxWidth, {fonts, colors}) {
+  const result = {
+    content: [],
+    font: [],
+    color: []
+  };
+  text.forEach(function(line, index) {
+    const normLine = line + '';
+    const c = colors[Math.min(index, colors.length - 1)];
+    const f = fonts[Math.min(index, fonts.length - 1)];
+    const font = toFont(f);
+    ctx.font = font.string;
+    const width = ctx.measureText(normLine).width;
+    if (maxWidth >= width || !normLine.includes(BLANK)) {
+      result.content.push(normLine);
+      result.font.push(f);
+      result.color.push(c);
+    } else {
+      const wrappedLine = splitLabel(ctx, normLine, maxWidth);
+      result.content.push(...wrappedLine);
+      result.font.push(...wrappedLine.map(() => f));
+      result.color.push(...wrappedLine.map(() => c));
+    }
+  });
+  return result;
+}
+
+function splitLabel(ctx, text, maxWidth) {
+  const sepaWidth = ctx.measureText(BLANK).width;
+  const result = [];
+  const words = text.split(BLANK);
+  let temp = '';
+  let current = 0;
+  for (const w of words) {
+    const wWidth = ctx.measureText(w).width;
+    if ((current + wWidth + sepaWidth) <= maxWidth) {
+      temp += w + BLANK;
+      current += wWidth + sepaWidth;
+    } else {
+      result.push(temp.trim());
+      temp = w + BLANK;
+      current = wWidth + sepaWidth;
+    }
+  }
+  if (temp.length) {
+    result.push(temp.trim());
+  }
+  return result;
 }

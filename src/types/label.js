@@ -244,10 +244,11 @@ function resolveCalloutAutoPosition(element, options) {
   return result.sort((a, b) => a.distance - b.distance)[0].position;
 }
 
-function getLabelSize({x, y, width, height, options}) {
+function getLabelSize({x, y, width, height, _wrappedOptions, options}) {
   const hBorderWidth = options.borderWidth / 2;
   const padding = toPadding(options.padding);
   return {
+    _wrappedOptions,
     x: x + padding.left + hBorderWidth,
     y: y + padding.top + hBorderWidth,
     width: width - padding.left - padding.right - options.borderWidth,
