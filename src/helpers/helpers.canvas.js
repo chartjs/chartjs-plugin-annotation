@@ -1,6 +1,6 @@
-import {addRoundedRectPath, isArray, isNumber, toFont, toTRBLCorners, toRadians, PI, TAU, HALF_PI, QUARTER_PI, TWO_THIRDS_PI, RAD_PER_DEG} from 'chart.js/helpers';
+import {addRoundedRectPath, isArray, isNumber, toTRBLCorners, toRadians, PI, TAU, HALF_PI, QUARTER_PI, TWO_THIRDS_PI, RAD_PER_DEG} from 'chart.js/helpers';
 import {clampAll, clamp} from './helpers.core';
-import {calculateTextAlignment, getSize} from './helpers.options';
+import {calculateTextAlignment, getSize, toFonts} from './helpers.options';
 
 const widthCache = new Map();
 const notRadius = (radius) => isNaN(radius) || radius <= 0;
@@ -78,13 +78,13 @@ export function setShadowStyle(ctx, options) {
 export function measureLabelSize(ctx, options) {
   const content = options.content;
   if (isImageOrCanvas(content)) {
-    return {
+    const size = {
       width: getSize(content.width, options.width),
       height: getSize(content.height, options.height)
     };
+    return size;
   }
-  const optFont = options.font;
-  const fonts = isArray(optFont) ? optFont.map(f => toFont(f)) : [toFont(optFont)];
+  const fonts = toFonts(options);
   const strokeWidth = options.textStrokeWidth;
   const lines = isArray(content) ? content : [content];
   const mapKey = lines.join() + fontsKey(fonts) + strokeWidth + (ctx._measureText ? '-spriting' : '');
@@ -123,8 +123,9 @@ export function drawBox(ctx, rect, options) {
  * @param {CanvasRenderingContext2D} ctx
  * @param {{x: number, y: number, width: number, height: number}} rect
  * @param {CoreLabelOptions} options
+ * @param {number} fitRatio
  */
-export function drawLabel(ctx, rect, options) {
+export function drawLabel(ctx, rect, options, fitRatio) {
   const content = options.content;
   if (isImageOrCanvas(content)) {
     ctx.save();
@@ -134,8 +135,7 @@ export function drawLabel(ctx, rect, options) {
     return;
   }
   const labels = isArray(content) ? content : [content];
-  const optFont = options.font;
-  const fonts = isArray(optFont) ? optFont.map(f => toFont(f)) : [toFont(optFont)];
+  const fonts = toFonts(options, fitRatio);
   const optColor = options.color;
   const colors = isArray(optColor) ? optColor : [optColor];
   const x = calculateTextAlignment(rect, options);

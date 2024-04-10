@@ -1,3 +1,4 @@
+export * from './helpers.callout';
 export * from './helpers.canvas';
 export * from './helpers.chart';
 export * from './helpers.core';

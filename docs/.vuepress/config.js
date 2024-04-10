@@ -1,11 +1,8 @@
-import * as path from 'path';
-import markdownItInclude from 'markdown-it-include';
-import { DefaultThemeConfig, defineConfig, PluginTuple } from 'vuepress/config';
-
+const path = require('path');
 const docsVersion = "VERSION";
 const base = process.env.NODE_ENV === "development" ? '/chartjs-plugin-annotation/master/' : `/chartjs-plugin-annotation/${docsVersion}/`;
 
-export default defineConfig({
+module.exports = {
   dest: 'dist/docs',
   title: 'chartjs-plugin-annotation',
   description: 'Annotations for Chart.js',
@@ -75,7 +72,7 @@ export default defineConfig({
         ]
       },
     }],
-  ] as PluginTuple[],
+  ],
   chainWebpack(config) {
     config.module
       .rule('chart.js')
@@ -89,7 +86,7 @@ export default defineConfig({
   },
   markdown: {
     extendMarkdown: md => {
-      md.use(markdownItInclude, path.resolve(__dirname, '../'));
+      md.use(require('markdown-it-include'), path.resolve(__dirname, '../'));
     }
   },
   themeConfig: {
@@ -101,8 +98,8 @@ export default defineConfig({
     docsDir: 'docs',
     chart: {
       imports: [
-        ['scripts/register.js', 'Register'],
-        ['scripts/defaults.js', 'Defaults'],
+        ['scripts/register.js'],
+        ['scripts/defaults.js'],
         ['scripts/utils.js', 'Utils'],
       ]
     },
@@ -135,15 +132,8 @@ export default defineConfig({
             'types/doughnutLabel'
           ]
         },
-        {
-          title: 'Migration',
-          collapsable: true,
-          children: [
-            'migrationV3',
-            'migrationV2',
-            'migrationV1'
-          ]
-        },
+        'migrationV1',
+        'migrationV2'
       ],
       '/samples/': [
         'intro',
@@ -156,7 +146,7 @@ export default defineConfig({
             'box/canvas',
             'box/image',
             'box/initAnim',
-            'box/gradient'
+            'box/gradient',
           ]
         },
         {
@@ -165,7 +155,7 @@ export default defineConfig({
             'ellipse/basic',
             'ellipse/rotation',
             'ellipse/label',
-            'ellipse/image'
+            'ellipse/image',
           ]
         },
         {
@@ -198,7 +188,7 @@ export default defineConfig({
             'line/image',
             'line/datasetBars',
             'line/animation',
-            'line/hook'
+            'line/hook',
           ]
         },
         {
@@ -208,7 +198,7 @@ export default defineConfig({
             'point/combined',
             'point/outsideChartArea',
             'point/shadow',
-            'point/initAnim'
+            'point/initAnim',
           ]
         },
         {
@@ -217,7 +207,7 @@ export default defineConfig({
             'polygon/basic',
             'polygon/stop',
             'polygon/outsideChartArea',
-            'polygon/shadow'
+            'polygon/shadow',
             ]
         },
         {
@@ -234,7 +224,7 @@ export default defineConfig({
           title: 'Charts',
           children: [
             'charts/bar',
-            'charts/line'
+            'charts/line',
           ],
         },
         {
@@ -243,11 +233,11 @@ export default defineConfig({
             'interaction/interaction',
             'interaction/dragging',
             'interaction/selection',
-            'interaction/cartesianplane'
+            'interaction/cartesianplane',
           ],
         },
-        'utils'
+        'utils',
       ]
     }
- } as DefaultThemeConfig
-});
+  }
+};

@@ -4,9 +4,9 @@ export const eventPoint0 = {
   y: 0
 };
 
-export function testEvents(options) {
+export function testEvents(options, config) {
   describe(`events on ${options.type}`, function() {
-    const chartConfig = {
+    const chartConfig = config || {
       type: 'scatter',
       options: {
         animation: false,

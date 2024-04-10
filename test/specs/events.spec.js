@@ -11,6 +11,31 @@ describe('Common', function() {
     window.testEvents(annotation);
   });
 
+  ['doughnutLabel'].forEach(function(type) {
+    const annotation = {
+      type,
+      content: ['Test row1', 'Test row 2']
+    };
+    const chartConfig = {
+      type: 'doughnut',
+      data: {
+        labels: ['Data1', 'Data2', 'Data3', 'Data4'],
+        datasets: [{
+          data: [102, 200, 80, 55],
+        }],
+      },
+      options: {
+        animation: false,
+        plugins: {
+          legend: false,
+          annotation: {
+          }
+        }
+      }
+    };
+    window.testEvents(annotation, chartConfig);
+  });
+
   describe('events', function() {
     const annotation = {
       type: 'box',
