@@ -89,6 +89,8 @@ If `scaleID` is unset, then `xScaleID` and `yScaleID` are used to draw a line fr
 | `display` | Whether or not this annotation is visible.
 | `drawTime` | See [drawTime](../options.md#draw-time).
 | `endValue` | End two of the line when a single scale is specified.
+| `hitTolerance` | Amount of pixels to interact with annotations within some distance of the mouse point.
+| `id` | Identifies a unique id  for the annotation and it will be stored in the element context. When the annotations are defined by an object, the id is automatically set using the key used to store the annotations in the object. When the annotations are configured by an array, the id, passed by this option in the annotation, will be used. 
 | `scaleID` | ID of the scale in single scale mode. If unset, `xScaleID` and `yScaleID` are used.
 | `value` | End one of the line when a single scale is specified.
 | `xMax` | X coordinate of end two of the line in units along the x axis.
@@ -137,6 +139,7 @@ All of these options can be [Scriptable](../options.md#scriptable-options)
 | `drawTime` | `string` | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the line annotation draw time if unset.
 | [`font`](#fonts-and-colors) | [`Font`\|`Font[]`](../options#font) | `{ weight: 'bold' }` | Label font.
 | `height` | `number`\|`string` | `undefined` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
+| `hitTolerance` | `number` | `undefined` | Amount of pixels to interact with annotations within some distance of the mouse point.
 | `opacity` | `number` | `undefined` | Overrides the opacity of the image or canvas element. Could be set a number in the range 0.0 to 1.0, inclusive. If undefined, uses the opacity of the image or canvas element. It is used only when the content is an image or canvas element.
 | `padding` | [`Padding`](../options.md#padding) | `6` | The padding to add around the text label.
 | `position` | `string` | `'center'` | Anchor position of label on line. Possible options are: `'start'`, `'center'`, `'end'`. It can be set by a string in percentage format `'number%'` which are representing the percentage on the width of the line where the label will be located.
