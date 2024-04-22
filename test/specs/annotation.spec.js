@@ -142,6 +142,34 @@ describe('Annotation plugin', function() {
     console.warn = origWarn;
   });
 
+  it('should return the right amount of annotations elements', function() {
+    const types = ['box', 'ellipse', 'label', 'line', 'point', 'polygon'];
+    const annotations = types.map(function(type) {
+      return {
+        type,
+        display: () => type.startsWith('l'),
+        xMin: 2,
+        yMin: 2,
+        xMax: 8,
+        yMax: 8
+      };
+    });
+
+    const chart = acquireChart({
+      type: 'line',
+      options: {
+        plugins: {
+          annotation: {
+            annotations
+          }
+        }
+      }
+    });
+
+    expect(window.getAnnotationElements(chart).length).toBe(types.length);
+    expect(window.getAnnotationElements(undefined).length).toBe(0);
+  });
+
   describe('Annotation option resolution', function() {
     it('should resolve from plugin common options', function() {
       const chart = acquireChart({

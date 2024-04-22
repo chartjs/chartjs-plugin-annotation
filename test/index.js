@@ -1,6 +1,6 @@
 import {acquireChart, addMatchers, releaseCharts, specsFromFixtures, triggerMouseEvent, afterEvent} from 'chartjs-test-utils';
 import {testEvents, eventPoint0, getCenterPoint} from './events';
-import {createCanvas, getAnnotationElements, scatterChart, stringifyObject, interactionData, getQuadraticXY, getQuadraticAngle, drawStar} from './utils';
+import {createCanvas, getAnnotationElements, getAnnotationInteractedElements, scatterChart, stringifyObject, interactionData, getQuadraticXY, getQuadraticAngle, drawStar} from './utils';
 import * as helpers from '../src/helpers';
 
 window.helpers = helpers;
@@ -14,6 +14,7 @@ window.getCenterPoint = getCenterPoint;
 window.createCanvas = createCanvas;
 window.drawStar = drawStar;
 window.getAnnotationElements = getAnnotationElements;
+window.getAnnotationInteractedElements = getAnnotationInteractedElements;
 window.scatterChart = scatterChart;
 window.stringifyObject = stringifyObject;
 window.interactionData = interactionData;
