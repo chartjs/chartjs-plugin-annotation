@@ -31,6 +31,7 @@ const chart = new Chart('id', {
         },
         annotations: [{
           type: 'line',
+          drawTime: 1,
           label: {
             content: ['test', 'multiple'],
             font: {

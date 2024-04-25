@@ -82,6 +82,10 @@ export default {
     draw(chart, 'afterDatasetsDraw', options.clip);
   },
 
+  beforeDatasetDraw(chart, _args, options) {
+    draw(chart, _args.index, options.clip);
+  },
+
   beforeDraw(chart, _args, options) {
     draw(chart, 'beforeDraw', options.clip);
   },

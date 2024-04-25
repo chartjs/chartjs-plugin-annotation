@@ -3,7 +3,7 @@ import { AnnotationEvents, PartialEventContext, EventContext } from './events';
 import { LabelOptions, BoxLabelOptions, LabelTypeOptions } from './label';
 import { AnnotationBoxModel, AnnotationElement } from './element';
 
-export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw';
+export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw' | number;
 
 export interface AnnotationTypeRegistry {
   box: BoxAnnotationOptions
