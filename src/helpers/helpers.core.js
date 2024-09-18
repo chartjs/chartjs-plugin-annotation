@@ -51,7 +51,7 @@ export function inPointRange(point, center, radius, hitSize) {
  * @returns {boolean}
  */
 export function inBoxRange(point, {x, y, x2, y2}, axis, {borderWidth, hitTolerance}) {
-  const hitSize = borderWidth / 2 + hitTolerance / 2;
+  const hitSize = (borderWidth + hitTolerance) / 2;
   const inRangeX = point.x >= x - hitSize - EPSILON && point.x <= x2 + hitSize + EPSILON;
   const inRangeY = point.y >= y - hitSize - EPSILON && point.y <= y2 + hitSize + EPSILON;
   if (axis === 'x') {
