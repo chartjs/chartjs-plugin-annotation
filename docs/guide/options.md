@@ -118,6 +118,7 @@ In addition to [chart](#chart)
 
 * `id`: the annotation id
 * `element`: the annotation element
+* `elements`: the array which contains the already created annotation elements.
 * `type`: `'annotation'`
 
 The [annotation](#annotation) option context is passed to scriptable options in all other cases, except when resolving `id`, `type` or adjusting scale ranges. The same values resolved in `afterDataLimits` with [chart](#chart) context are again evaluated in `afterUpdate` with [annotation](#annotation) context.
