@@ -239,4 +239,94 @@ describe('Annotation plugin', function() {
       expect(element.options.drawTime).toBe(chart.options.plugins.annotation.annotations.label.drawTime);
     });
   });
+
+  describe('context', function() {
+    it('should contain the loaded elements', function() {
+      const counts = [];
+      const annotations = [];
+      for (let i = 0; i < 5; i++) {
+        annotations.push({
+          type: 'label',
+          content: 'test',
+          display(context) {
+            expect(context.elements.length).toBe(i);
+            counts.push(i);
+          }
+        });
+      }
+      acquireChart({
+        type: 'line',
+        options: {
+          plugins: {
+            annotation: {
+              annotations
+            }
+          }
+        }
+      });
+      expect(counts).toEqual([0, 1, 2, 3, 4]);
+    });
+    it('should contain the loaded elements after update', function() {
+      const counts = [];
+      const annotations = [];
+      for (let i = 0; i < 5; i++) {
+        annotations.push({
+          type: 'label',
+          content: 'test',
+          display(context) {
+            expect(context.elements.length).toBe(i);
+            counts.push(i);
+          }
+        });
+      }
+      const chart = acquireChart({
+        type: 'line',
+        options: {
+          plugins: {
+            annotation: {
+              annotations
+            }
+          }
+        }
+      });
+      counts.splice(0, counts.length);
+      chart.update();
+      expect(counts).toEqual([0, 1, 2, 3, 4]);
+    });
+
+    it('should contain the loaded elements after reducing annotations and chart update', function() {
+      const counts = [];
+      const annotations = [];
+      for (let i = 0; i < 5; i++) {
+        annotations.push({
+          type: 'label',
+          content: 'test',
+          display(context) {
+            const check = context.chart.options.plugins.annotation.annotations.length < 5;
+            if (check) {
+              expect(context.elements.length).toBe(i - 2);
+              counts.push(i);
+            }
+          }
+        });
+      }
+      const chart = acquireChart({
+        type: 'line',
+        options: {
+          plugins: {
+            annotation: {
+              annotations
+            }
+          }
+        }
+      });
+      counts.splice(0, counts.length);
+      chart.update();
+      counts.splice(0, counts.length);
+      chart.options.plugins.annotation.annotations = annotations.slice(2);
+      chart.update();
+      expect(counts).toEqual([2, 3, 4]);
+    });
+
+  });
 });

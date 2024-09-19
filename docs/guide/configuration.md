@@ -9,6 +9,7 @@ The following options are available at the top level. They apply to all annotati
 | Name | Type | [Scriptable](options.md#scriptable-options) | Default | Notes
 | ---- | ---- | :----: | ---- | ----
 | [`animations`](#animations) | `object` | No | [see here](#default-animations) | To configure which element properties are animated and how.
+| `annnotations` | `object`\|`array` | Yes | `undefined` | To configure all annotations to draw.
 | `clip` | `boolean` | No | `true` | Are the annotations clipped to the chartArea.
 | [`common`](#common) | `Object` | No | | To configure common options apply to all annotations
 | [`interaction`](options.md#interaction) | `Object` | No | `options.interaction` | To configure which events trigger plugin interactions

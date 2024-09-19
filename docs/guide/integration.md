@@ -7,7 +7,7 @@ title: Integration
 ## Script Tag
 
 ```html
-<script src="path/to/chartjs/dist/chart.min.js"></script>
+<script src="path/to/chartjs/dist/chart.umd.js"></script>
 <script src="path/to/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js"></script>
 <script>
     const myChart = new Chart(ctx, {...});
