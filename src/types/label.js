@@ -8,7 +8,7 @@ export default class LabelAnnotation extends Element {
 
   inRange(mouseX, mouseY, axis, useFinalPosition) {
     const {x, y} = rotated({x: mouseX, y: mouseY}, this.getCenterPoint(useFinalPosition), toRadians(-this.rotation));
-    return inBoxRange({x, y}, this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis, this.options.borderWidth);
+    return inBoxRange({x, y}, this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), axis, this.options);
   }
 
   getCenterPoint(useFinalPosition) {
@@ -87,6 +87,7 @@ LabelAnnotation.defaults = {
     weight: undefined
   },
   height: undefined,
+  hitTolerance: 0,
   init: undefined,
   opacity: undefined,
   padding: 6,
