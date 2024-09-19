@@ -11,7 +11,7 @@ The following options are available for all annotations.
 | [`borderDashOffset`](#styling) | `number` | Yes | `0`
 | [`borderShadowColor`](#styling) | [`Color`](../options.md#color) | Yes | `'transparent'`
 | [`display`](#general) | `boolean` | Yes | `true`
-| [`drawTime`](#general) | `string` | Yes | `'afterDatasetsDraw'`
+| [`drawTime`](#general) | `string`\|`number` | Yes | `'afterDatasetsDraw'`
 | [`hitTolerance`](#general) | `number` | Yes | `0` 
 | [`init`](../configuration.html#common) | `boolean`  | [See initial animation](../configuration.html#initial-animation) | `undefined`
 | [`id`](#general) | `string` | No | `undefined`

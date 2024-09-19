@@ -64,7 +64,7 @@ The following options apply to all annotations unless they are overwritten on a 
 
 | Name | Type | [Scriptable](options.md#scriptable-options) | Default | Notes
 | ---- | ---- | :----: | ---- | ----
-| `drawTime` | `string` | Yes | `'afterDatasetsDraw'` | See [drawTime](options#draw-time).
+| `drawTime` | `string`\|`number` | Yes | `'afterDatasetsDraw'` | See [drawTime](options#draw-time).
 | `init` | `boolean`  | [See initial animation](#initial-animation) | `false` | Enable the animation to the annotations when they are drawing at chart initialization
 
 ### Initial animation
