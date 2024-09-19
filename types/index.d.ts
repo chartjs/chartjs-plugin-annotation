@@ -1,9 +1,10 @@
-import { ChartType, Plugin } from 'chart.js';
+import { Chart, ChartType, Plugin } from 'chart.js';
 import { AnnotationPluginOptions, BoxAnnotationOptions, EllipseAnnotationOptions, LabelAnnotationOptions, LineAnnotationOptions, PointAnnotationOptions, PolygonAnnotationOptions } from './options';
+import { AnnotationElement } from './element';
 
 declare module 'chart.js' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface PluginOptionsByType<TType extends ChartType = ChartType> {
+  interface PluginOptionsByType<TType extends ChartType> {
     annotation: AnnotationPluginOptions;
   }
 
@@ -17,7 +18,9 @@ declare module 'chart.js' {
   }
 }
 
-declare const Annotation: Plugin;
+declare const Annotation: Plugin & {
+  getAnnotations(chart: Chart): AnnotationElement[];
+};
 
 export default Annotation;
 

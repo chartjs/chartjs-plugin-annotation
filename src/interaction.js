@@ -9,58 +9,58 @@ const interaction = {
   modes: {
     /**
      * Point mode returns all elements that hit test based on the event position
-     * @param {Object} state - the state of the plugin
+     * @param {AnnotationElement[]} visibleElements - annotation elements which are visible
      * @param {ChartEvent} event - the event we are find things at
      * @return {AnnotationElement[]} - elements that are found
      */
-    point(state, event) {
-      return filterElements(state, event, {intersect: true});
+    point(visibleElements, event) {
+      return filterElements(visibleElements, event, {intersect: true});
     },
 
     /**
      * Nearest mode returns the element closest to the event position
-     * @param {Object} state - the state of the plugin
+     * @param {AnnotationElement[]} visibleElements - annotation elements which are visible
      * @param {ChartEvent} event - the event we are find things at
      * @param {Object} options - interaction options to use
      * @return {AnnotationElement[]} - elements that are found (only 1 element)
      */
-    nearest(state, event, options) {
-      return getNearestItem(state, event, options);
+    nearest(visibleElements, event, options) {
+      return getNearestItem(visibleElements, event, options);
     },
     /**
      * x mode returns the elements that hit-test at the current x coordinate
-     * @param {Object} state - the state of the plugin
+     * @param {AnnotationElement[]} visibleElements - annotation elements which are visible
      * @param {ChartEvent} event - the event we are find things at
      * @param {Object} options - interaction options to use
      * @return {AnnotationElement[]} - elements that are found
      */
-    x(state, event, options) {
-      return filterElements(state, event, {intersect: options.intersect, axis: 'x'});
+    x(visibleElements, event, options) {
+      return filterElements(visibleElements, event, {intersect: options.intersect, axis: 'x'});
     },
 
     /**
      * y mode returns the elements that hit-test at the current y coordinate
-     * @param {Object} state - the state of the plugin
+     * @param {AnnotationElement[]} visibleElements - annotation elements which are visible
      * @param {ChartEvent} event - the event we are find things at
      * @param {Object} options - interaction options to use
      * @return {AnnotationElement[]} - elements that are found
      */
-    y(state, event, options) {
-      return filterElements(state, event, {intersect: options.intersect, axis: 'y'});
+    y(visibleElements, event, options) {
+      return filterElements(visibleElements, event, {intersect: options.intersect, axis: 'y'});
     }
   }
 };
 
 /**
  * Returns all elements that hit test based on the event position
- * @param {Object} state - the state of the plugin
+ * @param {AnnotationElement[]} visibleElements - annotation elements which are visible
  * @param {ChartEvent} event - the event we are find things at
  * @param {Object} options - interaction options to use
  * @return {AnnotationElement[]} - elements that are found
  */
-export function getElements(state, event, options) {
+export function getElements(visibleElements, event, options) {
   const mode = interaction.modes[options.mode] || interaction.modes.nearest;
-  return mode(state, event, options);
+  return mode(visibleElements, event, options);
 }
 
 function inRangeByAxis(element, event, axis) {
@@ -79,14 +79,14 @@ function getPointByAxis(event, center, axis) {
   return center;
 }
 
-function filterElements(state, event, options) {
-  return state.visibleElements.filter((element) => options.intersect ? element.inRange(event.x, event.y) : inRangeByAxis(element, event, options.axis));
+function filterElements(visibleElements, event, options) {
+  return visibleElements.filter((element) => options.intersect ? element.inRange(event.x, event.y) : inRangeByAxis(element, event, options.axis));
 }
 
-function getNearestItem(state, event, options) {
+function getNearestItem(visibleElements, event, options) {
   let minDistance = Number.POSITIVE_INFINITY;
 
-  return filterElements(state, event, options)
+  return filterElements(visibleElements, event, options)
     .reduce((nearestItems, element) => {
       const center = element.getCenterPoint();
       const evenPoint = getPointByAxis(event, center, options.axis);

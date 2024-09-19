@@ -83,7 +83,7 @@ module.exports = {
 
 ## Draw Time
 
-The `drawTime` option for an annotation determines where in the chart lifecycle the drawing occurs. Four potential options are available:
+The `drawTime` option for an annotation determines where in the chart lifecycle the drawing occurs. Four potential predefined options are available:
 
 | Option | Notes
 | ---- | ----
@@ -91,6 +91,8 @@ The `drawTime` option for an annotation determines where in the chart lifecycle 
 | `'beforeDatasetsDraw'` | Occurs after drawing of axes, but before datasets
 | `'afterDatasetsDraw'` | Occurs after drawing of datasets but before items such as the tooltip
 | `'afterDraw'` | After other drawing is completed.
+
+Furthermore, the `drawTime` option can be set as number which represents the dataset index used to draw the annotation, before that dataset will be.
 
 ## Option Context
 
@@ -116,6 +118,7 @@ In addition to [chart](#chart)
 
 * `id`: the annotation id
 * `element`: the annotation element
+* `elements`: the array which contains the already created annotation elements.
 * `type`: `'annotation'`
 
 The [annotation](#annotation) option context is passed to scriptable options in all other cases, except when resolving `id`, `type` or adjusting scale ranges. The same values resolved in `afterDataLimits` with [chart](#chart) context are again evaluated in `afterUpdate` with [annotation](#annotation) context.
