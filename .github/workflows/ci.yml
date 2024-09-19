@@ -2,13 +2,13 @@ name: Node.js CI
 
 on:
   push:
-    branches: [master, v2]
+    branches: [ master, v2 ]
   pull_request:
-    branches: [master, v2]
-  workflow_dispatch:
+    branches: [ master, v2 ]
 
 jobs:
   build:
+
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -17,44 +17,44 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          cache: npm
-          node-version: 16
-      - run: |
-          npm ci
-          npm run build
-          if [ "${{ runner.os }}" == "Windows" ]; then
-            npm run lint
-          else
-            xvfb-run --auto-servernum npm test
-          fi
-        shell: bash
-      - name: Coveralls Parallel - Chrome
-        if: runner.os != 'Windows'
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.github_token }}
-          path-to-lcov: "./coverage/chrome/lcov.info"
-          flag-name: ${{ matrix.os }}-chrome
-          parallel: true
-      - name: Coveralls Parallel - Firefox
-        if: runner.os != 'Windows'
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.github_token }}
-          path-to-lcov: "./coverage/firefox/lcov.info"
-          flag-name: ${{ matrix.os }}-firefox
-          parallel: true
+    - uses: actions/checkout@v3
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        cache: npm
+        node-version: 16
+    - run: |
+        npm ci
+        npm run build
+        if [ "${{ runner.os }}" == "Windows" ]; then
+          npm run lint
+        else
+          xvfb-run --auto-servernum npm test
+        fi
+      shell: bash
+    - name: Coveralls Parallel - Chrome
+      if: runner.os != 'Windows'
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        path-to-lcov: './coverage/chrome/lcov.info'
+        flag-name: ${{ matrix.os }}-chrome
+        parallel: true
+    - name: Coveralls Parallel - Firefox
+      if: runner.os != 'Windows'
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        path-to-lcov: './coverage/firefox/lcov.info'
+        flag-name: ${{ matrix.os }}-firefox
+        parallel: true
 
   finish:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Coveralls Finished
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.github_token }}
-          parallel-finished: true
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        parallel-finished: true
