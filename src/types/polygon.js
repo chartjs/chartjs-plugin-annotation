@@ -73,6 +73,7 @@ PolygonAnnotation.defaults = {
   borderShadowColor: 'transparent',
   borderWidth: 1,
   display: true,
+  hitTolerance: 0,
   init: undefined,
   point: {
     radius: 0
@@ -101,8 +102,8 @@ PolygonAnnotation.defaultRoutes = {
   backgroundColor: 'color'
 };
 
-function buildPointElement({centerX, centerY}, {radius, borderWidth}, rad) {
-  const halfBorder = borderWidth / 2;
+function buildPointElement({centerX, centerY}, {radius, borderWidth, hitTolerance}, rad) {
+  const hitSize = (borderWidth + hitTolerance) / 2;
   const sin = Math.sin(rad);
   const cos = Math.cos(rad);
   const point = {x: centerX + sin * radius, y: centerY - cos * radius};
@@ -114,8 +115,8 @@ function buildPointElement({centerX, centerY}, {radius, borderWidth}, rad) {
       y: point.y,
       centerX: point.x,
       centerY: point.y,
-      bX: centerX + sin * (radius + halfBorder),
-      bY: centerY - cos * (radius + halfBorder)
+      bX: centerX + sin * (radius + hitSize),
+      bY: centerY - cos * (radius + hitSize)
     }
   };
 }

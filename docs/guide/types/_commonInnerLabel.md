@@ -9,9 +9,10 @@ All of these options can be [Scriptable](../options.md#scriptable-options)
 | [`color`](#fonts-and-colors) | [`Color`\|`Color[]`](../options#color) | `'black'` | Text color.
 | `content` | `string`\|`string[]`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image)\|[`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) | `null` | The content to show in the label.
 | `display` | `boolean` | `false` | Whether or not the label is shown.
-| `drawTime` | `string` | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the annotation draw time if unset
+| `drawTime` | `string`\|`number` | `options.drawTime` | See [drawTime](../options#draw-time). Defaults to the annotation draw time if unset
 | [`font`](#fonts-and-colors) | [`Font`\|`Font[]`](../options#font) | `{ weight: 'bold' }` | Label font
 | `height` | `number`\|`string` | `undefined` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
+| `hitTolerance` | `number` | `undefined` | Amount of pixels to interact with annotations within some distance of the mouse point.
 | `opacity` | `number` | `undefined` | Overrides the opacity of the image or canvas element. Could be set a number in the range 0.0 to 1.0, inclusive. If undefined, uses the opacity of the image or canvas element. It is used only when the content is an image or canvas element.
 | `padding` | [`Padding`](../options.md#padding) | `6` | The padding to add around the text label.
 | [`position`](#position) | `string`\|`{x: string, y: string}` | `'center'` | Anchor position of label in the annotation.

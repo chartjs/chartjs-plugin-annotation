@@ -3,7 +3,7 @@ import { AnnotationEvents, PartialEventContext, EventContext } from './events';
 import { LabelOptions, BoxLabelOptions, LabelTypeOptions } from './label';
 import { AnnotationBoxModel, AnnotationElement } from './element';
 
-export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw';
+export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw' | number;
 
 export interface AnnotationTypeRegistry {
   box: BoxAnnotationOptions
@@ -42,7 +42,8 @@ export interface CoreAnnotationOptions extends AnnotationEvents, ShadowOptions, 
   borderWidth?: Scriptable<number, PartialEventContext>,
   display?: Scriptable<boolean, PartialEventContext>,
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
-  init?: boolean | ((chart: Chart, properties: AnnotationBoxModel, options: AnnotationOptions) => void | boolean | AnnotationElement),
+  hitTolerance?: Scriptable<number, PartialEventContext>,
+  init?: boolean | (({ chart: Chart, properties: AnnotationBoxModel, options: AnnotationOptions }) => void | boolean | Partial<AnnotationElement>),
   id?: string,
   xMax?: Scriptable<ScaleValue, PartialEventContext>,
   xMin?: Scriptable<ScaleValue, PartialEventContext>,
