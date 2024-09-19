@@ -224,12 +224,13 @@ describe('Line annotation', function() {
     };
 
     const chart = window.scatterChart(10, 10, {outer, inner});
-    const state = window['chartjs-plugin-annotation']._getState(chart);
+    const elements = window.getAnnotationElements(chart);
+    const visible = elements.filter(el => !el.skip && el.options.display);
     const interactionOpts = {};
-    const outerEl = window.getAnnotationElements(chart)[0];
+    const outerEl = elements[0];
     const outCenter = outerEl.getCenterPoint();
     const outHBordeWidth = outerEl.options.borderWidth / 2;
-    const innerEl = window.getAnnotationElements(chart)[1];
+    const innerEl = elements[1];
     const inCenter = outerEl.getCenterPoint();
     const inHBordeWidth = innerEl.options.borderWidth / 2;
 
@@ -252,8 +253,8 @@ describe('Line annotation', function() {
             for (let i = 0; i < points.length; i++) {
               const point = points[i];
               const elementsCount = elementsCounts[i];
-              const elements = state._getElements(state, point, interactionOpts);
-              expect(elements.length).withContext(`with interaction mode ${mode}, axis ${axis}, intersect ${intersect}, {x: ${point.x.toFixed(1)}, y: ${point.y.toFixed(1)}`).toEqual(elementsCount);
+              const els = window.getAnnotationInteractedElements(visible, point, interactionOpts);
+              expect(els.length).withContext(`with interaction mode ${mode}, axis ${axis}, intersect ${intersect}, {x: ${point.x.toFixed(1)}, y: ${point.y.toFixed(1)}`).toEqual(elementsCount);
             }
           });
         }
@@ -291,11 +292,12 @@ describe('Line annotation', function() {
     };
 
     const chart = window.scatterChart(10, 10, {outer, inner});
-    const state = window['chartjs-plugin-annotation']._getState(chart);
+    const elements = window.getAnnotationElements(chart);
+    const visible = elements.filter(el => !el.skip && el.options.display);
     const interactionOpts = {};
-    const outerEl = window.getAnnotationElements(chart)[0];
+    const outerEl = elements[0];
     const outCenter = outerEl.getCenterPoint();
-    const innerEl = window.getAnnotationElements(chart)[1];
+    const innerEl = elements[1];
 
     it('should return the right amount of annotation elements', function() {
       for (const interaction of window.interactionData) {
@@ -316,8 +318,8 @@ describe('Line annotation', function() {
             for (let i = 0; i < points.length; i++) {
               const point = points[i];
               const elementsCount = elementsCounts[i];
-              const elements = state._getElements(state, point, interactionOpts);
-              expect(elements.length).withContext(`with interaction mode ${mode}, axis ${axis}, intersect ${intersect}, {x: ${point.x.toFixed(1)}, y: ${point.y.toFixed(1)}`).toEqual(elementsCount);
+              const els = window.getAnnotationInteractedElements(visible, point, interactionOpts);
+              expect(els.length).withContext(`with interaction mode ${mode}, axis ${axis}, intersect ${intersect}, {x: ${point.x.toFixed(1)}, y: ${point.y.toFixed(1)}`).toEqual(elementsCount);
             }
           });
         }
