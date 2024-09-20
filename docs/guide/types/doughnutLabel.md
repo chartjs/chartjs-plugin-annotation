@@ -66,6 +66,7 @@ The following options are available for label annotations.
 | [`content`](#general) | `string`\|`string[]`\|[`Image`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/Image)\|[`HTMLCanvasElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement) | Yes | `null`
 | [`font`](#styling) | [`Font`\|`Font[]`](../options.md#font) | Yes | `{}`
 | [`height`](#general) | `number`\|`string` | Yes | `undefined`
+| [`hitTolerance`](#general) | `number` | Yes | `0` 
 | [`id`](#general) | `string` | No | `undefined`
 | [`init`](../configuration.html#common) | `boolean`  | [See initial animation](../configuration.html#initial-animation) | `undefined`
 | [`opacity`](#styling) | `number` | Yes | `undefined`
@@ -94,6 +95,7 @@ The content will be rendered in the center of the chart.
 | `display` | Whether or not this annotation is visible.
 | `drawTime` | See [drawTime](../options.md#draw-time).
 | `height` | Overrides the height of the image or canvas element. Could be set in pixel by a number, or in percentage of current height of image or canvas element by a string. If undefined, uses the height of the image or canvas element. It is used only when the content is an image or canvas element.
+| `hitTolerance` | Amount of pixels to interact with annotations within some distance of the mouse point.
 | `id` | Identifies a unique id  for the annotation and it will be stored in the element context. When the annotations are defined by an object, the id is automatically set using the key used to store the annotations in the object. When the annotations are configured by an array, the id, passed by this option in the annotation, will be used. 
 | `rotation` | Rotation of the label in degrees.
 | `spacing` | The space in pixels between the inner radius of the chart and the background of the label.
