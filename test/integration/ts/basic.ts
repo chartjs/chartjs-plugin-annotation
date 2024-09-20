@@ -32,3 +32,5 @@ const chart = new Chart('id', {
   },
   plugins: [Annotation]
 });
+
+const elements = Annotation.getAnnotations(chart);

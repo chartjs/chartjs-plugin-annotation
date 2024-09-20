@@ -9,7 +9,7 @@ export default class LabelAnnotation extends Element {
       {x: mouseX, y: mouseY},
       {rect: this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), center: this.getCenterPoint(useFinalPosition)},
       axis,
-      {rotation: this.rotation, borderWidth: this.options.borderWidth}
+      {rotation: this.rotation, borderWidth: this.options.borderWidth, hitTolerance: this.options.hitTolerance}
     );
   }
 
@@ -89,6 +89,7 @@ LabelAnnotation.defaults = {
     weight: undefined
   },
   height: undefined,
+  hitTolerance: 0,
   init: undefined,
   opacity: undefined,
   padding: 6,

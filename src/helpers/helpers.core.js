@@ -13,6 +13,13 @@ export const EPSILON = 0.001;
 export const clamp = (x, from, to) => Math.min(to, Math.max(from, x));
 
 /**
+ * @param {{value: number, start: number, end: number}} limit
+ * @param {number} hitSize
+ * @returns {boolean}
+ */
+export const inLimit = (limit, hitSize) => limit.value >= limit.start - hitSize && limit.value <= limit.end + hitSize;
+
+/**
  * @param {Object} obj
  * @param {number} from
  * @param {number} to
@@ -29,28 +36,27 @@ export function clampAll(obj, from, to) {
  * @param {Point} point
  * @param {Point} center
  * @param {number} radius
- * @param {number} borderWidth
+ * @param {number} hitSize
  * @returns {boolean}
  */
-export function inPointRange(point, center, radius, borderWidth) {
+export function inPointRange(point, center, radius, hitSize) {
   if (!point || !center || radius <= 0) {
     return false;
   }
-  const hBorderWidth = borderWidth / 2;
-  return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius + hBorderWidth, 2);
+  return (Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2)) <= Math.pow(radius + hitSize, 2);
 }
 
 /**
  * @param {Point} point
  * @param {{x: number, y: number, x2: number, y2: number}} rect
  * @param {InteractionAxis} axis
- * @param {number} borderWidth
+ * @param {{borderWidth: number, hitTolerance: number}} hitsize
  * @returns {boolean}
  */
-export function inBoxRange(point, {x, y, x2, y2}, axis, borderWidth) {
-  const hBorderWidth = borderWidth / 2;
-  const inRangeX = point.x >= x - hBorderWidth - EPSILON && point.x <= x2 + hBorderWidth + EPSILON;
-  const inRangeY = point.y >= y - hBorderWidth - EPSILON && point.y <= y2 + hBorderWidth + EPSILON;
+export function inBoxRange(point, {x, y, x2, y2}, axis, {borderWidth, hitTolerance}) {
+  const hitSize = (borderWidth + hitTolerance) / 2;
+  const inRangeX = point.x >= x - hitSize - EPSILON && point.x <= x2 + hitSize + EPSILON;
+  const inRangeY = point.y >= y - hitSize - EPSILON && point.y <= y2 + hitSize + EPSILON;
   if (axis === 'x') {
     return inRangeX;
   } else if (axis === 'y') {
@@ -63,12 +69,12 @@ export function inBoxRange(point, {x, y, x2, y2}, axis, borderWidth) {
  * @param {Point} point
  * @param {rect: {x: number, y: number, x2: number, y2: number}, center: {x: number, y: number}} element
  * @param {InteractionAxis} axis
- * @param {{rotation: number, borderWidth: number}}
+ * @param {{rotation: number, borderWidth: number, hitTolerance: number}}
  * @returns {boolean}
  */
-export function inLabelRange(point, {rect, center}, axis, {rotation, borderWidth}) {
+export function inLabelRange(point, {rect, center}, axis, {rotation, borderWidth, hitTolerance}) {
   const rotPoint = rotated(point, center, toRadians(-rotation));
-  return inBoxRange(rotPoint, rect, axis, borderWidth);
+  return inBoxRange(rotPoint, rect, axis, {borderWidth, hitTolerance});
 }
 
 /**

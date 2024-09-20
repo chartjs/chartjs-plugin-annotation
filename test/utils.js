@@ -46,7 +46,11 @@ export function drawStar(ctx, x, y, radius, spikes, inset) {
 }
 
 export function getAnnotationElements(chart) {
-  return window['chartjs-plugin-annotation']._getState(chart).elements;
+  return window['chartjs-plugin-annotation'].getAnnotations(chart);
+}
+
+export function getAnnotationInteractedElements(visibleElements, event, options) {
+  return window['chartjs-plugin-annotation']._getAnnotationElementsAtEventForMode(visibleElements, event, options);
 }
 
 export function scatterChart(xMax, yMax, annotations) {

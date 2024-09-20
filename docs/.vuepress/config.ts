@@ -135,6 +135,7 @@ export default defineConfig({
             'types/doughnutLabel'
           ]
         },
+        'developers',
         {
           title: 'Migration',
           collapsable: true,

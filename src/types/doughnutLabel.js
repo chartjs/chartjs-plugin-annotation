@@ -9,7 +9,7 @@ export default class DoughnutLabelAnnotation extends Element {
       {x: mouseX, y: mouseY},
       {rect: this.getProps(['x', 'y', 'x2', 'y2'], useFinalPosition), center: this.getCenterPoint(useFinalPosition)},
       axis,
-      {rotation: this.rotation, borderWidth: 0}
+      {rotation: this.rotation, borderWidth: 0, hitTolerance: this.options.hitTolerance}
     );
   }
 
@@ -76,6 +76,7 @@ DoughnutLabelAnnotation.defaults = {
     weight: undefined
   },
   height: undefined,
+  hitTolerance: 0,
   init: undefined,
   opacity: undefined,
   position: 'center',

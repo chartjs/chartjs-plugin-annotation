@@ -19,7 +19,6 @@ export const eventHooks = moveHooks.concat('click');
 export function updateListeners(chart, state, options) {
   state.listened = loadHooks(options, eventHooks, state.listeners);
   state.moveListened = false;
-  state._getElements = getElements; // for testing
 
   moveHooks.forEach(hook => {
     if (isFunction(options[hook])) {
@@ -71,7 +70,7 @@ function handleMoveEvents(state, event, options) {
   let elements;
 
   if (event.type === 'mousemove') {
-    elements = getElements(state, event, options.interaction);
+    elements = getElements(state.visibleElements, event, options.interaction);
   } else {
     elements = [];
   }
@@ -96,7 +95,7 @@ function dispatchMoveEvents({state, event}, hook, elements, checkElements) {
 
 function handleClickEvents(state, event, options) {
   const listeners = state.listeners;
-  const elements = getElements(state, event, options.interaction);
+  const elements = getElements(state.visibleElements, event, options.interaction);
   let changed;
   for (const element of elements) {
     changed = dispatchEvent(element.options.click || listeners.click, element, event) || changed;

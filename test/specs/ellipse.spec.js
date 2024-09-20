@@ -22,38 +22,48 @@ describe('Ellipse annotation', function() {
       const xRadius = element.width / 2;
       const yRadius = element.height / 2;
 
-      it(`should return true when point is inside element\n{x: ${center.x}, y: ${center.y}, xRadius: ${xRadius.toFixed(1)}, yRadius: ${yRadius.toFixed(1)}}`, function() {
+      it('should return true when point is inside element', function() {
         for (const borderWidth of [0, 10]) {
           const halfBorder = borderWidth / 2;
           element.options.borderWidth = borderWidth;
 
-          for (const angle of [0, 45, 90, 135, 180, 225, 270, 315]) {
-            const rad = angle / 180 * Math.PI;
+          for (const hitTolerance of [0, 5, 10, 20]) {
+            const halfTolerance = hitTolerance / 2;
+            element.options.hitTolerance = hitTolerance;
 
-            const {x, y} = rotated({
-              x: center.x + Math.cos(rad) * (xRadius + halfBorder),
-              y: center.y + Math.sin(rad) * (yRadius + halfBorder)
-            }, center, rotation / 180 * Math.PI);
+            for (const angle of [0, 45, 90, 135, 180, 225, 270, 315]) {
+              const rad = angle / 180 * Math.PI;
 
-            expect(element.inRange(x, y)).withContext(`rotation: ${rotation}, angle: ${angle}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
+              const {x, y} = rotated({
+                x: center.x + Math.cos(rad) * (xRadius + halfBorder + halfTolerance),
+                y: center.y + Math.sin(rad) * (yRadius + halfBorder + halfTolerance)
+              }, center, rotation / 180 * Math.PI);
+
+              expect(element.inRange(x, y)).withContext(`rotation: ${rotation}, angle: ${angle}, borderWidth: ${borderWidth}, hitTolerance: ${hitTolerance}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(true);
+            }
           }
         }
       });
 
-      it(`should return false when point is outside element\n{x: ${center.x}, y: ${center.y}, xRadius: ${xRadius.toFixed(1)}, yRadius: ${yRadius.toFixed(1)}}`, function() {
+      it('should return false when point is outside element', function() {
         for (const borderWidth of [0, 10]) {
           const halfBorder = borderWidth / 2;
           element.options.borderWidth = borderWidth;
 
-          for (const angle of [0, 45, 90, 135, 180, 225, 270, 315]) {
-            const rad = angle / 180 * Math.PI;
+          for (const hitTolerance of [0, 5, 10, 20]) {
+            const halfTolerance = hitTolerance / 2;
+            element.options.hitTolerance = hitTolerance;
 
-            const {x, y} = rotated({
-              x: center.x + Math.cos(rad) * (xRadius + halfBorder + 1),
-              y: center.y + Math.sin(rad) * (yRadius + halfBorder + 1)
-            }, center, rotation / 180 * Math.PI);
+            for (const angle of [0, 45, 90, 135, 180, 225, 270, 315]) {
+              const rad = angle / 180 * Math.PI;
 
-            expect(element.inRange(x, y)).withContext(`rotation: ${rotation}, angle: ${angle}, borderWidth: ${borderWidth}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
+              const {x, y} = rotated({
+                x: center.x + Math.cos(rad) * (xRadius + halfBorder + halfTolerance + 1),
+                y: center.y + Math.sin(rad) * (yRadius + halfBorder + halfTolerance + 1)
+              }, center, rotation / 180 * Math.PI);
+
+              expect(element.inRange(x, y)).withContext(`rotation: ${rotation}, angle: ${angle}, borderWidth: ${borderWidth}, hitTolerance: ${hitTolerance}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}}`).toEqual(false);
+            }
           }
         }
       });
@@ -95,10 +105,11 @@ describe('Ellipse annotation', function() {
       };
 
       const chart = window.scatterChart(10, 10, {outer, inner});
-      const state = window['chartjs-plugin-annotation']._getState(chart);
+      const elements = window.getAnnotationElements(chart);
+      const visible = elements.filter(el => !el.skip && el.options.display);
       const interactionOpts = {};
-      const outerEl = window.getAnnotationElements(chart)[0];
-      const innerEl = window.getAnnotationElements(chart)[1];
+      const outerEl = elements[0];
+      const innerEl = elements[1];
 
       it('should return the right amount of annotation elements', function() {
         for (const interaction of window.interactionData) {
@@ -120,8 +131,8 @@ describe('Ellipse annotation', function() {
                 const point = points[i];
                 const elementsCount = elementsCounts[i];
                 const {x, y} = rotated(point, point.el.getCenterPoint(), rotation / 180 * Math.PI);
-                const elements = state._getElements(state, {x, y}, interactionOpts);
-                expect(elements.length).withContext(`with rotation ${rotation}, interaction mode ${mode}, axis ${axis}, intersect ${intersect}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}`).toEqual(elementsCount);
+                const els = window.getAnnotationInteractedElements(visible, {x, y}, interactionOpts, true);
+                expect(els.length).withContext(`with rotation ${rotation}, interaction mode ${mode}, axis ${axis}, intersect ${intersect}, {x: ${x.toFixed(1)}, y: ${y.toFixed(1)}`).toEqual(elementsCount);
               }
             });
           }

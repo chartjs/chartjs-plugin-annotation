@@ -4,6 +4,7 @@ import {handleEvent, eventHooks, updateListeners} from './events';
 import {invokeHook, elementHooks, updateHooks} from './hooks';
 import {adjustScaleRange, verifyScaleOptions} from './scale';
 import {updateElements, resolveType, isIndexable} from './elements';
+import {getElements} from './interaction';
 import {annotationTypes} from './types';
 import {requireVersion} from './helpers';
 import {version} from '../package.json';
@@ -83,6 +84,10 @@ export default {
     draw(chart, 'afterDatasetsDraw', options.clip);
   },
 
+  beforeDatasetDraw(chart, _args, options) {
+    draw(chart, _args.index, options.clip);
+  },
+
   beforeDraw(chart, _args, options) {
     draw(chart, 'beforeDraw', options.clip);
   },
@@ -102,8 +107,14 @@ export default {
     chartStates.delete(chart);
   },
 
-  _getState(chart) {
-    return chartStates.get(chart);
+  getAnnotations(chart) {
+    const state = chartStates.get(chart);
+    return state ? state.elements : [];
+  },
+
+  // only for testing
+  _getAnnotationElementsAtEventForMode(visibleElements, event, options) {
+    return getElements(visibleElements, event, options);
   },
 
   defaults: {

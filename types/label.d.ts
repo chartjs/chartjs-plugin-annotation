@@ -126,6 +126,7 @@ export interface LabelOptions extends ContainedLabelOptions, ShadowOptions {
    * @default true
    */
   display?: Scriptable<boolean, PartialEventContext>,
+  hitTolerance?: Scriptable<number, PartialEventContext>,
   /**
    * Rotation of label, in degrees, or 'auto' to use the degrees of the line, default is 0
    * @default 90
@@ -142,6 +143,7 @@ export interface BoxLabelOptions extends CoreLabelOptions {
    * @default true
    */
   display?: Scriptable<boolean, PartialEventContext>,
+  hitTolerance?: Scriptable<number, PartialEventContext>,
   rotation?: Scriptable<number, PartialEventContext>,
   z?: Scriptable<number, PartialEventContext>
 }
