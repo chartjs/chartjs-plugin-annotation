@@ -108,11 +108,9 @@ LineAnnotation.id = 'lineAnnotation';
 const arrowHeadsDefaults = {
   backgroundColor: undefined,
   backgroundShadowColor: undefined,
-  borderCapStyle: undefined,
   borderColor: undefined,
   borderDash: undefined,
   borderDashOffset: undefined,
-  borderJoinStyle: undefined,
   borderShadowColor: undefined,
   borderWidth: undefined,
   display: undefined,
