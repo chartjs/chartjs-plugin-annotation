@@ -134,10 +134,8 @@ LineAnnotation.defaults = {
     start: Object.assign({}, arrowHeadsDefaults),
     width: 6
   },
-  borderCapStyle: 'butt',
   borderDash: [],
   borderDashOffset: 0,
-  borderJoinStyle: 'miter',
   borderShadowColor: 'transparent',
   borderWidth: 2,
   curve: false,
