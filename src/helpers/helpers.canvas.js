@@ -49,10 +49,10 @@ export function translate(ctx, {x, y}, rotation) {
  */
 export function setBorderStyle(ctx, options) {
   if (options && options.borderWidth) {
-    ctx.lineCap = options.borderCapStyle;
+    ctx.lineCap = options.borderCapStyle || 'butt';
     ctx.setLineDash(options.borderDash);
     ctx.lineDashOffset = options.borderDashOffset;
-    ctx.lineJoin = options.borderJoinStyle;
+    ctx.lineJoin = options.borderJoinStyle || 'miter';
     ctx.lineWidth = options.borderWidth;
     ctx.strokeStyle = options.borderColor;
     return true;
