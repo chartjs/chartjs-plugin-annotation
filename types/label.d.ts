@@ -116,8 +116,7 @@ export interface ContainedLabelOptions extends CoreLabelOptions {
    * Border radius of the label rectangle
    * @default 6
    */
-  borderRadius?: Scriptable<number | BorderRadius, PartialEventContext>,
-  callout?: CalloutOptions,
+  borderRadius?: Scriptable<number | BorderRadius, PartialEventContext>
 }
 
 export interface LabelOptions extends ContainedLabelOptions, ShadowOptions {
@@ -132,7 +131,9 @@ export interface LabelOptions extends ContainedLabelOptions, ShadowOptions {
    * Rotation of label, in degrees, or 'auto' to use the degrees of the line, default is 0
    * @default 90
    */
-  rotation?: Scriptable<number | 'auto', PartialEventContext>
+  rotation?: Scriptable<number | 'auto', PartialEventContext>,
+  z?: Scriptable<number, PartialEventContext>,
+  callout?: CalloutOptions,
 }
 
 export interface BoxLabelOptions extends CoreLabelOptions {
@@ -143,9 +144,22 @@ export interface BoxLabelOptions extends CoreLabelOptions {
    */
   display?: Scriptable<boolean, PartialEventContext>,
   hitTolerance?: Scriptable<number, PartialEventContext>,
-  rotation?: Scriptable<number, PartialEventContext>
+  rotation?: Scriptable<number, PartialEventContext>,
+  z?: Scriptable<number, PartialEventContext>
 }
 
 export interface LabelTypeOptions extends ContainedLabelOptions {
   position?: Scriptable<LabelPosition | LabelPositionObject, PartialEventContext>,
+  z?: Scriptable<number, PartialEventContext>,
+  callout?: CalloutOptions,
+}
+
+export interface DoughnutLabelOptions extends Omit<ContainedLabelOptions, 'borderCapStyle' | 'borderRadius' | 'padding'> {
+  position?: Scriptable<LabelPosition | LabelPositionObject, PartialEventContext>,
+  /**
+   * Whether the label should be displayed
+   * @default true
+   */
+  display?: Scriptable<boolean, PartialEventContext>,
+  rotation?: Scriptable<number, PartialEventContext>
 }

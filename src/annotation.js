@@ -10,6 +10,7 @@ import {requireVersion} from './helpers';
 import {version} from '../package.json';
 
 const chartStates = new Map();
+const isNotDoughnutLabel = annotation => annotation.type !== 'doughnutLabel';
 const hooks = eventHooks.concat(elementHooks);
 
 export default {
@@ -59,12 +60,12 @@ export default {
     } else if (isArray(annotationOptions)) {
       annotations.push(...annotationOptions);
     }
-    verifyScaleOptions(annotations, chart.scales);
+    verifyScaleOptions(annotations.filter(isNotDoughnutLabel), chart.scales);
   },
 
   afterDataLimits(chart, args) {
     const state = chartStates.get(chart);
-    adjustScaleRange(chart, args.scale, state.annotations.filter(a => a.display && a.adjustScaleRange));
+    adjustScaleRange(chart, args.scale, state.annotations.filter(isNotDoughnutLabel).filter(a => a.display && a.adjustScaleRange));
   },
 
   afterUpdate(chart, args, options) {
@@ -122,6 +123,10 @@ export default {
         properties: ['x', 'y', 'x2', 'y2', 'width', 'height', 'centerX', 'centerY', 'pointX', 'pointY', 'radius'],
         type: 'number'
       },
+      colors: {
+        properties: ['backgroundColor', 'borderColor'],
+        type: 'color'
+      }
     },
     clip: true,
     interaction: {

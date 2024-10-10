@@ -1,6 +1,6 @@
 import { Chart, Color, PointStyle, BorderRadius, CoreInteractionOptions } from 'chart.js';
 import { AnnotationEvents, PartialEventContext, EventContext } from './events';
-import { LabelOptions, BoxLabelOptions, LabelTypeOptions } from './label';
+import { LabelOptions, BoxLabelOptions, LabelTypeOptions, DoughnutLabelOptions } from './label';
 import { AnnotationBoxModel, AnnotationElement } from './element';
 
 export type DrawTime = 'afterDraw' | 'afterDatasetsDraw' | 'beforeDraw' | 'beforeDatasetsDraw' | number;
@@ -137,6 +137,14 @@ export interface LabelAnnotationOptions extends CoreAnnotationOptions, LabelType
   rotation?: Scriptable<number, PartialEventContext>
 }
 
+export interface DoughnutLabelAnnotationOptions extends AnnotationEvents, DoughnutLabelOptions, ShadowOptions {
+  autoFit?: Scriptable<boolean, PartialEventContext>,
+  autoHide?: Scriptable<boolean, PartialEventContext>,
+  id?: string,
+  init: boolean | ((chart: Chart, properties: AnnotationBoxModel, options: AnnotationOptions) => void | boolean | AnnotationBoxModel),
+  spacing?: Scriptable<number, PartialEventContext>
+}
+
 interface PolygonAnnotationOptions extends CoreAnnotationOptions, AnnotationPointCoordinates {
   backgroundColor: Scriptable<Color, PartialEventContext>,
   borderCapStyle?: Scriptable<CanvasLineCap, PartialEventContext>,
@@ -153,6 +161,6 @@ export interface AnnotationPluginOptions extends AnnotationEvents, AnnotationHoo
   animations?: Record<string, unknown>,
   annotations: AnnotationOptions[] | Record<string, AnnotationOptions>,
   clip?: boolean,
-  common?: BoxAnnotationOptions | EllipseAnnotationOptions | LabelAnnotationOptions | LineAnnotationOptions | PointAnnotationOptions | PolygonAnnotationOptions,
+  common?: BoxAnnotationOptions | EllipseAnnotationOptions | LabelAnnotationOptions | LineAnnotationOptions | PointAnnotationOptions | PolygonAnnotationOptions | DoughnutLabelAnnotationOptions,
   interaction?: CoreInteractionOptions
 }

@@ -56,7 +56,9 @@ const options = {
 | Name | Option | Value
 | ---- | ---- | ----
 | `numbers` | `properties` | `['x', 'y', 'x2', 'y2', 'width', 'height', 'centerX', 'centerY', 'pointX', 'pointY', 'radius']`
-| `numbers` | `type` | `number`
+| `numbers` | `type` | `'number'`
+| `colors` | `properties` | `['backgroundColor', 'borderColor']`
+| `colors` | `type` | `'color'`
 
 ## Common
 

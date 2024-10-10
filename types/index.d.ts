@@ -1,5 +1,5 @@
 import { Chart, ChartType, Plugin } from 'chart.js';
-import { AnnotationPluginOptions, BoxAnnotationOptions, EllipseAnnotationOptions, LabelAnnotationOptions, LineAnnotationOptions, PointAnnotationOptions, PolygonAnnotationOptions } from './options';
+import { AnnotationPluginOptions, BoxAnnotationOptions, EllipseAnnotationOptions, LabelAnnotationOptions, LineAnnotationOptions, PointAnnotationOptions, PolygonAnnotationOptions, DoughnutLabelAnnotationOptions } from './options';
 import { AnnotationElement } from './element';
 
 declare module 'chart.js' {
@@ -10,6 +10,7 @@ declare module 'chart.js' {
 
   interface ElementOptionsByType<TType extends ChartType> {
     boxAnnotation: BoxAnnotationOptions;
+    doughnutLabelAnnotation: DoughnutLabelAnnotationOptions;
     ellipseAnnotation: EllipseAnnotationOptions;
     labelAnnotation: LabelAnnotationOptions;
     lineAnnotation: LineAnnotationOptions;

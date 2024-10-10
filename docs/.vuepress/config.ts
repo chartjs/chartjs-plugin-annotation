@@ -131,7 +131,8 @@ export default defineConfig({
             'types/label',
             'types/line',
             'types/point',
-            'types/polygon'
+            'types/polygon',
+            'types/doughnutLabel'
           ]
         },
         'developers',
@@ -219,6 +220,16 @@ export default defineConfig({
             'polygon/outsideChartArea',
             'polygon/shadow'
             ]
+        },
+        {
+          title: 'Doughnut label annotations',
+          children: [
+            'doughnutLabel/basic',
+            'doughnutLabel/canvas',
+            'doughnutLabel/image',
+            'doughnutLabel/gauge',
+            'doughnutLabel/background',
+          ]
         },
         {
           title: 'Charts',
