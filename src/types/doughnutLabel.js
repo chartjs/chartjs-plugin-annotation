@@ -154,10 +154,9 @@ function getControllerMeta({chartArea}, options, meta) {
   };
 }
 
-function getFitRatio({width, height}, radius) {
-  const hypo = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
-  return (radius * 2) / hypo;
-}
+function getFitRatio({width, height}, radius) { 
+  return (radius * 2) / Math.hypot(width, height); 
+} 
 
 function getAngles(y, centerX, centerY, radius) {
   const yk2 = Math.pow(centerY - y, 2);
