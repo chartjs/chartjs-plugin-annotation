@@ -12,6 +12,7 @@ export interface AnnotationTypeRegistry {
   line: LineAnnotationOptions
   point: PointAnnotationOptions
   polygon: PolygonAnnotationOptions
+  doughnutLabel: DoughnutLabelAnnotationOptions
 }
 
 export type AnnotationType = keyof AnnotationTypeRegistry;
