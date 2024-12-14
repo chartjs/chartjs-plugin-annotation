@@ -136,7 +136,7 @@ function getControllerMeta({chartArea}, options, meta) {
     y: (square.top + square.bottom) / 2
   };
   const space = options.spacing + options.borderWidth / 2;
-  const _radius = innerRadius - space;
+  const _radius = Math.max(innerRadius - space, 0);
   const _counterclockwise = point.y > y;
   const side = _counterclockwise ? top + space : bottom - space;
   const angles = getAngles(side, x, y, _radius);
@@ -150,14 +150,13 @@ function getControllerMeta({chartArea}, options, meta) {
   return {
     controllerMeta,
     point,
-    radius: Math.min(innerRadius, Math.min(square.right - square.left, square.bottom - square.top) / 2)
+    radius: Math.min(_radius, Math.min(square.right - square.left, square.bottom - square.top) / 2)
   };
 }
 
-function getFitRatio({width, height}, radius) {
-  const hypo = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
-  return (radius * 2) / hypo;
-}
+function getFitRatio({width, height}, radius) { 
+  return (radius * 2) / Math.hypot(width, height); 
+} 
 
 function getAngles(y, centerX, centerY, radius) {
   const yk2 = Math.pow(centerY - y, 2);
