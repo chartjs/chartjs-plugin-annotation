@@ -53,7 +53,6 @@ export default {
       Object.keys(annotationOptions).forEach(key => {
         const value = annotationOptions[key];
         if (isObject(value)) {
-          value.id = key;
           annotations.push(value);
         }
       });
