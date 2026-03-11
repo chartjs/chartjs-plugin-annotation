@@ -166,6 +166,9 @@ export default {
 
 function draw(chart, caller, clip) {
   const {ctx, chartArea} = chart;
+
+  if (!chartArea) return;
+
   const state = chartStates.get(chart);
 
   if (clip) {
