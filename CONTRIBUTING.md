@@ -12,7 +12,7 @@ Please do not use issues for support requests. For help using the annotation plu
 
 Well structured, detailed bug reports are hugely valuable for the project.
 
-Guidlines for reporting bugs:
+Guidelines for reporting bugs:
 
 - Check the issue search to see if it has already been reported
 - Isolate the problem to a simple test case

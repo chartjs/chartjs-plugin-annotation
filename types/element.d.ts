@@ -10,9 +10,16 @@ export interface AnnotationBoxModel {
   height: number,
   width: number,
   radius?: number
+  // Used by polygon annotations' child point AnnotationElements
+  bx?: number;
+  by?: number;
 }
 
 export interface AnnotationElement extends AnnotationBoxModel {
   label?: AnnotationElement,
-  options: AnnotationOptions
+  options: AnnotationOptions,
+  /**
+   * Sub-elements: e.g., a box annotation's label, or a polygon's points
+   */
+  elements?: AnnotationElement[],
 }
