@@ -18,6 +18,11 @@ module.exports = async function(karma) {
   const regex = karma.autoWatch ? /chartjs-plugin-annotation\.cjs$/ : /chartjs-plugin-annotation\.min\.js$/;
   const build = builds.filter(v => v.output.file && v.output.file.match(regex))[0];
 
+  // Even if using the unminified build, use UMD format with default exports, so
+  // we can access it as a global variable.
+  build.output.format = 'umd';
+  delete build.output.exports;
+
   if (env === 'test') {
     build.plugins = [
       json(),

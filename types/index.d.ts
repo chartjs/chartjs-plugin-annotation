@@ -8,6 +8,7 @@ declare module 'chart.js' {
     annotation: AnnotationPluginOptions;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface ElementOptionsByType<TType extends ChartType> {
     boxAnnotation: BoxAnnotationOptions;
     doughnutLabelAnnotation: DoughnutLabelAnnotationOptions;
@@ -19,13 +20,15 @@ declare module 'chart.js' {
   }
 }
 
+// declare namespace Annotation {
+export * from './element';
+export * from './events';
+export * from './label';
+export * from './options';
+// } // declare namespace Annotation
+
 declare const Annotation: Plugin & {
   getAnnotations(chart: Chart): AnnotationElement[];
 };
 
 export default Annotation;
-
-export * from './element';
-export * from './events';
-export * from './label';
-export * from './options';
