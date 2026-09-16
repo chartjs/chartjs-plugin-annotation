@@ -35,6 +35,14 @@ interface ShadowOptions {
   shadowOffsetY?: Scriptable<number, PartialEventContext>
 }
 
+export interface InitContext {
+  chart: Chart,
+  properties: AnnotationBoxModel,
+  options: AnnotationOptions
+}
+
+export type ScriptableInit = boolean | ((ctx: InitContext) => void | boolean | Partial<AnnotationElement>);
+
 export interface CoreAnnotationOptions extends AnnotationEvents, ShadowOptions, AnnotationHooks {
   adjustScaleRange?: Scriptable<boolean, PartialEventContext>,
   borderColor?: Scriptable<Color, PartialEventContext>,
@@ -44,7 +52,7 @@ export interface CoreAnnotationOptions extends AnnotationEvents, ShadowOptions, 
   display?: Scriptable<boolean, PartialEventContext>,
   drawTime?: Scriptable<DrawTime, PartialEventContext>,
   hitTolerance?: Scriptable<number, PartialEventContext>,
-  init?: boolean | (({ chart: Chart, properties: AnnotationBoxModel, options: AnnotationOptions }) => void | boolean | Partial<AnnotationElement>),
+  init?: ScriptableInit,
   id?: string,
   xMax?: Scriptable<ScaleValue, PartialEventContext>,
   xMin?: Scriptable<ScaleValue, PartialEventContext>,
@@ -142,7 +150,7 @@ export interface DoughnutLabelAnnotationOptions extends AnnotationEvents, Doughn
   autoFit?: Scriptable<boolean, PartialEventContext>,
   autoHide?: Scriptable<boolean, PartialEventContext>,
   id?: string,
-  init: boolean | ((chart: Chart, properties: AnnotationBoxModel, options: AnnotationOptions) => void | boolean | AnnotationBoxModel),
+  init?: ScriptableInit,
   spacing?: Scriptable<number, PartialEventContext>
 }
 
