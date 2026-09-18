@@ -25,3 +25,6 @@ npm-debug.log*
 *.log
 *.swp
 *.stackdump
+
+# output of scripts/measure-tolerances
+/tolerances.report.json
