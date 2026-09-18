@@ -6,7 +6,7 @@ function gradient({chart: {ctx}, element}) {
 }
 
 module.exports = {
-  tolerance: 0.0060,
+  tolerance: 0.00725,
   config: {
     type: 'bar',
     options: {

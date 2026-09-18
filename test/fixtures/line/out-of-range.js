@@ -1,4 +1,5 @@
 module.exports = {
+  tolerance: 0,
   config: {
     type: 'line',
     data: {

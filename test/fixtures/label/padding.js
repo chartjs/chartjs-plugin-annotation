@@ -7,7 +7,7 @@ function multiLine(ctx, opts) {
 }
 
 module.exports = {
-  tolerance: 0.0055,
+  tolerance: 0.0009,
   config: {
     type: 'scatter',
     options: {

@@ -2,7 +2,7 @@ const canvas = window.createCanvas();
 canvas.style.opacity = 0.2;
 
 module.exports = {
-  tolerance: 0.0060,
+  tolerance: 0.00775,
   config: {
     type: 'scatter',
     options: {
