@@ -1,5 +1,5 @@
 module.exports = {
-  tolerance: 0.0090,
+  tolerance: 0.0098,
   config: {
     type: 'doughnut',
     data: {

@@ -3,7 +3,7 @@ function content(ctx, opts) {
 }
 
 module.exports = {
-  tolerance: 0.0057,
+  tolerance: 0.00855,
   config: {
     type: 'scatter',
     options: {

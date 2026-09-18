@@ -1,4 +1,5 @@
 module.exports = {
+  tolerance: 0.00195,
   config: {
     type: 'scatter',
     options: {

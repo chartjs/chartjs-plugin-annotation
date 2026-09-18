@@ -1,5 +1,6 @@
 const canvas = window.createCanvas();
 module.exports = {
+  tolerance: 0,
   config: {
     type: 'doughnut',
     data: {

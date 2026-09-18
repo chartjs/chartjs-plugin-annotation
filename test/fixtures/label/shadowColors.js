@@ -1,6 +1,6 @@
 module.exports = {
   threshold: 0.2,
-  tolerance: 0.0071,
+  tolerance: 0.00245,
   config: {
     type: 'scatter',
     options: {

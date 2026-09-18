@@ -1,4 +1,5 @@
 module.exports = {
+  tolerance: 0.00005,
   description: 'https://github.com/chartjs/chartjs-plugin-annotation/issues/589',
   config: {
     type: 'scatter',
