@@ -44,7 +44,8 @@
     "test-karma": "karma start ./karma.conf.cjs --auto-watch --single-run",
     "test-lint": "npm run lint",
     "test-types": "tsc -p types/tests/",
-    "test-integration": "mocha --full-trace test/integration/*-test.js"
+    "test-integration": "mocha --full-trace test/integration/*-test.js",
+    "measure-tolerances": "node scripts/measure-tolerances/measure.js"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^6.0.0",
