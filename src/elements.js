@@ -65,9 +65,9 @@ export function updateElements(chart, state, options, mode) {
     }
 
     if (!defined(element.x)) {
-      // If the element is newly created, assing the properties directly - to
-      // make them readily awailable to any scriptable options. If we do not do this,
-      // the properties retruned by `resolveElementProperties` are available only
+      // If the element is newly created, assign the properties directly - to
+      // make them readily available to any scriptable options. If we do not do this,
+      // the properties returned by `resolveElementProperties` are available only
       // after options resolution.
       Object.assign(element, properties);
     }

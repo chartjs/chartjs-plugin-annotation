@@ -174,6 +174,13 @@ function draw(chart, caller, clip) {
 
   const drawableElements = getDrawableElements(state.visibleElements, caller).sort((a, b) => a.element.options.z - b.element.options.z);
   for (const item of drawableElements) {
+    if (item.element.options.clip && !clip) {
+      clipArea(ctx, chartArea);
+      clip = true;
+    } else if (item.element.options.clip === false && clip) {
+      unclipArea(ctx);
+      clip = false;
+    }
     drawElement(ctx, chartArea, state, item);
   }
 
