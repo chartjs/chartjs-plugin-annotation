@@ -2,8 +2,9 @@ import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import json from '@rollup/plugin-json';
 import {readFileSync} from 'fs';
+import {dts} from 'rollup-plugin-dts';
 
-const {name, version, homepage, main, module, license, jsdelivr} = JSON.parse(readFileSync('./package.json'));
+const {name, version, homepage, main, module, license, jsdelivr, exports: exp} = JSON.parse(readFileSync('./package.json'));
 
 const banner = `/*!
 * ${name} v${version}
@@ -37,7 +38,8 @@ export default [
       banner,
       format: 'umd',
       indent: false,
-      globals
+      globals,
+      exports: 'named'
     },
     external
   },
@@ -77,5 +79,17 @@ export default [
       indent: false
     },
     external
+  },
+  // .d.ts
+  {
+    input: './types/index.d.ts',
+    output: [{file: exp.import.types, format: 'es'}],
+    plugins: [dts()]
+  },
+  // .d.cts
+  {
+    input: './types/index.d.ts',
+    output: [{file: exp.require.types, format: 'cjs'}],
+    plugins: [dts()]
   },
 ];
