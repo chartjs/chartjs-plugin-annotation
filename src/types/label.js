@@ -78,6 +78,7 @@ LabelAnnotation.defaults = {
     side: 5,
     start: '50%',
   },
+  clip: undefined,
   color: 'black',
   content: null,
   display: true,

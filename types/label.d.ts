@@ -85,7 +85,8 @@ export interface CoreLabelOptions {
    * Overrides the opacity of the image.
    */
   opacity?: Scriptable<number, PartialEventContext>,
-  z?: Scriptable<number, PartialEventContext>
+  z?: Scriptable<number, PartialEventContext>,
+  clip?: Scriptable<boolean, PartialEventContext>
 }
 
 export interface ContainedLabelOptions extends CoreLabelOptions {
