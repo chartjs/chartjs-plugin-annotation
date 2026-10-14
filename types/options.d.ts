@@ -68,6 +68,25 @@ interface AnnotationPointCoordinates {
   yValue?: Scriptable<ScaleValue, PartialEventContext>,
 }
 
+export type RotationOrigin =
+  | 'center'
+  | 'top'
+  | 'topRight'
+  | 'right'
+  | 'bottomRight'
+  | 'bottom'
+  | 'bottomLeft'
+  | 'left'
+  | 'topLeft';
+
+export interface CoreLabelOptions {
+  // existing options...
+  rotation?: number;
+
+  // new: default 'center'
+  rotationOrigin?: RotationOrigin;
+}
+
 export interface ArrowHeadOptions extends ShadowOptions {
   backgroundColor?: Scriptable<Color, PartialEventContext>,
   borderColor?: Scriptable<Color, PartialEventContext>,

@@ -1,13 +1,24 @@
-import {addRoundedRectPath, isArray, isNumber, toTRBLCorners, toRadians, PI, TAU, HALF_PI, QUARTER_PI, TWO_THIRDS_PI, RAD_PER_DEG} from 'chart.js/helpers';
+import {
+  addRoundedRectPath,
+  isArray,
+  isNumber,
+  toTRBLCorners,
+  toRadians,
+  PI,
+  TAU,
+  HALF_PI,
+  QUARTER_PI,
+  TWO_THIRDS_PI,
+  RAD_PER_DEG
+} from 'chart.js/helpers';
 import {clampAll, clamp} from './helpers.core';
 import {calculateTextAlignment, getSize, toFonts} from './helpers.options';
 
 const widthCache = new Map();
+
 const notRadius = (radius) => isNaN(radius) || radius <= 0;
-const fontsKey = (fonts) => fonts.reduce(function(prev, item) {
-  prev += item.string;
-  return prev;
-}, '');
+
+const fontsKey = (fonts) => fonts.reduce((prev, item) => prev + item.string, '');
 
 /**
  * @typedef { import('chart.js').Point } Point
@@ -18,7 +29,7 @@ const fontsKey = (fonts) => fonts.reduce(function(prev, item) {
 /**
  * Determine if content is an image or a canvas.
  * @param {*} content
- * @returns boolean|undefined
+ * @returns {boolean|undefined}
  * @todo move this function to chart.js helpers
  */
 export function isImageOrCanvas(content) {
@@ -26,6 +37,7 @@ export function isImageOrCanvas(content) {
     const type = content.toString();
     return (type === '[object HTMLImageElement]' || type === '[object HTMLCanvasElement]');
   }
+  return;
 }
 
 /**
@@ -39,6 +51,45 @@ export function translate(ctx, {x, y}, rotation) {
     ctx.translate(x, y);
     ctx.rotate(toRadians(rotation));
     ctx.translate(-x, -y);
+  }
+}
+
+/**
+ * Compute an anchor point on a rectangle for a given 9-way origin keyword.
+ * This is useful for choosing a rotation pivot (rotationOrigin) and/or aligning labels.
+ *
+ * @param {{x:number, y:number, width:number, height:number}} rect
+ * @param {'center'|'topLeft'|'top'|'topRight'|'left'|'right'|'bottomLeft'|'bottom'|'bottomRight'} origin
+ * @returns {{x:number, y:number}}
+ */
+export function rectAnchorPoint(rect, origin = 'center') {
+  const x0 = rect.x;
+  const y0 = rect.y;
+  const x1 = rect.x + rect.width;
+  const y1 = rect.y + rect.height;
+  const xc = (x0 + x1) / 2;
+  const yc = (y0 + y1) / 2;
+
+  switch (origin) {
+  case 'topLeft':
+    return {x: x0, y: y0};
+  case 'top':
+    return {x: xc, y: y0};
+  case 'topRight':
+    return {x: x1, y: y0};
+  case 'right':
+    return {x: x1, y: yc};
+  case 'bottomRight':
+    return {x: x1, y: y1};
+  case 'bottom':
+    return {x: xc, y: y1};
+  case 'bottomLeft':
+    return {x: x0, y: y1};
+  case 'left':
+    return {x: x0, y: yc};
+  case 'center':
+  default:
+    return {x: xc, y: yc};
   }
 }
 
@@ -77,20 +128,23 @@ export function setShadowStyle(ctx, options) {
  */
 export function measureLabelSize(ctx, options) {
   const content = options.content;
+
   if (isImageOrCanvas(content)) {
-    const size = {
+    return {
       width: getSize(content.width, options.width),
       height: getSize(content.height, options.height)
     };
-    return size;
   }
+
   const fonts = toFonts(options);
   const strokeWidth = options.textStrokeWidth;
   const lines = isArray(content) ? content : [content];
   const mapKey = lines.join() + fontsKey(fonts) + strokeWidth + (ctx._measureText ? '-spriting' : '');
+
   if (!widthCache.has(mapKey)) {
     widthCache.set(mapKey, calculateLabelSize(ctx, lines, fonts, strokeWidth));
   }
+
   return widthCache.get(mapKey);
 }
 
@@ -101,10 +155,13 @@ export function measureLabelSize(ctx, options) {
  */
 export function drawBox(ctx, rect, options) {
   const {x, y, width, height} = rect;
+
   ctx.save();
   setShadowStyle(ctx, options);
+
   const stroke = setBorderStyle(ctx, options);
   ctx.fillStyle = options.backgroundColor;
+
   ctx.beginPath();
   addRoundedRectPath(ctx, {
     x, y, w: width, h: height,
@@ -112,10 +169,12 @@ export function drawBox(ctx, rect, options) {
   });
   ctx.closePath();
   ctx.fill();
+
   if (stroke) {
     ctx.shadowColor = options.borderShadowColor;
     ctx.stroke();
   }
+
   ctx.restore();
 }
 
@@ -127,6 +186,7 @@ export function drawBox(ctx, rect, options) {
  */
 export function drawLabel(ctx, rect, options, fitRatio) {
   const content = options.content;
+
   if (isImageOrCanvas(content)) {
     ctx.save();
     ctx.globalAlpha = getOpacity(options.opacity, content.style.opacity);
@@ -134,18 +194,24 @@ export function drawLabel(ctx, rect, options, fitRatio) {
     ctx.restore();
     return;
   }
+
   const labels = isArray(content) ? content : [content];
   const fonts = toFonts(options, fitRatio);
+
   const optColor = options.color;
   const colors = isArray(optColor) ? optColor : [optColor];
+
   const x = calculateTextAlignment(rect, options);
   const y = rect.y + options.textStrokeWidth / 2;
+
   ctx.save();
   ctx.textBaseline = 'middle';
   ctx.textAlign = options.textAlign;
+
   if (setTextStrokeStyle(ctx, options)) {
     applyLabelDecoration(ctx, {x, y}, labels, fonts);
   }
+
   applyLabelContent(ctx, {x, y}, labels, {fonts, colors});
   ctx.restore();
 }
@@ -181,22 +247,25 @@ export function drawPoint(ctx, element, x, y) {
     ctx.restore();
     return;
   }
+
   if (notRadius(radius)) {
     return;
   }
+
   drawPointStyle(ctx, {x, y, radius, rotation, style, rad});
 }
 
 function drawPointStyle(ctx, {x, y, radius, rotation, style, rad}) {
   let xOffset, yOffset, size, cornerRadius;
+
   ctx.beginPath();
 
   switch (style) {
-  // Default includes circle
   default:
     ctx.arc(x, y, radius, 0, TAU);
     ctx.closePath();
     break;
+
   case 'triangle':
     ctx.moveTo(x + Math.sin(rad) * radius, y - Math.cos(rad) * radius);
     rad += TWO_THIRDS_PI;
@@ -205,14 +274,9 @@ function drawPointStyle(ctx, {x, y, radius, rotation, style, rad}) {
     ctx.lineTo(x + Math.sin(rad) * radius, y - Math.cos(rad) * radius);
     ctx.closePath();
     break;
+
   case 'rectRounded':
-    // NOTE: the rounded rect implementation changed to use `arc` instead of
-    // `quadraticCurveTo` since it generates better results when rect is
-    // almost a circle. 0.516 (instead of 0.5) produces results with visually
-    // closer proportion to the previous impl and it is inscribed in the
-    // circle with `radius`. For more details, see the following PRs:
-    // https://github.com/chartjs/Chart.js/issues/5597
-    // https://github.com/chartjs/Chart.js/issues/5858
+    // See Chart.js notes in original code.
     cornerRadius = radius * 0.516;
     size = radius - cornerRadius;
     xOffset = Math.cos(rad + QUARTER_PI) * size;
@@ -223,6 +287,7 @@ function drawPointStyle(ctx, {x, y, radius, rotation, style, rad}) {
     ctx.arc(x - yOffset, y + xOffset, cornerRadius, rad + HALF_PI, rad + PI);
     ctx.closePath();
     break;
+
   case 'rect':
     if (!rotation) {
       size = Math.SQRT1_2 * radius;
@@ -230,7 +295,7 @@ function drawPointStyle(ctx, {x, y, radius, rotation, style, rad}) {
       break;
     }
     rad += QUARTER_PI;
-    /* falls through */
+    // falls through
   case 'rectRot':
     xOffset = Math.cos(rad) * radius;
     yOffset = Math.sin(rad) * radius;
@@ -240,9 +305,10 @@ function drawPointStyle(ctx, {x, y, radius, rotation, style, rad}) {
     ctx.lineTo(x - yOffset, y + xOffset);
     ctx.closePath();
     break;
+
   case 'crossRot':
     rad += QUARTER_PI;
-    /* falls through */
+    // falls through
   case 'cross':
     xOffset = Math.cos(rad) * radius;
     yOffset = Math.sin(rad) * radius;
@@ -251,6 +317,7 @@ function drawPointStyle(ctx, {x, y, radius, rotation, style, rad}) {
     ctx.moveTo(x + yOffset, y - xOffset);
     ctx.lineTo(x - yOffset, y + xOffset);
     break;
+
   case 'star':
     xOffset = Math.cos(rad) * radius;
     yOffset = Math.sin(rad) * radius;
@@ -266,12 +333,14 @@ function drawPointStyle(ctx, {x, y, radius, rotation, style, rad}) {
     ctx.moveTo(x + yOffset, y - xOffset);
     ctx.lineTo(x - yOffset, y + xOffset);
     break;
+
   case 'line':
     xOffset = Math.cos(rad) * radius;
     yOffset = Math.sin(rad) * radius;
     ctx.moveTo(x - xOffset, y - yOffset);
     ctx.lineTo(x + xOffset, y + yOffset);
     break;
+
   case 'dash':
     ctx.moveTo(x, y);
     ctx.lineTo(x + Math.cos(rad) * radius, y + Math.sin(rad) * radius);
@@ -283,39 +352,48 @@ function drawPointStyle(ctx, {x, y, radius, rotation, style, rad}) {
 
 function calculateLabelSize(ctx, lines, fonts, strokeWidth) {
   ctx.save();
+
   const count = lines.length;
   let width = 0;
   let height = strokeWidth;
+
   for (let i = 0; i < count; i++) {
     const font = fonts[Math.min(i, fonts.length - 1)];
     ctx.font = font.string;
+
     const text = lines[i];
     width = Math.max(width, ctx.measureText(text).width + strokeWidth);
     height += font.lineHeight;
   }
+
   ctx.restore();
   return {width, height};
 }
 
 function applyLabelDecoration(ctx, {x, y}, labels, fonts) {
   ctx.beginPath();
+
   let lhs = 0;
-  labels.forEach(function(l, i) {
+  labels.forEach((l, i) => {
     const f = fonts[Math.min(i, fonts.length - 1)];
     const lh = f.lineHeight;
+
     ctx.font = f.string;
     ctx.strokeText(l, x, y + lh / 2 + lhs);
     lhs += lh;
   });
+
   ctx.stroke();
 }
 
 function applyLabelContent(ctx, {x, y}, labels, {fonts, colors}) {
   let lhs = 0;
-  labels.forEach(function(l, i) {
+
+  labels.forEach((l, i) => {
     const c = colors[Math.min(i, colors.length - 1)];
     const f = fonts[Math.min(i, fonts.length - 1)];
     const lh = f.lineHeight;
+
     ctx.beginPath();
     ctx.font = f.string;
     ctx.fillStyle = c;

@@ -27,14 +27,7 @@ export {
   PolygonAnnotation
 };
 
-/**
- * Register fallback for annotation elements
- * For example lineAnnotation options would be looked through:
- * - the annotation object (options.plugins.annotation.annotations[id])
- * - element options (options.elements.lineAnnotation)
- * - element defaults (defaults.elements.lineAnnotation)
- * - annotation plugin defaults (defaults.plugins.annotation, this is what we are registering here)
- */
+
 Object.keys(annotationTypes).forEach(key => {
   defaults.describe(`elements.${annotationTypes[key].id}`, {
     _fallback: 'plugins.annotation.common'

@@ -1,5 +1,19 @@
 import {Element} from 'chart.js';
-import {drawBox, drawCallout, drawLabel, measureLabelSize, getChartPoint, isBoundToPoint, resolveBoxProperties, translate, getElementCenterPoint, inLabelRange, measureLabelRectangle, initAnimationProperties} from '../helpers';
+import {
+  drawBox,
+  drawCallout,
+  drawLabel,
+  measureLabelSize,
+  getChartPoint,
+  isBoundToPoint,
+  resolveBoxProperties,
+  translate,
+  getElementCenterPoint,
+  inLabelRange,
+  measureLabelRectangle,
+  initAnimationProperties,
+  rectAnchorPoint
+} from '../helpers';
 import {toPadding, defined} from 'chart.js/helpers';
 
 export default class LabelAnnotation extends Element {
@@ -17,31 +31,50 @@ export default class LabelAnnotation extends Element {
     return getElementCenterPoint(this, useFinalPosition);
   }
 
+  /**
+   * Compute the rotation pivot point for the label box.
+   * Defaults to the label center to preserve existing behavior.
+   */
+  getRotationPivot() {
+    const origin = this.options.rotationOrigin || 'center';
+    const rect = {x: this.x, y: this.y, width: this.width, height: this.height};
+    return rectAnchorPoint(rect, origin);
+  }
+
   draw(ctx) {
     const options = this.options;
     const visible = !defined(this._visible) || this._visible;
+
     if (!options.display || !options.content || !visible) {
       return;
     }
+
     ctx.save();
-    translate(ctx, this.getCenterPoint(), this.rotation);
+
+    // Rotate around the configured pivot point (default is center).
+    translate(ctx, this.getRotationPivot(), this.rotation);
+
     drawCallout(ctx, this);
     drawBox(ctx, this, options);
     drawLabel(ctx, getLabelSize(this), options);
+
     ctx.restore();
   }
 
   resolveElementProperties(chart, options) {
     let point;
+
     if (!isBoundToPoint(options)) {
       const {centerX, centerY} = resolveBoxProperties(chart, options);
       point = {x: centerX, y: centerY};
     } else {
       point = getChartPoint(chart, options);
     }
+
     const padding = toPadding(options.padding);
     const labelSize = measureLabelSize(chart.ctx, options);
     const boxSize = measureLabelRectangle(point, labelSize, options, padding);
+
     return {
       initProperties: initAnimationProperties(chart, boxSize, options),
       pointX: point.x,
@@ -95,6 +128,11 @@ LabelAnnotation.defaults = {
   padding: 6,
   position: 'center',
   rotation: 0,
+
+  // NEW: determines where the label rotates around
+  // Options: center, topLeft, top, topRight, left, right, bottomLeft, bottom, bottomRight
+  rotationOrigin: 'center',
+
   shadowBlur: 0,
   shadowOffsetX: 0,
   shadowOffsetY: 0,
@@ -129,3 +167,4 @@ function getLabelSize({x, y, width, height, options}) {
     height: height - padding.top - padding.bottom - options.borderWidth
   };
 }
+

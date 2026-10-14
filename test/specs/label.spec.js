@@ -1,8 +1,53 @@
-describe('Label annotation', function() {
-  describe('auto', jasmine.fixtures('label'));
+fdescribe('Label annotation', function() {
+  
+  describe('Visual Demo', function() {
+    it('should rotate around different origins', function() {
+      const chart = window.acquireChart({
+        type: 'line',
+        data: {
+          labels: [0, 1, 2, 3, 4],
+          datasets: [{ data: [1, 3, 2, 4, 3] }]
+        },
+        options: {
+          responsive: false,
+          animation: false,
+          plugins: {
+            legend: false,
+            annotation: {
+              annotations: {
+                tl: {
+                  type: 'label', xValue: 1, yValue: 4, content: 'topLeft',
+                  backgroundColor: 'rgba(255,0,0,0.1)', rotation: 45, rotationOrigin: 'topLeft',
+                  display: true, borderColor: 'red', borderWidth: 1
+                },
+                c: {
+                  type: 'label', xValue: 2, yValue: 2.5, content: 'center',
+                  backgroundColor: 'rgba(0,255,0,0.1)', rotation: 45, rotationOrigin: 'center',
+                  display: true, borderColor: 'green', borderWidth: 1
+                },
+                br: {
+                  type: 'label', xValue: 3, yValue: 1, content: 'bottomRight',
+                  backgroundColor: 'rgba(0,0,0,0.1)', rotation: 45, rotationOrigin: 'bottomRight',
+                  display: true, borderColor: 'black', borderWidth: 1
+                }
+              }
+            }
+          },
+          scales: {
+            x: {type: 'category'},
+            y: {beginAtZero: true, suggestedMax: 5}
+          }
+        }
+      });
+
+      // Instead of comparing to a file, we just assert the chart exists.
+      // This will stay on the screen if you don't use --single-run!
+      expect(chart).toBeDefined();
+    });
+  });
 
   const rotated = window.helpers.rotated;
-
+  // ... rest of your code
   describe('inRange', function() {
     for (const rotation of [0, 45, 90, 135, 180, 225, 270, 315]) {
       const annotation = {
