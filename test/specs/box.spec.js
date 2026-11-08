@@ -186,4 +186,34 @@ describe('Box annotation', function() {
       }
     });
   });
+
+  describe('non-positive dimensions', function() {
+    it('should not throw error when drawn with negative or zero dimensions', function() {
+      expect(function() {
+        window.scatterChart(10, 10, {
+          test: {
+            type: 'box',
+            xMin: 8,
+            xMax: 2,
+            yMin: 6,
+            yMax: 4,
+            borderRadius: 5
+          }
+        });
+      }).not.toThrowError();
+
+      expect(function() {
+        window.scatterChart(10, 10, {
+          test: {
+            type: 'box',
+            xMin: 5,
+            xMax: 5,
+            yMin: 5,
+            yMax: 5,
+            borderRadius: 5
+          }
+        });
+      }).not.toThrowError();
+    });
+  });
 });
