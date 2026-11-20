@@ -9,6 +9,17 @@ export type LabelTextAlign = 'left' | 'start' | 'center' | 'right' | 'end';
 
 export type CalloutPosition = 'left' | 'top' | 'bottom' | 'right' | 'auto';
 
+export type RotationOrigin =
+  | 'center'
+  | 'topLeft'
+  | 'top'
+  | 'topRight'
+  | 'left'
+  | 'right'
+  | 'bottomLeft'
+  | 'bottom'
+  | 'bottomRight';
+
 export interface LabelPositionObject {
   x?: LabelPosition,
   y?: LabelPosition
@@ -132,6 +143,11 @@ export interface LabelOptions extends ContainedLabelOptions, ShadowOptions {
    * @default 90
    */
   rotation?: Scriptable<number | 'auto', PartialEventContext>,
+  /**
+   * Sets the point within the label box that rotation is applied around.
+   * @default 'center'
+   */
+  rotationOrigin?: Scriptable<RotationOrigin, PartialEventContext>,
   z?: Scriptable<number, PartialEventContext>,
   callout?: CalloutOptions,
 }
@@ -145,6 +161,11 @@ export interface BoxLabelOptions extends CoreLabelOptions {
   display?: Scriptable<boolean, PartialEventContext>,
   hitTolerance?: Scriptable<number, PartialEventContext>,
   rotation?: Scriptable<number, PartialEventContext>,
+  /**
+   * Sets the point within the label box that rotation is applied around.
+   * @default 'center'
+   */
+  rotationOrigin?: Scriptable<RotationOrigin, PartialEventContext>,
   z?: Scriptable<number, PartialEventContext>
 }
 
@@ -161,5 +182,10 @@ export interface DoughnutLabelOptions extends Omit<ContainedLabelOptions, 'borde
    * @default true
    */
   display?: Scriptable<boolean, PartialEventContext>,
-  rotation?: Scriptable<number, PartialEventContext>
+  rotation?: Scriptable<number, PartialEventContext>,
+  /**
+   * Sets the point within the label box that rotation is applied around.
+   * @default 'center'
+   */
+  rotationOrigin?: Scriptable<RotationOrigin, PartialEventContext>,
 }

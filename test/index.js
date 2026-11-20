@@ -21,8 +21,12 @@ window.interactionData = interactionData;
 window.getQuadraticXY = getQuadraticXY;
 window.getQuadraticAngle = getQuadraticAngle;
 
-jasmine.fixtures = specsFromFixtures;
+const ONLY_GROUP = 'label';
+const ONLY_FIXTURE_JS = '/base/test/fixtures/label/rotationOrigin.js';
+const ONLY_FIXTURE_PNG = '/base/test/fixtures/label/rotationOrigin.png';
 
+jasmine.fixtures = specsFromFixtures;
+ 
 beforeAll(() => {
   // Disable colors plugin for tests.
   window.Chart.defaults.plugins.colors.enabled = false;

@@ -28,4 +28,4 @@ export default Annotation;
 export * from './element';
 export * from './events';
 export * from './label';
-export * from './options';
+//export * from './options';
