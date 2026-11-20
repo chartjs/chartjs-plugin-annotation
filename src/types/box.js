@@ -41,6 +41,7 @@ BoxAnnotation.defaults = {
   borderRadius: 0,
   borderShadowColor: 'transparent',
   borderWidth: 1,
+  clip: undefined,
   display: true,
   init: undefined,
   hitTolerance: 0,
@@ -50,6 +51,7 @@ BoxAnnotation.defaults = {
     callout: {
       display: false
     },
+    clip: undefined,
     color: 'black',
     content: null,
     display: false,
