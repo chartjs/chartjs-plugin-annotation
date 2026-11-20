@@ -101,6 +101,9 @@ export function measureLabelSize(ctx, options) {
  */
 export function drawBox(ctx, rect, options) {
   const {x, y, width, height} = rect;
+  if (width <= 0 || height <= 0) {
+    return;
+  }
   ctx.save();
   setShadowStyle(ctx, options);
   const stroke = setBorderStyle(ctx, options);
@@ -108,7 +111,7 @@ export function drawBox(ctx, rect, options) {
   ctx.beginPath();
   addRoundedRectPath(ctx, {
     x, y, w: width, h: height,
-    radius: clampAll(toTRBLCorners(options.borderRadius), 0, Math.min(width, height) / 2)
+    radius: clampAll(toTRBLCorners(options.borderRadius), 0, Math.max(0, Math.min(width, height) / 2))
   });
   ctx.closePath();
   ctx.fill();
