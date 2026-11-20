@@ -8,13 +8,18 @@
   "type": "module",
   "main": "dist/chartjs-plugin-annotation.cjs",
   "module": "dist/chartjs-plugin-annotation.esm.js",
-  "types": "types/index.d.ts",
+  "types": "dist/chartjs-plugin-annotation.d.ts",
   "jsdelivr": "dist/chartjs-plugin-annotation.min.js",
   "unpkg": "dist/chartjs-plugin-annotation.min.js",
   "exports": {
-    "types": "./types/index.d.ts",
-    "import": "./dist/chartjs-plugin-annotation.esm.js",
-    "require": "./dist/chartjs-plugin-annotation.cjs",
+    "import": {
+      "types": "./dist/chartjs-plugin-annotation.d.ts",
+      "default": "./dist/chartjs-plugin-annotation.esm.js"
+    },
+    "require": {
+      "types": "./dist/chartjs-plugin-annotation.d.cts",
+      "default": "./dist/chartjs-plugin-annotation.cjs"
+    },
     "script": "./dist/chartjs-plugin-annotation.min.js"
   },
   "sideEffects": [
@@ -43,10 +48,11 @@
     "test": "cross-env NODE_ENV=test concurrently --group \"npm:test-*\"",
     "test-karma": "karma start ./karma.conf.cjs --auto-watch --single-run",
     "test-lint": "npm run lint",
-    "test-types": "tsc -p types/tests/",
+    "test-types": "tsc -p types/tests/ && attw --pack",
     "test-integration": "mocha --full-trace test/integration/*-test.js"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.2",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-terser": "^0.4.0",
@@ -74,6 +80,7 @@
     "mocha": "^10.2.0",
     "pixelmatch": "^5.3.0",
     "rollup": "^3.14.0",
+    "rollup-plugin-dts": "^6.2.1",
     "rollup-plugin-istanbul": "^4.0.0",
     "typedoc": "^0.23.24",
     "typedoc-plugin-markdown": "^3.14.0",
